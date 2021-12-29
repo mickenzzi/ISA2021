@@ -1,0 +1,35 @@
+package application.service.impl;
+
+import org.springframework.stereotype.Service;
+
+import application.model.Request;
+import application.service.RequestService;
+
+@Service
+public class RequestServiceImpl implements RequestService{
+
+	@Override
+	public Request createRequest(Request request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Request saveRequest(Request request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Request findById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Request findByUsername(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

@@ -1,0 +1,7 @@
+package application.model;
+
+public class Request {
+	private Long id;
+	private String title;
+	private String username;
+}

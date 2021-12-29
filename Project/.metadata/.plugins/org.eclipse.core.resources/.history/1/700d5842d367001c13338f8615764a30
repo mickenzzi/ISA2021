@@ -1,0 +1,6 @@
+package application.service.impl;
+
+@Service
+public class RequestServiceImpl {
+
+}
