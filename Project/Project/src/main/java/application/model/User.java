@@ -15,7 +15,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -57,18 +56,23 @@ public class User implements UserDetails {
 	private Timestamp lastPasswordResetDate;
 	@Column(name = "role")
 	private String role;
-
+	@Column(name = "first_time_logged")
+	private boolean firstTimeLogged;
 
 	// fetch - Lazy koristimo kada zelimo samo podatke tabele u kojoj se nalazimo a
 	// ne podatke i povezanih tabela
-	//mapped by string predstavlja naziv objekta u klasama sa kojima je user povezan
+	// mapped by string predstavlja naziv objekta u klasama sa kojima je user
+	// povezan
 	@OneToMany(mappedBy = "userCottage", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Cottage> cottages;
 	@OneToMany(mappedBy = "userRequest", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Request> requests;
-	
+	@OneToMany(mappedBy = "userAdventure", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Adventure> adventures;
+
 	public Long getId() {
 		return id;
 	}
@@ -174,10 +178,11 @@ public class User implements UserDetails {
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
 	}
+
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
-	
+
 	public String getRole() {
 		return role;
 	}
@@ -185,13 +190,29 @@ public class User implements UserDetails {
 	public void setRole(String role) {
 		this.role = role;
 	}
-	
+
 	public List<Request> getRequests() {
 		return requests;
 	}
 
 	public void setRequests(List<Request> requests) {
 		this.requests = requests;
+	}
+
+	public boolean isFirstTimeLogged() {
+		return firstTimeLogged;
+	}
+
+	public void setFirstTimeLogged(boolean firstTimeLogged) {
+		this.firstTimeLogged = firstTimeLogged;
+	}
+
+	public List<Adventure> getAdventures() {
+		return adventures;
+	}
+
+	public void setAdventures(List<Adventure> adventures) {
+		this.adventures = adventures;
 	}
 
 	public User() {
@@ -212,7 +233,6 @@ public class User implements UserDetails {
 		this.password = password;
 		this.role = role;
 	}
-
 
 	@JsonIgnore
 	@Override

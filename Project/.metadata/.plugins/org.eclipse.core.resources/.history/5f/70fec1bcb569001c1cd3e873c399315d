@@ -1,0 +1,7 @@
+package application.service.impl;
+
+import application.service.AdventureService;
+
+public class AdventureServiceImpl implements AdventureService{
+
+}

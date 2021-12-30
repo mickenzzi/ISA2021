@@ -1,0 +1,45 @@
+package application.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+
+import application.model.Termin;
+import application.repository.TerminRepository;
+import application.service.TerminService;
+
+public class TerminServiceImpl implements TerminService{
+
+	@Autowired
+	private TerminRepository terminRepository;
+	
+	@Override
+	public Termin findById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Termin> findAll() throws AccessDeniedException{
+		return terminRepository.findAll();
+	}
+
+	@Override
+	public Termin save(Termin termin) {
+		return terminRepository.save(termin);
+	}
+
+	@Override
+	public Termin createTermin(Termin termin) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void updateTermin(Termin termin) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

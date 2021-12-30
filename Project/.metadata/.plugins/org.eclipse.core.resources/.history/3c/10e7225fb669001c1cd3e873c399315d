@@ -1,0 +1,53 @@
+package application.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+
+import application.model.Adventure;
+import application.repository.AdventureRepository;
+import application.service.AdventureService;
+
+public class AdventureServiceImpl implements AdventureService{
+	@Autowired
+	private AdventureRepository adventureRepository;
+	
+	@Override
+	public Adventure findById(Long id)  throws AccessDeniedException{
+		return adventureRepository.findById(id).orElseGet(null);
+	}
+
+	@Override
+	public List<Adventure> findAll()  throws AccessDeniedException{
+		return adventureRepository.findAll();
+	}
+
+	@Override
+	public Adventure save(Adventure adventure) {
+		return adventureRepository.save(adventure);
+	}
+
+	@Override
+	public Adventure createAdventure(Adventure adventure) {
+		Adventure adventure1 = new Adventure();
+		adventure1.setAddress(adventure.getAddress());
+		adventure1.setCancelCondition(adventure.getCancelCondition());
+		adventure1.setEquipment(adventure.getEquipment());
+		adventure1.setImage(adventure.getImage());
+		adventure1.setInstructorBiography(adventure.getCancelCondition());
+		adventure1.setMaxNumber(adventure.getMaxNumber());
+		adventure1.setPriceList(adventure.getPriceList());
+		adventure1.setRule(adventure.getRule());
+		adventure1.setTermins(adventure.getTermins());
+		adventure1.setTitle(adventure.getTitle());
+		adventure1.setUserAdventure(adventure.getUserAdventure());
+	}
+
+	@Override
+	public void updateAdventure(Adventure adventure) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

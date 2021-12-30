@@ -1,0 +1,7 @@
+package application.model;
+
+@Entity
+@Table(name="adventure_table")
+public class Adventure {
+
+}

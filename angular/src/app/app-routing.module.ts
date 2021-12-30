@@ -28,7 +28,7 @@ const routes: Routes = [
 	component: RegistrationComponent,
 	},
 	{
-	path: 'profileAdmin',
+	path: 'profileAdmin/:id',
 	component: ProfileAdminComponent,
 	},
 	{

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { HttpErrorResponse} from '@angular/common/http';
 import { UserService } from '../service/user.service';
 import { User } from '../model/user';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile-admin',
@@ -9,25 +10,45 @@ import { User } from '../model/user';
   styleUrls: ['./profile-admin.component.css']
 })
 export class ProfileAdminComponent implements OnInit {
-  public users: User[];
-  constructor(private userService: UserService)
-	{
-		this.users = [];
+  user: User = new User();
+  id!: number;
+  constructor(
+	private route: ActivatedRoute,
+	private router: Router,
+	private userService: UserService
+	)
+  {  
 	}
 
   ngOnInit(): void{
-		this.getAllUsers();
+	this.id = this.route.snapshot.params['id'];
+	this.getUser();
 	}
 	
-	public getAllUsers(): void{
-		this.userService.getAllUsers().subscribe(
-		 (response: User[]) => {
-			 this.users = response;
-		  },
-		  (error: HttpErrorResponse) =>{
-			  alert(error.message);
-		  }
+	public getUser(): void{
+		this.userService.getUser(this.id).subscribe(
+		 (response: User) => {
+			 this.user = response;
+		 }
 		);
+	}
+	
+	public updateUser(): void{
+		if(this.user.password1 === undefined){
+			alert('Unesite lozinku');
+		}
+		else{
+		this.userService.updateUser(this.user).subscribe(
+			response=>{
+				alert('Korisnik je izmenjen.');
+				this.router.navigate(['/homeAdmin', this.id])
+			}
+		);
+		}
+	}
+	
+	goBack(){
+		this.router.navigate(['/homeAdmin', this.id]);
 	}
 
 }

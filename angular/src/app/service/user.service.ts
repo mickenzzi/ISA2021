@@ -28,8 +28,12 @@ export class UserService {
   }
   
   public createUser(user: User) {
-        return this.http.post(`${this.userUrl}/createUser`, user);
+	  return this.http.post(`${this.userUrl}/createUser`, user);
     }
+	
+  public updateUser(user: User){
+	  return this.http.post(`${this.userUrl}/updateUser`, user);
+  }
   
 
 }

@@ -1,0 +1,6 @@
+package application.service;
+
+public interface AdventureService {
+	Adventure findById(Long id);
+	List<Adventure> findAll();
+}

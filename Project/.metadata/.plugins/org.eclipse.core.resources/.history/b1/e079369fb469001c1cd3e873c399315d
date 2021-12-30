@@ -1,0 +1,40 @@
+package application.service.impl;
+
+import java.util.List;
+
+import application.model.Termin;
+import application.service.TerminService;
+
+public class TerminServiceImpl implements TerminService{
+
+	@Override
+	public Termin findById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Termin> findAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Termin save(Termin termin) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Termin createTermin(Termin termin) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void updateTermin(Termin termin) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

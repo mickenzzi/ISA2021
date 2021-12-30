@@ -61,14 +61,21 @@ public class UserController {
 		}
 	}
 
-	@PutMapping(value = "/updateUser", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/updateUser", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> updateUser(@RequestBody UserDTO userDTO) throws Exception {
 		User user = userService.findById(userDTO.getId());
-
 		if (user == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		if(!userDTO.getPassword1().equals(userDTO.getPassword2())) {
+			System.out.println("Error-Passwords don't match.");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		userService.updateUser(userDTO);
+		if(user.getPassword().equals(userDTO.getPassword1())) {
+			System.out.println("Old password is the same as new password.");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 

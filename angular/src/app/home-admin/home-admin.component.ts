@@ -63,13 +63,17 @@ export class HomeAdminComponent implements OnInit {
   }
   
   goToProfile(){
-	this.router.navigate(['/profileAdmin']);
+	this.router.navigate(['/profileAdmin', this.id]);
   }
   
   public getUser(): void{
 		this.userService.getUser(this.id).subscribe(
 		 (response: User) => {
 			 this.user = response;
+			 if(this.user.firstTimeLogged === true){
+				alert('Korisnik se loguje prvi put,neophodno je da potvrdi lozinku');
+				this.router.navigate(['/profileAdmin', this.id]);
+			 }
 		 }
 		);
 	}
