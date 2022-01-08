@@ -14,4 +14,8 @@ export class RequestService {
   public getAllRequest(id: number) {
 	return this.http.get<Request[]>(`${this.requestUrl}/getAllRequests/${id}`);
   }
+  
+  public createRequest(id: number){
+	return this.http.get(`${this.requestUrl}/createRequest/${id}`);
+  }
 }

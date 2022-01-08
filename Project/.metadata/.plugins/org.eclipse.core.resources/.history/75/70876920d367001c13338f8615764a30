@@ -1,8 +1,0 @@
-package application.service;
-
-public interface RequestService {
-	Request createRequest(Request request);
-	Request saveRequest(Request request);
-	Request findById(Long id);
-	Request findByUsername(String username);
-}

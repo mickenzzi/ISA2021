@@ -314,8 +314,8 @@
 				<td class="table-data">{{request.id}}</td>
 				<td class="table-data">{{request.title}}</td>
 				<td class="table-data">{{request.username}}</td>
-				<td class="table-data"> <button class="approve-button" (click)="enableUser(request.username)">Verifikiju</button></td>
-				<td class="table-data"> <button class="disable-button" (click)="disableUser(request.username)">Odbij</button></td>
+				<td class="table-data"> <button class="approve-button" (click)="enableUser(request.username, request.title, request.id)">Potvrdi</button></td>
+				<td class="table-data"> <button class="disable-button" (click)="disableUser(request.username, request.title, request.id)">Odbij</button></td>
 			</tr>
 		</table>
 	</div>

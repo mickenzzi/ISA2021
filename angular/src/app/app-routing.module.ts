@@ -12,6 +12,8 @@ import { HomeGuestComponent } from './home-guest/home-guest.component';
 import { HomeInstructorComponent } from './home-instructor/home-instructor.component';
 import { HomeCottageOwnerComponent } from './home-cottage-owner/home-cottage-owner.component';
 import { HomeBoatOwnerComponent } from './home-boat-owner/home-boat-owner.component';
+import { ProfileInstructorComponent } from './profile-instructor/profile-instructor.component';
+import { AddAdventureComponent } from './add-adventure/add-adventure.component';
 
 const routes: Routes = [
 	{
@@ -30,6 +32,10 @@ const routes: Routes = [
 	{
 	path: 'profileAdmin/:id',
 	component: ProfileAdminComponent,
+	},
+	{
+	path: 'profileInstructor/:id',
+	component: ProfileInstructorComponent,
 	},
 	{
 	path: 'login',
@@ -58,6 +64,10 @@ const routes: Routes = [
 	{
 	path: 'registrationAdmin/:id',
 	component: RegistrationAdminComponent,
+	},
+	{
+	path: 'addAdventure/:id',
+	component: AddAdventureComponent,
 	}
 ];
 

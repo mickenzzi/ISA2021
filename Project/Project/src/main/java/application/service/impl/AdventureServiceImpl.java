@@ -7,13 +7,17 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import application.model.Adventure;
+import application.model.User;
 import application.repository.AdventureRepository;
+import application.repository.UserRepository;
 import application.service.AdventureService;
 
 @Service
 public class AdventureServiceImpl implements AdventureService{
 	@Autowired
 	private AdventureRepository adventureRepository;
+	@Autowired
+	private UserRepository userRepository; 
 	
 	@Override
 	public Adventure findById(Long id)  throws AccessDeniedException{
@@ -31,7 +35,7 @@ public class AdventureServiceImpl implements AdventureService{
 	}
 
 	@Override
-	public Adventure createAdventure(Adventure adventure) {
+	public Adventure createAdventure(Adventure adventure,Long id) {
 		Adventure adventure1 = new Adventure();
 		adventure1.setAddress(adventure.getAddress());
 		adventure1.setCancelCondition(adventure.getCancelCondition());
@@ -44,6 +48,9 @@ public class AdventureServiceImpl implements AdventureService{
 		adventure1.setTermins(adventure.getTermins());
 		adventure1.setTitle(adventure.getTitle());
 		adventure1.setUserAdventure(adventure.getUserAdventure());
+		adventure1.setDescription(adventure.getDescription());
+		User instructor = userRepository.findById(id).orElseGet(null);
+		adventure1.setUserAdventure(instructor);
 		adventureRepository.save(adventure1);
 		return adventure1;
 	}
@@ -61,8 +68,15 @@ public class AdventureServiceImpl implements AdventureService{
 		adventure1.setRule(adventure.getRule());
 		adventure1.setTermins(adventure.getTermins());
 		adventure1.setTitle(adventure.getTitle());
+		adventure1.setDescription(adventure.getDescription());
 		adventure1.setUserAdventure(adventure.getUserAdventure());
 		adventureRepository.save(adventure1);
+	}
+
+	@Override
+	public void delete(Long id) {
+		Adventure adventure = adventureRepository.findById(id).orElseGet(null);
+		adventureRepository.delete(adventure);
 	}
 
 }

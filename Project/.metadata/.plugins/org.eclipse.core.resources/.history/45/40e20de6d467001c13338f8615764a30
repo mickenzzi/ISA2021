@@ -1,9 +1,0 @@
-package application.service;
-
-import application.model.Request;
-
-public interface RequestService {
-	Request saveRequest(Request request);
-	Request findById(Long id);
-	Request findByUsername(String username);
-}

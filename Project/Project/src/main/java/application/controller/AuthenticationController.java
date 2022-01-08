@@ -37,7 +37,7 @@ public class AuthenticationController {
 			return new ResponseEntity<>(udto,HttpStatus.OK);
 		}
 		else {
-			System.out.println("User is deleted or is not enabled.");
+			System.out.println("User is not enabled.");
 			return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
 		}
 	}

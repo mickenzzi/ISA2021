@@ -1,7 +1,0 @@
-package application.service.impl;
-
-import application.service.TerminService;
-
-public class TerminServiceImpl implements TerminService{
-
-}

@@ -9,7 +9,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import application.model.Request;
+import application.model.User;
 import application.repository.RequestRepository;
+import application.repository.UserRepository;
 import application.service.RequestService;
 
 @Service
@@ -17,6 +19,8 @@ public class RequestServiceImpl implements RequestService{
 
 	@Autowired
 	private RequestRepository requestRepository;
+	@Autowired
+	private UserRepository userRepository;
 
 	@Override
 	public Request saveRequest(Request request) {
@@ -43,6 +47,21 @@ public class RequestServiceImpl implements RequestService{
 			}
 		}
 		return requests1;
+	}
+
+	@Override
+	public Request createRequest(Long userId) {
+		User admin = new User();
+		User user = new User();
+		user = userRepository.findById(userId).orElseGet(null);
+		admin = userRepository.findByUsername("mickenzi");
+		Request request = new Request();
+		request.setDeleted(false);
+		request.setTitle("Zahtev za brisanje naloga.");
+		request.setUsername(user.getUsername());
+		request.setUserRequest(admin);
+		requestRepository.save(request);
+		return null;
 	}
 
 }

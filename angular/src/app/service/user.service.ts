@@ -19,12 +19,20 @@ export class UserService {
 	  return this.http.get<User>(`${this.userUrl}/getUserById/${id}`);
   }
   
-    public enableUser(username: string) {
-	  return this.http.get<User>(`${this.userUrl}/enableUser/${username}`);
+    public enableUser(username: string, idRequest: number) {
+	  return this.http.get<User>(`${this.userUrl}/enableUser/${username}/${idRequest}`);
   }
   
-   public disableUser(username: string) {
-	  return this.http.get<User>(`${this.userUrl}/disableUser/${username}`);
+   public disableUser(username: string, idRequest: number) {
+	  return this.http.get<User>(`${this.userUrl}/disableUser/${username}/${idRequest}`);
+  }
+  
+    public approveDeleteRequest(username: string, idRequest: number) {
+	  return this.http.get<User>(`${this.userUrl}/approveDeleteRequest/${username}/${idRequest}`);
+  }
+  
+   public rejectDeleteRequest(username: string, idRequest: number) {
+	  return this.http.get<User>(`${this.userUrl}/rejectDeleteRequest/${username}/${idRequest}`);
   }
   
   public createUser(user: User) {

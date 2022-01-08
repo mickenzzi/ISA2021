@@ -91,29 +91,58 @@ public class UserController {
 	}
 	
 
-	@GetMapping(value = "/enableUser/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> enableUser(@PathVariable("username") String username) throws Exception {
+	@GetMapping(value = "/enableUser/{username}/{idRequest}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> enableUser(@PathVariable("username") String username, @PathVariable("idRequest") Long idRequest) throws Exception {
 		User user = userService.findByUsername(username);	
 		if (user == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		else {
-			userService.enableUser(user.getId());
+			userService.enableUser(user.getId(), idRequest);
 			user = userService.findById(user.getId());
 			System.out.println("The task /enableUser was successfully completed.");
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		}
 	}
-	@GetMapping(value = "/disableUser/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> disableUser(@PathVariable("username") String username) throws Exception {
+	
+	@GetMapping(value = "/approveDeleteRequest/{username}/{idRequest}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> approveDeleteRequest(@PathVariable("username") String username, @PathVariable("idRequest") Long idRequest) throws Exception {
 		User user = userService.findByUsername(username);	
 		if (user == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		else {
-			userService.disableUser(user.getId());
+			userService.approveDeleteRequest(user.getId(), idRequest);
+			user = userService.findById(user.getId());
+			System.out.println("The task /approveDeleteRequest was successfully completed.");
+			return new ResponseEntity<>(user, HttpStatus.OK);
+		}
+	}
+	
+	@GetMapping(value = "/disableUser/{username}/{idRequest}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> disableUser(@PathVariable("username") String username, @PathVariable("idRequest") Long idRequest) throws Exception {
+		User user = userService.findByUsername(username);	
+		if (user == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		else {
+			userService.disableUser(user.getId(), idRequest);
 			user = userService.findById(user.getId());
 			System.out.println("The task /disableUser was successfully completed.");
+			return new ResponseEntity<>(user, HttpStatus.OK);
+		}
+	}
+	
+	@GetMapping(value = "/rejectDeleteRequest/{username}/{idRequest}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> rejectDeleteRequest(@PathVariable("username") String username, @PathVariable("idRequest") Long idRequest) throws Exception {
+		User user = userService.findByUsername(username);	
+		if (user == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		else {
+			userService.rejectDeleteRequest(user.getId(), idRequest);
+			user = userService.findById(user.getId());
+			System.out.println("The task /rejectDeleteRequest was successfully completed.");
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		}
 	}

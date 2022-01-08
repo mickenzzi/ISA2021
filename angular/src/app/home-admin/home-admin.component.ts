@@ -17,6 +17,8 @@ export class HomeAdminComponent implements OnInit {
   public requests: Request[];
   id!: number;
   username: string = "";
+  title: string = "";
+  idRequest: number = 0;
   //show menu panel
   flag1?: boolean;
   //show notifications panel
@@ -89,35 +91,81 @@ export class HomeAdminComponent implements OnInit {
 		);
 	}
 	
-  public enableUser(username1?: string):void{
+  public enableUser(username1?: string, title1?: string, idRequest1?: number):void{
 	  if(username1 === undefined){
 		alert("Korisnicko ime ne postoji");
 	  }
 	  else{
 	  this.username = username1;
-	  this.userService.enableUser(this.username).subscribe(
-		 (response: User) => {
-			alert("Nalog je verifikovan");
-			this.user1 = response;
-			this.getAllRequest();
-		 }
-		);
+	  if(title1 === undefined){
+		 alert("Naslov nije validan.");
 	  }
+	  else{
+		this.title = title1;
+		if(idRequest1 === undefined){
+			 alert("Id nije validan.");
+		}
+		else{
+		this.idRequest = idRequest1;
+		if(this.title.includes("brisanje")){
+			this.userService.approveDeleteRequest(this.username, this.idRequest).subscribe(
+			(response: User) => {
+				alert("Nalog je obrisan");
+				this.user1 = response;
+				this.getAllRequest();
+				}
+			);
+		}
+		else{
+			this.userService.enableUser(this.username, this.idRequest).subscribe(
+			(response: User) => {
+				alert("Nalog je verifikovan");
+				this.user1 = response;
+				this.getAllRequest();
+				}
+			);
+		}
+		}
+	  }
+	}
   }
   
-  public disableUser(username1?: string):void{
+  public disableUser(username1?: string, title1?: string, idRequest1?: number):void{
 	  if(username1 === undefined){
 		alert("Korisnicko ime ne postoji");
 	  }
 	  else{
 	  this.username = username1;
-	  this.userService.disableUser(this.username).subscribe(
-		 (response: User) => {
-			alert("Nalog nije prosao verifikaciju");
-			this.user1 = response;
-			this.getAllRequest();
-		 }
-		);
+	  if(title1 === undefined){
+		 alert("Naslov nije validan.");
 	  }
+	  else{
+		this.title = title1;
+		if(idRequest1 === undefined){
+			 alert("Id nije validan.");
+		}
+		else{
+		this.idRequest = idRequest1;
+		if(this.title.includes("brisanje")){
+			this.userService.rejectDeleteRequest(this.username, this.idRequest).subscribe(
+			(response: User) => {
+				alert("Nalog nije obrisan.");
+				this.user1 = response;
+				this.getAllRequest();
+				}
+			);
+		}
+		else{
+			this.userService.disableUser(this.username, this.idRequest).subscribe(
+			(response: User) => {
+				alert("Nalog nije verifikovan.");
+				this.user1 = response;
+				this.getAllRequest();
+				}
+			);
+		}
+		}
+	  }
+	}
   }
 }

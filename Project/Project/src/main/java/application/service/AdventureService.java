@@ -8,6 +8,7 @@ public interface AdventureService {
 	Adventure findById(Long id);
 	List<Adventure> findAll();
 	Adventure save(Adventure adventure);
-	Adventure createAdventure(Adventure adventure);
+	Adventure createAdventure(Adventure adventure,Long id);
 	void updateAdventure(Adventure adventure);
+	void delete(Long id);
 }

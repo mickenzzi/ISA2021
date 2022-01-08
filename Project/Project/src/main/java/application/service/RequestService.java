@@ -9,4 +9,5 @@ public interface RequestService {
 	Request findById(Long id);
 	Request findByUsername(String username);
 	List<Request> findAll(Long adminId);
+	Request createRequest(Long userId);
 }

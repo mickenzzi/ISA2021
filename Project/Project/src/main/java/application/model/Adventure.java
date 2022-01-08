@@ -37,9 +37,11 @@ public class Adventure {
 	@Column(name = "equipment")
 	private String equipment;
 	@Column(name = "price_list")
-	private String priceList;
+	private double priceList;
 	@Column(name = "cancel_condition")
 	private String cancelCondition;
+	@Column(name="description")
+	private String description;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
@@ -113,12 +115,20 @@ public class Adventure {
 		this.equipment = equipment;
 	}
 
-	public String getPriceList() {
+	public double getPriceList() {
 		return priceList;
 	}
 
-	public void setPriceList(String priceList) {
+	public void setPriceList(double priceList) {
 		this.priceList = priceList;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getCancelCondition() {

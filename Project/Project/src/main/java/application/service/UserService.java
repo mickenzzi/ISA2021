@@ -11,8 +11,10 @@ public interface UserService {
 	List<User> findAll();
 	User save(User user);
 	User createUser(UserDTO userDTO);
-	void enableUser(Long userId);
-	void disableUser(Long userId);
+	void enableUser(Long userId, Long requestId);
+	void disableUser(Long userId, Long requestId);
+	void approveDeleteRequest(Long userId, Long requestId);
+	void rejectDeleteRequest(Long userId, Long requestId);
 	void deleteUser(Long userId);
 	void updateUser(UserDTO userDTO);
 }
