@@ -21,6 +21,10 @@ export class HomeInstructorComponent implements OnInit {
   id!: number;
   idAdventure: number=0;
   username: string = "";
+  search: string = "";
+  flagTitle?: boolean;
+  flagPrice?: boolean;
+  flagCapacity?: boolean;
   //show menu panel
   flag1?: boolean;
   //show request delete dialog
@@ -110,12 +114,21 @@ export class HomeInstructorComponent implements OnInit {
 		this.adventureService.getAllAdventures(this.id).subscribe(
 		 (response: Adventure[]) => {
 			 this.adventures = response;
-			 console.log(this.adventures);
 		  },
 		  (error: HttpErrorResponse) =>{
 			  alert(error.message);
 		  }
 		);
+	}
+	
+	goToAdventure(idAdventure1?: number): void{
+		if(idAdventure1 === undefined){
+			alert('Id nije validan');
+		}
+		else{
+			this.idAdventure = idAdventure1;
+			this.router.navigate(['/homeAdventure',this.id,this.idAdventure]);
+		}
 	}
 	
 	deleteAdventure(idAdventure1?: number): void{
@@ -131,5 +144,59 @@ export class HomeInstructorComponent implements OnInit {
 				}
 			);
 		}
+	}
+	
+	searchAdventure(event: any): void{
+		if(this.search === null || this.search.length === 0){
+			this.getAllAdventures();
+		}
+		else{
+		this.adventureService.getSearchAdventures(this.id,this.search).subscribe(
+		 (response: Adventure[]) => {
+			 this.adventures = response;
+		  },
+		);
+		}
+	}
+	
+	sortByTitle(): void{
+		if(this.flagTitle === false){
+			this.flagTitle = true;
+		}
+		else{
+			this.flagTitle = false;
+		}
+		this.adventureService.sortAdventuresByTitle(this.id, this.flagTitle).subscribe(
+		 (response: Adventure[]) => {
+			 this.adventures = response;
+		  }
+		);
+	}
+	sortByPrice(): void{
+		if(this.flagPrice === false){
+			this.flagPrice = true;
+		}
+		else{
+			this.flagPrice = false;
+		}
+		this.adventureService.sortAdventuresByPrice(this.id, this.flagPrice).subscribe(
+		 (response: Adventure[]) => {
+			 this.adventures = response;
+		  }
+		);
+	}
+	sortByCapacity(): void{
+		if(this.flagCapacity === false){
+			this.flagCapacity = true;
+		}
+		else{
+			this.flagCapacity = false;
+		}
+		
+		this.adventureService.sortAdventuresByCapacity(this.id, this.flagCapacity).subscribe(
+		 (response: Adventure[]) => {
+			 this.adventures = response;
+		  }
+		);
 	}
 }

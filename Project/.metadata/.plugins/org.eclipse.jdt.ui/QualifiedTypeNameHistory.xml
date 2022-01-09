@@ -40,7 +40,6 @@
     <fullyQualifiedTypeName name="application.model.Request"/>
     <fullyQualifiedTypeName name="application.repository.RequestRepository"/>
     <fullyQualifiedTypeName name="application.service.RequestService"/>
-    <fullyQualifiedTypeName name="java.util.ArrayList"/>
     <fullyQualifiedTypeName name="application.model.Termin"/>
     <fullyQualifiedTypeName name="org.springframework.data.jpa.repository.JpaRepository"/>
     <fullyQualifiedTypeName name="application.model.Adventure"/>
@@ -53,4 +52,7 @@
     <fullyQualifiedTypeName name="application.repository.UserRepository"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.DeleteMapping"/>
     <fullyQualifiedTypeName name="org.springframework.http.HttpStatus"/>
+    <fullyQualifiedTypeName name="java.util.Comparator"/>
+    <fullyQualifiedTypeName name="java.util.ArrayList"/>
+    <fullyQualifiedTypeName name="java.util.Collections"/>
 </qualifiedTypeNameHistroy>

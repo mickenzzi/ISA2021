@@ -299,8 +299,12 @@
 	<div class="toolbar">
 	<button (click)="showHidden()" style="margin-left: 30px;"><img class="menu-img" src="/assets/img/menu.png"></button>
 	<label style="margin-left:100px;">Dobro dosao {{user.username}}</label>
-	<button (click)="addAdventure()" style="margin-left: 30px; background-color: rgba(210,210,210,0.8) "><img style="width: 30px; height: 30px;" src="/assets/img/add.png"></button>
-	<input style="margin-left:750px; height: 20px;" type="text" />
+	<button (click)="addAdventure()" class="button-2" style="margin-left: 50px; width: 200px;">Dodaj avanturu</button>
+	<label style="margin-left:80px;">Sortiraj po:</label>
+	<button (click)="sortByTitle()" class="button-2">Naziv</button>
+	<button (click)="sortByPrice()" class="button-2">Cena</button>
+	<button (click)="sortByCapacity()" class="button-2">Kapacitet</button>
+	<input style="margin-left:210px; height: 20px;" type="text" [(ngModel)]="search" [ngModelOptions]="{standalone: true}" (keyup)="searchAdventure($event)"/>
 	</div>
 	<div *ngIf="flag1" class="menu-container">
 		<button (click)="goToProfile()" class="menu-container-button">Profil</button><br>
@@ -312,13 +316,13 @@
 		<button class="approve-button" style="margin-left:15px; margin-top:30px;" (click)="approveRequest()">Potvrdi</button>
 		<button class="disable-button" style="margin-left:135px; margin-top:30px;" (click)="rejectRequest()">Odustani</button>
 	</div>
-	<div class="cards" *ngFor="let adventure of adventures">
-		<button (click)="deleteAdventure(adventure.id)">Obrisi</button>
+	<div class="cards" *ngFor="let adventure of adventures"> 
+		<button (click)="deleteAdventure(adventure.id)" style="margin-left: 165px; margin-top: 2px;">X</button>
 		<img class="cards-img" src="{{adventure.image}}">
 		<br>
-		<label style="margin: 0 auto; margin-left:15px; position: relative">{{adventure.id}}</label>
+		<label style="margin: 0 auto; margin-left:15px; position: relative">{{adventure.title}},{{adventure.address}}</label>
 		<br>
-		<button style="margin-left:50px;" class="button-2">Prikazi</button>
+		<button (click)="goToAdventure(adventure.id)" style="margin-left:50px;" class="button-2">Prikazi</button>
 	</div>
 	
 	

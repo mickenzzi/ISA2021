@@ -23,11 +23,11 @@ export class AddAdventureComponent implements OnInit {
 	address: '',
 	image: '',
 	maxNumber: 0,
-	biography: '',
+	instructorBiography: '',
 	rule: '',
 	equipment: '',
-	price: 0,
-	cancel: '',
+	priceList: 0,
+	cancelCondition: '',
   }
   constructor(
 	private route: ActivatedRoute,
@@ -52,11 +52,11 @@ export class AddAdventureComponent implements OnInit {
       address: this.adventure.address,
       image: this.URL_R,
       maxNumber: this.adventure.maxNumber,
-      biography: this.adventure.biography,
+      instructorBiography: this.adventure.instructorBiography,
       rule: this.adventure.rule,
       equipment: this.adventure.equipment,
-      price: this.adventure.price,
-      cancel: this.adventure.cancel
+      priceList: this.adventure.priceList,
+      cancelCondition: this.adventure.cancelCondition
     }
 	this.adventureService.createAdventure(data,this.id)
 	.subscribe(

@@ -14,6 +14,7 @@ import { HomeCottageOwnerComponent } from './home-cottage-owner/home-cottage-own
 import { HomeBoatOwnerComponent } from './home-boat-owner/home-boat-owner.component';
 import { ProfileInstructorComponent } from './profile-instructor/profile-instructor.component';
 import { AddAdventureComponent } from './add-adventure/add-adventure.component';
+import { HomeAdventureComponent } from './home-adventure/home-adventure.component';
 
 const routes: Routes = [
 	{
@@ -68,6 +69,10 @@ const routes: Routes = [
 	{
 	path: 'addAdventure/:id',
 	component: AddAdventureComponent,
+	},
+	{
+	path: 'homeAdventure/:id/:idAdventure',
+	component: HomeAdventureComponent,
 	}
 ];
 

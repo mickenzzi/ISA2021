@@ -24,4 +24,22 @@ export class AdventureService {
   public deleteAdventure(id: number){
 	return this.http.get<Adventure>(`${this.adventureUrl}/deleteAdventure/${id}`);
   }
+  
+   public updateAdventure(adventure: Adventure){
+	  return this.http.post(`${this.adventureUrl}/updateAdventure`, adventure);
+  }
+  
+  public getSearchAdventures(id: number, search: string){
+	return this.http.get<Adventure[]>(`${this.adventureUrl}/getSearchAdventures/${id}/${search}`);
+  }
+  
+  public sortAdventuresByTitle(id: number, asc: boolean) {
+	return this.http.get<Adventure[]>(`${this.adventureUrl}/sortAdventuresByTitle/${id}/${asc}`);
+  }
+  public sortAdventuresByPrice(id: number, asc: boolean) {
+	return this.http.get<Adventure[]>(`${this.adventureUrl}/sortAdventuresByPrice/${id}/${asc}`);
+  }
+  public sortAdventuresByCapacity(id: number, asc: boolean) {
+	return this.http.get<Adventure[]>(`${this.adventureUrl}/sortAdventuresByCapacity/${id}/${asc}`);
+  }
 }

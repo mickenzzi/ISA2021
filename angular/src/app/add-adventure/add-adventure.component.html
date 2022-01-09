@@ -229,11 +229,11 @@ body {
 				<input type="file" style="width:40%" accept="image/*" [(ngModel)]="URL" [ngModelOptions]="{standalone: true}" required autofocus/>
 				<br>
 				<input type="text" style="width:280px; height:30px;" [(ngModel)]="adventure.maxNumber" [ngModelOptions]="{standalone: true}" placeholder="Dozvoljen broj osoba" required autofocus/>
-				<input type="text" style="width:280px; height:30px;" [(ngModel)]="adventure.biography" [ngModelOptions]="{standalone: true}" placeholder="Biografija" required autofocus/><br>
+				<input type="text" style="width:280px; height:30px;" [(ngModel)]="adventure.instructorBiography" [ngModelOptions]="{standalone: true}" placeholder="Biografija" required autofocus/><br>
 				<input type="text" style="width:280px; height:30px;" [(ngModel)]="adventure.rule" [ngModelOptions]="{standalone: true}" placeholder="Pravila ponasanja i dodatne usluge" required autofocus/><br>
 				<input type="text" style="width:280px; height:30px;" [(ngModel)]="adventure.equipment" [ngModelOptions]="{standalone: true}" placeholder="Oprema" required autofocus/><br>
-				<input type="text" style="width:280px; height:30px;" [(ngModel)]="adventure.price" [ngModelOptions]="{standalone: true}" placeholder="Cena u EUR" required autofocus/><br>
-				<input type="text" style="width:280px; height:30px;" [(ngModel)]="adventure.cancel" [ngModelOptions]="{standalone: true}" placeholder="Uslov otkaza rezervacije" required autofocus/>
+				<input type="text" style="width:280px; height:30px;" [(ngModel)]="adventure.priceList" [ngModelOptions]="{standalone: true}" placeholder="Cena u EUR" required autofocus/><br>
+				<input type="text" style="width:280px; height:30px;" [(ngModel)]="adventure.cancelCondition" [ngModelOptions]="{standalone: true}" placeholder="Uslov otkaza rezervacije" required autofocus/>
 				<div class="submit-container">
 					<button style="margin-right:260px;" (click)="goBack()" class="login-button">Odustani</button>
 					<button (click)="addAdventure()" class="login-button">Dodaj</button>

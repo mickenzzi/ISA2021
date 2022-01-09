@@ -5,9 +5,9 @@ export class Adventure {
 	address?: string;
 	image?: string;
 	maxNumber?: number;
-	biography?: string;
+	instructorBiography?: string;
 	rule?: string;
 	equipment?: string;
-	price?: number;
-	cancel?: string;
+	priceList?: number;
+	cancelCondition?: string;
 }
