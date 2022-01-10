@@ -40,9 +40,7 @@
     <fullyQualifiedTypeName name="application.model.Request"/>
     <fullyQualifiedTypeName name="application.repository.RequestRepository"/>
     <fullyQualifiedTypeName name="application.service.RequestService"/>
-    <fullyQualifiedTypeName name="application.model.Termin"/>
     <fullyQualifiedTypeName name="org.springframework.data.jpa.repository.JpaRepository"/>
-    <fullyQualifiedTypeName name="application.model.Adventure"/>
     <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="application.service.TerminService"/>
     <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
@@ -51,8 +49,14 @@
     <fullyQualifiedTypeName name="application.service.AdventureService"/>
     <fullyQualifiedTypeName name="application.repository.UserRepository"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.DeleteMapping"/>
-    <fullyQualifiedTypeName name="org.springframework.http.HttpStatus"/>
     <fullyQualifiedTypeName name="java.util.Comparator"/>
-    <fullyQualifiedTypeName name="java.util.ArrayList"/>
     <fullyQualifiedTypeName name="java.util.Collections"/>
+    <fullyQualifiedTypeName name="application.model.Adventure"/>
+    <fullyQualifiedTypeName name="java.util.ArrayList"/>
+    <fullyQualifiedTypeName name="application.repository.TerminRepository"/>
+    <fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
+    <fullyQualifiedTypeName name="java.util.Date"/>
+    <fullyQualifiedTypeName name="application.model.Termin"/>
+    <fullyQualifiedTypeName name="application.service.UserService"/>
+    <fullyQualifiedTypeName name="org.springframework.http.HttpStatus"/>
 </qualifiedTypeNameHistroy>

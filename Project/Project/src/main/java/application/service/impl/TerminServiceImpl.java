@@ -34,12 +34,11 @@ public class TerminServiceImpl implements TerminService{
 	@Override
 	public Termin createTermin(Termin termin) {
 		Termin termin1 = new Termin();
-		termin1.setAdditional(termin.getAdditional());
 		termin1.setAdventureTermin(termin.getAdventureTermin());
+		termin1.setStart(termin.getStart());
+		termin1.setEnd(termin.getEnd());
 		termin1.setDuration(termin.getDuration());
-		termin1.setMaxNumber(termin.getMaxNumber());
-		termin1.setPlace(termin.getPlace());
-		termin1.setStart(termin.getPlace());
+		termin1.setReserved(false);
 		terminRepository.save(termin1);
 		return termin1;
 	}
@@ -47,12 +46,11 @@ public class TerminServiceImpl implements TerminService{
 	@Override
 	public void updateTermin(Termin termin) {
 		Termin termin1 = terminRepository.findById(termin.getId()).orElseGet(null);
-		termin1.setAdditional(termin.getAdditional());
 		termin1.setAdventureTermin(termin.getAdventureTermin());
+		termin1.setStart(termin.getStart());
+		termin1.setEnd(termin.getEnd());
 		termin1.setDuration(termin.getDuration());
-		termin1.setMaxNumber(termin.getMaxNumber());
-		termin1.setPlace(termin.getPlace());
-		termin1.setStart(termin.getPlace());
+		termin1.setReserved(termin.isReserved());
 		terminRepository.save(termin1);
 	}
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../model/user';
+import { Termin } from '../model/termin';
 import { Request } from '../model/request';
 import { Adventure } from '../model/adventure';
 import { UserService } from '../service/user.service';
@@ -16,7 +17,8 @@ import { HttpErrorResponse} from '@angular/common/http';
 export class HomeAdventureComponent implements OnInit {
   id!: number;
   idAdventure!: number;
-  adventure:Adventure = new Adventure();
+  adventure: Adventure = new Adventure();
+  termin: Termin = new Termin();
   constructor(
 	private route: ActivatedRoute,
 	private router: Router,
@@ -48,6 +50,14 @@ export class HomeAdventureComponent implements OnInit {
 			response=>{
 				alert('Izmenili ste avanturu.');
 				this.getAdventure();
+			}
+		);
+  }
+  
+  createAction(): void{
+	  this.adventureService.createAction(this.id,this.idAdventure,this.termin).subscribe(
+			response=>{
+				alert('Uspesno ste kreirali termin za brzu rezervaciju.');
 			}
 		);
   }

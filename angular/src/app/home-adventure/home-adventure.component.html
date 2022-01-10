@@ -294,8 +294,16 @@
 	<div class="toolbar">
 		<button (click)="goBack()" class="button-2" style="margin-left:20px;">Nazad</button>
 	</div>
-	<div class="cards">
+	<div class="cards" style="height: 450px;">
 	<img src="{{adventure.image}}" style="width:350px; height:300px;">
+	<label style="margin-top:20px; margin-left:15px;"><b>Definisanje termina za brzu rezervaciju:</b></label><br>
+	<label style="margin-left:20px; margin-top:15px;">Datum pocetka:</label>
+	<label style="margin-left:60px; margin-top:15px;">Datum kraja:</label><br>
+	<input type="text" style="width:130px; margin-left:10px;" [(ngModel)]="termin.start" [ngModelOptions]="{standalone: true}" placeholder="dd-MMM-yyy HH:mm:ss"/>
+	<input type="text" style="width:130px; margin-left:20px;" [(ngModel)]="termin.end" [ngModelOptions]="{standalone: true}" placeholder="dd-MMM-yyy HH:mm:ss"/><br>
+	<label style="margin-left:20px;">Trajanje akcije:</label><br>
+	<input type="text" [(ngModel)]="termin.duration" [ngModelOptions]="{standalone: true}" style="margin-left:10px; width:130px;"/>
+	<button (click)="createAction()" class="button-2" style="margin-left:25px;">Kreiraj</button>
 	</div>
 	<div class="cards" style="width:800px; height:550px; position: fixed">
 	<label style="margin-top:15px; margin-left: 15px;">Naziv avanture:</label><input type="text" style="margin-left:15px; margin-top:15px;" [(ngModel)]="adventure.title" [ngModelOptions]="{standalone: true}" required autofocus/>

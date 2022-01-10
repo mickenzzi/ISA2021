@@ -16,22 +16,20 @@ public class Termin {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	// 30.12.2021 21:54
-	@Column(name = "start")
+	@Column(name = "startDate")
 	private String start;
-	@Column(name = "place")
-	private String place;
+	@Column(name = "endDate")
+	private String end;
 	@Column(name = "duration")
 	private double duration;
-	@Column(name = "maxNumber")
-	private int maxNumber;
-	@Column(name = "additional")
-	private String additional;
-
+	@Column(name = "reserved")
+	private boolean reserved;
+	
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "adventure_id")
 	private Adventure adventureTermin;
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -48,12 +46,12 @@ public class Termin {
 		this.start = start;
 	}
 
-	public String getPlace() {
-		return place;
+	public String getEnd() {
+		return end;
 	}
 
-	public void setPlace(String place) {
-		this.place = place;
+	public void setEnd(String end) {
+		this.end = end;
 	}
 
 	public double getDuration() {
@@ -63,23 +61,14 @@ public class Termin {
 	public void setDuration(double duration) {
 		this.duration = duration;
 	}
-
-	public int getMaxNumber() {
-		return maxNumber;
+	
+	public boolean isReserved() {
+		return reserved;
 	}
 
-	public void setMaxNumber(int maxNumber) {
-		this.maxNumber = maxNumber;
+	public void setReserved(boolean reserved) {
+		this.reserved = reserved;
 	}
-
-	public String getAdditional() {
-		return additional;
-	}
-
-	public void setAdditional(String additional) {
-		this.additional = additional;
-	}
-
 	public Adventure getAdventureTermin() {
 		return adventureTermin;
 	}
@@ -87,7 +76,7 @@ public class Termin {
 	public void setAdventureTermin(Adventure adventureTermin) {
 		this.adventureTermin = adventureTermin;
 	}
-
+	
 	public Termin() {
 		super();
 	}

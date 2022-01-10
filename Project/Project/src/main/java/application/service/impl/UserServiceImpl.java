@@ -1,5 +1,9 @@
 package application.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +15,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
 
+import application.model.Adventure;
 import application.model.Request;
+import application.model.Termin;
 import application.model.User;
 import application.model.dto.UserDTO;
 import application.repository.RequestRepository;
+import application.repository.TerminRepository;
 import application.repository.UserRepository;
+import application.repository.AdventureRepository;
 import application.service.UserService;
 
 @Service
@@ -25,6 +33,10 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
 	@Autowired
 	private RequestRepository requestRepository;
+	@Autowired
+	private TerminRepository terminRepository;
+	@Autowired
+	private AdventureRepository adventureRepository;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	@Autowired
@@ -174,6 +186,56 @@ public class UserServiceImpl implements UserService {
 		requestRepository.save(request);
 		user.setDeleted(false);		
 		userRepository.save(user);
+	}
+
+	@Override
+	public boolean createAction(Long instructorId, Long adventureId, Termin term) throws ParseException{
+		boolean free;
+		free = true;
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyy HH:mm:ss");
+		List<Adventure> adventures = new ArrayList<Adventure>();
+		List<Adventure> allAdventures = new ArrayList<Adventure>();
+		allAdventures = adventureRepository.findAll();
+		for(Adventure a:allAdventures) {
+			if(a.getUserAdventure().getId() == instructorId) {
+				adventures.add(a);
+			}
+		}
+		List<Termin> usedTermin = new ArrayList<Termin>();
+		List<Termin> usedAdventureTermin = new ArrayList<Termin>();
+		usedTermin = terminRepository.findAll();
+		for(Termin t: usedTermin) {
+			for(Adventure a: adventures) {
+				if(t.getAdventureTermin().getId() == a.getId() && t.isReserved()==true) {
+					usedAdventureTermin.add(t);
+				}
+			}
+			
+		}
+		
+		Date startDate = dateFormat.parse(term.getStart());
+		Date endDate = dateFormat.parse(term.getEnd());
+		
+		for(Termin t1: usedAdventureTermin) {
+			Date dmin = dateFormat.parse(t1.getStart());
+			Date dmax = dateFormat.parse(t1.getEnd());
+			if( startDate.compareTo(dmin) >= 0 && startDate.compareTo(dmax) <=0 && endDate.compareTo(endDate)<=0 && endDate.compareTo(startDate)>=0) {
+				free = false;
+				break;
+			}
+		}
+		if(free = true) {
+			Termin termin1 = new Termin();
+			Adventure adventure1 = adventureRepository.findById(adventureId).orElseGet(null);
+			termin1.setAdventureTermin(adventure1);
+			termin1.setStart(term.getStart());
+			termin1.setEnd(term.getEnd());
+			termin1.setDuration(term.getDuration());
+			termin1.setReserved(false);
+			terminRepository.save(termin1);
+		}
+		
+		return free;
 	}
 	
 

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Adventure } from '../model/adventure';
+import { Termin } from '../model/termin';
 
 @Injectable({
   providedIn: 'root'
@@ -41,5 +42,8 @@ export class AdventureService {
   }
   public sortAdventuresByCapacity(id: number, asc: boolean) {
 	return this.http.get<Adventure[]>(`${this.adventureUrl}/sortAdventuresByCapacity/${id}/${asc}`);
+  }
+  public createAction(idInstructor: number, idAdventure: number, termin: Termin){
+	return this.http.post(`${this.adventureUrl}/createAction/${idInstructor}/${idAdventure}`, termin);
   }
 }

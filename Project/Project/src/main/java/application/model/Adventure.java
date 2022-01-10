@@ -46,10 +46,12 @@ public class Adventure {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private User userAdventure;
-
+	
 	@OneToMany(mappedBy = "adventureTermin", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnore
+	
 	private List<Termin> termins;
+	
 
 	public Long getId() {
 		return id;

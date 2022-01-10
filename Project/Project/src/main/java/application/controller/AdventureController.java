@@ -1,5 +1,6 @@
 package application.controller;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,13 +16,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import application.model.Adventure;
+import application.model.Termin;
 import application.service.AdventureService;
+import application.service.UserService;
 
 @RestController
 @RequestMapping(value = "/api/adventures")
 public class AdventureController {
 	@Autowired
 	private AdventureService adventureService;
+	@Autowired
+	private UserService userService;
 
 	@GetMapping(value = "/getAllAdventures/{instructorId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Adventure>> getAllAdventures(@PathVariable("instructorId") Long instructorId) {
@@ -84,10 +89,15 @@ public class AdventureController {
 
 	@PostMapping(value = "/createAdventure/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Adventure> createAdventure(@RequestBody Adventure adventure1, @PathVariable("id") Long id) {
-		Adventure adventure = adventureService.createAdventure(adventure1, id);
-		System.out.println("The task /createAdventure was successfully completed.");
-		return new ResponseEntity<>(adventure, HttpStatus.CREATED);
-
+		if(adventure1.getAddress().isEmpty() || adventure1.getCancelCondition().isEmpty() || adventure1.getDescription().isEmpty() || adventure1.getEquipment().isEmpty() || adventure1.getRule().isEmpty() || adventure1.getTitle().isEmpty() || adventure1.getInstructorBiography().isEmpty()) {
+			System.out.println("Some fields are empty.");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		else {
+			Adventure adventure = adventureService.createAdventure(adventure1, id);
+			System.out.println("The task /createAdventure was successfully completed.");
+			return new ResponseEntity<>(adventure, HttpStatus.CREATED);
+		}
 	}
 
 	@GetMapping(value = "/deleteAdventure/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -100,29 +110,47 @@ public class AdventureController {
 		System.out.println("The task /createAdventure was successfully completed.");
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/sortAdventuresByTitle/{instructorId}/{asc}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Adventure>> sortAdventuresByTitle(@PathVariable("instructorId") Long instructorId,@PathVariable("asc") boolean asc) {
+	public ResponseEntity<List<Adventure>> sortAdventuresByTitle(@PathVariable("instructorId") Long instructorId,
+			@PathVariable("asc") boolean asc) {
 		List<Adventure> adventures = new ArrayList<Adventure>();
 		adventures = adventureService.sortByTitle(instructorId, asc);
 		System.out.println("The task /sortAdventuresByTitle was successfully completed.");
 		return new ResponseEntity<>(adventures, HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/sortAdventuresByPrice/{instructorId}/{asc}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Adventure>> sortAdventuresByPrice(@PathVariable("instructorId") Long instructorId,@PathVariable("asc") boolean asc) {
+	public ResponseEntity<List<Adventure>> sortAdventuresByPrice(@PathVariable("instructorId") Long instructorId,
+			@PathVariable("asc") boolean asc) {
 		List<Adventure> adventures = new ArrayList<Adventure>();
 		adventures = adventureService.sortByPrice(instructorId, asc);
 		System.out.println("The task /sortAdventuresByPrice was successfully completed.");
 		return new ResponseEntity<>(adventures, HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/sortAdventuresByCapacity/{instructorId}/{asc}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Adventure>> sortAdventuresByCapacity(@PathVariable("instructorId") Long instructorId,@PathVariable("asc") boolean asc) {
+	public ResponseEntity<List<Adventure>> sortAdventuresByCapacity(@PathVariable("instructorId") Long instructorId,
+			@PathVariable("asc") boolean asc) {
 		List<Adventure> adventures = new ArrayList<Adventure>();
 		adventures = adventureService.sortByCapacity(instructorId, asc);
 		System.out.println("The task /sortAdventuresByCapacity was successfully completed.");
 		return new ResponseEntity<>(adventures, HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/createAction/{instructorId}/{adventureId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Termin> createAction(@RequestBody Termin termin,
+			@PathVariable("instructorId") Long instructorId, @PathVariable("adventureId") Long adventureId)
+			throws ParseException {
+		boolean flag = userService.createAction(instructorId, adventureId, termin);
+		if (flag == true) {
+			System.out.println("The task /createAction was successfully completed.");
+			return new ResponseEntity<>(termin, HttpStatus.CREATED);
+		} else {
+			System.out.println("Termin is already used.");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 }
