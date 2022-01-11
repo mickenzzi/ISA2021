@@ -23,10 +23,18 @@ public class TerminController {
 	@Autowired
 	private TerminService terminService;
 
-	@GetMapping(value = "/getAllTermins", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Termin>> getAllTermins() {
+	@GetMapping(value = "/getAllTerminsInstructor/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Termin>> getAllTerminsInstructor(@PathVariable("id") Long id) {
 		List<Termin> termins = new ArrayList<Termin>();
-		termins = terminService.findAll();
+		termins = terminService.findAllTerminsInstructor(id);
+		System.out.println("The task /getAllTermins was successfully completed.");
+		return new ResponseEntity<>(termins, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getFreeTerminsInstructor{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Termin>> getFreeTerminsInstructor(@PathVariable("id") Long id) {
+		List<Termin> termins = new ArrayList<Termin>();
+		termins = terminService.findFreeTerminsInstructor(id);
 		System.out.println("The task /getAllTermins was successfully completed.");
 		return new ResponseEntity<>(termins, HttpStatus.OK);
 	}
@@ -60,6 +68,16 @@ public class TerminController {
 		Termin termin = terminService.createTermin(termin1);
 		System.out.println("The task /createTermin was successfully completed.");
 		return new ResponseEntity<>(termin, HttpStatus.CREATED);
-
+	}
+	
+	@GetMapping(value = "/deleteTermin/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Termin> deleteTermin(@PathVariable("id") Long id) {
+		if (id == null) {
+			System.out.println("Id is null.");
+			return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
+		}
+		terminService.delete(id);
+		System.out.println("The task /deleteTermin was successfully completed.");
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

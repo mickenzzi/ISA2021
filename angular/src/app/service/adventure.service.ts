@@ -11,6 +11,7 @@ export class AdventureService {
 
   constructor(private http: HttpClient) { }
   private adventureUrl = 'http://localhost:8081/myApp/api/adventures';
+  private terminUrl = 'http://localhost:8081/myApp/api/termins';
   
    public createAdventure(adventure: Adventure,id: number) {
 	return this.http.post(`${this.adventureUrl}/createAdventure/${id}`, adventure);
@@ -24,6 +25,9 @@ export class AdventureService {
   }
   public deleteAdventure(id: number){
 	return this.http.get<Adventure>(`${this.adventureUrl}/deleteAdventure/${id}`);
+  }
+   public deleteTermin(id: number){
+	return this.http.get<Termin>(`${this.terminUrl}/deleteTermin/${id}`);
   }
   
    public updateAdventure(adventure: Adventure){
@@ -45,5 +49,8 @@ export class AdventureService {
   }
   public createAction(idInstructor: number, idAdventure: number, termin: Termin){
 	return this.http.post(`${this.adventureUrl}/createAction/${idInstructor}/${idAdventure}`, termin);
+  }
+  public getAllTermins(id: number) {
+	return this.http.get<Termin[]>(`${this.terminUrl}/getAllTerminsInstructor/${id}`);
   }
 }

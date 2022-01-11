@@ -99,8 +99,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void deleteUser(Long userId) {
 		User user = userRepository.findById(userId).orElseGet(null);
-		user.setDeleted(true);
-		userRepository.save(user);
+		userRepository.delete(user);
 	}
 
 	@Override
@@ -206,7 +205,7 @@ public class UserServiceImpl implements UserService {
 		usedTermin = terminRepository.findAll();
 		for(Termin t: usedTermin) {
 			for(Adventure a: adventures) {
-				if(t.getAdventureTermin().getId() == a.getId() && t.isReserved()==true) {
+				if(t.getAdventureTermin().getId() == a.getId()) {
 					usedAdventureTermin.add(t);
 				}
 			}
@@ -219,12 +218,12 @@ public class UserServiceImpl implements UserService {
 		for(Termin t1: usedAdventureTermin) {
 			Date dmin = dateFormat.parse(t1.getStart());
 			Date dmax = dateFormat.parse(t1.getEnd());
-			if( startDate.compareTo(dmin) >= 0 && startDate.compareTo(dmax) <=0 && endDate.compareTo(endDate)<=0 && endDate.compareTo(startDate)>=0) {
+			if( (startDate.compareTo(dmin) >= 0 && endDate.compareTo(dmax)<=0) || (startDate.compareTo(dmin)>=0 && startDate.compareTo(dmax)<=0) ||(endDate.compareTo(dmin)>=0 && endDate.compareTo(dmax)<=0)) {
 				free = false;
 				break;
 			}
 		}
-		if(free = true) {
+		if(free == true) {
 			Termin termin1 = new Termin();
 			Adventure adventure1 = adventureRepository.findById(adventureId).orElseGet(null);
 			termin1.setAdventureTermin(adventure1);

@@ -22,6 +22,8 @@ import { RegistrationAdminComponent } from './registration-admin/registration-ad
 import { ProfileInstructorComponent } from './profile-instructor/profile-instructor.component';
 import { AddAdventureComponent } from './add-adventure/add-adventure.component';
 import { HomeAdventureComponent } from './home-adventure/home-adventure.component';
+import { HomeAdminUsersComponent } from './home-admin-users/home-admin-users.component';
+import { InstructorCalendarComponent } from './instructor-calendar/instructor-calendar.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { HomeAdventureComponent } from './home-adventure/home-adventure.componen
     RegistrationAdminComponent,
     ProfileInstructorComponent,
     AddAdventureComponent,
-    HomeAdventureComponent
+    HomeAdventureComponent,
+    HomeAdminUsersComponent,
+    InstructorCalendarComponent
   ],
   imports: [
     BrowserModule,

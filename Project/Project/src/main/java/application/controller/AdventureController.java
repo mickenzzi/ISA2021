@@ -89,11 +89,13 @@ public class AdventureController {
 
 	@PostMapping(value = "/createAdventure/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Adventure> createAdventure(@RequestBody Adventure adventure1, @PathVariable("id") Long id) {
-		if(adventure1.getAddress().isEmpty() || adventure1.getCancelCondition().isEmpty() || adventure1.getDescription().isEmpty() || adventure1.getEquipment().isEmpty() || adventure1.getRule().isEmpty() || adventure1.getTitle().isEmpty() || adventure1.getInstructorBiography().isEmpty()) {
+		if (adventure1.getAddress().isEmpty() || adventure1.getCancelCondition().isEmpty()
+				|| adventure1.getDescription().isEmpty() || adventure1.getEquipment().isEmpty()
+				|| adventure1.getRule().isEmpty() || adventure1.getTitle().isEmpty()
+				|| adventure1.getInstructorBiography().isEmpty()) {
 			System.out.println("Some fields are empty.");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-		else {
+		} else {
 			Adventure adventure = adventureService.createAdventure(adventure1, id);
 			System.out.println("The task /createAdventure was successfully completed.");
 			return new ResponseEntity<>(adventure, HttpStatus.CREATED);
@@ -101,13 +103,13 @@ public class AdventureController {
 	}
 
 	@GetMapping(value = "/deleteAdventure/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Adventure> deleteAdventureAdventure(@PathVariable("id") Long id) {
+	public ResponseEntity<Adventure> deleteAdventure(@PathVariable("id") Long id) {
 		if (id == null) {
 			System.out.println("Id is null.");
 			return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
 		}
 		adventureService.delete(id);
-		System.out.println("The task /createAdventure was successfully completed.");
+		System.out.println("The task /deleteAdventure was successfully completed.");
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 

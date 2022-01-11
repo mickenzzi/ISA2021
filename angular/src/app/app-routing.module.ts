@@ -15,6 +15,8 @@ import { HomeBoatOwnerComponent } from './home-boat-owner/home-boat-owner.compon
 import { ProfileInstructorComponent } from './profile-instructor/profile-instructor.component';
 import { AddAdventureComponent } from './add-adventure/add-adventure.component';
 import { HomeAdventureComponent } from './home-adventure/home-adventure.component';
+import { HomeAdminUsersComponent } from './home-admin-users/home-admin-users.component';
+import { InstructorCalendarComponent } from './instructor-calendar/instructor-calendar.component';
 
 const routes: Routes = [
 	{
@@ -73,6 +75,14 @@ const routes: Routes = [
 	{
 	path: 'homeAdventure/:id/:idAdventure',
 	component: HomeAdventureComponent,
+	},
+	{
+	path: 'homeAdminUsers/:id',
+	component: HomeAdminUsersComponent,
+	},
+	{
+	path: 'instructorCalendar/:id',
+	component: InstructorCalendarComponent,
 	}
 ];
 

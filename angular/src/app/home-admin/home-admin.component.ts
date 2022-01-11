@@ -68,6 +68,10 @@ export class HomeAdminComponent implements OnInit {
 	this.router.navigate(['/profileAdmin', this.id]);
   }
   
+  goToHomeAdminUsers(){
+	this.router.navigate(['/homeAdminUsers',this.id]);
+  }
+  
   public getUser(): void{
 		this.userService.getUser(this.id).subscribe(
 		 (response: User) => {

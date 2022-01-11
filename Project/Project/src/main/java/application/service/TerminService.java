@@ -10,4 +10,7 @@ public interface TerminService {
 	Termin save(Termin termin);
 	Termin createTermin(Termin termin);
 	void updateTermin(Termin termin);
+	List<Termin> findAllTerminsInstructor(Long instructorId);
+	List<Termin> findFreeTerminsInstructor(Long instructorId);
+	void delete(Long id);
 }

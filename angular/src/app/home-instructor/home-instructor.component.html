@@ -291,9 +291,7 @@
   background-color: #c85000;
   box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
   transform: translateY(0);
-}
-
- 
+} 
 </style>
 <body>
 	<div class="toolbar">
@@ -309,6 +307,7 @@
 	<div *ngIf="flag1" class="menu-container">
 		<button (click)="goToProfile()" class="menu-container-button">Profil</button><br>
 		<button (click)="requestDelete()" style="margin-top:2px;" class="menu-container-button">Obrisi nalog</button><br>
+		<button (click)="goToCalendar()" style="margin-top:2px;" class="menu-container-button">Dostupnost</button><br>
 		<button (click)="logOut()" style="margin-top:2px;" class="menu-container-button">Odjavi se</button>
 	</div>
 	<div *ngIf="flag2" style="margin-top:120px; margin-left: 20px;" class="delete-container">
@@ -324,13 +323,5 @@
 		<br>
 		<button (click)="goToAdventure(adventure.id)" style="margin-left:50px;" class="button-2">Prikazi</button>
 	</div>
-	
-	
-	<!--->
-	<div class="cards">
-		<div class="cards-img">
-			<input type="file" style="" id="addImage" accept="image/*" [(ngModel)]="URL" [ngModelOptions]="{standalone: true}" (change)="uploadImage($event)">
-		</div>
-	</div>
-	<!--->
+
 </body>

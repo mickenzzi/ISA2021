@@ -29,6 +29,8 @@ export class HomeInstructorComponent implements OnInit {
   flag1?: boolean;
   //show request delete dialog
   flag2?: boolean;
+  //is adventure reserved
+  flag3?: boolean;
   URL_ss = "";
   URL: string = "";
   URL_R: string = ""
@@ -120,7 +122,9 @@ export class HomeInstructorComponent implements OnInit {
 		  }
 		);
 	}
-	
+	goToCalendar(): void{
+		this.router.navigate(['/instructorCalendar', this.id]);
+	}
 	goToAdventure(idAdventure1?: number): void{
 		if(idAdventure1 === undefined){
 			alert('Id nije validan');

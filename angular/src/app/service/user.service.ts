@@ -11,36 +11,40 @@ export class UserService {
   constructor(private http: HttpClient) { }
   private userUrl = 'http://localhost:8081/myApp/api/users';
   
-  public getAllUsers() {
-	  return this.http.get<User[]>(`${this.userUrl}/getAllUsers`);
+  public getAllUsers(id: number) {
+	return this.http.get<User[]>(`${this.userUrl}/getAllUsers/${id}`);
   }
   
   public getUser(id: number) {
-	  return this.http.get<User>(`${this.userUrl}/getUserById/${id}`);
+	return this.http.get<User>(`${this.userUrl}/getUserById/${id}`);
   }
   
-    public enableUser(username: string, idRequest: number) {
-	  return this.http.get<User>(`${this.userUrl}/enableUser/${username}/${idRequest}`);
+  public deleteUser(id: number){
+	return this.http.get<User>(`${this.userUrl}/deleteUser/${id}`);
+  }
+
+  public enableUser(username: string, idRequest: number) {
+	return this.http.get<User>(`${this.userUrl}/enableUser/${username}/${idRequest}`);
   }
   
    public disableUser(username: string, idRequest: number) {
-	  return this.http.get<User>(`${this.userUrl}/disableUser/${username}/${idRequest}`);
+	return this.http.get<User>(`${this.userUrl}/disableUser/${username}/${idRequest}`);
   }
   
-    public approveDeleteRequest(username: string, idRequest: number) {
-	  return this.http.get<User>(`${this.userUrl}/approveDeleteRequest/${username}/${idRequest}`);
+  public approveDeleteRequest(username: string, idRequest: number) {
+    return this.http.get<User>(`${this.userUrl}/approveDeleteRequest/${username}/${idRequest}`);
   }
   
-   public rejectDeleteRequest(username: string, idRequest: number) {
-	  return this.http.get<User>(`${this.userUrl}/rejectDeleteRequest/${username}/${idRequest}`);
+  public rejectDeleteRequest(username: string, idRequest: number) {
+	return this.http.get<User>(`${this.userUrl}/rejectDeleteRequest/${username}/${idRequest}`);
   }
   
   public createUser(user: User) {
-	  return this.http.post(`${this.userUrl}/createUser`, user);
-    }
+	return this.http.post(`${this.userUrl}/createUser`, user);
+  }
 	
   public updateUser(user: User){
-	  return this.http.post(`${this.userUrl}/updateUser`, user);
+	return this.http.post(`${this.userUrl}/updateUser`, user);
   }
   
 
