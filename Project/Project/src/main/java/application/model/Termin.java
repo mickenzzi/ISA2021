@@ -16,20 +16,21 @@ public class Termin {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(name = "startDate")
+	@Column(name = "start_date")
 	private String start;
-	@Column(name = "endDate")
+	@Column(name = "end_date")
 	private String end;
 	@Column(name = "duration")
 	private double duration;
 	@Column(name = "reserved")
 	private boolean reserved;
-	
-	
+	@Column(name = "is_action")
+	private boolean action;
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "adventure_id")
 	private Adventure adventureTermin;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -61,7 +62,7 @@ public class Termin {
 	public void setDuration(double duration) {
 		this.duration = duration;
 	}
-	
+
 	public boolean isReserved() {
 		return reserved;
 	}
@@ -69,6 +70,7 @@ public class Termin {
 	public void setReserved(boolean reserved) {
 		this.reserved = reserved;
 	}
+
 	public Adventure getAdventureTermin() {
 		return adventureTermin;
 	}
@@ -76,7 +78,15 @@ public class Termin {
 	public void setAdventureTermin(Adventure adventureTermin) {
 		this.adventureTermin = adventureTermin;
 	}
-	
+
+	public boolean isAction() {
+		return action;
+	}
+
+	public void setAction(boolean action) {
+		this.action = action;
+	}
+
 	public Termin() {
 		super();
 	}

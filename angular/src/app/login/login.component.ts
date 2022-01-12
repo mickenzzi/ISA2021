@@ -51,6 +51,9 @@ export class LoginComponent implements OnInit {
 			if(this.loggedUserDetails.role === "INSTRUCTOR"){
 				this.router.navigate(['/homeInstructor', this.loggedUserDetails.id]);
 			}
+			if(this.loggedUserDetails.role === "USER"){
+				this.router.navigate(['/homeUser', this.loggedUserDetails.id]);
+			}
 			
 			
         }

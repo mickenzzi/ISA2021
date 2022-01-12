@@ -164,7 +164,7 @@ public class UserController {
 				|| userDTO.getCity().isEmpty() || userDTO.getCountry().isEmpty() || userDTO.getPhone().isEmpty()
 				|| userDTO.getEmail().isEmpty() || userDTO.getUsername().isEmpty() || userDTO.getPassword1().isEmpty()
 				|| userDTO.getPassword2().isEmpty() || userDTO.getRole().isEmpty()) {
-			System.out.println("Error-some field are empty");
+			System.out.println("Error-some fields are empty");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} else {
 			if (userDTO.getPassword1().equals(userDTO.getPassword2()) && userDTO.getPassword1().length()>=3) {

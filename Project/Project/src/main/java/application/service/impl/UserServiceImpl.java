@@ -230,7 +230,25 @@ public class UserServiceImpl implements UserService {
 			termin1.setStart(term.getStart());
 			termin1.setEnd(term.getEnd());
 			termin1.setDuration(term.getDuration());
+			termin1.setAction(true);
 			termin1.setReserved(false);
+			User instructor = userRepository.findById(instructorId).orElseGet(null);
+			SimpleMailMessage mail = new SimpleMailMessage();
+			mail.setFrom(instructor.getEmail());
+			List<User> users = new ArrayList<>();
+			List<User> users1 = new ArrayList<>();
+			users1 = userRepository.findAll();
+			for(User u:users1) {
+				if(u.getRole().equals("USER")) {
+					users.add(u);
+				}
+			}
+			for(User u:users) {
+				mail.setTo(u.getEmail());
+				mail.setSubject("Akcija-avantura");
+				mail.setText("Kreirana je akcija koja nudi razne pogodnosti prilikom rezervisanja avanture");
+				javaMailSender.send(mail);
+			}
 			terminRepository.save(termin1);
 		}
 		

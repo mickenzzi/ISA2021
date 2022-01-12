@@ -73,6 +73,10 @@ public class User implements UserDetails {
 	@JsonIgnore
 	private List<Adventure> adventures;
 
+	@OneToMany(mappedBy = "userReservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Reservation> reservations;
+
 	public Long getId() {
 		return id;
 	}
@@ -213,6 +217,14 @@ public class User implements UserDetails {
 
 	public void setAdventures(List<Adventure> adventures) {
 		this.adventures = adventures;
+	}
+
+	public List<Reservation> getReservations() {
+		return reservations;
+	}
+
+	public void setReservations(List<Reservation> reservations) {
+		this.reservations = reservations;
 	}
 
 	public User() {

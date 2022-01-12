@@ -41,7 +41,6 @@
     <fullyQualifiedTypeName name="application.repository.RequestRepository"/>
     <fullyQualifiedTypeName name="application.service.RequestService"/>
     <fullyQualifiedTypeName name="org.springframework.data.jpa.repository.JpaRepository"/>
-    <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="application.service.TerminService"/>
     <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
     <fullyQualifiedTypeName name="application.repository.AdventureRepository"/>
@@ -59,4 +58,5 @@
     <fullyQualifiedTypeName name="java.util.ArrayList"/>
     <fullyQualifiedTypeName name="application.model.Adventure"/>
     <fullyQualifiedTypeName name="application.model.Termin"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
 </qualifiedTypeNameHistroy>

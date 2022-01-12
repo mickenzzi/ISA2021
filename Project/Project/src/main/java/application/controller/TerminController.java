@@ -1,5 +1,6 @@
 package application.controller;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import application.model.Termin;
+import application.model.Reservation;
 import application.service.TerminService;
 
 @RestController
@@ -29,6 +31,14 @@ public class TerminController {
 		termins = terminService.findAllTerminsInstructor(id);
 		System.out.println("The task /getAllTermins was successfully completed.");
 		return new ResponseEntity<>(termins, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getAllReservationInstructor/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Reservation>> getAllReservationInstructor(@PathVariable("id") Long id) {
+		List<Reservation> reservations = new ArrayList<Reservation>();
+		reservations = terminService.findAllReservationsInstructor(id);
+		System.out.println("The task /getAllReservation was successfully completed.");
+		return new ResponseEntity<>(reservations, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/getFreeTerminsInstructor{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -80,4 +90,22 @@ public class TerminController {
 		System.out.println("The task /deleteTermin was successfully completed.");
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
+	@GetMapping(value = "/createReservation/{start}/{end}/{adventureId}/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Reservation> createReservation(@PathVariable("start") String start,@PathVariable("end") String end,@PathVariable("userId") Long userId,@PathVariable("adventureId") Long adventureId) throws ParseException {
+		if(start.isEmpty() || end.isEmpty()) {
+			System.out.println("Some fields are empty.");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		Boolean flag = terminService.createReservation(start,end,adventureId,userId);
+		if(flag==true) {
+		System.out.println("The task /createReservation was successfully completed.");
+		return new ResponseEntity<>(HttpStatus.CREATED);
+		}
+		else{
+			System.out.println("Termin is already used.");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 }

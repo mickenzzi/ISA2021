@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Adventure } from '../model/adventure';
 import { Termin } from '../model/termin';
+import { Reservation } from '../model/reservation';
 
 @Injectable({
   providedIn: 'root'
@@ -26,12 +27,8 @@ export class AdventureService {
   public deleteAdventure(id: number){
 	return this.http.get<Adventure>(`${this.adventureUrl}/deleteAdventure/${id}`);
   }
-   public deleteTermin(id: number){
-	return this.http.get<Termin>(`${this.terminUrl}/deleteTermin/${id}`);
-  }
-  
    public updateAdventure(adventure: Adventure){
-	  return this.http.post(`${this.adventureUrl}/updateAdventure`, adventure);
+	return this.http.post(`${this.adventureUrl}/updateAdventure`, adventure);
   }
   
   public getSearchAdventures(id: number, search: string){
@@ -47,10 +44,29 @@ export class AdventureService {
   public sortAdventuresByCapacity(id: number, asc: boolean) {
 	return this.http.get<Adventure[]>(`${this.adventureUrl}/sortAdventuresByCapacity/${id}/${asc}`);
   }
-  public createAction(idInstructor: number, idAdventure: number, termin: Termin){
-	return this.http.post(`${this.adventureUrl}/createAction/${idInstructor}/${idAdventure}`, termin);
-  }
   public getAllTermins(id: number) {
 	return this.http.get<Termin[]>(`${this.terminUrl}/getAllTerminsInstructor/${id}`);
   }
+  
+   public getAllReservation(id: number) {
+	return this.http.get<Reservation[]>(`${this.terminUrl}/getAllReservationInstructor/${id}`);
+  }
+  
+   public createAction(idInstructor: number, idAdventure: number, termin: Termin){
+	return this.http.post(`${this.adventureUrl}/createAction/${idInstructor}/${idAdventure}`, termin);
+  }
+  
+   public createReservation(start: string, end: string, adventureId: number, userId: number){
+	return this.http.get(`${this.terminUrl}/createReservation/${start}/${end}/${adventureId}/${userId}`);
+  }
+   public deleteTermin(id: number){
+	return this.http.get<Termin>(`${this.terminUrl}/deleteTermin/${id}`);
+  }
+  public getTermin(id: number){
+	return this.http.get<Termin>(`${this.terminUrl}/getTerminById/${id}`);
+  }
+   public updateTermin(termin: Termin){
+	return this.http.post(`${this.terminUrl}/updateTermin`, termin);
+  }
+  
 }
