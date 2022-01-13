@@ -223,4 +223,22 @@ public class TerminServiceImpl implements TerminService {
 	public Reservation saveReservation(Reservation reservation) {
 		return reservationRepository.save(reservation);
 	}
+
+	@Override
+	public void deleteReservationTermin(Long reservationId, String start, String end) {
+		Reservation reservation = reservationRepository.findById(reservationId).orElseGet(null);
+		Adventure adventure = adventureRepository.findById(reservation.getAdventureReservation().getId()).orElseGet(null);
+		Termin termin = new Termin();
+		List<Termin> termins = new ArrayList<Termin>();
+		termins = terminRepository.findAll();
+		for(Termin t:termins) {
+			if(t.getAdventureTermin().getId() == adventure.getId() && t.getStart().equals(start) && t.getEnd().equals(end)) {
+				termin = t;
+				break;
+			}
+		}
+		terminRepository.delete(termin);
+		reservationRepository.delete(reservation);
+		
+	}
 }

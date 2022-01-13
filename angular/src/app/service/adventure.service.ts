@@ -62,6 +62,12 @@ export class AdventureService {
    public deleteTermin(id: number){
 	return this.http.get<Termin>(`${this.terminUrl}/deleteTermin/${id}`);
   }
+  public deleteReservation(id: number){
+	return this.http.get<Reservation>(`${this.terminUrl}/deleteReservation/${id}`);
+  }
+   public deleteReservationTermin(id: number,start: string, end: string){
+	return this.http.get<Reservation>(`${this.terminUrl}/deleteReservationTermin/${id}/${start}/${end}`);
+  }
   public getTermin(id: number){
 	return this.http.get<Termin>(`${this.terminUrl}/getTerminById/${id}`);
   }

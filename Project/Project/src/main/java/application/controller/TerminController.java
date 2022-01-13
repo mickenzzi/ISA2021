@@ -108,4 +108,27 @@ public class TerminController {
 		}
 	}
 	
+	@GetMapping(value = "/deleteReservation/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Termin> deleteReservation(@PathVariable("id") Long id) {
+		if (id == null) {
+			System.out.println("Id is null.");
+			return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
+		}
+		terminService.deleteReservation(id);
+		System.out.println("The task /deleteTermin was successfully completed.");
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/deleteReservationTermin/{id}/{start}/{end}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Termin> deleteReservationTermin(@PathVariable("id") Long id,@PathVariable("start") String start,@PathVariable("end") String end) {
+		if (id == null || start.isEmpty() || end.isEmpty()) {
+			System.out.println("Id is null.");
+			return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
+		}
+		terminService.deleteReservationTermin(id,start,end);
+		System.out.println("The task /deleteReservationTermin was successfully completed.");
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	
 }

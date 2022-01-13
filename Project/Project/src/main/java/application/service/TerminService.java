@@ -14,6 +14,7 @@ public interface TerminService {
 	Termin createTermin(Termin termin);
 	boolean createReservation(String startDate,String endDate,Long adventureId, Long userId)  throws ParseException;
 	void deleteReservation(Long reservationId);
+	void deleteReservationTermin(Long reservationId,String start,String end);
 	void updateTermin(Termin termin);
 	List<Termin> findAllTerminsInstructor(Long instructorId);
 	List<Termin> findFreeTerminsInstructor(Long instructorId);

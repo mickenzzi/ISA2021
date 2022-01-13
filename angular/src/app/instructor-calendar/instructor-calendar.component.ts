@@ -19,6 +19,7 @@ export class InstructorCalendarComponent implements OnInit {
   end: string = "";
   adventureId!: number;
   userId!: number;
+  reservationId!: number;
   //termini
   flag1: boolean = false;
   //izmena termina
@@ -145,6 +146,58 @@ export class InstructorCalendarComponent implements OnInit {
 			  alert(error.message);
 		  }
 		);
+	}
+	
+	public rejectReservation(reservationId1?: number): void{
+		if(reservationId1 === undefined){
+			alert('Neispravan id.');
+		}
+		else{
+			this.reservationId = reservationId1;
+			this.adventureService.deleteReservation(this.reservationId).subscribe(
+				(response) => {
+				alert('Uspesno ste izbrisali rezervaciju');
+				this.getAllReservations();
+				this.getAllTermins();
+			},
+			(error: HttpErrorResponse) =>{
+				alert(error.message);
+			}
+			);
+			
+		}
+	}
+	
+	public deleteReservationTermin(reservationId1?: number,start1?: string,end1?: string): void{
+		if(reservationId1 === undefined){
+			alert('Neispravan id.');
+		}
+		else{
+			this.reservationId = reservationId1;
+			if(start1 === undefined){
+				alert('Neispravan datum pocetka.');
+			}
+			else{
+				this.start = start1;
+				if(end1 === undefined)
+				{
+					alert('Neispravan datum zavrsetka.');
+				}
+				else{
+					this.end = end1;
+					this.adventureService.deleteReservationTermin(this.reservationId,this.start,this.end).subscribe(
+						(response) => {
+							alert('Uspesno ste izbrisali rezervaciju i termin');
+							this.getAllReservations();
+							this.getAllTermins();
+						},
+						(error: HttpErrorResponse) =>{
+						alert(error.message);
+						}
+					);
+				}
+			}
+		}
 	}
 	
 	public createReservation(start1?: string,end1?: string,adventureId1?: number,userId1?: number): void{

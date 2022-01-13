@@ -537,8 +537,8 @@ border: none;
 				<td class="table-data">{{reservation.userReservation.firstName}}</td>
 				<td class="table-data">{{reservation.userReservation.lastName}}</td>
 				<td class="table-data"> <button (click)="createReservation(reservation.start,reservation.end,reservation.adventureReservation.id,reservation.userReservation.id)" *ngIf="!reservation.createdReservation" class="approve-button">Potvrdi</button></td>
-				<td class="table-data"> <button *ngIf="!reservation.createdReservation" class="disable-button">Odbij</button></td>
-				<td class="table-data"> <button *ngIf="reservation.createdReservation" class="disable-button">Obrisi</button></td>
+				<td class="table-data"> <button (click)="rejectReservation(reservation.id)" *ngIf="!reservation.createdReservation" class="disable-button">Odbij</button></td>
+				<td class="table-data"> <button (click)="deleteReservationTermin(reservation.id,reservation.start,reservation.end)" *ngIf="reservation.createdReservation" class="disable-button">Obrisi</button></td>
 			</tr>
 		</table>
 	</div>
