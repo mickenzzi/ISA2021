@@ -42,6 +42,9 @@ public class Adventure {
 	private String cancelCondition;
 	@Column(name="description")
 	private String description;
+	@Column(name="reserved")
+	private boolean reserved;
+	
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
@@ -165,6 +168,14 @@ public class Adventure {
 
 	public void setReservations(List<Reservation> reservations) {
 		this.reservations = reservations;
+	}
+
+	public boolean isReserved() {
+		return reserved;
+	}
+
+	public void setReserved(boolean reserved) {
+		this.reserved = reserved;
 	}
 
 	public Adventure() {

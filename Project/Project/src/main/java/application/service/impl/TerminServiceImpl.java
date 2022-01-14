@@ -126,7 +126,9 @@ public class TerminServiceImpl implements TerminService {
 	}
 
 	@Override
-	public boolean createReservation(String start, String end, Long adventureId, Long userId) throws ParseException{
+	public boolean createReservation(String start, String end, Long adventureId, Long userId) throws ParseException {
+		boolean freeAction = false;
+		Long actionId = (long) 0;
 		User user = userRepository.findById(userId).orElseGet(null);
 		Adventure adventure1 = adventureRepository.findById(adventureId).orElseGet(null);
 		User instructor = userRepository.findById(adventure1.getUserAdventure().getId()).orElseGet(null);
@@ -161,31 +163,51 @@ public class TerminServiceImpl implements TerminService {
 			if ((startDate.compareTo(dmin) >= 0 && endDate.compareTo(dmax) <= 0)
 					|| (startDate.compareTo(dmin) >= 0 && startDate.compareTo(dmax) <= 0)
 					|| (endDate.compareTo(dmin) >= 0 && endDate.compareTo(dmax) <= 0)) {
-				free = false;
+				if (t1.isAction() == true && t1.isReserved() == false) {
+					free = true;
+					freeAction = true;
+					actionId = t1.getId();
+					break;
+				} else {
+					free = false;
+					break;
+				}
+			} else {
+				free = true;
 				break;
 			}
 		}
 		if (free == true) {
 			List<Reservation> reservations = reservationRepository.findAll();
-			for(Reservation r: reservations) {
-				if(r.getUserReservation().getId() == userId && r.getAdventureReservation().getId() == adventureId && r.getStart().equals(start)) {
-				r.setAdventureReservation(adventure1);
-				r.setEnd(end);
-				r.setStart(start);
-				r.setCreatedReservation(true);
-			    r.setUserReservation(user);
-				reservationRepository.save(r);
+			for (Reservation r : reservations) {
+				if (r.getUserReservation().getId() == userId && r.getAdventureReservation().getId() == adventureId
+						&& r.getStart().equals(start)) {
+					r.setAdventureReservation(adventure1);
+					r.setEnd(end);
+					r.setStart(start);
+					r.setCreatedReservation(true);
+					r.setUserReservation(user);
+					reservationRepository.save(r);
 				}
 			}
-			Termin termin1 = new Termin();
-			termin1.setAdventureTermin(adventure1);
-			termin1.setStart(start);
-			termin1.setEnd(end);
-			termin1.setDuration(0);
-			termin1.setAction(false);
-			termin1.setReserved(true);
-			terminRepository.save(termin1);
+			if (freeAction == true) {
+				Termin termin1 = terminRepository.findById(actionId).orElseGet(null);
+				termin1.setReserved(true);
+				terminRepository.save(termin1);
+			} else {
+				Termin termin1 = new Termin();
+				termin1.setAdventureTermin(adventure1);
+				termin1.setStart(start);
+				termin1.setEnd(end);
+				termin1.setDuration(0);
+				termin1.setAction(false);
+				termin1.setReserved(true);
+				terminRepository.save(termin1);
+			}
+			adventure1.setReserved(true);
+			adventureRepository.save(adventure1);
 		}
+
 		return free;
 	}
 
@@ -200,18 +222,18 @@ public class TerminServiceImpl implements TerminService {
 	public List<Reservation> findAllReservationsInstructor(Long instructorId) {
 		List<Reservation> reservations1 = new ArrayList<Reservation>();
 		List<Reservation> reservations = new ArrayList<Reservation>();
-		List<Adventure> adventures1 = new ArrayList<Adventure>(); 
-		adventures1=adventureRepository.findAll();
+		List<Adventure> adventures1 = new ArrayList<Adventure>();
+		adventures1 = adventureRepository.findAll();
 		List<Adventure> adventures = new ArrayList<Adventure>();
-		for(Adventure a: adventures1) {
-			if(a.getUserAdventure().getId() == instructorId) {
+		for (Adventure a : adventures1) {
+			if (a.getUserAdventure().getId() == instructorId) {
 				adventures.add(a);
 			}
 		}
 		reservations1 = reservationRepository.findAll();
-		for(Reservation r:reservations1) {
-			for(Adventure a1: adventures) {
-				if(a1.getId() == r.getId()) {
+		for (Reservation r : reservations1) {
+			for (Adventure a1 : adventures) {
+				if (a1.getId() == r.getId()) {
 					reservations.add(r);
 				}
 			}
@@ -227,18 +249,27 @@ public class TerminServiceImpl implements TerminService {
 	@Override
 	public void deleteReservationTermin(Long reservationId, String start, String end) {
 		Reservation reservation = reservationRepository.findById(reservationId).orElseGet(null);
-		Adventure adventure = adventureRepository.findById(reservation.getAdventureReservation().getId()).orElseGet(null);
+		Adventure adventure = adventureRepository.findById(reservation.getAdventureReservation().getId())
+				.orElseGet(null);
 		Termin termin = new Termin();
 		List<Termin> termins = new ArrayList<Termin>();
 		termins = terminRepository.findAll();
-		for(Termin t:termins) {
-			if(t.getAdventureTermin().getId() == adventure.getId() && t.getStart().equals(start) && t.getEnd().equals(end)) {
+		for (Termin t : termins) {
+			if (t.getAdventureTermin().getId() == adventure.getId() && t.getStart().equals(start)
+					&& t.getEnd().equals(end)) {
 				termin = t;
 				break;
 			}
 		}
+		if(termin.isAction() == true) {
+			termin.setReserved(false);
+			terminRepository.save(termin);
+			
+		}
+		else {
 		terminRepository.delete(termin);
+		}
 		reservationRepository.delete(reservation);
-		
+
 	}
 }

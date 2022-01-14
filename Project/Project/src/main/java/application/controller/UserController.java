@@ -116,42 +116,42 @@ public class UserController {
 		}
 	}
 	
-	@GetMapping(value = "/approveDeleteRequest/{username}/{idRequest}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> approveDeleteRequest(@PathVariable("username") String username, @PathVariable("idRequest") Long idRequest) throws Exception {
+	@GetMapping(value = "/approveDeleteRequest/{username}/{idRequest}/{text}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> approveDeleteRequest(@PathVariable("username") String username, @PathVariable("idRequest") Long idRequest, @PathVariable("text") String text) throws Exception {
 		User user = userService.findByUsername(username);	
 		if (user == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		else {
-			userService.approveDeleteRequest(user.getId(), idRequest);
+			userService.approveDeleteRequest(user.getId(), idRequest, text);
 			user = userService.findById(user.getId());
 			System.out.println("The task /approveDeleteRequest was successfully completed.");
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		}
 	}
 	
-	@GetMapping(value = "/disableUser/{username}/{idRequest}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> disableUser(@PathVariable("username") String username, @PathVariable("idRequest") Long idRequest) throws Exception {
+	@GetMapping(value = "/disableUser/{username}/{idRequest}/{text}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> disableUser(@PathVariable("username") String username, @PathVariable("idRequest") Long idRequest, @PathVariable("text") String text) throws Exception {
 		User user = userService.findByUsername(username);	
 		if (user == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		else {
-			userService.disableUser(user.getId(), idRequest);
+			userService.disableUser(user.getId(), idRequest,text);
 			user = userService.findById(user.getId());
 			System.out.println("The task /disableUser was successfully completed.");
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		}
 	}
 	
-	@GetMapping(value = "/rejectDeleteRequest/{username}/{idRequest}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> rejectDeleteRequest(@PathVariable("username") String username, @PathVariable("idRequest") Long idRequest) throws Exception {
+	@GetMapping(value = "/rejectDeleteRequest/{username}/{idRequest}/{text}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> rejectDeleteRequest(@PathVariable("username") String username, @PathVariable("idRequest") Long idRequest, @PathVariable("text") String text) throws Exception {
 		User user = userService.findByUsername(username);	
 		if (user == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		else {
-			userService.rejectDeleteRequest(user.getId(), idRequest);
+			userService.rejectDeleteRequest(user.getId(), idRequest, text);
 			user = userService.findById(user.getId());
 			System.out.println("The task /rejectDeleteRequest was successfully completed.");
 			return new ResponseEntity<>(user, HttpStatus.OK);
@@ -173,10 +173,16 @@ public class UserController {
 					System.out.println("Username already exists");
 					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 				}
-				else {	
+				else {
 				User user = userService.createUser(userDTO);
-				System.out.println("The task /createUser was successfully completed.");
-				return new ResponseEntity<>(user, HttpStatus.CREATED);
+				if(user == null) {
+					System.out.println("Mail is not valid or active.");
+					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+				}
+				else {
+					System.out.println("The task /createUser was successfully completed.");
+					return new ResponseEntity<>(user, HttpStatus.CREATED);
+				}
 				}
 			} else {
 				System.out.println("Error-passwords don't match or password are too low.");

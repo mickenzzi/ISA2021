@@ -35,6 +35,7 @@ export class HomeInstructorComponent implements OnInit {
   URL: string = "";
   URL_R: string = ""
   URL_path : string = "/assets/img/";
+  textRequest: string = "";
   constructor(
 	private route: ActivatedRoute,
 	private router: Router,
@@ -73,6 +74,7 @@ export class HomeInstructorComponent implements OnInit {
   public requestDelete(): void{
 	if(this.flag2 === false){
 		this.flag2 = true;
+		this.getAllAdventures();
 	}
 	else{
 		this.flag2 = false;
@@ -82,16 +84,22 @@ export class HomeInstructorComponent implements OnInit {
   
   
   public approveRequest(): void{
-	  this.flag2=false;
-	  this.requestService.createRequest(this.id).subscribe(
-		response =>
-		alert('Poslali ste zahtev za brisanje naloga')
-	  );
-	  
+	  if(this.textRequest === undefined || this.textRequest === null || this.textRequest.length === 0){
+		alert('Morate uneti razlog zahteva za brisanje naloga');
+	  }
+	  else{
+		this.flag2=false;
+	    this.getAllAdventures();
+		this.requestService.createRequest(this.id,this.textRequest).subscribe(
+			response =>
+			alert('Poslali ste zahtev za brisanje naloga')
+		);
+	  }
   }
   
   public rejectRequest(): void{
 	  this.flag2=false;
+	  this.getAllAdventures();
   }
   
   public getUser(): void{
@@ -113,6 +121,7 @@ export class HomeInstructorComponent implements OnInit {
 	}
 	
 	public getAllAdventures(): void{
+		if(this.flag2 === false){
 		this.adventureService.getAllAdventures(this.id).subscribe(
 		 (response: Adventure[]) => {
 			 this.adventures = response;
@@ -121,6 +130,10 @@ export class HomeInstructorComponent implements OnInit {
 			  alert(error.message);
 		  }
 		);
+		}
+		else{
+			this.adventures = [];
+		}
 	}
 	goToCalendar(): void{
 		this.router.navigate(['/instructorCalendar', this.id]);

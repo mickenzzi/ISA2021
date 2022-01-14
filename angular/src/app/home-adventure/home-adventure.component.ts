@@ -50,7 +50,10 @@ export class HomeAdventureComponent implements OnInit {
 			response=>{
 				alert('Izmenili ste avanturu.');
 				this.getAdventure();
-			}
+			},
+			(error: HttpErrorResponse) =>{
+			  alert(error.message);
+		  }
 		);
   }
   
@@ -58,7 +61,10 @@ export class HomeAdventureComponent implements OnInit {
 	  this.adventureService.createAction(this.id,this.idAdventure,this.termin).subscribe(
 			response=>{
 				alert('Uspesno ste kreirali termin za brzu rezervaciju.');
-			}
+			},
+			(error: HttpErrorResponse) =>{
+			  alert(error.message);
+		  }
 		);
   }
 

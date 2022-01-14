@@ -35,9 +35,9 @@ public class RequestController {
 		return new ResponseEntity<>(requests1, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/createRequest/{userId}", produces = MediaType.APPLICATION_JSON_VALUE )
-	public ResponseEntity<Request> createRequest(@PathVariable("userId") Long userId) {
-		Request request1 = requestService.createRequest(userId);
+	@GetMapping(value = "/createRequest/{userId}/{text}", produces = MediaType.APPLICATION_JSON_VALUE )
+	public ResponseEntity<Request> createRequest(@PathVariable("userId") Long userId,@PathVariable("text") String text) {
+		Request request1 = requestService.createRequest(userId,text);
 		System.out.println("The task /createRequest was successfully completed.");
 		return new ResponseEntity<>(request1, HttpStatus.CREATED);
 	}

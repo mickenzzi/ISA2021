@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import application.model.Adventure;
 import application.model.User;
+import application.model.Termin;
 import application.repository.AdventureRepository;
+import application.repository.TerminRepository;
 import application.repository.UserRepository;
 import application.service.AdventureService;
 
@@ -21,6 +23,8 @@ public class AdventureServiceImpl implements AdventureService {
 	private AdventureRepository adventureRepository;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private TerminRepository terminRepository;
 
 	Comparator<Adventure> compareByTitle = new Comparator<Adventure>() {
 		@Override
@@ -50,7 +54,25 @@ public class AdventureServiceImpl implements AdventureService {
 
 	@Override
 	public List<Adventure> findAll() throws AccessDeniedException {
-		return adventureRepository.findAll();
+		List<Adventure> adventures1 = new ArrayList<Adventure>();
+		List<Adventure> adventures = new ArrayList<Adventure>();
+		adventures1 = adventureRepository.findAll();
+		List<Termin> termins = terminRepository.findAll();
+		for(Adventure a:adventures1) {
+			for(Termin t:termins) {
+				if(t.getAdventureTermin().getId()==a.getId() && t.isReserved() == true) {
+					a.setReserved(true);
+					break;
+				}
+				else {
+					a.setReserved(false);
+				}
+			adventureRepository.save(a);
+			}
+			adventures.add(a);
+		}
+		return adventures;
+		
 	}
 
 	@Override
@@ -75,6 +97,7 @@ public class AdventureServiceImpl implements AdventureService {
 		adventure1.setDescription(adventure.getDescription());
 		User instructor = userRepository.findById(id).orElseGet(null);
 		adventure1.setUserAdventure(instructor);
+		adventure1.setReserved(false);
 		adventureRepository.save(adventure1);
 		return adventure1;
 	}

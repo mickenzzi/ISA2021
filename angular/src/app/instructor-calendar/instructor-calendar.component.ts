@@ -117,11 +117,14 @@ export class InstructorCalendarComponent implements OnInit {
 	
 	public editTermin(): void{
 		this.adventureService.updateTermin(this.termin).subscribe(
-			response=>{
+			(response)=>{
 				alert('Izmenili ste termin.');
 				this.flag1 = false;
 				this.getAllTermins();
-			}
+			},
+			(error: HttpErrorResponse) =>{
+			  alert(error.message);
+		  }
 		);
 	}
   

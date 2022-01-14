@@ -10,4 +10,5 @@ export class Adventure {
 	equipment?: string;
 	priceList?: number;
 	cancelCondition?: string;
+	reserved?: boolean;
 }

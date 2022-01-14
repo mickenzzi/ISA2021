@@ -14,9 +14,9 @@ public interface UserService {
 	User save(User user);
 	User createUser(UserDTO userDTO);
 	void enableUser(Long userId, Long requestId);
-	void disableUser(Long userId, Long requestId);
-	void approveDeleteRequest(Long userId, Long requestId);
-	void rejectDeleteRequest(Long userId, Long requestId);
+	void disableUser(Long userId, Long requestId, String text);
+	void approveDeleteRequest(Long userId, Long requestId, String text);
+	void rejectDeleteRequest(Long userId, Long requestId, String text);
 	void deleteUser(Long userId);
 	void updateUser(UserDTO userDTO);
 	boolean createAction(Long instructorId,Long adventureId,Termin term) throws ParseException;

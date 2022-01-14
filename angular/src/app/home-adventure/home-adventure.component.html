@@ -315,6 +315,6 @@
 	<label style="margin-top:15px; margin-left: 15px;">Biografija instruktora:</label><input type="text" style="margin-left:15px; margin-top:15px; width:597px; height:70px;" [(ngModel)]="adventure.instructorBiography" [ngModelOptions]="{standalone: true}" required autofocus/><br>
 	<label style="margin-top:15px; margin-left: 15px;">Pravila ponasanja i dodatne usluge:</label><input type="text" style="margin-left:15px; margin-top:15px; height:70px; width:510px;" [(ngModel)]="adventure.rule" [ngModelOptions]="{standalone: true}" required autofocus/><br>
 	<label style="margin-top:15px; margin-left: 15px;">Uslovi otkazivanja:</label><input type="text" style="margin-left:15px; margin-top:15px; height:70px; width:615px;" [(ngModel)]="adventure.cancelCondition" [ngModelOptions]="{standalone: true}" required autofocus/><br>
-	<button style="margin-top:10px; margin-left:250px;" (click)="editAdventure()" class="button-2">Izmeni</button>
+	<button *ngIf="adventure.reserved" style="margin-top:10px; margin-left:250px;" (click)="editAdventure()" class="button-2">Izmeni</button>
 	</div>
 </body>

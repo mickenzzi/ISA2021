@@ -17,12 +17,15 @@ export class HomeAdminComponent implements OnInit {
   public requests: Request[];
   id!: number;
   username: string = "";
+  rejectText?: string;
   title: string = "";
   idRequest: number = 0;
   //show menu panel
   flag1?: boolean;
   //show notifications panel
   flag2?: boolean;
+  //show reject panel
+  flag3?: boolean;
   constructor(
 	private route: ActivatedRoute,
 	private router: Router,
@@ -34,6 +37,7 @@ export class HomeAdminComponent implements OnInit {
   ngOnInit(): void {
 	this.flag1 = false;
 	this.flag2 = false;
+	this.flag3 = false;
 	this.id = this.route.snapshot.params['id'];
 	this.getUser();
 	this.getAllRequest();
@@ -112,13 +116,20 @@ export class HomeAdminComponent implements OnInit {
 		else{
 		this.idRequest = idRequest1;
 		if(this.title.includes("brisanje")){
-			this.userService.approveDeleteRequest(this.username, this.idRequest).subscribe(
+			this.flag3 = true;
+			if(this.rejectText === undefined || this.rejectText === null || this.rejectText.length === 0){
+				alert('Unos razloga odbijanja je obavezan');
+			}
+			else{
+			this.userService.approveDeleteRequest(this.username, this.idRequest, this.rejectText).subscribe(
 			(response: User) => {
 				alert("Nalog je obrisan");
 				this.user1 = response;
 				this.getAllRequest();
+				this.flag3 = false;
 				}
 			);
+			}
 		}
 		else{
 			this.userService.enableUser(this.username, this.idRequest).subscribe(
@@ -126,6 +137,7 @@ export class HomeAdminComponent implements OnInit {
 				alert("Nalog je verifikovan");
 				this.user1 = response;
 				this.getAllRequest();
+				this.flag3 = false;
 				}
 			);
 		}
@@ -151,22 +163,36 @@ export class HomeAdminComponent implements OnInit {
 		else{
 		this.idRequest = idRequest1;
 		if(this.title.includes("brisanje")){
-			this.userService.rejectDeleteRequest(this.username, this.idRequest).subscribe(
+			this.flag3 = true;
+			if(this.rejectText === undefined || this.rejectText === null || this.rejectText.length === 0){
+				alert('Unos razloga odbijanja je obavezan');
+			}
+			else{
+			this.userService.rejectDeleteRequest(this.username, this.idRequest, this.rejectText).subscribe(
 			(response: User) => {
-				alert("Nalog nije obrisan.");
+				alert("Nije odobreno brisanje naloga");
+				this.flag3 = false;
 				this.user1 = response;
 				this.getAllRequest();
 				}
 			);
+			}
 		}
 		else{
-			this.userService.disableUser(this.username, this.idRequest).subscribe(
-			(response: User) => {
-				alert("Nalog nije verifikovan.");
-				this.user1 = response;
-				this.getAllRequest();
-				}
-			);
+			this.flag3 = true;
+			if(this.rejectText === undefined || this.rejectText === null || this.rejectText.length === 0){
+				alert('Unos razloga odbijanja je obavezan');
+			}
+			else{
+				this.userService.disableUser(this.username, this.idRequest, this.rejectText).subscribe(
+				(response: User) => {
+					alert("Nalog nije verifikovan.");
+					this.flag3 = false;
+					this.user1 = response;
+					this.getAllRequest();
+					}
+				);
+			}
 		}
 		}
 	  }

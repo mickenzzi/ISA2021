@@ -43,6 +43,7 @@ public class UserServiceImpl implements UserService {
 	private JavaMailSender javaMailSender;
 	@Autowired
 	private Environment env;
+
 	@Override
 	public User findById(Long id) throws AccessDeniedException {
 		return userRepository.findById(id).orElseGet(null);
@@ -79,9 +80,9 @@ public class UserServiceImpl implements UserService {
 		requestRepository.save(request);
 		userRepository.save(user);
 	}
-	
+
 	@Override
-	public void disableUser(Long userId, Long requestId) {
+	public void disableUser(Long userId, Long requestId, String text) {
 		User user = userRepository.findById(userId).orElseGet(null);
 		user.setEnabled(false);
 		Request request = requestRepository.findById(requestId).orElseGet(null);
@@ -90,7 +91,7 @@ public class UserServiceImpl implements UserService {
 		mail.setTo(user.getEmail());
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Verifikacija naloga");
-		mail.setText("Vas nalog nije prosao veirifikaciju.");
+		mail.setText(text);
 		javaMailSender.send(mail);
 		requestRepository.save(request);
 		userRepository.save(user);
@@ -121,40 +122,50 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User createUser(UserDTO userDTO) {
-		 User admin = new User();
-		 admin = userRepository.findByUsername("mickenzi");
-		 SimpleMailMessage mail = new SimpleMailMessage();
-		 mail.setTo("isaproject0@gmail.com");
-		 mail.setFrom(env.getProperty("spring.mail.username"));
-		 mail.setSubject("Verifikacija naloga");
-		 mail.setText("Korisnik "+userDTO.getUsername()+" je podneo zahtev za kreiranje naloga.");
-		 javaMailSender.send(mail);
-		 User user = new User();
-		 user.setFirstName(userDTO.getFirstName());
-		 user.setLastName(userDTO.getLastName());
-		 user.setAddress(userDTO.getAddress());
-		 user.setCity(userDTO.getCity());
-		 user.setCountry(userDTO.getCountry());
-		 user.setPhone(userDTO.getPhone());
-		 user.setUsername(userDTO.getUsername());
-		 user.setEmail(userDTO.getEmail());
-		 user.setPassword(passwordEncoder.encode(userDTO.getPassword1()));
-		 user.setEnabled(false);
-		 user.setDeleted(false);
-		 user.setRole(userDTO.getRole());
-		 user.setFirstTimeLogged(false);
-		 userRepository.save(user);
-		 Request request = new Request();
-		 request.setTitle("Zahtev za verifikaciju naloga");
-		 request.setUsername(userDTO.getUsername());
-		 request.setUserRequest(admin);
-		 request.setDeleted(false);
-		 requestRepository.save(request);
-		 return user;
+		boolean check = true;
+		User admin = new User();
+		admin = userRepository.findByUsername("mickenzi");
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(userDTO.getEmail());
+		mail.setFrom(admin.getEmail());
+		mail.setSubject("Verifikacija naloga");
+		mail.setText("Korisnik " + userDTO.getUsername() + " je podneo zahtev za kreiranje naloga.");
+		try {
+			javaMailSender.send(mail);
+			check = true;
+		} catch (Exception e) {
+			check = false;
+		}
+		if (check == true) {
+			User user = new User();
+			user.setFirstName(userDTO.getFirstName());
+			user.setLastName(userDTO.getLastName());
+			user.setAddress(userDTO.getAddress());
+			user.setCity(userDTO.getCity());
+			user.setCountry(userDTO.getCountry());
+			user.setPhone(userDTO.getPhone());
+			user.setUsername(userDTO.getUsername());
+			user.setEmail(userDTO.getEmail());
+			user.setPassword(passwordEncoder.encode(userDTO.getPassword1()));
+			user.setEnabled(false);
+			user.setDeleted(false);
+			user.setRole(userDTO.getRole());
+			user.setFirstTimeLogged(false);
+			userRepository.save(user);
+			Request request = new Request();
+			request.setTitle("Zahtev za verifikaciju naloga");
+			request.setUsername(userDTO.getUsername());
+			request.setUserRequest(admin);
+			request.setDeleted(false);
+			requestRepository.save(request);
+			return user;
+		} else {
+			return null;
+		}
 	}
 
 	@Override
-	public void approveDeleteRequest(Long userId, Long requestId) {
+	public void approveDeleteRequest(Long userId, Long requestId,String text) {
 		User user = userRepository.findById(userId).orElseGet(null);
 		Request request = requestRepository.findById(requestId).orElseGet(null);
 		request.setDeleted(true);
@@ -162,16 +173,16 @@ public class UserServiceImpl implements UserService {
 		mail.setTo(user.getEmail());
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Brisanje naloga");
-		mail.setText("Vas zahtev za brisanje naloga je odobren.");
+		mail.setText(text);
 		javaMailSender.send(mail);
 		requestRepository.save(request);
-		user.setDeleted(true);		
+		user.setDeleted(true);
 		userRepository.save(user);
-		
+
 	}
 
 	@Override
-	public void rejectDeleteRequest(Long userId, Long requestId) {
+	public void rejectDeleteRequest(Long userId, Long requestId, String text) {
 		User user = userRepository.findById(userId).orElseGet(null);
 		user.setDeleted(false);
 		Request request = requestRepository.findById(requestId).orElseGet(null);
@@ -180,52 +191,56 @@ public class UserServiceImpl implements UserService {
 		mail.setTo(user.getEmail());
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Brisanje naloga");
-		mail.setText("Vas zahtev za brisanje naloga nije odobren.");
+		mail.setText(text);
 		javaMailSender.send(mail);
 		requestRepository.save(request);
-		user.setDeleted(false);		
+		user.setDeleted(false);
 		userRepository.save(user);
 	}
 
 	@Override
-	public boolean createAction(Long instructorId, Long adventureId, Termin term) throws ParseException{
+	public boolean createAction(Long instructorId, Long adventureId, Termin term) throws ParseException {
 		boolean free;
 		free = true;
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyy HH:mm:ss");
 		List<Adventure> adventures = new ArrayList<Adventure>();
 		List<Adventure> allAdventures = new ArrayList<Adventure>();
 		allAdventures = adventureRepository.findAll();
-		for(Adventure a:allAdventures) {
-			if(a.getUserAdventure().getId() == instructorId) {
+		for (Adventure a : allAdventures) {
+			if (a.getUserAdventure().getId() == instructorId) {
 				adventures.add(a);
 			}
 		}
 		List<Termin> usedTermin = new ArrayList<Termin>();
 		List<Termin> usedAdventureTermin = new ArrayList<Termin>();
 		usedTermin = terminRepository.findAll();
-		for(Termin t: usedTermin) {
-			for(Adventure a: adventures) {
-				if(t.getAdventureTermin().getId() == a.getId()) {
+		for (Termin t : usedTermin) {
+			for (Adventure a : adventures) {
+				if (t.getAdventureTermin().getId() == a.getId()) {
 					usedAdventureTermin.add(t);
 				}
 			}
-			
+
 		}
-		
+
 		Date startDate = dateFormat.parse(term.getStart());
 		Date endDate = dateFormat.parse(term.getEnd());
-		
-		for(Termin t1: usedAdventureTermin) {
+
+		for (Termin t1 : usedAdventureTermin) {
 			Date dmin = dateFormat.parse(t1.getStart());
 			Date dmax = dateFormat.parse(t1.getEnd());
-			if( (startDate.compareTo(dmin) >= 0 && endDate.compareTo(dmax)<=0) || (startDate.compareTo(dmin)>=0 && startDate.compareTo(dmax)<=0) ||(endDate.compareTo(dmin)>=0 && endDate.compareTo(dmax)<=0)) {
+			if ((startDate.compareTo(dmin) >= 0 && endDate.compareTo(dmax) <= 0)
+					|| (startDate.compareTo(dmin) >= 0 && startDate.compareTo(dmax) <= 0)
+					|| (endDate.compareTo(dmin) >= 0 && endDate.compareTo(dmax) <= 0)) {
 				free = false;
 				break;
 			}
 		}
-		if(free == true) {
+		if (free == true) {
 			Termin termin1 = new Termin();
 			Adventure adventure1 = adventureRepository.findById(adventureId).orElseGet(null);
+			adventure1.setReserved(true);
+			adventureRepository.save(adventure1);
 			termin1.setAdventureTermin(adventure1);
 			termin1.setStart(term.getStart());
 			termin1.setEnd(term.getEnd());
@@ -238,12 +253,12 @@ public class UserServiceImpl implements UserService {
 			List<User> users = new ArrayList<>();
 			List<User> users1 = new ArrayList<>();
 			users1 = userRepository.findAll();
-			for(User u:users1) {
-				if(u.getRole().equals("USER")) {
+			for (User u : users1) {
+				if (u.getRole().equals("USER")) {
 					users.add(u);
 				}
 			}
-			for(User u:users) {
+			for (User u : users) {
 				mail.setTo(u.getEmail());
 				mail.setSubject("Akcija-avantura");
 				mail.setText("Kreirana je akcija koja nudi razne pogodnosti prilikom rezervisanja avanture");
@@ -251,9 +266,8 @@ public class UserServiceImpl implements UserService {
 			}
 			terminRepository.save(termin1);
 		}
-		
+
 		return free;
 	}
-	
 
 }

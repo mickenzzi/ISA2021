@@ -311,12 +311,13 @@
 		<button (click)="logOut()" style="margin-top:2px;" class="menu-container-button">Odjavi se</button>
 	</div>
 	<div *ngIf="flag2" style="margin-top:120px; margin-left: 20px;" class="delete-container">
-		<input type="text" style="width:260px; height:200px; margin-left:15px; margin-top:20px;"  placeholder="Unesite razlog gasenja naloga..." required autofocus/>
+		<input type="text" style="width:260px; height:200px; margin-left:15px; margin-top:20px;" [(ngModel)]="textRequest" [ngModelOptions]="{standalone: true}" placeholder="Unesite razlog gasenja naloga..." required autofocus/>
 		<button class="approve-button" style="margin-left:15px; margin-top:30px;" (click)="approveRequest()">Potvrdi</button>
 		<button class="disable-button" style="margin-left:135px; margin-top:30px;" (click)="rejectRequest()">Odustani</button>
 	</div>
 	<div class="cards" *ngFor="let adventure of adventures"> 
-		<button (click)="deleteAdventure(adventure.id)" style="margin-left: 165px; margin-top: 2px;">X</button>
+		<button *ngIf="!adventure.reserved" (click)="deleteAdventure(adventure.id)" style="margin-left: 165px; margin-top: 2px; position:fixed;">X</button>
+		<br>
 		<img class="cards-img" src="{{adventure.image}}">
 		<br>
 		<label style="margin: 0 auto; margin-left:15px; position: relative">{{adventure.title}},{{adventure.address}}</label>
