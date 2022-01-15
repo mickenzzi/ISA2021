@@ -1,3 +1,4 @@
+import { User } from '../model/user';
 export class Adventure {
 	id?: number;
 	title?: string;

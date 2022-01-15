@@ -1,0 +1,56 @@
+package application.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import application.model.Review;
+import application.repository.ReviewRepository;
+import application.service.ReviewService;
+
+@Service
+public class ReviewServiceImpl implements ReviewService {
+	@Autowired
+	private ReviewRepository reviewRepository;
+
+	@Override
+	public Review saveReview(Review review) {
+		return reviewRepository.save(review);
+	}
+
+	@Override
+	public Review findById(Long id) {
+		return reviewRepository.findById(id).orElseGet(null);
+	}
+
+	@Override
+	public List<Review> findAll() {
+		return reviewRepository.findAll();
+	}
+
+	@Override
+	public void delete(Long id) {
+		Review review = reviewRepository.findById(id).orElseGet(null);
+		reviewRepository.delete(review);
+		
+	}
+
+	@Override
+	public Review create(Review review) {
+		Review review1 = new Review();
+		review1.setComment(review.getComment());
+		review1.setAdminReview(review.getAdminReview());
+		review1.setGrade(review.getGrade());
+		review1.setInstructorReview(review.getInstructorReview());
+		review1.setUserReview(review.getUserReview());
+		reviewRepository.save(review1);
+		return review1;
+	}
+
+	@Override
+	public List<Review> findAllUserReservation(Long userId) {
+		List<Review> reviews = new ArrayList<Review>();
+	}
+}

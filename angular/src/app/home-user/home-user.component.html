@@ -1,1 +1,311 @@
-<p>home-user works!</p>
+<style>
+  :host {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 14px;
+    color: #333;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 8px 0;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .spacer {
+    flex: 1;
+  }
+  
+  body{
+  	height: 100%;
+	width: 100%;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	margin: 0;
+	position: absolute;
+	bottom: 0;
+	top: 0;
+	left: 0;
+	right: 0;
+	background-image: url('/assets/img/boat.jpg');
+  }
+
+  .toolbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    background-color: rgba(74, 74, 74);
+    color: white;
+    font-weight: 600;
+  }
+
+
+  .menu-img{
+	width: 20px;
+	height: 20px;
+  }
+  
+  .menu-container{
+	position: absolute;
+	background-color: #F6F8FA;
+	width: 150px;
+	height: auto;
+	top: 60px;
+	left: 0;
+	border-style: ridge;
+	border-color: #C4C1BD;
+	z-index: 9;
+  }
+  .menu-container-button{
+	border: none;
+	width: 100%;
+	height: 30%;
+	justify-content: left;
+	text-align: left;
+	font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+	background-color: #EAECEC;
+  }
+  .menu-container-button:hover {
+    background-color: #D1E2F4
+  }
+  
+  .menu-container-button-image{
+	height: 17px;
+	width: 17px;
+	margin-left:5px;
+  }
+  
+  .notification-panel{
+	width: 800px;
+	height: 250px;
+	background-color: rgba(78,89,103,0.8);
+	border-style: ridge;
+	margin-left: 598px;
+	z-index: 8;
+  }
+  .notification-panel-header{
+	width: 805px;
+	height: 50px;
+	background-color: #AEBACA;
+	margin-top: -320px;
+	margin-left: 600px;
+  }
+  
+  .notification-panel-button{
+	margin-left: 230px;
+	margin-top: 10px;
+  }
+  .notification-panel-button-img{
+	width: 15px;
+	height: 15px;
+  }
+  
+  .title{
+  	font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+  }
+  
+  .functionality-new-admin-container{
+	width: 190px;
+	height: 350px;
+	background-color: #F6F8FA;
+	opacity: 0.8;
+  }
+  .functionality-user-work-container{
+	width: 300px;
+	height: 120px;
+	background-color: #F6F8FA;
+	opacity: 0.8;
+  }
+  
+  .functionality-loyality-program-container{
+	width: 145px;
+	height: 220px;
+	background-color: #F6F8FA;
+	opacity: 0.8;
+  }
+  
+   .functionality-advocat-container{
+	width: 145px;
+	height: 220px;
+	background-color: #F6F8FA;
+	opacity: 0.8;
+  }
+  
+  
+.button-1 {
+  background-image: linear-gradient(#42A1EC, #0070C9);
+  border: 1px solid #0077CC;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  direction: ltr;
+  display: block;
+  font-family: "SF Pro Text","SF Pro Icons","AOS Icons","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: -.022em;
+  line-height: 1.47059;
+  min-width: 30px;
+  overflow: visible;
+  padding: 4px 15px;
+  text-align: center;
+  vertical-align: baseline;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.button-1:disabled {
+  cursor: default;
+  opacity: .3;
+}
+
+.button-1:hover {
+  background-image: linear-gradient(#51A9EE, #147BCD);
+  border-color: #1482D0;
+  text-decoration: none;
+}
+
+.button-1:active {
+  background-image: linear-gradient(#3D94D9, #0067B9);
+  border-color: #006DBC;
+  outline: none;
+}
+
+.button-1:focus {
+  box-shadow: rgba(131, 192, 253, 0.5) 0 0 0 3px;
+  outline: none;
+}
+
+.table {
+	width:100%;
+	border:1px solid $color-form-highlight;
+}
+
+.table-header {
+	display:flex;
+	width:100%;
+	background:#000;
+	padding:($half-spacing-unit * 1.5) 0;
+}
+
+.table-row {
+	display:flex;
+	width:100%;
+	padding:($half-spacing-unit * 1.5) 0;
+	
+	&:nth-of-type(odd) {
+		background:$color-form-highlight;
+	}
+}
+
+.table-data, .header__item {
+	flex: 1 1 20%;
+	text-align:center;
+}
+
+.table-data{
+	background:#D1D4D8;
+}
+
+.header__item {
+	text-transform:uppercase;
+}
+
+.approve-button{
+	background-color: #3FBF35;
+	color: #FFFFFF;
+}
+
+.disable-button{
+	background-color: #F21717;
+	color: #FFFFFF;
+}
+
+.filter__link {
+	color:white;
+	text-decoration: none;
+	position:relative;
+	display:inline-block;
+	padding-left:$base-spacing-unit;
+	padding-right:$base-spacing-unit;
+	
+	&::after {
+		content:'';
+		position:absolute;
+		right:-($half-spacing-unit * 1.5);
+		color:white;
+		font-size:$half-spacing-unit;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+	
+	&.desc::after {
+		content: '(desc)';
+	}
+
+	&.asc::after {
+		content: '(asc)';
+	}
+	
+}
+ 
+</style>
+
+<body>	
+	<div class="toolbar">
+	</div>
+	<br><br>
+	<div class="notification-panel-header" style="margin-top: 100px; margin-left:100px;">
+		<label style="margin-left:170px; margin-top:5px; color: black;" class="title"> Prikaz rezervacija</label>
+	</div>
+	<div class="notification-panel" style=" margin-left:100px;">
+		<table class="table">
+			<tr class="table-header">
+				<th class="header__item">Id</th>
+				<th class="header__item">Pocetak</th>
+				<th class="header__item">Kraj</th>
+				<th class="header__item">Avantura</th>
+				<th class="header__item">Korisnik</th>
+				<th class="header__item"></th>
+			</tr>
+			<tr *ngFor="let reservation of reservations" class="table-row">
+				<td class="table-data">{{reservation.id}}</td>
+				<td class="table-data">{{reservation.start}}</td>
+				<td class="table-data">{{reservation.end}}</td>
+				<td class="table-data">{{reservation.adventureReservation.title}}</td>
+				<td class="table-data">{{reservation.userReservation.firstName}} {{reservation.userReservation.lastName}}</td>
+				<td class="table-data"> <button class="approve-button" (click)="createReview(reservation.adventureReservation.id)">Unesi komentar</button></td>
+			</tr>
+		</table>
+	</div>
+	<div *ngIf="flag" style="width: 300px; height: 200px; margin-left:1000px; margin-top:-300px; position: fixed;">
+		<input type="text" placeholder="Unesite komentar" [(ngModel)]="review1.comment" [ngModelOptions]="{standalone: true}" style="width: 100%; height:100%"/>
+	</div>
+	<div *ngIf="flag" style="width: 300px; height: 30px; margin-left:1000px; margin-top:-50px; position: fixed;">
+		<input type="text" placeholder="Unesite ocenu" [(ngModel)]="review1.grade" [ngModelOptions]="{standalone: true}" style="width: 100%; height:100%"/>
+	</div>
+	
+	
+	
+</body>

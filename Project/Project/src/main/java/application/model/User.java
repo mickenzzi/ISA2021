@@ -77,6 +77,18 @@ public class User implements UserDetails {
 	@JsonIgnore
 	private List<Reservation> reservations;
 
+	@OneToMany(mappedBy = "userReview", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Review> userReviews;
+
+	@OneToMany(mappedBy = "instructorReview", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Review> instructorReviews;
+
+	@OneToMany(mappedBy = "adminReview", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Review> adminReviews;
+
 	public Long getId() {
 		return id;
 	}
@@ -225,6 +237,30 @@ public class User implements UserDetails {
 
 	public void setReservations(List<Reservation> reservations) {
 		this.reservations = reservations;
+	}
+
+	public List<Review> getUserReviews() {
+		return userReviews;
+	}
+
+	public void setUserReviews(List<Review> userReviews) {
+		this.userReviews = userReviews;
+	}
+
+	public List<Review> getInstructorReviews() {
+		return instructorReviews;
+	}
+
+	public void setInstructorReviews(List<Review> instructorReviews) {
+		this.instructorReviews = instructorReviews;
+	}
+
+	public List<Review> getAdminReviews() {
+		return adminReviews;
+	}
+
+	public void setAdminReviews(List<Review> adminReviews) {
+		this.adminReviews = adminReviews;
 	}
 
 	public User() {
