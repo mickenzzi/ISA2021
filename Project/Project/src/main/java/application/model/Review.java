@@ -35,6 +35,10 @@ public class Review {
 	@JoinColumn(name = "instructor_id")
 	private User instructorReview;
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "adventure_id")
+	private Adventure adventureReview;
+
 	public Long getId() {
 		return id;
 	}
@@ -89,6 +93,14 @@ public class Review {
 
 	public void setInstructorReview(User instructorReview) {
 		this.instructorReview = instructorReview;
+	}
+
+	public Adventure getAdventureReview() {
+		return adventureReview;
+	}
+
+	public void setAdventureReview(Adventure adventureReview) {
+		this.adventureReview = adventureReview;
 	}
 
 	public Review() {

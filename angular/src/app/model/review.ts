@@ -6,4 +6,5 @@ export class Review {
 	grade?: number;
 	userReview?: User = new User();
 	instructorReview?: User = new User();
+	enabled?: boolean;
 }

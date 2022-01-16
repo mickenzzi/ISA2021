@@ -42,7 +42,6 @@
     <fullyQualifiedTypeName name="org.springframework.data.jpa.repository.JpaRepository"/>
     <fullyQualifiedTypeName name="application.service.TerminService"/>
     <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
-    <fullyQualifiedTypeName name="application.repository.AdventureRepository"/>
     <fullyQualifiedTypeName name="org.springframework.stereotype.Service"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.DeleteMapping"/>
     <fullyQualifiedTypeName name="java.util.Comparator"/>
@@ -50,7 +49,6 @@
     <fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
     <fullyQualifiedTypeName name="java.util.Date"/>
     <fullyQualifiedTypeName name="org.springframework.http.HttpStatus"/>
-    <fullyQualifiedTypeName name="application.model.Adventure"/>
     <fullyQualifiedTypeName name="application.model.Termin"/>
     <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="application.repository.TerminRepository"/>
@@ -60,4 +58,6 @@
     <fullyQualifiedTypeName name="application.repository.UserRepository"/>
     <fullyQualifiedTypeName name="application.service.AdventureService"/>
     <fullyQualifiedTypeName name="application.service.UserService"/>
+    <fullyQualifiedTypeName name="application.repository.AdventureRepository"/>
+    <fullyQualifiedTypeName name="application.model.Adventure"/>
 </qualifiedTypeNameHistroy>

@@ -13,12 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import application.service.AdventureService;
 import application.service.ReviewService;
-import application.service.UserService;
 import application.model.Review;
-import application.model.User;
-import application.model.Adventure;
 import application.model.Reservation;
 
 @RestController
@@ -26,10 +22,6 @@ import application.model.Reservation;
 public class ReviewController {
 	@Autowired
 	private ReviewService reviewService;
-	@Autowired
-	private AdventureService adventureService;
-	@Autowired
-	private UserService userService;
 	
 	@GetMapping(value = "/getAllReviews", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Review>> getAllReviews() {
@@ -60,10 +52,7 @@ public class ReviewController {
 	
 	@PostMapping(value = "/createReview/{adventureId}", produces = MediaType.APPLICATION_JSON_VALUE )
 	public ResponseEntity<Review> createReview(@RequestBody Review review1,@PathVariable("adventureId") Long adventureId) {
-		Adventure adventure = adventureService.findById(adventureId);
-		User instructor = userService.findById(adventure.getUserAdventure().getId());
-		review1.setInstructorReview(instructor);
-		Review review = reviewService.create(review1);
+		Review review = reviewService.create(review1,adventureId);
 		System.out.println("The task /createReview was successfully completed.");
 		return new ResponseEntity<>(review, HttpStatus.CREATED);
 	}
@@ -77,6 +66,17 @@ public class ReviewController {
 		reviewService.delete(id);
 		System.out.println("The task /deleteReview was successfully completed.");
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/enableReview/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Review> enableReview(@PathVariable("id") Long id) {
+		if (id == null) {
+			System.out.println("Id is null.");
+			return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
+		}
+		Review review = reviewService.enableReview(id);
+		System.out.println("The task /enableReview was successfully completed.");
+		return new ResponseEntity<>(review,HttpStatus.OK);
 	}
 
 }

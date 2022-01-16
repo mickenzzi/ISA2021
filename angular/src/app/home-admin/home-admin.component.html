@@ -279,6 +279,7 @@
 	<div *ngIf="flag1" class="menu-container">
 		<button (click)="goToProfile()" class="menu-container-button">Profil</button><br>
 		<button (click)="showNotifications()" style="margin-top:2px;" class="menu-container-button">Obavestenja</button><br>
+		<button (click)="showReviews()" style="margin-top:2px;" class="menu-container-button">Recenzije</button><br>
 		<button (click)="logOut()" style="margin-top:2px;" class="menu-container-button">Odjavi se</button>
 	</div>
 	<div style="margin-top:120px; margin-left: 20px;" class="functionality-new-admin-container">
@@ -319,9 +320,34 @@
 			</tr>
 		</table>
 	</div>
-	
 	<div style="width: 250px; height:170px; margin-left:750px;" *ngIf="flag3">
 		<input type="text" placeholder="Unesite razlog" [(ngModel)]="rejectText" [ngModelOptions]="{standalone: true}" style="width: 100%; height:50%;"/>
+	</div>
+	<div *ngIf="flag4" class="notification-panel-header">
+		<label style="margin-left:170px; margin-top:5px; color: black;" class="title"> Prikaz recenzija</label>
+		<button (click)="closeNotification()" class="notification-panel-button"><img class="notification-panel-button-img" src="/assets/img/close.png"></button>
+	</div>
+	<div *ngIf="flag4" class="notification-panel">
+		<table class="table">
+			<tr class="table-header">
+				<th class="header__item">Id</th>
+				<th class="header__item">Komentar</th>
+				<th class="header__item">Ocena</th>
+				<th class="header__item">Odobren</th>
+				<th class="header__item"></th>
+				<th class="header__item"></th>
+				<th class="header__item"></th>
+			</tr>
+			<tr *ngFor="let review of reviews" class="table-row">
+				<td class="table-data">{{review.id}}</td>
+				<td class="table-data">{{review.comment}}</td>
+				<td class="table-data">{{review.grade}}</td>
+				<td class="table-data">{{review.enabled}}</td>
+				<td class="table-data"> <button (click)="enableReview(review.id)" *ngIf="!review.enabled" class="approve-button">Potvrdi</button></td>
+				<td class="table-data"> <button (click)="disableReview(review.id)" *ngIf="!review.enabled" class="disable-button">Odbij</button></td>
+				<td class="table-data"> <button (click)="deleteReview(review.id)" *ngIf="review.enabled" class="disable-button">Obrisi</button></td>
+			</tr>
+		</table>
 	</div>
 	
 </body>

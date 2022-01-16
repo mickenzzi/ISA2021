@@ -57,6 +57,10 @@ public class Adventure {
 	@OneToMany(mappedBy = "adventureReservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Reservation> reservations;
+	
+	@OneToMany(mappedBy = "adventureReview", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Review> reviews;
 
 	public Long getId() {
 		return id;
@@ -168,6 +172,14 @@ public class Adventure {
 
 	public void setReservations(List<Reservation> reservations) {
 		this.reservations = reservations;
+	}
+
+	public List<Review> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(List<Review> reviews) {
+		this.reviews = reviews;
 	}
 
 	public boolean isReserved() {

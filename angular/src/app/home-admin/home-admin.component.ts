@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../model/user';
+import { Review } from '../model/review';
 import { Request } from '../model/request';
 import { UserService } from '../service/user.service';
+import { ReviewService } from '../service/review.service';
 import { RequestService } from '../service/request.service';
 import { HttpErrorResponse} from '@angular/common/http';
 
@@ -15,32 +17,40 @@ export class HomeAdminComponent implements OnInit {
   user: User = new User();
   user1: User = new User();
   public requests: Request[];
+  public reviews: Review[];
   id!: number;
   username: string = "";
   rejectText?: string;
   title: string = "";
   idRequest: number = 0;
+  reviewId!: number;
   //show menu panel
   flag1?: boolean;
   //show notifications panel
   flag2?: boolean;
   //show reject panel
   flag3?: boolean;
+  //show reviews panel
+  flag4?: boolean;
   constructor(
 	private route: ActivatedRoute,
 	private router: Router,
 	private userService: UserService,
 	private requestService: RequestService,
+	private reviewService: ReviewService,
 	) {
 		this.requests = [];
+		this.reviews = [];
 	  }
   ngOnInit(): void {
 	this.flag1 = false;
 	this.flag2 = false;
 	this.flag3 = false;
+	this.flag4 = false;
 	this.id = this.route.snapshot.params['id'];
 	this.getUser();
 	this.getAllRequest();
+	this.getAllReviews();
   }	
   showHidden(){
 	if(this.flag1 === false){
@@ -52,12 +62,19 @@ export class HomeAdminComponent implements OnInit {
   }
   
   showNotifications(){
-	this.flag1=false;
-	this.flag2=true;
+	this.flag1 = false;
+	this.flag2 = true;
+	this.flag4 = false;
+  }
+  showReviews(){
+	this.flag1 = false;
+	this.flag2 = false;
+	this.flag4 = true;
   }
   
   closeNotification(){
-	this.flag2=false;
+	this.flag2 = false;
+	this.flag4 = false;
   }
   
   redirectAdminRegistration(){
@@ -98,6 +115,73 @@ export class HomeAdminComponent implements OnInit {
 		  }
 		);
 	}
+	
+
+	public getAllReviews(): void{
+		this.reviewService.getAllReviews().subscribe(
+		 (response: Review[]) => {
+			 this.reviews = response;
+		  },
+		  (error: HttpErrorResponse) =>{
+			  alert(error.message);
+		  }
+		);
+	}
+	
+	public enableReview(reviewId1?: number): void{
+		if(reviewId1 === undefined){
+			alert('Neispravan id');
+		}
+		else{
+			this.reviewId = reviewId1;
+			this.reviewService.enableReview(this.reviewId).subscribe(
+			(response) => {
+				this.getAllReviews();
+				alert('Validirali ste komentar');
+			}	,
+			(error: HttpErrorResponse) =>{
+			  alert(error.message);
+			}
+			);
+		}
+	}
+	
+	public disableReview(reviewId1?: number): void{
+		if(reviewId1 === undefined){
+			alert('Neispravan id');
+		}
+		else{
+			this.reviewId = reviewId1;
+			this.reviewService.deleteReview(this.reviewId).subscribe(
+			(response) => {
+				this.getAllReviews();
+				alert('Komentar nije prosao validaciju');
+			}	,
+			(error: HttpErrorResponse) =>{
+			  alert(error.message);
+			}
+			);
+		}
+	}
+	
+	public deleteReview(reviewId1?: number): void{
+		if(reviewId1 === undefined){
+			alert('Neispravan id');
+		}
+		else{
+			this.reviewId = reviewId1;
+			this.reviewService.deleteReview(this.reviewId).subscribe(
+			(response) => {
+				this.getAllReviews();
+				alert('Obrisali ste komentar');
+			}	,
+			(error: HttpErrorResponse) =>{
+			  alert(error.message);
+			}
+			);
+		}
+	}
+	
 	
   public enableUser(username1?: string, title1?: string, idRequest1?: number):void{
 	  if(username1 === undefined){

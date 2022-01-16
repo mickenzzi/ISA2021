@@ -8,8 +8,9 @@ import application.model.Review;
 public interface ReviewService {
 	Review saveReview(Review review);
 	Review findById(Long id);
-	Review create(Review review);
+	Review create(Review review,Long adventureId);
 	List<Review> findAll();
 	void delete(Long id);
 	List<Reservation> findAllUserReservation(Long userId);
+	Review enableReview(Long id);
 }

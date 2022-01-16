@@ -24,10 +24,14 @@ export class ReviewService {
 	return this.http.get<Review>(`${this.reviewUrl}/getReviewById/${id}`);
   }
   
-   public createReview(review: Review, adventureId: number) {
+  public createReview(review: Review, adventureId: number) {
 	return this.http.post(`${this.reviewUrl}/createReview/${adventureId}`, review);
   }
   
+  public enableReview(reviewId: number) {
+	return this.http.get<Review>(`${this.reviewUrl}/enableReview/${reviewId}`);
+  }
+
   public deleteReview(id: number){
 	return this.http.get<Review>(`${this.reviewUrl}/deleteReview/${id}`);
   }
