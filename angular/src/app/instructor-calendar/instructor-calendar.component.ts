@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../model/user';
+import { Comment } from '../model/comment';
 import { Termin } from '../model/termin';
 import { Reservation } from '../model/reservation';
 import { Adventure } from '../model/adventure';
 import { UserService } from '../service/user.service';
+import { ReviewService } from '../service/review.service';
 import { AdventureService } from '../service/adventure.service';
 import { HttpErrorResponse} from '@angular/common/http';
 @Component({
@@ -26,13 +28,17 @@ export class InstructorCalendarComponent implements OnInit {
   flag2: boolean = false;
   //rezervacije
   flag3: boolean = false;
+  //tekst komentara
+  flag4: boolean = false;
   public termins: Termin[];
   public reservations: Reservation[]
   public termin: Termin = new Termin();
+  public comment: Comment = new Comment();
   constructor(
 	private route: ActivatedRoute,
 	private router: Router,
 	private userService: UserService,
+	private reviewService: ReviewService,
 	private adventureService: AdventureService,
   ) {
 		this.termins = [];
@@ -46,6 +52,7 @@ export class InstructorCalendarComponent implements OnInit {
 	this.flag1=false;
 	this.flag2=false;
 	this.flag3=false;
+	this.flag4=false;
   }
   
   goBack(): void{
@@ -200,6 +207,31 @@ export class InstructorCalendarComponent implements OnInit {
 					);
 				}
 			}
+		}
+	}
+	
+	public createComment(userId1?: number): void{
+		this.flag4 = true;
+		if(userId1 === undefined || this.comment.content === null || this.comment.content === undefined || this.comment.content.length === 0){
+			alert('Unesite sadrzaj komentara.');
+		}
+		else{
+			if(this.comment.negative === undefined){
+				this.comment.negative = false;
+			}
+			this.userId = userId1;
+			this.reviewService.createComment(this.comment,this.userId,this.id).subscribe(
+			(response) => {
+			this.flag4 = false;
+			alert('Uspesno ste kreirali komentar');
+			this.getAllReservations();
+			this.getAllTermins();
+			},
+			(error: HttpErrorResponse) =>{
+			alert(error.message);
+			}
+			);
+			
 		}
 	}
 	

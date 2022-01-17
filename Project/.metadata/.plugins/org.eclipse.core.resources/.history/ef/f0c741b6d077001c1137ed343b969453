@@ -1,0 +1,46 @@
+package application.service.impl;
+
+import java.util.List;
+
+import application.model.Comment;
+import application.service.CommentService;
+
+public class CommentServiceImpl implements CommentService{
+
+	@Override
+	public Comment saveComment(Comment comment) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Comment findById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Comment create(Comment comment) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Comment> findAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void delete(Long id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Comment enableComment(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

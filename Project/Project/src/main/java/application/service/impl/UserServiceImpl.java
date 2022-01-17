@@ -116,6 +116,7 @@ public class UserServiceImpl implements UserService {
 		user.setEmail(userDTO.getEmail());
 		user.setPassword(passwordEncoder.encode(userDTO.getPassword1()));
 		user.setRole(userDTO.getRole());
+		user.setPenalty(userDTO.getPenalty());
 		user.setFirstTimeLogged(false);
 		userRepository.save(user);
 	}
@@ -151,6 +152,7 @@ public class UserServiceImpl implements UserService {
 			user.setDeleted(false);
 			user.setRole(userDTO.getRole());
 			user.setFirstTimeLogged(false);
+			user.setPenalty(0);
 			userRepository.save(user);
 			Request request = new Request();
 			request.setTitle("Zahtev za verifikaciju naloga");

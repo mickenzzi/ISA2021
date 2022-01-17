@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../model/user';
 import { Review } from '../model/review';
+import { Comment } from '../model/comment';
 import { Request } from '../model/request';
 import { UserService } from '../service/user.service';
 import { ReviewService } from '../service/review.service';
@@ -18,12 +19,14 @@ export class HomeAdminComponent implements OnInit {
   user1: User = new User();
   public requests: Request[];
   public reviews: Review[];
+  public comments: Comment[];
   id!: number;
   username: string = "";
   rejectText?: string;
   title: string = "";
   idRequest: number = 0;
   reviewId!: number;
+  commentId!: number;
   //show menu panel
   flag1?: boolean;
   //show notifications panel
@@ -32,6 +35,8 @@ export class HomeAdminComponent implements OnInit {
   flag3?: boolean;
   //show reviews panel
   flag4?: boolean;
+  //show comments panel
+  flag5?: boolean;
   constructor(
 	private route: ActivatedRoute,
 	private router: Router,
@@ -41,16 +46,19 @@ export class HomeAdminComponent implements OnInit {
 	) {
 		this.requests = [];
 		this.reviews = [];
+		this.comments = [];
 	  }
   ngOnInit(): void {
 	this.flag1 = false;
 	this.flag2 = false;
 	this.flag3 = false;
 	this.flag4 = false;
+	this.flag5 = false;
 	this.id = this.route.snapshot.params['id'];
 	this.getUser();
 	this.getAllRequest();
 	this.getAllReviews();
+	this.getAllComments();
   }	
   showHidden(){
 	if(this.flag1 === false){
@@ -61,20 +69,30 @@ export class HomeAdminComponent implements OnInit {
 	}
   }
   
+  showComments(){
+	this.flag1 = false;
+	this.flag2 = false;
+	this.flag4 = false;
+	this.flag5 = true;
+  }
+  
   showNotifications(){
 	this.flag1 = false;
 	this.flag2 = true;
 	this.flag4 = false;
+	this.flag5 = false;
   }
   showReviews(){
 	this.flag1 = false;
 	this.flag2 = false;
 	this.flag4 = true;
+	this.flag5 = false;
   }
   
   closeNotification(){
 	this.flag2 = false;
 	this.flag4 = false;
+	this.flag5 = false;
   }
   
   redirectAdminRegistration(){
@@ -128,6 +146,17 @@ export class HomeAdminComponent implements OnInit {
 		);
 	}
 	
+	public getAllComments(): void{
+		this.reviewService.getAllComments().subscribe(
+		 (response: Comment[]) => {
+			 this.comments = response;
+		  },
+		  (error: HttpErrorResponse) =>{
+			  alert(error.message);
+		  }
+		);
+	}
+	
 	public enableReview(reviewId1?: number): void{
 		if(reviewId1 === undefined){
 			alert('Neispravan id');
@@ -137,7 +166,7 @@ export class HomeAdminComponent implements OnInit {
 			this.reviewService.enableReview(this.reviewId).subscribe(
 			(response) => {
 				this.getAllReviews();
-				alert('Validirali ste komentar');
+				alert('Validirali ste recenziju');
 			}	,
 			(error: HttpErrorResponse) =>{
 			  alert(error.message);
@@ -146,6 +175,40 @@ export class HomeAdminComponent implements OnInit {
 		}
 	}
 	
+	public enableComment(commentId1?: number): void{
+		if(commentId1 === undefined){
+			alert('Neispravan id');
+		}
+		else{
+			this.commentId = commentId1;
+			this.reviewService.enableComment(this.commentId).subscribe(
+			(response) => {
+				this.getAllComments();
+				alert('Validirali ste komentar');
+			}	,
+			(error: HttpErrorResponse) =>{
+			  alert(error.message);
+			}
+			);
+		}
+	}
+	public deleteComment(commentId1?: number): void{
+		if(commentId1 === undefined){
+			alert('Neispravan id');
+		}
+		else{
+			this.commentId = commentId1;
+			this.reviewService.deleteComment(this.commentId).subscribe(
+			(response) => {
+				this.getAllComments();
+				alert('Obrisali ste komentar');
+			}	,
+			(error: HttpErrorResponse) =>{
+			  alert(error.message);
+			}
+			);
+		}
+	}
 	public disableReview(reviewId1?: number): void{
 		if(reviewId1 === undefined){
 			alert('Neispravan id');

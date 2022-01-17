@@ -58,6 +58,8 @@ public class User implements UserDetails {
 	private String role;
 	@Column(name = "first_time_logged")
 	private boolean firstTimeLogged;
+	@Column(name = "penalty")
+	private int penalty;
 
 	// fetch - Lazy koristimo kada zelimo samo podatke tabele u kojoj se nalazimo a
 	// ne podatke i povezanih tabela
@@ -88,6 +90,14 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "adminReview", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Review> adminReviews;
+
+	@OneToMany(mappedBy = "userComment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Comment> userComments;
+
+	@OneToMany(mappedBy = "instructorComment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Comment> instructorComments;
 
 	public Long getId() {
 		return id;
@@ -261,6 +271,30 @@ public class User implements UserDetails {
 
 	public void setAdminReviews(List<Review> adminReviews) {
 		this.adminReviews = adminReviews;
+	}
+
+	public int getPenalty() {
+		return penalty;
+	}
+
+	public void setPenalty(int penalty) {
+		this.penalty = penalty;
+	}
+
+	public List<Comment> getUserComments() {
+		return userComments;
+	}
+
+	public void setUserComments(List<Comment> userComments) {
+		this.userComments = userComments;
+	}
+
+	public List<Comment> getInstructorComments() {
+		return instructorComments;
+	}
+
+	public void setInstructorComments(List<Comment> instructorComments) {
+		this.instructorComments = instructorComments;
 	}
 
 	public User() {

@@ -280,6 +280,7 @@
 		<button (click)="goToProfile()" class="menu-container-button">Profil</button><br>
 		<button (click)="showNotifications()" style="margin-top:2px;" class="menu-container-button">Obavestenja</button><br>
 		<button (click)="showReviews()" style="margin-top:2px;" class="menu-container-button">Recenzije</button><br>
+		<button (click)="showComments()" style="margin-top:2px;" class="menu-container-button">Komentari</button><br>
 		<button (click)="logOut()" style="margin-top:2px;" class="menu-container-button">Odjavi se</button>
 	</div>
 	<div style="margin-top:120px; margin-left: 20px;" class="functionality-new-admin-container">
@@ -346,6 +347,31 @@
 				<td class="table-data"> <button (click)="enableReview(review.id)" *ngIf="!review.enabled" class="approve-button">Potvrdi</button></td>
 				<td class="table-data"> <button (click)="disableReview(review.id)" *ngIf="!review.enabled" class="disable-button">Odbij</button></td>
 				<td class="table-data"> <button (click)="deleteReview(review.id)" *ngIf="review.enabled" class="disable-button">Obrisi</button></td>
+			</tr>
+		</table>
+	</div>
+	
+	<div *ngIf="flag5" class="notification-panel-header">
+		<label style="margin-left:170px; margin-top:5px; color: black;" class="title"> Prikaz komentara</label>
+		<button (click)="closeNotification()" class="notification-panel-button"><img class="notification-panel-button-img" src="/assets/img/close.png"></button>
+	</div>
+	<div *ngIf="flag5" class="notification-panel">
+		<table class="table">
+			<tr class="table-header">
+				<th class="header__item">Id</th>
+				<th class="header__item">Sadrzaj</th>
+				<th class="header__item">Odobren</th>
+				<th class="header__item">Negativan</th>
+				<th class="header__item"></th>
+				<th class="header__item"></th>
+			</tr>
+			<tr *ngFor="let comment of comments" class="table-row">
+				<td class="table-data">{{comment.id}}</td>
+				<td class="table-data">{{comment.content}}</td>
+				<td class="table-data">{{comment.enabled}}</td>
+				<td class="table-data">{{comment.negative}}</td>
+				<td class="table-data"> <button (click)="enableComment(comment.id)" *ngIf="!comment.enabled" class="approve-button">Validiraj</button></td>
+				<td class="table-data"> <button (click)="deleteComment(comment.id)" class="disable-button">Obrisi</button></td>
 			</tr>
 		</table>
 	</div>

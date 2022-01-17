@@ -1,0 +1,7 @@
+package application.service.impl;
+
+import application.service.CommentService;
+
+public class CommentServiceImpl implements CommentService{
+
+}

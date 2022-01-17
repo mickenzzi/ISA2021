@@ -528,6 +528,7 @@ border: none;
 				<th class="header__item"></th>
 				<th class="header__item"></th>
 				<th class="header__item"></th>
+				<th class="header__item"></th>
 			</tr>
 			<tr *ngFor="let reservation of reservations" class="table-row">
 				<td class="table-data">{{reservation.start}}</td>
@@ -539,7 +540,14 @@ border: none;
 				<td class="table-data"> <button (click)="createReservation(reservation.start,reservation.end,reservation.adventureReservation.id,reservation.userReservation.id)" *ngIf="!reservation.createdReservation" class="approve-button">Potvrdi</button></td>
 				<td class="table-data"> <button (click)="rejectReservation(reservation.id)" *ngIf="!reservation.createdReservation" class="disable-button">Odbij</button></td>
 				<td class="table-data"> <button (click)="deleteReservationTermin(reservation.id,reservation.start,reservation.end)" *ngIf="reservation.createdReservation" class="disable-button">Obrisi</button></td>
+				<td class="table-data"> <button (click)="createComment(reservation.userReservation.id)" *ngIf="reservation.createdReservation" class="approve-button">Unesi komentar</button></td>
 			</tr>
 		</table>
 	</div>
+	
+	<div style="width: 250px; height:150px; margin-left:650px; background-color: white;" *ngIf="flag4">
+		<input type="text" placeholder="Unesite razlog" [(ngModel)]="comment.content" [ngModelOptions]="{standalone: true}" style="width: 97%; height:75%;"/><br>
+		<label>Negativan: </label><input type="checkbox"  [(ngModel)]="comment.negative" [ngModelOptions]="{standalone: true}"/>
+	</div>
+	
 </body>

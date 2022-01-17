@@ -27,27 +27,17 @@ public class UserController {
 	private UserService userService;
 
 	@GetMapping(value = "/getAllUsers/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<UserDTO>> getAllUsers(@PathVariable("id") Long id) {
-		List<UserDTO> usersDTO = new ArrayList<UserDTO>();
+	public ResponseEntity<List<User>> getAllUsers(@PathVariable("id") Long id) {
+		List<User> users1 = new ArrayList<User>();
 		List<User> users = userService.findAll();
-		User user = new User();
-		user = userService.findById(id);
-		if(user.getUsername().equals("mickenzi")) {
-			for(User u: users) {
-				if(!u.getUsername().equals("mickenzi") && u.isEnabled()==true) {
-					usersDTO.add(new UserDTO(u));
-				}
-			}
-		}
-		else {
-			for(User u: users) {
-				if(!u.getUsername().equals("mickenzi") && u.isEnabled()==true && !u.getRole().equals("ADMIN")) {
-					usersDTO.add(new UserDTO(u));
-				}
+		User user = userService.findById(id);
+		for(User u: users) {
+			if(u.isEnabled() == true && !u.getUsername().equals(user.getUsername())) {
+				users1.add(u);
 			}
 		}
 		System.out.println("The task /getAllUsers was successfully completed.");
-		return new ResponseEntity<>(usersDTO, HttpStatus.OK);
+		return new ResponseEntity<>(users1, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/getUserById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

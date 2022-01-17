@@ -38,7 +38,7 @@ export class HomeUserComponent implements OnInit {
 	this.flag=true;
 	if(this.review1.grade === null || this.review1.grade === undefined || this.review1.comment === null || this.review1.comment === undefined || this.review1.comment.length === 0 || idAdventure1 === undefined)
 	{
-		alert('Unesite komentar i ocenu recenzije');
+		alert('Unesite recenziju i ocenu recenzije');
 	}
 	else{
 		this.review1.userReview = this.user;

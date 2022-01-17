@@ -12,4 +12,5 @@ export class User {
 	password1?: string;
 	password2?: string;
 	firstTimeLogged?: boolean;
+	penalty?: number;
 }

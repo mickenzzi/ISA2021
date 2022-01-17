@@ -325,12 +325,14 @@
 				<th class="header__item">Korisnik</th>
 				<th class="header__item">Ime</th>
 				<th class="header__item">Prezime</th>
+				<th class="header__item">Broj penala:</th>
 				<th class="header__item"></th>
 			</tr>
 			<tr *ngFor="let user of users" class="table-row">
 				<td class="table-data">{{user.username}}</td>
 				<td class="table-data">{{user.firstName}}</td>
 				<td class="table-data">{{user.lastName}}</td>
+				<td class="table-data">{{user.penalty}}</td>
 				<td class="table-data"> <button (click)="deleteUser(user.id)" class="disable-button">Obrisi</button></td>
 			</tr>
 		</table>
