@@ -281,6 +281,7 @@
 		<button (click)="showNotifications()" style="margin-top:2px;" class="menu-container-button">Obavestenja</button><br>
 		<button (click)="showReviews()" style="margin-top:2px;" class="menu-container-button">Recenzije</button><br>
 		<button (click)="showComments()" style="margin-top:2px;" class="menu-container-button">Komentari</button><br>
+		<button (click)="showComplains()" style="margin-top:2px;" class="menu-container-button">Zalbe</button><br>
 		<button (click)="logOut()" style="margin-top:2px;" class="menu-container-button">Odjavi se</button>
 	</div>
 	<div style="margin-top:120px; margin-left: 20px;" class="functionality-new-admin-container">
@@ -376,4 +377,29 @@
 		</table>
 	</div>
 	
+	<div *ngIf="flag6" class="notification-panel-header">
+		<label style="margin-left:170px; margin-top:5px; color: black;" class="title"> Prikaz zalbi</label>
+		<button (click)="closeNotification()" class="notification-panel-button"><img class="notification-panel-button-img" src="/assets/img/close.png"></button>
+	</div>
+	<div *ngIf="flag6" class="notification-panel">
+		<table class="table">
+			<tr class="table-header">
+				<th class="header__item">Id</th>
+				<th class="header__item">Sadrzaj</th>
+				<th class="header__item">Odgovor</th>
+				<th class="header__item"></th>
+				<th class="header__item"></th>
+			</tr>
+			<tr *ngFor="let complaint of complains" class="table-row">
+				<td class="table-data">{{complaint.id}}</td>
+				<td class="table-data">{{complaint.content}}</td>
+				<td class="table-data">{{complaint.answered}}</td>
+				<td class="table-data"> <button *ngIf="!complaint.answered" (click)="answer(complaint.id)" class="approve-button">Odgovori</button></td>
+				<td class="table-data"> <button (click)="deleteComplaint(complaint.id)" class="disable-button">Obrisi</button></td>
+			</tr>
+		</table>
+	</div>
+	<div style="width: 250px; height:170px; margin-left:750px;" *ngIf="flag7">
+		<input type="text" placeholder="Unesite tekst zalbe" [(ngModel)]="complaint1.content" [ngModelOptions]="{standalone: true}" style="width: 100%; height:50%;"/>
+	</div>
 </body>

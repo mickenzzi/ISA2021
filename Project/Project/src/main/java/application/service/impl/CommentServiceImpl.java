@@ -3,6 +3,8 @@ package application.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import application.model.Comment;
@@ -17,6 +19,8 @@ public class CommentServiceImpl implements CommentService {
 	private CommentRepository commentRepository;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private JavaMailSender javaMailSender;
 
 	@Override
 	public Comment saveComment(Comment comment) {
@@ -63,13 +67,24 @@ public class CommentServiceImpl implements CommentService {
 		Comment comment = commentRepository.findById(id).orElseGet(null);
 		User user = userRepository.findById(comment.getUserComment().getId()).orElseGet(null);
 		User instructor = userRepository.findById(comment.getInstructorComment().getId()).orElseGet(null);
-		System.out.println("Instruktor:" + instructor.getUsername() + " Korisnik:" + user.getUsername());
+		User admin = userRepository.findByUsername("mickenzi");;
 		comment.setEnabled(true);
 		commentRepository.save(comment);
 		if(comment.isNegative() == true) {
 			user.setPenalty(user.getPenalty()+1);
 			userRepository.save(user);
-			System.out.println("Broj penala jeeeeeeeeeeeeeeee:"+user.getPenalty());
+			SimpleMailMessage mail1 = new SimpleMailMessage();
+			mail1.setTo(user.getEmail());
+			mail1.setFrom(admin.getEmail());
+			mail1.setSubject("Komentar");
+			mail1.setText("Instruktor je uneo negativan komentar o vama.");
+			javaMailSender.send(mail1);
+			SimpleMailMessage mail2 = new SimpleMailMessage();
+			mail1.setTo(instructor.getEmail());
+			mail1.setFrom(admin.getEmail());
+			mail1.setSubject("Komentar");
+			mail1.setText("Vas negativan komentar je prosao validaciju admina.");
+			javaMailSender.send(mail2);
 		}
 		return comment;
 	}

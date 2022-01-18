@@ -288,6 +288,7 @@
 				<th class="header__item">Avantura</th>
 				<th class="header__item">Korisnik</th>
 				<th class="header__item"></th>
+				<th class="header__item"></th>
 			</tr>
 			<tr *ngFor="let reservation of reservations" class="table-row">
 				<td class="table-data">{{reservation.id}}</td>
@@ -296,6 +297,7 @@
 				<td class="table-data">{{reservation.adventureReservation.title}}</td>
 				<td class="table-data">{{reservation.userReservation.firstName}} {{reservation.userReservation.lastName}}</td>
 				<td class="table-data"> <button class="approve-button" (click)="createReview(reservation.adventureReservation.id)">Unesi recenziju</button></td>
+				<td class="table-data"> <button class="approve-button" (click)="createComplaint(reservation.adventureReservation.id)">Unesi zalbu</button></td>
 			</tr>
 		</table>
 	</div>
@@ -304,6 +306,9 @@
 	</div>
 	<div *ngIf="flag" style="width: 300px; height: 30px; margin-left:1000px; margin-top:-50px; position: fixed;">
 		<input type="text" placeholder="Unesite ocenu" [(ngModel)]="review1.grade" [ngModelOptions]="{standalone: true}" style="width: 100%; height:100%"/>
+	</div>
+	<div *ngIf="flag1" style="width: 300px; height: 200px; margin-left:1000px; margin-top:-300px; position: fixed;">
+		<input type="text" placeholder="Unesite tekst" [(ngModel)]="complaint.content" [ngModelOptions]="{standalone: true}" style="width: 100%; height:100%"/>
 	</div>
 	
 	

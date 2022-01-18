@@ -1,0 +1,80 @@
+package application.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Service;
+
+import application.model.Adventure;
+import application.model.Complaint;
+import application.repository.AdventureRepository;
+import application.repository.ComplaintRepository;
+import application.repository.UserRepository;
+import application.service.ComplaintService;
+import application.model.User;
+
+@Service
+public class ComplaintServiceImpl implements ComplaintService{
+
+	@Autowired
+	private ComplaintRepository complaintRepository;
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private AdventureRepository adventureRepository;
+	@Autowired
+	private JavaMailSender javaMailSender;
+	
+	@Override
+	public Complaint saveComplaint(Complaint complaint) {
+		return complaintRepository.save(complaint);
+	}
+
+	@Override
+	public Complaint findById(Long id) {
+		return complaintRepository.findById(id).orElseGet(null);
+	}
+
+	@Override
+	public Complaint create(Complaint complaint, Long userId, Long adventureId) {
+		Complaint complaint1 = new Complaint();
+		complaint1.setContent(complaint.getContent());
+		User user = userRepository.findById(userId).orElseGet(null);
+		Adventure adventure = adventureRepository.findById(adventureId).orElseGet(null);
+		User instructor = userRepository.findById(adventure.getUserAdventure().getId()).orElseGet(null);
+		complaint1.setUserComplaint(user);
+		complaint1.setInstructorComplaint(instructor);
+		complaintRepository.save(complaint1);
+		return complaint1;
+		
+	}
+
+	@Override
+	public List<Complaint> findAll() {
+		return complaintRepository.findAll();
+	}
+
+	@Override
+	public void delete(Long id) {
+		Complaint complaint = complaintRepository.findById(id).orElseGet(null);
+		complaintRepository.delete(complaint);
+	}
+
+	@Override
+	public Complaint answer(Complaint complaint, Long adminId, Long complaintId) {
+		Complaint answer = new Complaint();
+		Complaint complaint1 = complaintRepository.findById(complaintId).orElseGet(null);
+		User user = userRepository.findById(complaint.getUserComplaint().getId()).orElseGet(null);
+		User instructor = userRepository.findById(complaint.getInstructorComplaint().getId()).orElseGet(null);
+		User admin = userRepository.findById(adminId).orElseGet(null);
+		answer.setContent(complaint.getContent());
+		answer.setAdminComplaint(admin);
+		answer.setInstructorComplaint(instructor);
+		answer.setUserComplaint(user);
+		
+		complaintRepository.save(answer);
+		return answer;
+	}
+
+}

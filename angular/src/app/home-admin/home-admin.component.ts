@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../model/user';
 import { Review } from '../model/review';
 import { Comment } from '../model/comment';
+import { Complaint } from '../model/complaint';
 import { Request } from '../model/request';
 import { UserService } from '../service/user.service';
 import { ReviewService } from '../service/review.service';
@@ -20,6 +21,8 @@ export class HomeAdminComponent implements OnInit {
   public requests: Request[];
   public reviews: Review[];
   public comments: Comment[];
+  public complains: Complaint[];
+  public complaint1: Complaint = new Complaint();
   id!: number;
   username: string = "";
   rejectText?: string;
@@ -27,6 +30,7 @@ export class HomeAdminComponent implements OnInit {
   idRequest: number = 0;
   reviewId!: number;
   commentId!: number;
+  complaintId!: number;
   //show menu panel
   flag1?: boolean;
   //show notifications panel
@@ -37,6 +41,10 @@ export class HomeAdminComponent implements OnInit {
   flag4?: boolean;
   //show comments panel
   flag5?: boolean;
+  //show complains panel
+  flag6?: boolean;
+  //show complaint answer panel
+  flag7?: boolean;
   constructor(
 	private route: ActivatedRoute,
 	private router: Router,
@@ -47,6 +55,7 @@ export class HomeAdminComponent implements OnInit {
 		this.requests = [];
 		this.reviews = [];
 		this.comments = [];
+		this.complains = [];
 	  }
   ngOnInit(): void {
 	this.flag1 = false;
@@ -54,11 +63,13 @@ export class HomeAdminComponent implements OnInit {
 	this.flag3 = false;
 	this.flag4 = false;
 	this.flag5 = false;
+	this.flag6 = false;
 	this.id = this.route.snapshot.params['id'];
 	this.getUser();
 	this.getAllRequest();
 	this.getAllReviews();
 	this.getAllComments();
+	this.getAllComplains();
   }	
   showHidden(){
 	if(this.flag1 === false){
@@ -74,6 +85,7 @@ export class HomeAdminComponent implements OnInit {
 	this.flag2 = false;
 	this.flag4 = false;
 	this.flag5 = true;
+	this.flag6 = false;
   }
   
   showNotifications(){
@@ -81,18 +93,28 @@ export class HomeAdminComponent implements OnInit {
 	this.flag2 = true;
 	this.flag4 = false;
 	this.flag5 = false;
+	this.flag6 = false;
   }
   showReviews(){
 	this.flag1 = false;
 	this.flag2 = false;
 	this.flag4 = true;
 	this.flag5 = false;
+	this.flag6 = false;
+  }
+  showComplains(){
+	this.flag1 = false;
+	this.flag2 = false;
+	this.flag4 = false;
+	this.flag5 = false;
+	this.flag6 = true;
   }
   
   closeNotification(){
 	this.flag2 = false;
 	this.flag4 = false;
 	this.flag5 = false;
+	this.flag6 = false;
   }
   
   redirectAdminRegistration(){
@@ -157,6 +179,17 @@ export class HomeAdminComponent implements OnInit {
 		);
 	}
 	
+	public getAllComplains(): void{
+		this.reviewService.getAllComplains().subscribe(
+		 (response: Complaint[]) => {
+			 this.complains = response;
+		  },
+		  (error: HttpErrorResponse) =>{
+			  alert(error.message);
+		  }
+		);
+	}
+	
 	public enableReview(reviewId1?: number): void{
 		if(reviewId1 === undefined){
 			alert('Neispravan id');
@@ -209,6 +242,26 @@ export class HomeAdminComponent implements OnInit {
 			);
 		}
 	}
+	
+	public deleteComplaint(complaintId1?: number): void{
+		if(complaintId1 === undefined){
+			alert('Neispravan id');
+		}
+		else{
+			this.complaintId = complaintId1;
+			this.reviewService.deleteComplaint(this.complaintId).subscribe(
+			(response) => {
+				this.getAllComplains();
+				alert('Obrisali ste zalbu');
+			}	,
+			(error: HttpErrorResponse) =>{
+			  alert(error.message);
+			}
+			);
+		}
+	}
+	
+	
 	public disableReview(reviewId1?: number): void{
 		if(reviewId1 === undefined){
 			alert('Neispravan id');
@@ -292,6 +345,27 @@ export class HomeAdminComponent implements OnInit {
 	  }
 	}
   }
+	
+	public answer(complaintId1?: number): void{
+		this.flag7 = true;
+		if(complaintId1 === undefined || this.complaint1.content === undefined || this.complaint1.content === null || this.complaint1.content.length === 0){
+			alert('Unesite odgovor.');
+		}
+		else{
+			this.complaintId = complaintId1;
+			this.reviewService.answerComplaint(this.complaint1,this.id,this.complaintId).subscribe(
+			(response) => {
+				this.getAllComplains();
+				this.flag7 = false;
+				alert('Uspesno ste odgovorili na zalbu');
+			},
+			(error: HttpErrorResponse) =>{
+			  alert(error.message);
+			}
+			);
+		}
+		
+	}
   
   public disableUser(username1?: string, title1?: string, idRequest1?: number):void{
 	  if(username1 === undefined){

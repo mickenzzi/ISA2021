@@ -99,6 +99,18 @@ public class User implements UserDetails {
 	@JsonIgnore
 	private List<Comment> instructorComments;
 
+	@OneToMany(mappedBy = "userComplaint", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Complaint> userComplains;
+
+	@OneToMany(mappedBy = "instructorComplaint", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Complaint> instructorComplains;
+
+	@OneToMany(mappedBy = "adminComplaint", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Complaint> adminComplains;
+
 	public Long getId() {
 		return id;
 	}
@@ -295,6 +307,30 @@ public class User implements UserDetails {
 
 	public void setInstructorComments(List<Comment> instructorComments) {
 		this.instructorComments = instructorComments;
+	}
+
+	public List<Complaint> getUserComplains() {
+		return userComplains;
+	}
+
+	public void setUserComplains(List<Complaint> userComplains) {
+		this.userComplains = userComplains;
+	}
+
+	public List<Complaint> getInstructorComplains() {
+		return instructorComplains;
+	}
+
+	public void setInstructorComplains(List<Complaint> instructorComplains) {
+		this.instructorComplains = instructorComplains;
+	}
+
+	public List<Complaint> getAdminComplains() {
+		return adminComplains;
+	}
+
+	public void setAdminComplains(List<Complaint> adminComplains) {
+		this.adminComplains = adminComplains;
 	}
 
 	public User() {
