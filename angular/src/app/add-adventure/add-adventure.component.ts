@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse} from '@angular/common/http';
 import { AdventureService } from '../service/adventure.service';
+import { UserService } from '../service/user.service';
 import { Adventure } from '../model/adventure';
+import { User } from '../model/user';
 import { ActivatedRoute, Router } from '@angular/router';
 
 
@@ -11,39 +13,53 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./add-adventure.component.css']
 })
 export class AddAdventureComponent implements OnInit {
-  id!: number;
   URL_ss = "";
   URL: string = "";
   URL_R: string = "";
   URL_path : string = "/assets/img/";
-  adventure: Adventure = {
-	id: 0,
-	title: '',
-	description: '',
-	address: '',
-	image: '',
-	maxNumber: 0,
-	instructorBiography: '',
-	rule: '',
-	equipment: '',
-	priceList: 0,
-	cancelCondition: '',
-  }
+  public adventure: Adventure = new Adventure();
+  user: User = new User();
+  //@ts-ignore
+  currentUser = JSON.parse(localStorage.getItem('currentUser')); 
   constructor(
 	private route: ActivatedRoute,
 	private router: Router,
-	private adventureService: AdventureService
+	private adventureService: AdventureService,
+	private userService: UserService
   ) { }
 
   ngOnInit(): void {
-	this.id = this.route.snapshot.params['id'];
+	if(this.currentUser === null){
+		alert('Niste se ulogovali');
+		this.logOut();
+	}
+	else{
+		this.getUser();
+	}
   }
   
   goBack(){
-	this.router.navigate(['/homeInstructor', this.id]);
+	this.router.navigate(['/homeInstructor']);
   }
   
+  logOut(){
+	localStorage.removeItem('currentUser');
+	localStorage.clear();
+	this.router.navigate(['/login']);
+  }
+  
+   public getUser(): void{
+		const username = this.currentUser.username1;
+		this.userService.findUser(username).subscribe(
+		 (response: User) => {
+			 this.user = response;
+		 }
+		);
+	}
+  
   addAdventure(): void{
+	  if(this.user.id === undefined){}
+	  else{
 	  this.URL_ss = this.URL.substring(12);
 	  this.URL_R = this.URL_path + this.URL_ss;
 	  const data = {
@@ -58,17 +74,18 @@ export class AddAdventureComponent implements OnInit {
       priceList: this.adventure.priceList,
       cancelCondition: this.adventure.cancelCondition
     }
-	this.adventureService.createAdventure(data,this.id)
+	this.adventureService.createAdventure(data,this.user.id)
 	.subscribe(
         response => {
 			alert('Uspesno ste dodali avanturu');
-			this.router.navigate(['/homeInstructor',this.id]);
+			this.router.navigate(['/homeInstructor']);
         },
         (error: HttpErrorResponse) => {
           alert(error.message);
         }
 
       );
+  }
   }
  
 

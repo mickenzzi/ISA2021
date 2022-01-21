@@ -53,6 +53,7 @@ export class HomeUserComponent implements OnInit {
 	this.reviewService.createReview(this.review1,this.adventureId).subscribe(
 		 (response) => {
 			 this.flag = false;
+			 this.review1.comment = undefined;
 			 alert('Vas komentar ceka odobrenje');
 		  },
 		  (error: HttpErrorResponse) =>{
@@ -74,6 +75,7 @@ export class HomeUserComponent implements OnInit {
 		 (response) => {
 			 this.flag1 = false;
 			 alert('Uspesno ste kreirali zalbu.');
+			 this.complaint.content = undefined;
 		  },
 		  (error: HttpErrorResponse) =>{
 			  alert(error.message);

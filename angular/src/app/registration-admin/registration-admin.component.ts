@@ -25,6 +25,8 @@ export class RegistrationAdminComponent implements OnInit {
     role: ''
   }
   flag1 = true;
+  //@ts-ignore
+  currentUser = JSON.parse(localStorage.getItem('currentUser')); 
   constructor(
 			private userService: UserService,
 			private router: Router,
@@ -32,10 +34,19 @@ export class RegistrationAdminComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-	  this.id = this.route.snapshot.params['id'];
+		if(this.currentUser === null){
+		alert('Niste se ulogovali');
+		this.logOut();
+		}
   }
   goBack(){
-	this.router.navigate(['/homeAdmin', this.id]);
+	this.router.navigate(['/homeAdmin']);
+  }
+  
+   logOut(){
+	localStorage.removeItem('currentUser');
+	localStorage.clear();
+	this.router.navigate(['/login']);
   }
 
   createUser(): void {
@@ -60,7 +71,7 @@ export class RegistrationAdminComponent implements OnInit {
           }
           else {
             this.flag1 = true;
-			this.router.navigate(['/homeAdmin',this.id]);
+			this.router.navigate(['/homeAdmin']);
             alert('Nalog poslat na verifikaciju');
           }
         },

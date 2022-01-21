@@ -25,7 +25,7 @@ const routes: Routes = [
 	pathMatch: 'full'
 	},
 	{
-	path: 'homeAdmin/:id',
+	path: 'homeAdmin',
 	component: HomeAdminComponent,
 	},
 	{
@@ -33,11 +33,11 @@ const routes: Routes = [
 	component: RegistrationComponent,
 	},
 	{
-	path: 'profileAdmin/:id',
+	path: 'profileAdmin',
 	component: ProfileAdminComponent,
 	},
 	{
-	path: 'profileInstructor/:id',
+	path: 'profileInstructor',
 	component: ProfileInstructorComponent,
 	},
 	{
@@ -49,7 +49,7 @@ const routes: Routes = [
 	component: HomeUserComponent,
 	},
 	{
-	path: 'homeInstructor/:id',
+	path: 'homeInstructor',
 	component: HomeInstructorComponent,
 	},
 	{
@@ -65,23 +65,23 @@ const routes: Routes = [
 	component: HomeBoatOwnerComponent,
 	},
 	{
-	path: 'registrationAdmin/:id',
+	path: 'registrationAdmin',
 	component: RegistrationAdminComponent,
 	},
 	{
-	path: 'addAdventure/:id',
+	path: 'addAdventure',
 	component: AddAdventureComponent,
 	},
 	{
-	path: 'homeAdventure/:id/:idAdventure',
+	path: 'homeAdventure/:idAdventure',
 	component: HomeAdventureComponent,
 	},
 	{
-	path: 'homeAdminUsers/:id',
+	path: 'homeAdminUsers',
 	component: HomeAdminUsersComponent,
 	},
 	{
-	path: 'instructorCalendar/:id',
+	path: 'instructorCalendar',
 	component: InstructorCalendarComponent,
 	}
 ];

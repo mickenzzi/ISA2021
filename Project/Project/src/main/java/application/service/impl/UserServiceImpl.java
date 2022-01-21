@@ -17,10 +17,12 @@ import org.springframework.mail.SimpleMailMessage;
 
 import application.model.Adventure;
 import application.model.Request;
+import application.model.Role;
 import application.model.Termin;
 import application.model.User;
 import application.model.dto.UserDTO;
 import application.repository.RequestRepository;
+import application.repository.RoleRepository;
 import application.repository.TerminRepository;
 import application.repository.UserRepository;
 import application.repository.AdventureRepository;
@@ -37,6 +39,8 @@ public class UserServiceImpl implements UserService {
 	private TerminRepository terminRepository;
 	@Autowired
 	private AdventureRepository adventureRepository;
+	@Autowired
+	private RoleRepository roleRepository;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	@Autowired
@@ -115,7 +119,23 @@ public class UserServiceImpl implements UserService {
 		user.setUsername(userDTO.getUsername());
 		user.setEmail(userDTO.getEmail());
 		user.setPassword(passwordEncoder.encode(userDTO.getPassword1()));
-		user.setRole(userDTO.getRole());
+		if (userDTO.getRole().equals("ADMIN")) {
+			Role role = roleRepository.findByName("ROLE_ADMIN");
+			user.setUserRole(role);
+		} else if (userDTO.getRole().equals("INSTRUCTOR")) {
+			Role role = roleRepository.findByName("ROLE_INSTRUCTOR");
+			user.setUserRole(role);
+		} else if (userDTO.getRole().equals("USER")) {
+			Role role = roleRepository.findByName("ROLE_USER");
+			user.setUserRole(role);
+		} else if (userDTO.getRole().equals("COTTAGE_OWNER")) {
+			Role role = roleRepository.findByName("ROLE_COTTAGE_OWNER");
+			user.setUserRole(role);
+		} else if (userDTO.getRole().equals("BOAT_OWNER")) {
+			Role role = roleRepository.findByName("ROLE_BOAT_OWNER");
+			user.setUserRole(role);
+		}
+
 		user.setPenalty(userDTO.getPenalty());
 		user.setFirstTimeLogged(false);
 		userRepository.save(user);
@@ -124,8 +144,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User createUser(UserDTO userDTO) {
 		boolean check = true;
-		User admin = new User();
-		admin = userRepository.findByUsername("mickenzi");
+		User admin = userRepository.findByUsername("mickenzi");
 		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(userDTO.getEmail());
 		mail.setFrom(admin.getEmail());
@@ -150,7 +169,23 @@ public class UserServiceImpl implements UserService {
 			user.setPassword(passwordEncoder.encode(userDTO.getPassword1()));
 			user.setEnabled(false);
 			user.setDeleted(false);
-			user.setRole(userDTO.getRole());
+			System.out.println("Uloga:" + userDTO.getRole());
+			if (userDTO.getRole().equals("ADMIN")) {
+				Role role = roleRepository.findByName("ROLE_ADMIN");
+				user.setUserRole(role);
+			} else if (userDTO.getRole().equals("INSTRUCTOR")) {
+				Role role = roleRepository.findByName("ROLE_INSTRUCTOR");
+				user.setUserRole(role);
+			} else if (userDTO.getRole().equals("USER")) {
+				Role role = roleRepository.findByName("ROLE_USER");
+				user.setUserRole(role);
+			} else if (userDTO.getRole().equals("COTTAGE_OWNER")) {
+				Role role = roleRepository.findByName("ROLE_COTTAGE_OWNER");
+				user.setUserRole(role);
+			} else if (userDTO.getRole().equals("BOAT_OWNER")) {
+				Role role = roleRepository.findByName("ROLE_BOAT_OWNER");
+				user.setUserRole(role);
+			}
 			user.setFirstTimeLogged(false);
 			user.setPenalty(0);
 			userRepository.save(user);
@@ -167,7 +202,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void approveDeleteRequest(Long userId, Long requestId,String text) {
+	public void approveDeleteRequest(Long userId, Long requestId, String text) {
 		User user = userRepository.findById(userId).orElseGet(null);
 		Request request = requestRepository.findById(requestId).orElseGet(null);
 		request.setDeleted(true);
@@ -256,7 +291,7 @@ public class UserServiceImpl implements UserService {
 			List<User> users1 = new ArrayList<>();
 			users1 = userRepository.findAll();
 			for (User u : users1) {
-				if (u.getRole().equals("USER")) {
+				if (u.getUserRole().getName().equals("ROLE_USER")) {
 					users.add(u);
 				}
 			}

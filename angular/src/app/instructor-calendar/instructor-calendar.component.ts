@@ -15,7 +15,6 @@ import { HttpErrorResponse} from '@angular/common/http';
   styleUrls: ['./instructor-calendar.component.css']
 })
 export class InstructorCalendarComponent implements OnInit {
-  id!: number;
   idTermin: number=0;
   start: string = "";
   end: string = "";
@@ -34,6 +33,9 @@ export class InstructorCalendarComponent implements OnInit {
   public reservations: Reservation[]
   public termin: Termin = new Termin();
   public comment: Comment = new Comment();
+  user: User = new User();
+  //@ts-ignore
+  currentUser = JSON.parse(localStorage.getItem('currentUser')); 
   constructor(
 	private route: ActivatedRoute,
 	private router: Router,
@@ -46,18 +48,37 @@ export class InstructorCalendarComponent implements OnInit {
 	  }
 
   ngOnInit(): void {
-	this.id = this.route.snapshot.params['id'];
-	this.getAllTermins();
-	this.getAllReservations();
-	this.flag1=false;
+	 this.flag1=false;
 	this.flag2=false;
 	this.flag3=false;
 	this.flag4=false;
+	if(this.currentUser === null){
+		alert('Niste se ulogovali');
+		this.logOut();
+	}
+	else{
+	this.getUser();
+	this.getAllTermins();
+	this.getAllReservations();
+	}
+  }
+   logOut(){
+	localStorage.removeItem('currentUser');
+	localStorage.clear();
+	this.router.navigate(['/login']);
+  }
+  goBack(): void{
+	this.router.navigate(['/homeInstructor']);
   }
   
-  goBack(): void{
-	this.router.navigate(['/homeInstructor',this.id]);
-  }
+   public getUser(): void{
+		const username = this.currentUser.username1;
+		this.userService.findUser(username).subscribe(
+		 (response: User) => {
+			 this.user = response;
+		 }
+		);
+	}
   
   public showTermin(): void{
 	  if(this.flag1 === false){
@@ -136,7 +157,9 @@ export class InstructorCalendarComponent implements OnInit {
 	}
   
    public getAllTermins(): void{
-		this.adventureService.getAllTermins(this.id).subscribe(
+	   if(this.user.id === undefined){}
+	   else{
+		this.adventureService.getAllTermins(this.user.id).subscribe(
 		 (response: Termin[]) => {
 			 this.termins = response;
 		  },
@@ -144,10 +167,13 @@ export class InstructorCalendarComponent implements OnInit {
 			  alert(error.message);
 		  }
 		);
+	   }
 	}
 	
 	 public getAllReservations(): void{
-		this.adventureService.getAllReservation(this.id).subscribe(
+		if(this.user.id === undefined){}
+		else{
+		this.adventureService.getAllReservation(this.user.id).subscribe(
 		 (response: Reservation[]) => {
 			 this.reservations = response;
 			 console.log(this.reservations);
@@ -156,6 +182,7 @@ export class InstructorCalendarComponent implements OnInit {
 			  alert(error.message);
 		  }
 		);
+	   }
 	}
 	
 	public rejectReservation(reservationId1?: number): void{
@@ -211,6 +238,8 @@ export class InstructorCalendarComponent implements OnInit {
 	}
 	
 	public createComment(userId1?: number): void{
+		if(this.user.id === undefined){}
+		else{
 		this.flag4 = true;
 		if(userId1 === undefined || this.comment.content === null || this.comment.content === undefined || this.comment.content.length === 0){
 			alert('Unesite sadrzaj komentara.');
@@ -220,18 +249,20 @@ export class InstructorCalendarComponent implements OnInit {
 				this.comment.negative = false;
 			}
 			this.userId = userId1;
-			this.reviewService.createComment(this.comment,this.userId,this.id).subscribe(
+			this.reviewService.createComment(this.comment,this.userId,this.user.id).subscribe(
 			(response) => {
 			this.flag4 = false;
 			alert('Uspesno ste kreirali komentar');
 			this.getAllReservations();
 			this.getAllTermins();
+			this.comment.content = undefined;
 			},
 			(error: HttpErrorResponse) =>{
 			alert(error.message);
 			}
 			);
 			
+		}
 		}
 	}
 	

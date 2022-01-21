@@ -62,7 +62,7 @@ export class RegistrationComponent implements OnInit {
           }
         },
         (error: HttpErrorResponse) => {
-          alert(error.message);
+          alert('Neophodno je popuniti sva polja ispravnim podacima.');
         }
 
       );

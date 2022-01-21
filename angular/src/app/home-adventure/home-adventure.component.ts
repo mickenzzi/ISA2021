@@ -15,10 +15,12 @@ import { HttpErrorResponse} from '@angular/common/http';
   styleUrls: ['./home-adventure.component.css']
 })
 export class HomeAdventureComponent implements OnInit {
-  id!: number;
   idAdventure!: number;
   adventure: Adventure = new Adventure();
   termin: Termin = new Termin();
+  user: User = new User();
+  //@ts-ignore
+  currentUser = JSON.parse(localStorage.getItem('currentUser')); 
   constructor(
 	private route: ActivatedRoute,
 	private router: Router,
@@ -28,14 +30,29 @@ export class HomeAdventureComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-	this.id = this.route.snapshot.params['id'];
+	if(this.currentUser === null){
+		alert('Niste se ulogovali');
+		this.logOut();
+	}
+	else{
+	this.getUser();
 	this.idAdventure = this.route.snapshot.params['idAdventure'];
 	this.getAdventure();
+	}
   }
   
   goBack(): void{
-	this.router.navigate(['/homeInstructor', this.id]);
+	this.router.navigate(['/homeInstructor']);
   }
+  
+    public getUser(): void{
+		const username = this.currentUser.username1;
+		this.userService.findUser(username).subscribe(
+		 (response: User) => {
+			 this.user = response;
+		 }
+		);
+	}
   
   public getAdventure(): void{
 		this.adventureService.getAdventure(this.idAdventure).subscribe(
@@ -58,7 +75,9 @@ export class HomeAdventureComponent implements OnInit {
   }
   
   createAction(): void{
-	  this.adventureService.createAction(this.id,this.idAdventure,this.termin).subscribe(
+	  if(this.user.id === undefined){}
+	  else{
+	  this.adventureService.createAction(this.user.id,this.idAdventure,this.termin).subscribe(
 			response=>{
 				alert('Uspesno ste kreirali termin za brzu rezervaciju.');
 			},
@@ -66,6 +85,13 @@ export class HomeAdventureComponent implements OnInit {
 			  alert(error.message);
 		  }
 		);
+	  }
+  }
+  
+   logOut(){
+	localStorage.removeItem('currentUser');
+	localStorage.clear();
+	this.router.navigate(['/login']);
   }
 
 }

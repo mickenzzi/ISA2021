@@ -12,9 +12,10 @@ import { HttpErrorResponse} from '@angular/common/http';
   styleUrls: ['./home-admin-users.component.css']
 })
 export class HomeAdminUsersComponent implements OnInit {
-  id!: number;
   idUser!: number;
-  
+  user: User = new User();
+   //@ts-ignore
+  currentUser = JSON.parse(localStorage.getItem('currentUser')); 
   public users: User[];
   
   constructor(
@@ -24,13 +25,30 @@ export class HomeAdminUsersComponent implements OnInit {
   ) { this.users = []; }
 
   ngOnInit(): void {
-	this.id = this.route.snapshot.params['id'];
-	this.getAllUsers();
+	if(this.currentUser === null){
+		alert('Niste se ulogovali');
+		this.logOut();
+	}
+	else{
+	this.getUser();
+	}
   }
   
+    public getUser(): void{
+		const username = this.currentUser.username1;
+		this.userService.findUser(username).subscribe(
+		 (response: User) => {
+			 this.user = response;
+			 this.getAllUsers();
+			 }
+		);
+	}
   
    public getAllUsers(): void{
-		this.userService.getAllUsers(this.id).subscribe(
+	   if(this.user.id === undefined){
+		}
+		else{
+		this.userService.getAllUsers(this.user.id).subscribe(
 		 (response: User[]) => {
 			 this.users = response;
 		  },
@@ -38,10 +56,17 @@ export class HomeAdminUsersComponent implements OnInit {
 			  alert(error.message);
 		  }
 		);
+		}
 	}
 	
 	goToAdminHome(): void{
-		this.router.navigate(['/homeAdmin',this.id]);
+		this.router.navigate(['/homeAdmin']);
+	}
+	
+	logOut(){
+		localStorage.removeItem('currentUser');
+		localStorage.clear();
+		this.router.navigate(['/login']);
 	}
 	
 	deleteUser(idUser1?: number): void{
@@ -52,8 +77,8 @@ export class HomeAdminUsersComponent implements OnInit {
 		this.idUser = idUser1;
 		this.userService.deleteUser(this.idUser).subscribe(
 		 (response) => {
-			alert('Uspesno ste izbrisali korisnika');
 			this.getAllUsers();
+			alert('Uspesno ste izbrisali korisnika');
 		  },
 		  (error: HttpErrorResponse) =>{
 			  alert(error.message);

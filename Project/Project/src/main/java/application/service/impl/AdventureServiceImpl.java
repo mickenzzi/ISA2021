@@ -109,7 +109,7 @@ public class AdventureServiceImpl implements AdventureService {
 		adventure1.setCancelCondition(adventure.getCancelCondition());
 		adventure1.setEquipment(adventure.getEquipment());
 		adventure1.setImage(adventure.getImage());
-		adventure1.setInstructorBiography(adventure.getCancelCondition());
+		adventure1.setInstructorBiography(adventure.getInstructorBiography());
 		adventure1.setMaxNumber(adventure.getMaxNumber());
 		adventure1.setPriceList(adventure.getPriceList());
 		adventure1.setRule(adventure.getRule());

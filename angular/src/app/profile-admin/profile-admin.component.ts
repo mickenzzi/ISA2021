@@ -12,6 +12,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ProfileAdminComponent implements OnInit {
   user: User = new User();
   id!: number;
+  //@ts-ignore
+  currentUser = JSON.parse(localStorage.getItem('currentUser')); 
   constructor(
 	private route: ActivatedRoute,
 	private router: Router,
@@ -21,12 +23,18 @@ export class ProfileAdminComponent implements OnInit {
 	}
 
   ngOnInit(): void{
-	this.id = this.route.snapshot.params['id'];
+	if(this.currentUser === null){
+	alert('Niste se ulogovali');
+	this.logOut();
+	}
+	else{
 	this.getUser();
+	}
 	}
 	
 	public getUser(): void{
-		this.userService.getUser(this.id).subscribe(
+		const username = this.currentUser.username1;
+		this.userService.findUser(username).subscribe(
 		 (response: User) => {
 			 this.user = response;
 		 }
@@ -40,15 +48,21 @@ export class ProfileAdminComponent implements OnInit {
 		else{
 		this.userService.updateUser(this.user).subscribe(
 			response=>{
-				alert('Korisnik je izmenjen.');
-				this.router.navigate(['/homeAdmin', this.id])
+				alert('Uspesno ste izmenili podatke');
+				this.router.navigate(['/homeAdmin'])
 			}
 		);
 		}
 	}
 	
 	goBack(){
-		this.router.navigate(['/homeAdmin', this.id]);
+		this.router.navigate(['/homeAdmin']);
 	}
+	
+	logOut(){
+		localStorage.removeItem('currentUser');
+		localStorage.clear();
+		this.router.navigate(['/login']);
+  }
 
 }

@@ -12,6 +12,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -54,12 +56,11 @@ public class User implements UserDetails {
 	private boolean deleted;
 	@Column(name = "last_password_reset_date")
 	private Timestamp lastPasswordResetDate;
-	@Column(name = "role")
-	private String role;
 	@Column(name = "first_time_logged")
 	private boolean firstTimeLogged;
 	@Column(name = "penalty")
 	private int penalty;
+	private String role;
 
 	// fetch - Lazy koristimo kada zelimo samo podatke tabele u kojoj se nalazimo a
 	// ne podatke i povezanih tabela
@@ -110,6 +111,10 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "adminComplaint", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Complaint> adminComplains;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "role_id")
+	private Role userRole;
 
 	public Long getId() {
 		return id;
@@ -187,6 +192,14 @@ public class User implements UserDetails {
 		this.username = username;
 	}
 
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
 	public List<Cottage> getCottages() {
 		return cottages;
 	}
@@ -221,12 +234,12 @@ public class User implements UserDetails {
 		this.enabled = enabled;
 	}
 
-	public String getRole() {
-		return role;
+	public Role getUserRole() {
+		return userRole;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setUserRole(Role userRole) {
+		this.userRole = userRole;
 	}
 
 	public List<Request> getRequests() {
@@ -338,7 +351,7 @@ public class User implements UserDetails {
 	}
 
 	public User(Long id, String firstName, String lastName, String address, String city, String country, String phone,
-			String email, String password, String role) {
+			String email, String password, Role role) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -349,7 +362,7 @@ public class User implements UserDetails {
 		this.phone = phone;
 		this.email = email;
 		this.password = password;
-		this.role = role;
+		this.userRole = role;
 	}
 
 	@JsonIgnore

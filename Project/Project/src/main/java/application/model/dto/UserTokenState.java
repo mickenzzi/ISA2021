@@ -1,7 +1,7 @@
 package application.model.dto;
 
 public class UserTokenState {
-	 private String accessToken;
+	 	private String accessToken;
 	    private Long expiresIn;
 
 	    public UserTokenState() {

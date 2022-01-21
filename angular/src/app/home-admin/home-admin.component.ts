@@ -23,7 +23,6 @@ export class HomeAdminComponent implements OnInit {
   public comments: Comment[];
   public complains: Complaint[];
   public complaint1: Complaint = new Complaint();
-  id!: number;
   username: string = "";
   rejectText?: string;
   title: string = "";
@@ -45,6 +44,10 @@ export class HomeAdminComponent implements OnInit {
   flag6?: boolean;
   //show complaint answer panel
   flag7?: boolean;
+  //main admin
+  flag8?: boolean;
+  //@ts-ignore
+  currentUser = JSON.parse(localStorage.getItem('currentUser')); 
   constructor(
 	private route: ActivatedRoute,
 	private router: Router,
@@ -57,19 +60,22 @@ export class HomeAdminComponent implements OnInit {
 		this.comments = [];
 		this.complains = [];
 	  }
-  ngOnInit(): void {
+  ngOnInit(): void { 
 	this.flag1 = false;
 	this.flag2 = false;
 	this.flag3 = false;
 	this.flag4 = false;
 	this.flag5 = false;
 	this.flag6 = false;
-	this.id = this.route.snapshot.params['id'];
+	this.flag7 = false;
+	this.flag8 = false;
+	if(this.currentUser === null){
+		alert('Niste se ulogovali');
+		this.logOut();
+	}
+	else{
 	this.getUser();
-	this.getAllRequest();
-	this.getAllReviews();
-	this.getAllComments();
-	this.getAllComplains();
+	}
   }	
   showHidden(){
 	if(this.flag1 === false){
@@ -81,6 +87,7 @@ export class HomeAdminComponent implements OnInit {
   }
   
   showComments(){
+	this.getAllComments();
 	this.flag1 = false;
 	this.flag2 = false;
 	this.flag4 = false;
@@ -89,6 +96,7 @@ export class HomeAdminComponent implements OnInit {
   }
   
   showNotifications(){
+	this.getAllRequest();
 	this.flag1 = false;
 	this.flag2 = true;
 	this.flag4 = false;
@@ -96,6 +104,7 @@ export class HomeAdminComponent implements OnInit {
 	this.flag6 = false;
   }
   showReviews(){
+	this.getAllReviews();
 	this.flag1 = false;
 	this.flag2 = false;
 	this.flag4 = true;
@@ -103,6 +112,7 @@ export class HomeAdminComponent implements OnInit {
 	this.flag6 = false;
   }
   showComplains(){
+	this.getAllComplains();
 	this.flag1 = false;
 	this.flag2 = false;
 	this.flag4 = false;
@@ -118,35 +128,47 @@ export class HomeAdminComponent implements OnInit {
   }
   
   redirectAdminRegistration(){
-	this.router.navigate(['/registrationAdmin', this.id]);
+	this.router.navigate(['/registrationAdmin']);
   }
   
   logOut(){
+	localStorage.removeItem('currentUser');
+	localStorage.clear();
 	this.router.navigate(['/login']);
   }
   
   goToProfile(){
-	this.router.navigate(['/profileAdmin', this.id]);
+	this.router.navigate(['/profileAdmin']);
   }
   
   goToHomeAdminUsers(){
-	this.router.navigate(['/homeAdminUsers',this.id]);
+	this.router.navigate(['/homeAdminUsers']);
   }
-  
+    
   public getUser(): void{
-		this.userService.getUser(this.id).subscribe(
+		const username = this.currentUser.username1;
+		this.userService.findUser(username).subscribe(
 		 (response: User) => {
 			 this.user = response;
+			 if(this.user.username === "mickenzi"){
+				this.flag8 = true;
+			 }
+			 else{
+				this.flag8 = false;
+			 }
 			 if(this.user.firstTimeLogged === true){
 				alert('Korisnik se loguje prvi put,neophodno je da potvrdi lozinku');
-				this.router.navigate(['/profileAdmin', this.id]);
+				this.router.navigate(['/profileAdmin']);
 			 }
 		 }
 		);
 	}
 	
   public getAllRequest(): void{
-		this.requestService.getAllRequest(this.id).subscribe(
+		if(this.user.id === undefined){
+		}
+		else{
+		this.requestService.getAllRequest(this.user.id).subscribe(
 		 (response: Request[]) => {
 			 this.requests = response;
 		  },
@@ -154,6 +176,7 @@ export class HomeAdminComponent implements OnInit {
 			  alert(error.message);
 		  }
 		);
+		}
 	}
 	
 
@@ -227,7 +250,6 @@ export class HomeAdminComponent implements OnInit {
 	}
 	public deleteComment(commentId1?: number): void{
 		if(commentId1 === undefined){
-			alert('Neispravan id');
 		}
 		else{
 			this.commentId = commentId1;
@@ -327,6 +349,7 @@ export class HomeAdminComponent implements OnInit {
 				this.user1 = response;
 				this.getAllRequest();
 				this.flag3 = false;
+				this.rejectText = undefined;
 				}
 			);
 			}
@@ -338,6 +361,7 @@ export class HomeAdminComponent implements OnInit {
 				this.user1 = response;
 				this.getAllRequest();
 				this.flag3 = false;
+				this.rejectText = undefined;
 				}
 			);
 		}
@@ -347,22 +371,27 @@ export class HomeAdminComponent implements OnInit {
   }
 	
 	public answer(complaintId1?: number): void{
+		if(this.user.id === undefined){
+		}
+		else{
 		this.flag7 = true;
 		if(complaintId1 === undefined || this.complaint1.content === undefined || this.complaint1.content === null || this.complaint1.content.length === 0){
 			alert('Unesite odgovor.');
 		}
 		else{
 			this.complaintId = complaintId1;
-			this.reviewService.answerComplaint(this.complaint1,this.id,this.complaintId).subscribe(
+			this.reviewService.answerComplaint(this.complaint1,this.user.id,this.complaintId).subscribe(
 			(response) => {
 				this.getAllComplains();
 				this.flag7 = false;
 				alert('Uspesno ste odgovorili na zalbu');
+				this.complaint1.content = undefined;
 			},
 			(error: HttpErrorResponse) =>{
 			  alert(error.message);
 			}
 			);
+		}
 		}
 		
 	}
@@ -395,6 +424,7 @@ export class HomeAdminComponent implements OnInit {
 				this.flag3 = false;
 				this.user1 = response;
 				this.getAllRequest();
+				this.rejectText = undefined;
 				}
 			);
 			}
@@ -411,6 +441,7 @@ export class HomeAdminComponent implements OnInit {
 					this.flag3 = false;
 					this.user1 = response;
 					this.getAllRequest();
+					this.rejectText = undefined;
 					}
 				);
 			}

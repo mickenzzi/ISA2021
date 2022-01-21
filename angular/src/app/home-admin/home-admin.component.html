@@ -294,7 +294,7 @@
 	</div>
 	<div style="margin-left:220px; margin-top: 10px;" class="functionality-loyality-program-container">
 		<img src="/assets/img/newUser.png" style="width: 145px; height:170px;">
-		<button (click)="redirectAdminRegistration()" class="button-1" style="margin-left:20px;margin-top:-5px;">Ragistracija</button>
+		<button *ngIf="flag8" (click)="redirectAdminRegistration()" class="button-1" style="margin-left:20px;margin-top:-5px;">Ragistracija</button>
 	</div>
 	<div style="margin-left:375px; margin-top:-220px" class="functionality-advocat-container">
 		<img src="/assets/img/income.png" style="width:150px;height:160px; margin-left:-5px;">

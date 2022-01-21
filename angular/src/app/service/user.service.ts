@@ -2,13 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../model/user';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-	
-  constructor(private http: HttpClient) { }
+  currentUser: User = new User();
+  constructor(
+    private http: HttpClient) { }
   private userUrl = 'http://localhost:8081/myApp/api/users';
   
   public getAllUsers(id: number) {
@@ -46,6 +48,11 @@ export class UserService {
   public updateUser(user: User){
 	return this.http.post(`${this.userUrl}/updateUser`, user);
   }
+  
+  public findUser(username: string){
+	return this.http.get<User>(`${this.userUrl}/whoAmI/${username}`);
+  }
+  
   
 
 }
