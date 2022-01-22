@@ -1,12 +1,15 @@
 package application.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +27,7 @@ import application.util.TokenUtils;
 
 @RestController
 @RequestMapping(value = "/api/users")
+@CrossOrigin
 public class UserController {
 
 	@Autowired
@@ -32,8 +36,8 @@ public class UserController {
 	@Autowired
 	TokenUtils tokenUtils;
 	
-
 	@GetMapping(value = "/getAllUsers/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<User>> getAllUsers(@PathVariable("id") Long id) {
 		List<User> users1 = new ArrayList<User>();
 		List<User> users = userService.findAll();
@@ -47,7 +51,7 @@ public class UserController {
 		}
 		if (!user.getUsername().equals("mickenzi")) {
 			for (User u : users) {
-				if (u.isEnabled() == true && !u.getUsername().equals(user.getUsername()) && !u.getUserRole().getName().equals("ROLE_ADMIN")) {
+				if (u.isEnabled() == true && !u.getUsername().equals(user.getUsername()) && !u.getRoles().get(0).getName().equals("ROLE_ADMIN")) {
 					users1.add(u);
 				}
 			}
@@ -55,8 +59,10 @@ public class UserController {
 		System.out.println("The task /getAllUsers was successfully completed.");
 		return new ResponseEntity<>(users1, HttpStatus.OK);
 	}
-
+	
+	
 	@GetMapping(value = "/getUserById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('ADMIN') or hasRole('USER') or hasROLE('INSTRUCTOR')")
 	public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
 		User user = userService.findById(id);
 		if (user == null) {
@@ -65,8 +71,9 @@ public class UserController {
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		}
 	}
-
+	
 	@GetMapping(value = "/getUserByUsername/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('ADMIN') or hasRole('USER') or hasROLE('INSTRUCTOR')")
 	public ResponseEntity<User> getUserById(@PathVariable("username") String username) {
 		User user = userService.findByUsername(username);
 		if (user == null) {
@@ -77,6 +84,7 @@ public class UserController {
 	}
 
 	@PostMapping(value = "/updateUser", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('ADMIN') or hasRole('INSTRUCTOR') or hasRole('USER')")
 	public ResponseEntity<User> updateUser(@RequestBody UserDTO userDTO) throws Exception {
 		User user = userService.findById(userDTO.getId());
 		if (user == null) {
@@ -95,6 +103,7 @@ public class UserController {
 	}
 	
 	@GetMapping(value = "/deleteUser/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Adventure> deleteUser(@PathVariable("id") Long id) {
 		if (id == null) {
 			System.out.println("Id is null.");
@@ -104,8 +113,9 @@ public class UserController {
 		System.out.println("The task /deleteUser was successfully completed.");
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-
+	
 	@GetMapping(value = "/enableUser/{username}/{idRequest}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<User> enableUser(@PathVariable("username") String username,
 			@PathVariable("idRequest") Long idRequest) throws Exception {
 		User user = userService.findByUsername(username);
@@ -118,8 +128,9 @@ public class UserController {
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		}
 	}
-
+	
 	@GetMapping(value = "/approveDeleteRequest/{username}/{idRequest}/{text}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<User> approveDeleteRequest(@PathVariable("username") String username,
 			@PathVariable("idRequest") Long idRequest, @PathVariable("text") String text) throws Exception {
 		User user = userService.findByUsername(username);
@@ -132,8 +143,9 @@ public class UserController {
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		}
 	}
-
+	
 	@GetMapping(value = "/disableUser/{username}/{idRequest}/{text}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<User> disableUser(@PathVariable("username") String username,
 			@PathVariable("idRequest") Long idRequest, @PathVariable("text") String text) throws Exception {
 		User user = userService.findByUsername(username);
@@ -148,6 +160,7 @@ public class UserController {
 	}
 
 	@GetMapping(value = "/rejectDeleteRequest/{username}/{idRequest}/{text}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<User> rejectDeleteRequest(@PathVariable("username") String username,
 			@PathVariable("idRequest") Long idRequest, @PathVariable("text") String text) throws Exception {
 		User user = userService.findByUsername(username);
@@ -197,9 +210,16 @@ public class UserController {
 	public ResponseEntity<?> whoAmI(@PathVariable("username") String username) 
 	{
 	    User user = (User) userService.findByUsername(username);
-	    user.setRole(user.getUserRole().getName());
+	    user.setRole(user.getRoles().get(0).getName());
 	    		
 		return  new ResponseEntity<User>(user, HttpStatus.OK);
+	}
+	
+	@GetMapping(value="/foo")
+	public Map<String,String> getFoo(){
+		Map<String,String> fooObj = new HashMap<>();
+		fooObj.put("foo", "bar");
+		return fooObj;
 	}
 	
 }

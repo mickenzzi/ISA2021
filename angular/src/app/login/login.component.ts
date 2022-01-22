@@ -53,6 +53,7 @@ export class LoginComponent implements OnInit {
         (response)=> {
 			//@ts-ignore
 			const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+			console.log(currentUser);
 			const username = currentUser.username1;
 			this.userService.findUser(username).subscribe((response: User) =>{
 				this.user = response;

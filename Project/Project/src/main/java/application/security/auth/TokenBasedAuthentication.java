@@ -38,4 +38,5 @@ public class TokenBasedAuthentication extends AbstractAuthenticationToken {
 		return principle;
 	}
 
+
 }

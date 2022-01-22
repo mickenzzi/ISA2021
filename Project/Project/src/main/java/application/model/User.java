@@ -13,7 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -111,10 +112,10 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "adminComplaint", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Complaint> adminComplains;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "role_id")
-	private Role userRole;
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+	private List<Role> roles;
 
 	public Long getId() {
 		return id;
@@ -234,14 +235,6 @@ public class User implements UserDetails {
 		this.enabled = enabled;
 	}
 
-	public Role getUserRole() {
-		return userRole;
-	}
-
-	public void setUserRole(Role userRole) {
-		this.userRole = userRole;
-	}
-
 	public List<Request> getRequests() {
 		return requests;
 	}
@@ -338,6 +331,14 @@ public class User implements UserDetails {
 		this.instructorComplains = instructorComplains;
 	}
 
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
 	public List<Complaint> getAdminComplains() {
 		return adminComplains;
 	}
@@ -351,7 +352,7 @@ public class User implements UserDetails {
 	}
 
 	public User(Long id, String firstName, String lastName, String address, String city, String country, String phone,
-			String email, String password, Role role) {
+			String email, String password) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -362,13 +363,12 @@ public class User implements UserDetails {
 		this.phone = phone;
 		this.email = email;
 		this.password = password;
-		this.userRole = role;
 	}
 
 	@JsonIgnore
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;
+		return this.roles;
 	}
 
 	@JsonIgnore

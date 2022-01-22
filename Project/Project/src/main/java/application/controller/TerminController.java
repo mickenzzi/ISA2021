@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +29,7 @@ public class TerminController {
 	private TerminService terminService;
 
 	@GetMapping(value = "/getAllTerminsInstructor/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<List<Termin>> getAllTerminsInstructor(@PathVariable("id") Long id) {
 		List<Termin> termins = new ArrayList<Termin>();
 		termins = terminService.findAllTerminsInstructor(id);
@@ -36,6 +38,7 @@ public class TerminController {
 	}
 	
 	@GetMapping(value = "/getAllReservationInstructor/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<List<Reservation>> getAllReservationInstructor(@PathVariable("id") Long id) {
 		List<Reservation> reservations = new ArrayList<Reservation>();
 		reservations = terminService.findAllReservationsInstructor(id);
@@ -44,6 +47,7 @@ public class TerminController {
 	}
 	
 	@GetMapping(value = "/getFreeTerminsInstructor{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<List<Termin>> getFreeTerminsInstructor(@PathVariable("id") Long id) {
 		List<Termin> termins = new ArrayList<Termin>();
 		termins = terminService.findFreeTerminsInstructor(id);
@@ -52,6 +56,7 @@ public class TerminController {
 	}
 
 	@GetMapping(value = "/getTerminById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('USER') or hasRole('INSTRUCTOR')")
 	public ResponseEntity<Termin> getTerminById(@PathVariable("id") Long id) {
 		Termin termin = terminService.findById(id);
 		if (termin == null) {
@@ -63,6 +68,7 @@ public class TerminController {
 	}
 
 	@PostMapping(value = "/updateTermin", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<Termin> updateTermin(@RequestBody Termin termin1) throws Exception {
 		Termin termin = terminService.findById(termin1.getId());
 		boolean check = true;
@@ -90,6 +96,7 @@ public class TerminController {
 	}
 
 	@PostMapping(value = "/createTermin", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Termin> createTermin(@RequestBody Termin termin1) {
 		
 		Termin termin = terminService.createTermin(termin1);
@@ -98,6 +105,7 @@ public class TerminController {
 	}
 	
 	@GetMapping(value = "/deleteTermin/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<Termin> deleteTermin(@PathVariable("id") Long id) {
 		if (id == null) {
 			System.out.println("Id is null.");
@@ -109,6 +117,7 @@ public class TerminController {
 	}
 	
 	@GetMapping(value = "/createReservation/{start}/{end}/{adventureId}/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('INSTRUCTO') or hasRole('USER')")
 	public ResponseEntity<Reservation> createReservation(@PathVariable("start") String start,@PathVariable("end") String end,@PathVariable("userId") Long userId,@PathVariable("adventureId") Long adventureId) throws ParseException {
 		if(start.isEmpty() || end.isEmpty()) {
 			System.out.println("Some fields are empty.");
@@ -126,6 +135,7 @@ public class TerminController {
 	}
 	
 	@GetMapping(value = "/deleteReservation/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('INSTRUCTOR') or hasRole('USER')")
 	public ResponseEntity<Termin> deleteReservation(@PathVariable("id") Long id) {
 		if (id == null) {
 			System.out.println("Id is null.");
@@ -137,6 +147,7 @@ public class TerminController {
 	}
 	
 	@GetMapping(value = "/deleteReservationTermin/{id}/{start}/{end}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('INSTRUCTOR') or hasRole('USER')")
 	public ResponseEntity<Termin> deleteReservationTermin(@PathVariable("id") Long id,@PathVariable("start") String start,@PathVariable("end") String end) {
 		if (id == null || start.isEmpty() || end.isEmpty()) {
 			System.out.println("Id is null.");

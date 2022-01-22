@@ -121,19 +121,29 @@ public class UserServiceImpl implements UserService {
 		user.setPassword(passwordEncoder.encode(userDTO.getPassword1()));
 		if (userDTO.getRole().equals("ADMIN")) {
 			Role role = roleRepository.findByName("ROLE_ADMIN");
-			user.setUserRole(role);
+			List<Role> roles = new ArrayList<Role>();
+			roles.add(role);
+			user.setRoles(roles);
 		} else if (userDTO.getRole().equals("INSTRUCTOR")) {
 			Role role = roleRepository.findByName("ROLE_INSTRUCTOR");
-			user.setUserRole(role);
+			List<Role> roles = new ArrayList<Role>();
+			roles.add(role);
+			user.setRoles(roles);
 		} else if (userDTO.getRole().equals("USER")) {
 			Role role = roleRepository.findByName("ROLE_USER");
-			user.setUserRole(role);
+			List<Role> roles = new ArrayList<Role>();
+			roles.add(role);
+			user.setRoles(roles);
 		} else if (userDTO.getRole().equals("COTTAGE_OWNER")) {
 			Role role = roleRepository.findByName("ROLE_COTTAGE_OWNER");
-			user.setUserRole(role);
+			List<Role> roles = new ArrayList<Role>();
+			roles.add(role);
+			user.setRoles(roles);
 		} else if (userDTO.getRole().equals("BOAT_OWNER")) {
 			Role role = roleRepository.findByName("ROLE_BOAT_OWNER");
-			user.setUserRole(role);
+			List<Role> roles = new ArrayList<Role>();
+			roles.add(role);
+			user.setRoles(roles);
 		}
 
 		user.setPenalty(userDTO.getPenalty());
@@ -172,19 +182,29 @@ public class UserServiceImpl implements UserService {
 			System.out.println("Uloga:" + userDTO.getRole());
 			if (userDTO.getRole().equals("ADMIN")) {
 				Role role = roleRepository.findByName("ROLE_ADMIN");
-				user.setUserRole(role);
+				List<Role> roles = new ArrayList<Role>();
+				roles.add(role);
+				user.setRoles(roles);
 			} else if (userDTO.getRole().equals("INSTRUCTOR")) {
 				Role role = roleRepository.findByName("ROLE_INSTRUCTOR");
-				user.setUserRole(role);
+				List<Role> roles = new ArrayList<Role>();
+				roles.add(role);
+				user.setRoles(roles);
 			} else if (userDTO.getRole().equals("USER")) {
 				Role role = roleRepository.findByName("ROLE_USER");
-				user.setUserRole(role);
+				List<Role> roles = new ArrayList<Role>();
+				roles.add(role);
+				user.setRoles(roles);
 			} else if (userDTO.getRole().equals("COTTAGE_OWNER")) {
 				Role role = roleRepository.findByName("ROLE_COTTAGE_OWNER");
-				user.setUserRole(role);
+				List<Role> roles = new ArrayList<Role>();
+				roles.add(role);
+				user.setRoles(roles);
 			} else if (userDTO.getRole().equals("BOAT_OWNER")) {
 				Role role = roleRepository.findByName("ROLE_BOAT_OWNER");
-				user.setUserRole(role);
+				List<Role> roles = new ArrayList<Role>();
+				roles.add(role);
+				user.setRoles(roles);
 			}
 			user.setFirstTimeLogged(false);
 			user.setPenalty(0);
@@ -291,7 +311,7 @@ public class UserServiceImpl implements UserService {
 			List<User> users1 = new ArrayList<>();
 			users1 = userRepository.findAll();
 			for (User u : users1) {
-				if (u.getUserRole().getName().equals("ROLE_USER")) {
+				if (u.getRoles().get(0).getName().equals("ROLE_USER")) {
 					users.add(u);
 				}
 			}

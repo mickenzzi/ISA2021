@@ -20,7 +20,7 @@ export class AuthenticationService {
 	private access_token: any;
 	
 	
-	public loginUser(loginDetails: LoginDetails): Observable<void>{
+	public loginUser(loginDetails: LoginDetails): Observable<void>{		
 		const body = {
 			username: loginDetails.username,
 			password: loginDetails.password

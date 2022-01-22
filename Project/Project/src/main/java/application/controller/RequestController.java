@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ public class RequestController {
 	private RequestService requestService;
 	
 	@GetMapping(value = "/getAllRequests/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<Request>> getAllRequests(@PathVariable("id") Long id) {
 		List<Request> requests = requestService.findAll(id);
 		List<Request> requests1 = new ArrayList<Request>();
@@ -36,6 +38,7 @@ public class RequestController {
 	}
 	
 	@GetMapping(value = "/createRequest/{userId}/{text}", produces = MediaType.APPLICATION_JSON_VALUE )
+	//@PreAuthorize("hasRole('ADMIN') or hasRole('INSTRUCTOR') or hasRole('USER')")
 	public ResponseEntity<Request> createRequest(@PathVariable("userId") Long userId,@PathVariable("text") String text) {
 		Request request1 = requestService.createRequest(userId,text);
 		System.out.println("The task /createRequest was successfully completed.");

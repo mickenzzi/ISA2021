@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ public class ReviewController {
 	private ReviewService reviewService;
 	
 	@GetMapping(value = "/getAllReviews", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('ADMIN') or hasRole('INSTRUCTOR')")
 	public ResponseEntity<List<Review>> getAllReviews() {
 		List<Review> reviews = reviewService.findAll();
 		System.out.println("The task /getAllReviews was successfully completed.");
@@ -32,6 +34,7 @@ public class ReviewController {
 	
 
 	@GetMapping(value = "/getAllUserReservations/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('INSTRUCTOR') or hasRole('USER')")
 	public ResponseEntity<List<Reservation>> getAllReservations(@PathVariable("userId") Long userId) {
 		List<Reservation> reservations = reviewService.findAllUserReservation(userId);
 		System.out.println("The task /getAllUserReservation was successfully completed.");
@@ -40,6 +43,7 @@ public class ReviewController {
 	
 	
 	@GetMapping(value = "/getReviewById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('ADMIN') or hasRole('INSTRUCTOR') or hasRole('USER')")
 	public ResponseEntity<Review> getReviewById(@PathVariable("id") Long id) {
 		Review review = reviewService.findById(id);
 		if (review == null) {
@@ -51,6 +55,7 @@ public class ReviewController {
 	}
 	
 	@PostMapping(value = "/createReview/{adventureId}", produces = MediaType.APPLICATION_JSON_VALUE )
+	//@PreAuthorize("hasRole('USER') or hasRole('INSTRUCTOR')")
 	public ResponseEntity<Review> createReview(@RequestBody Review review1,@PathVariable("adventureId") Long adventureId) {
 		Review review = reviewService.create(review1,adventureId);
 		System.out.println("The task /createReview was successfully completed.");
@@ -58,6 +63,7 @@ public class ReviewController {
 	}
 	
 	@GetMapping(value = "/deleteReview/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('ADMIN') or hasRole('USER') or hasRole('INSTRUCTOR')")
 	public ResponseEntity<Review> deleteReview(@PathVariable("id") Long id) {
 		if (id == null) {
 			System.out.println("Id is null.");
@@ -69,6 +75,7 @@ public class ReviewController {
 	}
 	
 	@GetMapping(value = "/enableReview/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('ADMIN') or hasRole('INSTRUCTOR')")
 	public ResponseEntity<Review> enableReview(@PathVariable("id") Long id) {
 		if (id == null) {
 			System.out.println("Id is null.");

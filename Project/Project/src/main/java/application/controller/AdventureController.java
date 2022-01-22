@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +26,7 @@ import application.service.UserService;
 
 @RestController
 @RequestMapping(value = "/api/adventures")
+@CrossOrigin
 public class AdventureController {
 	@Autowired
 	private AdventureService adventureService;
@@ -31,6 +34,7 @@ public class AdventureController {
 	private UserService userService;
 
 	@GetMapping(value = "/getAllAdventures/{instructorId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<List<Adventure>> getAllAdventures(@PathVariable("instructorId") Long instructorId) {
 		List<Adventure> adventures = new ArrayList<Adventure>();
 		adventures = adventureService.findAll();
@@ -45,6 +49,7 @@ public class AdventureController {
 	}
 
 	@GetMapping(value = "/getSearchAdventures/{instructorId}/{search}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<List<Adventure>> getAllAdventures(@PathVariable("instructorId") Long instructorId,
 			@PathVariable("search") String search) {
 		List<Adventure> adventures = new ArrayList<Adventure>();
@@ -67,6 +72,7 @@ public class AdventureController {
 	}
 
 	@GetMapping(value = "/getAdventureById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<Adventure> getAdventureById(@PathVariable("id") Long id) {
 		Adventure adventure = adventureService.findById(id);
 		if (adventure == null) {
@@ -78,6 +84,7 @@ public class AdventureController {
 	}
 
 	@PostMapping(value = "/updateAdventure", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<Adventure> updateAdventure(@RequestBody Adventure adventure1) throws Exception {
 		Adventure adventure = adventureService.findById(adventure1.getId());
 		if (adventure == null) {
@@ -90,6 +97,7 @@ public class AdventureController {
 	}
 
 	@PostMapping(value = "/createAdventure/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<Adventure> createAdventure(@RequestBody Adventure adventure1, @PathVariable("id") Long id) {
 		if (adventure1.getAddress().isEmpty() || adventure1.getCancelCondition().isEmpty()
 				|| adventure1.getDescription().isEmpty() || adventure1.getEquipment().isEmpty()
@@ -105,6 +113,7 @@ public class AdventureController {
 	}
 
 	@GetMapping(value = "/deleteAdventure/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<Adventure> deleteAdventure(@PathVariable("id") Long id) {
 		if (id == null) {
 			System.out.println("Id is null.");
@@ -116,6 +125,7 @@ public class AdventureController {
 	}
 
 	@GetMapping(value = "/sortAdventuresByTitle/{instructorId}/{asc}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<List<Adventure>> sortAdventuresByTitle(@PathVariable("instructorId") Long instructorId,
 			@PathVariable("asc") boolean asc) {
 		List<Adventure> adventures = new ArrayList<Adventure>();
@@ -125,6 +135,7 @@ public class AdventureController {
 	}
 
 	@GetMapping(value = "/sortAdventuresByPrice/{instructorId}/{asc}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<List<Adventure>> sortAdventuresByPrice(@PathVariable("instructorId") Long instructorId,
 			@PathVariable("asc") boolean asc) {
 		List<Adventure> adventures = new ArrayList<Adventure>();
@@ -134,6 +145,7 @@ public class AdventureController {
 	}
 
 	@GetMapping(value = "/sortAdventuresByCapacity/{instructorId}/{asc}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<List<Adventure>> sortAdventuresByCapacity(@PathVariable("instructorId") Long instructorId,
 			@PathVariable("asc") boolean asc) {
 		System.out.println("Sortiranjee"+asc);
@@ -144,6 +156,7 @@ public class AdventureController {
 	}
 
 	@PostMapping(value = "/createAction/{instructorId}/{adventureId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<Termin> createAction(@RequestBody Termin termin,
 			@PathVariable("instructorId") Long instructorId, @PathVariable("adventureId") Long adventureId)
 			throws ParseException {

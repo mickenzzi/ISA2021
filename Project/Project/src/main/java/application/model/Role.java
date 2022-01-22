@@ -3,7 +3,6 @@ package application.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
-import java.util.List;
 
 import javax.persistence.*;
 
@@ -22,12 +21,7 @@ public class Role implements GrantedAuthority{
 
     @Column(name="name")
     String name;
-    
 
-	@OneToMany(mappedBy = "userRole", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JsonIgnore
-	private List<User> users;
-	
 
     @JsonIgnore
     @Override
@@ -51,14 +45,6 @@ public class Role implements GrantedAuthority{
     public void setId(Long id) {
         this.id = id;
     }
-
-	public List<User> getUsers() {
-		return users;
-	}
-
-	public void setUsers(List<User> users) {
-		this.users = users;
-	}
-    
+   
     
 }
