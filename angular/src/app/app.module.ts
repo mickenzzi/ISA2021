@@ -9,6 +9,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MatTableModule } from '@angular/material/table'
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './interceptor/TokenInterceptor';
 import { HomeAdminComponent } from './home-admin/home-admin.component';
 import { ProfileAdminComponent } from './profile-admin/profile-admin.component';
 import { RegistrationComponent } from './registration/registration.component';
@@ -24,6 +25,13 @@ import { AddAdventureComponent } from './add-adventure/add-adventure.component';
 import { HomeAdventureComponent } from './home-adventure/home-adventure.component';
 import { HomeAdminUsersComponent } from './home-admin-users/home-admin-users.component';
 import { InstructorCalendarComponent } from './instructor-calendar/instructor-calendar.component';
+
+import {UserService} from './service/user.service';
+import {AuthenticationService} from './service/authentication.service';
+import {AdventureService} from './service/adventure.service';
+import {RequestService} from './service/request.service';
+import {ReviewService} from './service/review.service';
+import {ApiService} from './service/api.service';
 
 @NgModule({
   declarations: [
@@ -55,6 +63,17 @@ import { InstructorCalendarComponent } from './instructor-calendar/instructor-ca
     ReactiveFormsModule
   ],
   providers: [
+	{
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
+	AuthenticationService,
+	UserService,
+	AdventureService,
+	ReviewService,
+	RequestService,
+	ApiService,
   ],
   bootstrap: [AppComponent]
 })

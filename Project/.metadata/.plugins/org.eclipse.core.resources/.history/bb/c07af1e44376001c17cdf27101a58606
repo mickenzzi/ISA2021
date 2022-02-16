@@ -1,5 +1,0 @@
-package application.repository;
-
-public interface ReviewRepository {
-
-}

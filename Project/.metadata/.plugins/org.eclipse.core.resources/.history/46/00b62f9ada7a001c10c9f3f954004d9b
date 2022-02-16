@@ -1,6 +1,0 @@
-package application.service;
-
-public interface RoleService {
-	Role findById(Long id);
-	List<Role> findByName(String name);
-}

@@ -79,9 +79,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 
 			// svim korisnicima dopusti da pristupe sledecim putanjama:
-			.authorizeRequests().antMatchers("/auth/**").permitAll()	
+			.authorizeRequests().antMatchers("/auth/**").permitAll()
+								//whoAmI prima username  neki za proveru pa zato ide nakon rute /**
 								.antMatchers("/api/users/whoAmI/**").permitAll()
-								.antMatchers("/api/**").permitAll()		
+								.antMatchers("/api/users/createUser").permitAll()
+								//.antMatchers("/api/**").permitAll()		
 								
 			// ukoliko ne zelimo da koristimo @PreAuthorize anotacije nad metodama kontrolera, moze se iskoristiti hasRole() metoda da se ogranici
 			// koji tip korisnika moze da pristupi odgovarajucoj ruti. Npr. ukoliko zelimo da definisemo da ruti 'admin' moze da pristupi
@@ -93,7 +95,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			
 			// za development svrhe ukljuci konfiguraciju za CORS iz WebConfig klase
 			.cors().and()
-
 			// umetni custom filter TokenAuthenticationFilter kako bi se vrsila provera JWT tokena umesto cistih korisnickog imena i lozinke (koje radi BasicAuthenticationFilter)
 			.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, customUserDetailsService), BasicAuthenticationFilter.class);
 		

@@ -27,7 +27,7 @@ public class CommentController {
 	
 	
 	@GetMapping(value = "/getAllComments", produces = MediaType.APPLICATION_JSON_VALUE)
-	//@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<Comment>> getAllComments() {
 		List<Comment> comments = commentService.findAll();
 		System.out.println("The task /getAllComments was successfully completed.");
@@ -35,7 +35,7 @@ public class CommentController {
 	}
 
 	@GetMapping(value = "/getCommentById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	//@PreAuthorize("hasRole('ADMIN') or hasRole('USER') or hasRole('INSTRUCTOR')")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER') or hasRole('INSTRUCTOR')")
 	public ResponseEntity<Comment> getCommentById(@PathVariable("id") Long id) {
 		Comment comment = commentService.findById(id);
 		if (comment == null) {
@@ -46,7 +46,7 @@ public class CommentController {
 	}
 
 	@PostMapping(value = "/createComment/{userId}/{instructorId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	//@PreAuthorize("hasRole('INSTRUCTOR')")
+	@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<Comment> createComment(@RequestBody Comment comment1, @PathVariable("userId") Long userId,
 			@PathVariable("instructorId") Long instructorId) {
 		Comment comment = commentService.create(comment1, userId, instructorId);
@@ -55,7 +55,7 @@ public class CommentController {
 	}
 	
 	@GetMapping(value = "/enableComment/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	//@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Comment> enableComment(@PathVariable("id") Long id) {
 		if (id == null) {
 			System.out.println("Id is null.");
@@ -67,7 +67,7 @@ public class CommentController {
 	}
 	
 	@GetMapping(value = "/deleteComment/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	//@PreAuthorize("hasRole('ADMIN') or hasRole('INSTRUCTOR')")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('INSTRUCTOR')")
 	public ResponseEntity<Comment> deleteComment(@PathVariable("id") Long id) {
 		if (id == null) {
 			System.out.println("Id is null.");

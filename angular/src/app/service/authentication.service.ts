@@ -37,10 +37,16 @@ export class AuthenticationService {
 	getToken(): string{
 		//@ts-ignore
 		const currentUser =  JSON.parse(localStorage.getItem('currentUser'));
-		console.log(currentUser);
 		const token = currentUser && currentUser.token;
 		return token? token: '';
 	}
 	
+	getToken1(){
+		return this.access_token;
+	}
+	
+	tokenIsPresent() {
+    return this.access_token != undefined && this.access_token != null;
+	}
 
 }

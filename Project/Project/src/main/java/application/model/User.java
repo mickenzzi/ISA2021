@@ -230,6 +230,11 @@ public class User implements UserDetails {
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
 	}
+	
+	@Override
+	public boolean isEnabled() {
+		return enabled;
+	}
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
@@ -389,9 +394,5 @@ public class User implements UserDetails {
 		return true;
 	}
 
-	@Override
-	public boolean isEnabled() {
-		return enabled;
-	}
 
 }

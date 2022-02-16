@@ -25,7 +25,7 @@ public class ComplaintController {
 	private ComplaintService complaintService;
 	
 	@GetMapping(value = "/getAllComplains", produces = MediaType.APPLICATION_JSON_VALUE)
-	//@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<Complaint>> getAllComplains() {
 		List<Complaint> complains = complaintService.findAll();
 		System.out.println("The task /getAllComplains was successfully completed.");
@@ -33,7 +33,7 @@ public class ComplaintController {
 	}
 
 	@GetMapping(value = "/getComplaintById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	//@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	public ResponseEntity<Complaint> getComplaintById(@PathVariable("id") Long id) {
 		Complaint complaint = complaintService.findById(id);
 		if (complaint == null) {
@@ -44,7 +44,7 @@ public class ComplaintController {
 	}
 	
 	@GetMapping(value = "/deleteComplaint/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	//@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Comment> deleteComplaint(@PathVariable("id") Long id) {
 		if (id == null) {
 			System.out.println("Id is null.");
@@ -56,7 +56,7 @@ public class ComplaintController {
 	}
 
 	@PostMapping(value = "/createComplaint/{userId}/{adventureId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	//@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<Complaint> createComplaint(@RequestBody Complaint complaint1, @PathVariable("userId") Long userId,
 			@PathVariable("adventureId") Long adventureId) {
 		Complaint complaint = complaintService.create(complaint1, userId, adventureId);
@@ -65,7 +65,7 @@ public class ComplaintController {
 	}
 	
 	@PostMapping(value = "/answer/{adminId}/{complaintId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	//@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Complaint> answer(@RequestBody Complaint complaint1, @PathVariable("adminId") Long adminId,
 			@PathVariable("complaintId") Long complaintId) {
 		Complaint complaint = complaintService.answer(complaint1, adminId, complaintId);

@@ -1,8 +1,10 @@
 package application.service;
 
+import java.util.List;
+
 import application.model.Role;
 
 public interface RoleService {
 	Role findById(Long id);
-	Role findByName(String name);
+	List<Role> findByName(String name);
 }

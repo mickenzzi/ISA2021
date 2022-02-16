@@ -120,29 +120,19 @@ public class UserServiceImpl implements UserService {
 		user.setEmail(userDTO.getEmail());
 		user.setPassword(passwordEncoder.encode(userDTO.getPassword1()));
 		if (userDTO.getRole().equals("ADMIN")) {
-			Role role = roleRepository.findByName("ROLE_ADMIN");
-			List<Role> roles = new ArrayList<Role>();
-			roles.add(role);
+			List<Role> roles = roleRepository.findByName("ROLE_ADMIN");
 			user.setRoles(roles);
 		} else if (userDTO.getRole().equals("INSTRUCTOR")) {
-			Role role = roleRepository.findByName("ROLE_INSTRUCTOR");
-			List<Role> roles = new ArrayList<Role>();
-			roles.add(role);
+			List<Role> roles = roleRepository.findByName("ROLE_INSTRUCTOR");
 			user.setRoles(roles);
 		} else if (userDTO.getRole().equals("USER")) {
-			Role role = roleRepository.findByName("ROLE_USER");
-			List<Role> roles = new ArrayList<Role>();
-			roles.add(role);
+			List<Role> roles = roleRepository.findByName("ROLE_USER");
 			user.setRoles(roles);
 		} else if (userDTO.getRole().equals("COTTAGE_OWNER")) {
-			Role role = roleRepository.findByName("ROLE_COTTAGE_OWNER");
-			List<Role> roles = new ArrayList<Role>();
-			roles.add(role);
+			List<Role> roles = roleRepository.findByName("ROLE_COTTAGE_OWNER");
 			user.setRoles(roles);
 		} else if (userDTO.getRole().equals("BOAT_OWNER")) {
-			Role role = roleRepository.findByName("ROLE_BOAT_OWNER");
-			List<Role> roles = new ArrayList<Role>();
-			roles.add(role);
+			List<Role> roles = roleRepository.findByName("ROLE_BOAT_OWNER");
 			user.setRoles(roles);
 		}
 
@@ -181,29 +171,19 @@ public class UserServiceImpl implements UserService {
 			user.setDeleted(false);
 			System.out.println("Uloga:" + userDTO.getRole());
 			if (userDTO.getRole().equals("ADMIN")) {
-				Role role = roleRepository.findByName("ROLE_ADMIN");
-				List<Role> roles = new ArrayList<Role>();
-				roles.add(role);
+				List<Role> roles = roleRepository.findByName("ROLE_ADMIN");
 				user.setRoles(roles);
 			} else if (userDTO.getRole().equals("INSTRUCTOR")) {
-				Role role = roleRepository.findByName("ROLE_INSTRUCTOR");
-				List<Role> roles = new ArrayList<Role>();
-				roles.add(role);
+				List<Role> roles = roleRepository.findByName("ROLE_INSTRUCTOR");
 				user.setRoles(roles);
 			} else if (userDTO.getRole().equals("USER")) {
-				Role role = roleRepository.findByName("ROLE_USER");
-				List<Role> roles = new ArrayList<Role>();
-				roles.add(role);
+				List<Role> roles = roleRepository.findByName("ROLE_USER");
 				user.setRoles(roles);
 			} else if (userDTO.getRole().equals("COTTAGE_OWNER")) {
-				Role role = roleRepository.findByName("ROLE_COTTAGE_OWNER");
-				List<Role> roles = new ArrayList<Role>();
-				roles.add(role);
+				List<Role> roles = roleRepository.findByName("ROLE_COTTAGE_OWNER");
 				user.setRoles(roles);
 			} else if (userDTO.getRole().equals("BOAT_OWNER")) {
-				Role role = roleRepository.findByName("ROLE_BOAT_OWNER");
-				List<Role> roles = new ArrayList<Role>();
-				roles.add(role);
+				List<Role> roles = roleRepository.findByName("ROLE_BOAT_OWNER");
 				user.setRoles(roles);
 			}
 			user.setFirstTimeLogged(false);
