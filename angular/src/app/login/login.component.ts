@@ -6,9 +6,7 @@ import { AuthenticationService } from '../service/authentication.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { LoginDetails } from '../model/login-details';
-import { LoggedUserDetails } from '../model/logged-user-details';
 import { User } from '../model/user';
-import { UserTokenState } from '../model/user-token-state';
 
 
 @Component({
@@ -21,13 +19,7 @@ export class LoginComponent implements OnInit {
     username: '',
     password: ''
 	}	
-	loggedUserDetails: LoggedUserDetails = {
-	role: '',
-	id: 0
-	}
-	accesToken: string = '';
 	user: User = new User();
-	ust: UserTokenState = new UserTokenState();
 
     constructor(
         private router: Router,
@@ -37,8 +29,6 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
-		localStorage.removeItem('currentUser');
-		localStorage.clear();
     }
 	goBack(){
 		this.router.navigate(['/']);
@@ -51,13 +41,8 @@ export class LoginComponent implements OnInit {
 		this.authenticationService.loginUser(data)
 		.subscribe(
         (response)=> {
-			//@ts-ignore
-			const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-			console.log(currentUser);
-			const username = currentUser.username1;
-			this.userService.findUser(username).subscribe((response: User) =>{
-				this.user = response;
-			
+			this.userService.findUser(this.loginDetails.username).subscribe((response: User) =>{
+			this.user = response;
 			if(this.user.role === "ROLE_ADMIN"){
 				alert('Uspesno ste se ulogovali');
 				this.router.navigate(['/homeAdmin']);
@@ -67,13 +52,13 @@ export class LoginComponent implements OnInit {
 				this.router.navigate(['/homeInstructor']);
 			}
 			if(this.user.role === "ROLE_USER"){
-				alert('Uspesno ste se ulogovai');
+				alert('Uspesno ste se ulogovali');
 				this.router.navigate(['/homeUser', this.user.id]);
 			}
 			});
 			},
 		 (error: HttpErrorResponse) =>{
-			  alert('Neophodno je prvo izvrsiti registraciju');
+			  alert('Neophodno je prvo izvrsiti registraciju ili nalog jos nije prosao verifikaciju');
 		  }
 		);
 	}

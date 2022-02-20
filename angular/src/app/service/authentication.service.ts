@@ -17,7 +17,7 @@ export class AuthenticationService {
    
     constructor(private http: HttpClient) { }
     private authUrl = 'http://localhost:8081/myApp/auth';
-	private access_token: any;
+	private access_token: any = '';
 	
 	
 	public loginUser(loginDetails: LoginDetails): Observable<void>{		
@@ -31,6 +31,7 @@ export class AuthenticationService {
 			this.access_token = res.accessToken;
 			const token = this.access_token;
 			localStorage.setItem('currentUser', JSON.stringify({username1,token}));
+			console.log(token);
 		}));
     }
 	
@@ -40,10 +41,7 @@ export class AuthenticationService {
 		const token = currentUser && currentUser.token;
 		return token? token: '';
 	}
-	
-	getToken1(){
-		return this.access_token;
-	}
+
 	
 	tokenIsPresent() {
     return this.access_token != undefined && this.access_token != null;

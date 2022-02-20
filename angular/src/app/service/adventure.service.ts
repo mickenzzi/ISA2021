@@ -4,18 +4,22 @@ import { Observable } from 'rxjs';
 import { Adventure } from '../model/adventure';
 import { Termin } from '../model/termin';
 import { Reservation } from '../model/reservation';
+import {AuthenticationService} from './authentication.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdventureService {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+	private http: HttpClient,
+	private auth: AuthenticationService,		
+  ) { }
   private adventureUrl = 'http://localhost:8081/myApp/api/adventures';
   private terminUrl = 'http://localhost:8081/myApp/api/termins';
-    //@ts-ignore
-  currentUser = JSON.parse(localStorage.getItem('currentUser')); 
-  reqHeader = new HttpHeaders().set('Authorization', 'Bearer ' + this.currentUser.token);
+  private token = this.auth.getToken();
+  private reqHeader = new HttpHeaders().set('Authorization', 'Bearer ' + this.token);
+  
   public createAdventure(adventure: Adventure,id: number) {
 	return this.http.post(`${this.adventureUrl}/createAdventure/${id}`, adventure, {headers: this.reqHeader});
   }

@@ -11,12 +11,12 @@ import {AuthenticationService} from './authentication.service';
 export class UserService {
   constructor(
   private http: HttpClient,
-  private auth: AuthenticationService
-  ) { }
+  private auth: AuthenticationService,
+  ) {
+	  }
   private userUrl = 'http://localhost:8081/myApp/api/users';
-  //@ts-ignore
-  currentUser = JSON.parse(localStorage.getItem('currentUser')); 
-  reqHeader = new HttpHeaders().set('Authorization', 'Bearer ' + this.currentUser.token);
+  private token = this.auth.getToken();
+  private reqHeader = new HttpHeaders().set('Authorization', 'Bearer ' + this.token);
   
   public getAllUsers(id: number) {
 	return this.http.get<User[]>(`${this.userUrl}/getAllUsers/${id}`, {headers: this.reqHeader});
@@ -54,7 +54,7 @@ export class UserService {
 	return this.http.post(`${this.userUrl}/updateUser`, user, {headers: this.reqHeader});
   }
   
-  public findUser(username: string){
+  public findUser(username?: string){
 	return this.http.get<User>(`${this.userUrl}/whoAmI/${username}`, {headers: this.reqHeader});
   }
    

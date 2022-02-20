@@ -9,7 +9,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MatTableModule } from '@angular/material/table'
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { TokenInterceptor } from './interceptor/TokenInterceptor';
 import { HomeAdminComponent } from './home-admin/home-admin.component';
 import { ProfileAdminComponent } from './profile-admin/profile-admin.component';
 import { RegistrationComponent } from './registration/registration.component';
@@ -31,7 +30,6 @@ import {AuthenticationService} from './service/authentication.service';
 import {AdventureService} from './service/adventure.service';
 import {RequestService} from './service/request.service';
 import {ReviewService} from './service/review.service';
-import {ApiService} from './service/api.service';
 
 @NgModule({
   declarations: [
@@ -63,17 +61,6 @@ import {ApiService} from './service/api.service';
     ReactiveFormsModule
   ],
   providers: [
-	{
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true
-    },
-	AuthenticationService,
-	UserService,
-	AdventureService,
-	ReviewService,
-	RequestService,
-	ApiService,
   ],
   bootstrap: [AppComponent]
 })

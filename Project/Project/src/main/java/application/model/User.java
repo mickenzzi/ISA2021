@@ -53,8 +53,6 @@ public class User implements UserDetails {
 	private String password;
 	@Column(name = "enabled")
 	private boolean enabled;
-	@Column(name = "deleted")
-	private boolean deleted;
 	@Column(name = "last_password_reset_date")
 	private Timestamp lastPasswordResetDate;
 	@Column(name = "first_time_logged")
@@ -221,14 +219,6 @@ public class User implements UserDetails {
 		Timestamp now = new Timestamp(new Date().getTime());
 		this.setLastPasswordResetDate(now);
 		this.password = password;
-	}
-
-	public boolean isDeleted() {
-		return deleted;
-	}
-
-	public void setDeleted(boolean deleted) {
-		this.deleted = deleted;
 	}
 	
 	@Override

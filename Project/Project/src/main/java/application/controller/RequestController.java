@@ -29,9 +29,7 @@ public class RequestController {
 		List<Request> requests = requestService.findAll(id);
 		List<Request> requests1 = new ArrayList<Request>();
 		for(Request r: requests) {
-			if(r.isDeleted()==false) {
-				requests1.add(r);
-			}
+			requests1.add(r);
 		}
 		System.out.println("The task /getAllRequest was successfully completed.");
 		return new ResponseEntity<>(requests1, HttpStatus.OK);

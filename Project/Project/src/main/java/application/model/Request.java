@@ -20,8 +20,6 @@ public class Request {
 	private String title;
 	@Column(name = "username", nullable = false)
 	private String username;
-	@Column(name = "deleted")
-	private boolean deleted;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private User userRequest;
@@ -52,12 +50,6 @@ public class Request {
 		this.userRequest = userRequest;
 	}
 	
-	public boolean isDeleted() {
-		return deleted;
-	}
-	public void setDeleted(boolean deleted) {
-		this.deleted = deleted;
-	}
 	public Request() {
 		super();
 	}

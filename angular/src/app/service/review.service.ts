@@ -5,19 +5,23 @@ import { Review } from '../model/review';
 import { Complaint } from '../model/complaint';
 import { Comment } from '../model/comment';
 import { Reservation } from '../model/reservation';
+import {AuthenticationService} from './authentication.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReviewService {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+  private http: HttpClient,
+  private auth: AuthenticationService
+  ) { }
+  
   private reviewUrl = 'http://localhost:8081/myApp/api/reviews';
   private commentUrl = 'http://localhost:8081/myApp/api/comments';
   private complaintUrl = 'http://localhost:8081/myApp/api/complains';
-    //@ts-ignore
-  currentUser = JSON.parse(localStorage.getItem('currentUser')); 
-  reqHeader = new HttpHeaders().set('Authorization', 'Bearer ' + this.currentUser.token);
+  private token = this.auth.getToken();
+  private reqHeader = new HttpHeaders().set('Authorization', 'Bearer ' + this.token);
    
   public getAllReviews() {
 	return this.http.get<Review[]>(`${this.reviewUrl}/getAllReviews`, {headers: this.reqHeader});

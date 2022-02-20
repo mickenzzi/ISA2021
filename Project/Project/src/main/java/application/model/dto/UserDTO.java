@@ -15,7 +15,7 @@ public class UserDTO {
 	private String password2;
 	private String username;
 	private String role;
-	private boolean firstTimeLogged;
+
 	private int penalty;
 
 	public Long getId() {

@@ -74,30 +74,28 @@ public class UserServiceImpl implements UserService {
 		user.setEnabled(true);
 		user.setFirstTimeLogged(true);
 		Request request = requestRepository.findById(requestId).orElseGet(null);
-		request.setDeleted(true);
 		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(user.getEmail());
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Verifikacija naloga");
 		mail.setText("Vas nalog je verifikovan.");
 		javaMailSender.send(mail);
-		requestRepository.save(request);
+		requestRepository.delete(request);
 		userRepository.save(user);
 	}
 
 	@Override
 	public void disableUser(Long userId, Long requestId, String text) {
 		User user = userRepository.findById(userId).orElseGet(null);
-		user.setEnabled(false);
+		user.setEnabled(true);
 		Request request = requestRepository.findById(requestId).orElseGet(null);
-		request.setDeleted(true);
 		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(user.getEmail());
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Verifikacija naloga");
 		mail.setText(text);
 		javaMailSender.send(mail);
-		requestRepository.save(request);
+		requestRepository.delete(request);
 		userRepository.save(user);
 	}
 
@@ -168,8 +166,6 @@ public class UserServiceImpl implements UserService {
 			user.setEmail(userDTO.getEmail());
 			user.setPassword(passwordEncoder.encode(userDTO.getPassword1()));
 			user.setEnabled(false);
-			user.setDeleted(false);
-			System.out.println("Uloga:" + userDTO.getRole());
 			if (userDTO.getRole().equals("ADMIN")) {
 				List<Role> roles = roleRepository.findByName("ROLE_ADMIN");
 				user.setRoles(roles);
@@ -193,7 +189,6 @@ public class UserServiceImpl implements UserService {
 			request.setTitle("Zahtev za verifikaciju naloga");
 			request.setUsername(userDTO.getUsername());
 			request.setUserRequest(admin);
-			request.setDeleted(false);
 			requestRepository.save(request);
 			return user;
 		} else {
@@ -205,34 +200,28 @@ public class UserServiceImpl implements UserService {
 	public void approveDeleteRequest(Long userId, Long requestId, String text) {
 		User user = userRepository.findById(userId).orElseGet(null);
 		Request request = requestRepository.findById(requestId).orElseGet(null);
-		request.setDeleted(true);
 		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(user.getEmail());
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Brisanje naloga");
 		mail.setText(text);
 		javaMailSender.send(mail);
-		requestRepository.save(request);
-		user.setDeleted(true);
-		userRepository.save(user);
+		requestRepository.delete(request);
+		userRepository.delete(user);
 
 	}
 
 	@Override
 	public void rejectDeleteRequest(Long userId, Long requestId, String text) {
 		User user = userRepository.findById(userId).orElseGet(null);
-		user.setDeleted(false);
 		Request request = requestRepository.findById(requestId).orElseGet(null);
-		request.setDeleted(true);
 		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(user.getEmail());
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Brisanje naloga");
 		mail.setText(text);
 		javaMailSender.send(mail);
-		requestRepository.save(request);
-		user.setDeleted(false);
-		userRepository.save(user);
+		requestRepository.delete(request);
 	}
 
 	@Override

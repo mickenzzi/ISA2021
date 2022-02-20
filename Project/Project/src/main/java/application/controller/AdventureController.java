@@ -148,7 +148,6 @@ public class AdventureController {
 	@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<List<Adventure>> sortAdventuresByCapacity(@PathVariable("instructorId") Long instructorId,
 			@PathVariable("asc") boolean asc) {
-		System.out.println("Sortiranjee"+asc);
 		List<Adventure> adventures = new ArrayList<Adventure>();
 		adventures = adventureService.sortByCapacity(instructorId, asc);
 		System.out.println("The task /sortAdventuresByCapacity was successfully completed.");

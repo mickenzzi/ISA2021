@@ -42,7 +42,7 @@ public class RequestServiceImpl implements RequestService{
 		List<Request> requests = requestRepository.findAll();
 		List<Request> requests1 = new ArrayList<Request>();
 		for(Request r: requests) {
-			if(r.getUserRequest().getId() == adminId && r.isDeleted() == false){
+			if(r.getUserRequest().getId() == adminId){
 				requests1.add(r);
 			}
 		}
@@ -56,7 +56,6 @@ public class RequestServiceImpl implements RequestService{
 		user = userRepository.findById(userId).orElseGet(null);
 		admin = userRepository.findByUsername("mickenzi");
 		Request request = new Request();
-		request.setDeleted(false);
 		request.setTitle("Zahtev za brisanje naloga-"+text);
 		request.setUsername(user.getUsername());
 		request.setUserRequest(admin);
