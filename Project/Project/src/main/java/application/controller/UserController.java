@@ -42,14 +42,16 @@ public class UserController {
 		User user = userService.findById(id);
 		if (user.getUsername().equals("mickenzi")) {
 			for (User u : users) {
-				if (u.isEnabled() == true && !u.getUsername().equals(user.getUsername())) {
+				if (!u.getUsername().equals(user.getUsername())) {
+					u.setRole(userService.convertRole(u.getRoles().get(0).getName()));
 					users1.add(u);
 				}
 			}
 		}
 		if (!user.getUsername().equals("mickenzi")) {
 			for (User u : users) {
-				if (u.isEnabled() == true && !u.getUsername().equals(user.getUsername()) && !u.getRoles().get(0).getName().equals("ROLE_ADMIN")) {
+				if (!u.getUsername().equals(user.getUsername()) && !u.getRoles().get(0).getName().equals("ROLE_ADMIN")) {
+					u.setRole(userService.convertRole(u.getRoles().get(0).getName()));
 					users1.add(u);
 				}
 			}
@@ -203,6 +205,7 @@ public class UserController {
 		}
 
 	}
+	
 	
 	@GetMapping(value = "/whoAmI/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> whoAmI(@PathVariable("username") String username) 

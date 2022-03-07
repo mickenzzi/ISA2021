@@ -34,7 +34,7 @@ public class AdventureController {
 	private UserService userService;
 
 	@GetMapping(value = "/getAllAdventures/{instructorId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	@PreAuthorize("hasRole('INSTRUCTOR')")
+	@PreAuthorize("hasRole('INSTRUCTOR') or hasRole('ADMIN')")
 	public ResponseEntity<List<Adventure>> getAllAdventures(@PathVariable("instructorId") Long instructorId) {
 		List<Adventure> adventures = new ArrayList<Adventure>();
 		adventures = adventureService.findAll();
@@ -113,7 +113,7 @@ public class AdventureController {
 	}
 
 	@GetMapping(value = "/deleteAdventure/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	@PreAuthorize("hasRole('INSTRUCTOR')")
+	@PreAuthorize("hasRole('INSTRUCTOR') or hasRole('ADMIN')")
 	public ResponseEntity<Adventure> deleteAdventure(@PathVariable("id") Long id) {
 		if (id == null) {
 			System.out.println("Id is null.");

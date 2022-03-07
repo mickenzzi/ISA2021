@@ -82,7 +82,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests().antMatchers("/auth/**").permitAll()
 								//whoAmI prima username  neki za proveru pa zato ide nakon rute /**
 								.antMatchers("/api/users/whoAmI/**").permitAll()
-								.antMatchers("/api/users/createUser").permitAll()
+								.antMatchers("/api/users/createUser/**").permitAll()
 								//.antMatchers("/api/**").permitAll()		
 								
 			// ukoliko ne zelimo da koristimo @PreAuthorize anotacije nad metodama kontrolera, moze se iskoristiti hasRole() metoda da se ogranici

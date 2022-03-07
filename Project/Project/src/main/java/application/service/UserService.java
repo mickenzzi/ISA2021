@@ -19,5 +19,6 @@ public interface UserService {
 	void rejectDeleteRequest(Long userId, Long requestId, String text);
 	void deleteUser(Long userId);
 	void updateUser(UserDTO userDTO);
+	String convertRole(String role);
 	boolean createAction(Long instructorId,Long adventureId,Termin term) throws ParseException;
 }

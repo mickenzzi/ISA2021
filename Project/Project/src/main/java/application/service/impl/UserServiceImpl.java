@@ -296,4 +296,25 @@ public class UserServiceImpl implements UserService {
 		return free;
 	}
 
+	@Override
+	public String convertRole(String role) {
+		String finalRole = "";
+		if(role.equals("ROLE_ADMIN")) {
+			finalRole = "Admin";
+		}
+		else if(role.equals("ROLE_INSTRUCTOR")) {
+			finalRole = "Instruktor pecanja";
+		}
+		else if(role.equals("ROLE_USER")) {
+			finalRole = "Klijent";
+		}
+		else if(role.equals("ROLE_BOAT_OWNER")) {
+			finalRole = "Vlasnik broda";
+		}
+		else {
+			finalRole = "Vlasnik vikendice";
+		}
+		return finalRole;
+	}
+
 }

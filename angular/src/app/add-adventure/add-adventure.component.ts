@@ -20,7 +20,7 @@ export class AddAdventureComponent implements OnInit {
   public adventure: Adventure = new Adventure();
   user: User = new User();
   //@ts-ignore
-  currentUser = JSON.parse(localStorage.getItem('currentUser')); 
+  currentUser = JSON.parse(localStorage.getItem('currentUser'));
   constructor(
 	private route: ActivatedRoute,
 	private router: Router,
@@ -37,17 +37,17 @@ export class AddAdventureComponent implements OnInit {
 		this.getUser();
 	}
   }
-  
+
   goBack(){
 	this.router.navigate(['/homeInstructor']);
   }
-  
+
   logOut(){
 	localStorage.removeItem('currentUser');
 	localStorage.clear();
 	this.router.navigate(['/login']);
   }
-  
+
    public getUser(): void{
 		const username = this.currentUser.username1;
 		this.userService.findUser(username).subscribe(
@@ -56,7 +56,7 @@ export class AddAdventureComponent implements OnInit {
 		 }
 		);
 	}
-  
+
   addAdventure(): void{
 	  if(this.user.id === undefined){}
 	  else{
@@ -87,6 +87,6 @@ export class AddAdventureComponent implements OnInit {
       );
   }
   }
- 
+
 
 }
