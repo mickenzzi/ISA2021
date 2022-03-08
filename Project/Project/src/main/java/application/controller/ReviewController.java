@@ -1,5 +1,6 @@
 package application.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,15 @@ public class ReviewController {
 		else {
 			return new ResponseEntity<>(review, HttpStatus.OK);
 		}
+	}
+	
+	@GetMapping(value = "/getReview/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<List<Review>> getReview(@PathVariable("id") Long id) {
+		Review review = reviewService.findById(id);
+		List<Review> reviews = new ArrayList<Review>();
+		reviews.add(review);
+		return new ResponseEntity<>(reviews, HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/createReview/{adventureId}", produces = MediaType.APPLICATION_JSON_VALUE )

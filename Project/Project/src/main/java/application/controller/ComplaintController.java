@@ -1,5 +1,6 @@
 package application.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,15 @@ public class ComplaintController {
 		} else {
 			return new ResponseEntity<>(complaint, HttpStatus.OK);
 		}
+	}
+	
+	@GetMapping(value = "/getComplaint/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<List<Complaint>> getComplaint(@PathVariable("id") Long id) {
+		Complaint complaint = complaintService.findById(id);
+		List<Complaint> complains = new ArrayList<Complaint>();
+		complains.add(complaint);
+		return new ResponseEntity<>(complains, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/deleteComplaint/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -15,7 +15,7 @@ import { HttpErrorResponse} from '@angular/common/http';
   templateUrl: './home-admin.component.html',
   styleUrls: ['./home-admin.component.css']
 })
-export class HomeAdminComponent implements OnInit {  
+export class HomeAdminComponent implements OnInit {
   user: User = new User();
   user1: User = new User();
   public requests: Request[];
@@ -47,7 +47,7 @@ export class HomeAdminComponent implements OnInit {
   //main admin
   flag8?: boolean;
   //@ts-ignore
-  currentUser = JSON.parse(localStorage.getItem('currentUser')); 
+  currentUser = JSON.parse(localStorage.getItem('currentUser'));
   constructor(
 	private route: ActivatedRoute,
 	private router: Router,
@@ -60,7 +60,7 @@ export class HomeAdminComponent implements OnInit {
 		this.comments = [];
 		this.complains = [];
 	  }
-  ngOnInit(): void { 
+  ngOnInit(): void {
 	this.flag1 = false;
 	this.flag2 = false;
 	this.flag3 = false;
@@ -76,7 +76,7 @@ export class HomeAdminComponent implements OnInit {
 	else{
 	this.getUser();
 	}
-  }	
+  }
   showHidden(){
 	if(this.flag1 === false){
 		this.flag1 = true;
@@ -85,7 +85,7 @@ export class HomeAdminComponent implements OnInit {
 		this.flag1 = false;
 	}
   }
-  
+
   showComments(){
 	this.getAllComments();
 	this.flag1 = false;
@@ -94,7 +94,7 @@ export class HomeAdminComponent implements OnInit {
 	this.flag5 = true;
 	this.flag6 = false;
   }
-  
+
   showNotifications(){
 	this.getAllRequest();
 	this.flag1 = false;
@@ -119,32 +119,32 @@ export class HomeAdminComponent implements OnInit {
 	this.flag5 = false;
 	this.flag6 = true;
   }
-  
+
   closeNotification(){
 	this.flag2 = false;
 	this.flag4 = false;
 	this.flag5 = false;
 	this.flag6 = false;
   }
-  
+
   redirectAdminRegistration(){
 	this.router.navigate(['/registrationAdmin']);
   }
-  
+
   logOut(){
 	localStorage.removeItem('currentUser');
 	localStorage.clear();
 	this.router.navigate(['/login']);
   }
-  
+
   goToProfile(){
 	this.router.navigate(['/profileAdmin']);
   }
-  
+
   goToHomeAdminUsers(){
 	this.router.navigate(['/homeAdminUsers']);
   }
-    
+
   public getUser(): void{
 		const username = this.currentUser.username1;
 		this.userService.findUser(username).subscribe(
@@ -163,7 +163,7 @@ export class HomeAdminComponent implements OnInit {
 		 }
 		);
 	}
-	
+
   public getAllRequest(): void{
 		if(this.user.id === undefined){
 		}
@@ -178,7 +178,67 @@ export class HomeAdminComponent implements OnInit {
 		);
 		}
 	}
-	
+
+  public getRequest(): void{
+    if(this.idRequest === undefined){
+    }
+    else{
+      this.requestService.getRequest(this.idRequest).subscribe(
+        (response: Request[]) => {
+          this.requests = response;
+        },
+        (error: HttpErrorResponse) =>{
+          alert(error.message);
+        }
+      );
+    }
+  }
+
+  public getComment(): void{
+    if(this.commentId === undefined){
+    }
+    else{
+      this.reviewService.getSingleComment(this.commentId).subscribe(
+        (response: Comment[]) => {
+          this.comments = response;
+        },
+        (error: HttpErrorResponse) =>{
+          alert(error.message);
+        }
+      );
+    }
+  }
+
+  public getComplaint(): void{
+    if(this.complaintId === undefined){
+    }
+    else{
+      this.reviewService.getSingleComplaint(this.complaintId).subscribe(
+        (response: Complaint[]) => {
+          this.complains = response;
+        },
+        (error: HttpErrorResponse) =>{
+          alert(error.message);
+        }
+      );
+    }
+  }
+
+  public getReview(): void{
+    if(this.reviewId === undefined){
+    }
+    else{
+      this.reviewService.getSingleReview(this.reviewId).subscribe(
+        (response: Review[]) => {
+          this.reviews = response;
+        },
+        (error: HttpErrorResponse) =>{
+          alert(error.message);
+        }
+      );
+    }
+  }
+
 
 	public getAllReviews(): void{
 		this.reviewService.getAllReviews().subscribe(
@@ -190,7 +250,7 @@ export class HomeAdminComponent implements OnInit {
 		  }
 		);
 	}
-	
+
 	public getAllComments(): void{
 		this.reviewService.getAllComments().subscribe(
 		 (response: Comment[]) => {
@@ -201,7 +261,7 @@ export class HomeAdminComponent implements OnInit {
 		  }
 		);
 	}
-	
+
 	public getAllComplains(): void{
 		this.reviewService.getAllComplains().subscribe(
 		 (response: Complaint[]) => {
@@ -212,7 +272,7 @@ export class HomeAdminComponent implements OnInit {
 		  }
 		);
 	}
-	
+
 	public enableReview(reviewId1?: number): void{
 		if(reviewId1 === undefined){
 			alert('Neispravan id');
@@ -230,7 +290,7 @@ export class HomeAdminComponent implements OnInit {
 			);
 		}
 	}
-	
+
 	public enableComment(commentId1?: number): void{
 		if(commentId1 === undefined){
 			alert('Neispravan id');
@@ -264,7 +324,7 @@ export class HomeAdminComponent implements OnInit {
 			);
 		}
 	}
-	
+
 	public deleteComplaint(complaintId1?: number): void{
 		if(complaintId1 === undefined){
 			alert('Neispravan id');
@@ -282,8 +342,8 @@ export class HomeAdminComponent implements OnInit {
 			);
 		}
 	}
-	
-	
+
+
 	public disableReview(reviewId1?: number): void{
 		if(reviewId1 === undefined){
 			alert('Neispravan id');
@@ -301,7 +361,7 @@ export class HomeAdminComponent implements OnInit {
 			);
 		}
 	}
-	
+
 	public deleteReview(reviewId1?: number): void{
 		if(reviewId1 === undefined){
 			alert('Neispravan id');
@@ -319,8 +379,8 @@ export class HomeAdminComponent implements OnInit {
 			);
 		}
 	}
-	
-	
+
+
   public enableUser(username1?: string, title1?: string, idRequest1?: number):void{
 	  if(username1 === undefined){
 		alert("Korisnicko ime ne postoji");
@@ -341,6 +401,7 @@ export class HomeAdminComponent implements OnInit {
 			this.flag3 = true;
 			if(this.rejectText === undefined || this.rejectText === null || this.rejectText.length === 0){
 				alert('Unos razloga odbijanja je obavezan');
+        this.getRequest();
 			}
 			else{
 			this.userService.approveDeleteRequest(this.username, this.idRequest, this.rejectText).subscribe(
@@ -369,7 +430,7 @@ export class HomeAdminComponent implements OnInit {
 	  }
 	}
   }
-	
+
 	public answer(complaintId1?: number): void{
 		if(this.user.id === undefined){
 		}
@@ -377,6 +438,7 @@ export class HomeAdminComponent implements OnInit {
 		this.flag7 = true;
 		if(complaintId1 === undefined || this.complaint1.content === undefined || this.complaint1.content === null || this.complaint1.content.length === 0){
 			alert('Unesite odgovor.');
+      this.getComplaint();
 		}
 		else{
 			this.complaintId = complaintId1;
@@ -393,9 +455,9 @@ export class HomeAdminComponent implements OnInit {
 			);
 		}
 		}
-		
+
 	}
-  
+
   public disableUser(username1?: string, title1?: string, idRequest1?: number):void{
 	  if(username1 === undefined){
 		alert("Korisnicko ime ne postoji");
@@ -416,6 +478,7 @@ export class HomeAdminComponent implements OnInit {
 			this.flag3 = true;
 			if(this.rejectText === undefined || this.rejectText === null || this.rejectText.length === 0){
 				alert('Unos razloga odbijanja je obavezan');
+        this.getRequest();
 			}
 			else{
 			this.userService.rejectDeleteRequest(this.username, this.idRequest, this.rejectText).subscribe(
@@ -433,6 +496,7 @@ export class HomeAdminComponent implements OnInit {
 			this.flag3 = true;
 			if(this.rejectText === undefined || this.rejectText === null || this.rejectText.length === 0){
 				alert('Unos razloga odbijanja je obavezan');
+        this.getRequest();
 			}
 			else{
 				this.userService.disableUser(this.username, this.idRequest, this.rejectText).subscribe(
@@ -449,5 +513,13 @@ export class HomeAdminComponent implements OnInit {
 		}
 	  }
 	}
+  }
+
+  public closeRejectPanel(): void{
+    this.flag3 = false;
+    this.getAllRequest();
+    this.getAllComments();
+    this.getAllComplains();
+    this.getAllReviews();
   }
 }

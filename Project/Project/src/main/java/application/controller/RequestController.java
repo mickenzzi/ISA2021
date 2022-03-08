@@ -23,6 +23,7 @@ public class RequestController {
 	@Autowired
 	private RequestService requestService;
 	
+	//user id
 	@GetMapping(value = "/getAllRequests/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<Request>> getAllRequests(@PathVariable("id") Long id) {
@@ -33,6 +34,16 @@ public class RequestController {
 		}
 		System.out.println("The task /getAllRequest was successfully completed.");
 		return new ResponseEntity<>(requests1, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getRequest/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<List<Request>> getRequest(@PathVariable("id") Long id){
+		Request request = requestService.findById(id);
+		List<Request> requests = new ArrayList<Request>();
+		requests.add(request);
+		System.out.println("The task /getRequest was successfully completed.");
+		return new ResponseEntity<>(requests, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/createRequest/{userId}/{text}", produces = MediaType.APPLICATION_JSON_VALUE )

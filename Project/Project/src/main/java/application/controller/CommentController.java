@@ -1,5 +1,6 @@
 package application.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,15 @@ public class CommentController {
 		} else {
 			return new ResponseEntity<>(comment, HttpStatus.OK);
 		}
+	}
+	
+	@GetMapping(value = "/getComment/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<List<Comment>> getComment(@PathVariable("id") Long id) {
+		Comment comment = commentService.findById(id);
+		List<Comment> comments = new ArrayList<Comment>();
+		comments.add(comment);
+		return new ResponseEntity<>(comments, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/createComment/{userId}/{instructorId}", produces = MediaType.APPLICATION_JSON_VALUE)
