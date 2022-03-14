@@ -225,7 +225,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean createAction(Long instructorId, Long adventureId, Termin term) throws ParseException {
+	public boolean createAction(Long instructorId, Long adventureId, Termin term, Double price, Long capacity) throws ParseException {
 		boolean free;
 		free = true;
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyy HH:mm:ss");
@@ -271,6 +271,8 @@ public class UserServiceImpl implements UserService {
 			termin1.setStart(term.getStart());
 			termin1.setEnd(term.getEnd());
 			termin1.setDuration(term.getDuration());
+			termin1.setPrice(price);
+			termin1.setCapacity(capacity);
 			termin1.setAction(true);
 			termin1.setReserved(false);
 			User instructor = userRepository.findById(instructorId).orElseGet(null);

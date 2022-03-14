@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { InstructorCalendarComponent } from './instructor-calendar.component';
+import {InstructorCalendarComponent} from './instructor-calendar.component';
 
 describe('InstructorCalendarComponent', () => {
   let component: InstructorCalendarComponent;
@@ -8,9 +8,9 @@ describe('InstructorCalendarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InstructorCalendarComponent ]
+      declarations: [InstructorCalendarComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

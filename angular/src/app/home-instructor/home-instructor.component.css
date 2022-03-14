@@ -24,30 +24,16 @@ p {
   flex: 1;
 }
 
-.content{
-  background-color: #F9FAFB;
+.content {
+  background-color: #F8F4F9;
 }
 
-.toolbar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  background-color: rgba(74, 74, 74);
-  color: white;
-  font-weight: 600;
-}
-
-
-.menu-img{
+.menu-img {
   width: 20px;
   height: 20px;
 }
 
-.menu-container{
+.menu-container {
   position: absolute;
   background-color: #F6F8FA;
   width: 150px;
@@ -58,36 +44,39 @@ p {
   border-color: #C4C1BD;
   z-index: 9;
 }
-.menu-container-button{
+
+.menu-container-button {
   border: none;
   width: 100%;
   height: 30%;
   justify-content: left;
   text-align: left;
-  font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-family: system-ui, -apple-system, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   font-weight: 600;
   background-color: #EAECEC;
 }
+
 .menu-container-button:hover {
   background-color: #D1E2F4
 }
 
-.menu-container-button-image{
+.menu-container-button-image {
   height: 17px;
   width: 17px;
-  margin-left:5px;
+  margin-left: 5px;
 }
 
-.notification-panel{
+.notification-panel {
   width: 600px;
   height: 250px;
-  background-color: rgba(78,89,103,0.8);
+  background-color: rgba(78, 89, 103, 0.8);
   border-style: ridge;
   margin-left: 598px;
   z-index: 8;
 }
-.notification-panel-header{
+
+.notification-panel-header {
   width: 600px;
   height: 50px;
   background-color: #AEBACA;
@@ -95,27 +84,28 @@ p {
   margin-left: 600px;
 }
 
-.notification-panel-button{
+.notification-panel-button {
   margin-left: 230px;
   margin-top: 10px;
 }
-.notification-panel-button-img{
+
+.notification-panel-button-img {
   width: 15px;
   height: 15px;
 }
 
-.title{
-  font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+.title {
+  font-family: system-ui, -apple-system, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 20px;
   font-weight: 600;
 }
-.delete-container{
+
+.delete-container {
   width: 300px;
   height: 300px;
-  background-color: rgba(78,89,103,0.8);
+  background-color: rgba(78, 89, 103, 0.8);
   display: inline-block;
 }
-
 
 
 .button-1 {
@@ -127,7 +117,7 @@ p {
   cursor: pointer;
   direction: ltr;
   display: block;
-  font-family: "SF Pro Text","SF Pro Icons","AOS Icons","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-family: "SF Pro Text", "SF Pro Icons", "AOS Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 15px;
   font-weight: 400;
   letter-spacing: -.022em;
@@ -166,45 +156,45 @@ p {
 }
 
 .table {
-  width:100%;
-  border:1px solid;
+  width: 100%;
+  border: 1px solid;
 }
 
 .table-header {
-  display:flex;
-  width:100%;
-  background:#000;
+  display: flex;
+  width: 100%;
+  background: #000;
 }
 
 .table-row {
-  display:flex;
-  width:100%;
+  display: flex;
+  width: 100%;
 }
 
 .table-data, .header__item {
   flex: 1 1 20%;
-  text-align:center;
+  text-align: center;
 }
 
-.table-data{
-  background:#D1D4D8;
+.table-data {
+  background: #D1D4D8;
 }
 
 .header__item {
-  text-transform:uppercase;
+  text-transform: uppercase;
 }
 
-.approve-button{
+.approve-button {
   background-color: #3FBF35;
   color: #FFFFFF;
 }
 
-.disable-button{
+.disable-button {
   background-color: #F21717;
   color: #FFFFFF;
 }
 
-.cards{
+.cards {
   width: auto;
   height: auto;
   background-color: rgba(210, 210, 210, 0.8);
@@ -218,7 +208,7 @@ p {
   padding-bottom: 5px;
 }
 
-.cards-img{
+.cards-img {
   width: 170px;
   height: 100px;
   margin: 0 auto;
@@ -228,7 +218,7 @@ p {
   position: relative;
 }
 
-.img-add-button{
+.img-add-button {
   width: 20px;
   height: 20px;
   margin: 0 auto;
@@ -236,6 +226,7 @@ p {
   position: relative;
   background-color: blue;
 }
+
 .button-2 {
   align-items: center;
   background-clip: padding-box;
@@ -247,7 +238,7 @@ p {
   color: #fff;
   cursor: pointer;
   display: inline-flex;
-  font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-family: system-ui, -apple-system, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   font-weight: 600;
   justify-content: center;

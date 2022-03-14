@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { HomeAdminUsersComponent } from './home-admin-users.component';
+import {HomeAdminUsersComponent} from './home-admin-users.component';
 
 describe('HomeAdminUsersComponent', () => {
   let component: HomeAdminUsersComponent;
@@ -8,9 +8,9 @@ describe('HomeAdminUsersComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HomeAdminUsersComponent ]
+      declarations: [HomeAdminUsersComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

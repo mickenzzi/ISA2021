@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpErrorResponse} from '@angular/common/http';
-import { UserService } from '../service/user.service';
-import { User } from '../model/user';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {HttpErrorResponse} from '@angular/common/http';
+import {UserService} from '../service/user.service';
+import {User} from '../model/user';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-registration',
@@ -24,15 +24,18 @@ export class RegistrationComponent implements OnInit {
     role: ''
   }
   flag1 = true;
+
   constructor(
-			private userService: UserService,
-			private router: Router
-  ) { }
+    private userService: UserService,
+    private router: Router
+  ) {
+  }
 
   ngOnInit(): void {
   }
-  goBack(){
-	this.router.navigate(['/']);
+
+  goBack() {
+    this.router.navigate(['/']);
   }
 
   createUser(): void {
@@ -54,20 +57,18 @@ export class RegistrationComponent implements OnInit {
         response => {
           if (data.firstName === "" || data.lastName === "" || data.address === "" || data.city === "" || data.country === "" || data.phone === "" || data.email === "" || data.username === "" || data.password1 === "" || data.password2 === "" || data.role === "") {
             this.flag1 = false;
-          }
-          else {
+          } else {
             this.flag1 = true;
-			this.router.navigate(['/login']);
+            this.router.navigate(['/login']);
             alert('Nalog poslat na verifikaciju');
           }
         },
         (error: HttpErrorResponse) => {
           alert('Neophodno je popuniti sva polja ispravnim podacima.');
         }
-
       );
 
   };
-  
+
 
 }

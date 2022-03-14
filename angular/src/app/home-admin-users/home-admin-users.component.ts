@@ -113,7 +113,7 @@ export class HomeAdminUsersComponent implements OnInit {
     } else {
       this.idUser = idUser1;
       this.userService.deleteUser(this.idUser).subscribe((response) => {
-        this.flag1=false;
+        this.flag1 = false;
         this.getAllUsers();
         alert('Uspesno ste izbrisali korisnika');
       }, (error: HttpErrorResponse) => {

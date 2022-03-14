@@ -26,6 +26,10 @@ public class Termin {
 	private boolean reserved;
 	@Column(name = "is_action")
 	private boolean action;
+	@Column(name = "price")
+	private double price;
+	@Column(name = "capacity")
+	private Long capacity;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "adventure_id")
@@ -85,6 +89,22 @@ public class Termin {
 
 	public void setAction(boolean action) {
 		this.action = action;
+	}	
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public Long getCapacity() {
+		return capacity;
+	}
+
+	public void setCapacity(Long capacity) {
+		this.capacity = capacity;
 	}
 
 	public Termin() {

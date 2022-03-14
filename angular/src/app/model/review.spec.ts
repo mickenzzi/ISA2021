@@ -1,4 +1,4 @@
-import { Review } from './review';
+import {Review} from './review';
 
 describe('Review', () => {
   it('should create an instance', () => {

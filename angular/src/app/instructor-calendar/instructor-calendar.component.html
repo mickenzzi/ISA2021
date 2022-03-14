@@ -1,553 +1,111 @@
-<style>
- :host {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-size: 14px;
-    color: #333;
-    box-sizing: border-box;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+<body class="content">
+<div class="toolbar">
+  <button (click)="goBack()" class="button-2" style="margin-left:30px;"> Nazad</button>
+  <button (click)="showTermin()" class="button-2" style="margin-left:150px;">Termini</button>
+  <button (click)="showReservation()" class="button-2" style="margin-left:50px;">Rezervacije</button>
+</div>
+<br><br><br><br>
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    margin: 8px 0;
-  }
+<div *ngIf="flag1" class="notification-panel" style="margin-top:100px; margin-left:100px;">
+  <table class="table">
+    <tr class="table-header">
+      <th class="header__item">Datum pocetka</th>
+      <th class="header__item">Datum zavrsetka</th>
+      <th class="header__item">Akcija</th>
+      <th class="header__item">Rezervisan</th>
+      <th class="header__item"></th>
+      <th class="header__item"></th>
+    </tr>
+    <tr *ngFor="let termin of termins" class="table-row">
+      <td class="table-data">{{termin.start}}</td>
+      <td class="table-data">{{termin.end}}</td>
+      <td class="table-data">{{termin.action}}</td>
+      <td class="table-data">{{termin.reserved}}</td>
+      <td class="table-data">
+        <button (click)="editTerminShow(termin.id)" *ngIf="!termin.reserved" class="approve-button">Izmeni</button>
+      </td>
+      <td class="table-data">
+        <button (click)="deleteTermin(termin.id)" *ngIf="!termin.reserved" class="disable-button">Obrisi</button>
+      </td>
+    </tr>
+  </table>
+</div>
 
-  p {
-    margin: 0;
-  }
+<div *ngIf="flag2" class="login-container" style="margin-left:900px; margin-top:-200px; position: fixed;">
+  <section class="login" id="login">
+    <header>
+      <h2 style="margin-left:100px;">Izmena termina</h2>
+    </header>
+    <form class="login-form">
+      <label>Datum pocetka:</label><br>
+      <input [(ngModel)]="termin.start" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+             placeholder="dd-MMM-YYYY HH:mm:ss" required type="text"/><br>
+      <label>Datum zavrsetka:</label><br>
+      <input [(ngModel)]="termin.end" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+             placeholder="dd-MMM-YYYY HH:mm:ss" required style="margin-left:7px;" type="text"/><br>
+      <label>Trajanje:</label><br>
+      <input [(ngModel)]="termin.duration" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+             placeholder="Trajanje" required type="text"/>
+      <div class="submit-container">
+        <button (click)="reject()" class="login-button" style="margin-right:210px;">Odustani</button>
+        <button (click)="editTermin()" class="login-button">Potvrdi</button>
+      </div>
+    </form>
+  </section>
+</div>
 
-  .spacer {
-    flex: 1;
-  }
-  
-  body{
-  	height: 100%;
-	width: 100%;
-	background-size: cover;
-	background-repeat: no-repeat;
-	background-position: center;
-	margin: 0;
-	position: absolute;
-	bottom: 0;
-	top: 0;
-	left: 0;
-	right: 0;
-	background-image: url('/assets/img/boat.jpg');
-  }
+<div *ngIf="flag3" class="notification-panel" style="margin-top:100px; margin-left:100px;">
+  <table class="table">
+    <tr class="table-header">
+      <th class="header__item">Datum pocetka</th>
+      <th class="header__item">Datum zavrsetka</th>
+      <th class="header__item">Zavrsena</th>
+      <th class="header__item">Naziv avanture</th>
+      <th class="header__item">Ime korisnika</th>
+      <th class="header__item">Prezime korisnika</th>
+      <th class="header__item"></th>
+      <th class="header__item"></th>
+      <th class="header__item"></th>
+      <th class="header__item"></th>
+    </tr>
+    <tr *ngFor="let reservation of reservations" class="table-row">
+      <td class="table-data">{{reservation.start}}</td>
+      <td class="table-data">{{reservation.end}}</td>
+      <td class="table-data">{{reservation.createdReservation}}</td>
+      <td class="table-data">{{reservation.adventureReservation.title}}</td>
+      <td class="table-data">{{reservation.userReservation.firstName}}</td>
+      <td class="table-data">{{reservation.userReservation.lastName}}</td>
+      <td class="table-data">
+        <button
+          (click)="createReservation(reservation.start,reservation.end,reservation.adventureReservation.id,reservation.userReservation.id)"
+          *ngIf="!reservation.createdReservation" class="approve-button">Potvrdi
+        </button>
+      </td>
+      <td class="table-data">
+        <button (click)="rejectReservation(reservation.id)" *ngIf="!reservation.createdReservation"
+                class="disable-button">Odbij
+        </button>
+      </td>
+      <td class="table-data">
+        <button (click)="deleteReservationTermin(reservation.id,reservation.start,reservation.end)"
+                *ngIf="reservation.createdReservation" class="disable-button">Obrisi
+        </button>
+      </td>
+      <td class="table-data">
+        <button (click)="createComment(reservation.userReservation.id)" *ngIf="reservation.createdReservation"
+                class="approve-button">Unesi komentar
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
 
-  .toolbar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    background-color: rgba(74, 74, 74);
-    color: white;
-    font-weight: 600;
-  }
+<div *ngIf="flag4" style="width: 250px; height:150px; margin-left:650px; background-color: white;">
+  <input [(ngModel)]="comment.content" [ngModelOptions]="{standalone: true}" placeholder="Unesite razlog"
+         style="width: 97%; height:75%;"
+         type="text"/><br>
+  <label>Negativan: </label><input [(ngModel)]="comment.negative" [ngModelOptions]="{standalone: true}"
+                                   type="checkbox"/>
+</div>
 
-
-  .menu-img{
-	width: 20px;
-	height: 20px;
-  }
-  
-  .menu-container{
-	position: absolute;
-	background-color: #F6F8FA;
-	width: 150px;
-	height: auto;
-	top: 60px;
-	left: 0;
-	border-style: ridge;
-	border-color: #C4C1BD;
-	z-index: 9;
-  }
-  .menu-container-button{
-	border: none;
-	width: 100%;
-	height: 30%;
-	justify-content: left;
-	text-align: left;
-	font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-	background-color: #EAECEC;
-  }
-  .menu-container-button:hover {
-    background-color: #D1E2F4
-  }
-  
-  .menu-container-button-image{
-	height: 17px;
-	width: 17px;
-	margin-left:5px;
-  }
-  
-  .notification-panel{
-	width: 600px;
-	height: 250px;
-	background-color: rgba(78,89,103,0.8);
-	border-style: ridge;
-	margin-left: 598px;
-	z-index: 8;
-  }
-  .notification-panel-header{
-	width: 600px;
-	height: 80px;
-	background-color: #AEBACA;
-	margin-top: -320px;
-	margin-left: 600px;
-  }
-  
-  .notification-panel-button{
-	margin-left: 230px;
-	margin-top: 10px;
-  }
-  .notification-panel-button-img{
-	width: 15px;
-	height: 15px;
-  }
-  
-  .title{
-  	font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 20px;
-    font-weight: 600;
-  }
-  
-  .functionality-new-admin-container{
-	width: 190px;
-	height: 350px;
-	background-color: #F6F8FA;
-	opacity: 0.8;
-  }
-  .functionality-user-work-container{
-	width: 300px;
-	height: 120px;
-	background-color: #F6F8FA;
-	opacity: 0.8;
-  }
-  
-  .functionality-loyality-program-container{
-	width: 145px;
-	height: 220px;
-	background-color: #F6F8FA;
-	opacity: 0.8;
-  }
-  
-   .functionality-advocat-container{
-	width: 145px;
-	height: 220px;
-	background-color: #F6F8FA;
-	opacity: 0.8;
-  }
-  
-  
-.button-1 {
-  background-image: linear-gradient(#42A1EC, #0070C9);
-  border: 1px solid #0077CC;
-  border-radius: 4px;
-  box-sizing: border-box;
-  color: #FFFFFF;
-  cursor: pointer;
-  direction: ltr;
-  display: block;
-  font-family: "SF Pro Text","SF Pro Icons","AOS Icons","Helvetica Neue",Helvetica,Arial,sans-serif;
-  font-size: 15px;
-  font-weight: 400;
-  letter-spacing: -.022em;
-  line-height: 1.47059;
-  min-width: 30px;
-  overflow: visible;
-  padding: 4px 15px;
-  text-align: center;
-  vertical-align: baseline;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  white-space: nowrap;
-}
-
-.button-1:disabled {
-  cursor: default;
-  opacity: .3;
-}
-
-.button-1:hover {
-  background-image: linear-gradient(#51A9EE, #147BCD);
-  border-color: #1482D0;
-  text-decoration: none;
-}
-
-.button-1:active {
-  background-image: linear-gradient(#3D94D9, #0067B9);
-  border-color: #006DBC;
-  outline: none;
-}
-
-.button-1:focus {
-  box-shadow: rgba(131, 192, 253, 0.5) 0 0 0 3px;
-  outline: none;
-}
-
-.table {
-	width:100%;
-	border:1px solid $color-form-highlight;
-}
-
-.table-header {
-	display:flex;
-	width:100%;
-	background:#000;
-	padding:($half-spacing-unit * 1.5) 0;
-}
-
-.table-row {
-	display:flex;
-	width:100%;
-	padding:($half-spacing-unit * 1.5) 0;
-	
-	&:nth-of-type(odd) {
-		background:$color-form-highlight;
-	}
-}
-
-.table-data, .header__item {
-	flex: 1 1 20%;
-	text-align:center;
-}
-
-.table-data{
-	background:#D1D4D8;
-}
-
-.header__item {
-	text-transform:uppercase;
-}
-
-.approve-button{
-	background-color: #3FBF35;
-	color: #FFFFFF;
-}
-
-.disable-button{
-	background-color: #F21717;
-	color: #FFFFFF;
-}
-
-.button-2 {
-  align-items: center;
-  background-clip: padding-box;
-  background-color: #fa6400;
-  border: 1px solid transparent;
-  border-radius: .25rem;
-  box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
-  box-sizing: border-box;
-  color: #fff;
-  cursor: pointer;
-  display: inline-flex;
-  font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  justify-content: center;
-  line-height: 1.25;
-  margin: 0;
-  padding: calc(.875rem - 1px) calc(1.5rem - 1px);
-  position: relative;
-  text-decoration: none;
-  transition: all 250ms;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  vertical-align: baseline;
-  width: auto;
-  height: 5px;
-}
-
-.button-2:hover,
-.button-2:focus {
-  background-color: #fb8332;
-  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
-}
-
-.button-2:hover {
-  transform: translateY(-1px);
-}
-
-.button-2:active {
-  background-color: #c85000;
-  box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
-  transform: translateY(0);
-} 
-
-
-/* Login Form */
-.login-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  width: 340px;
-  height: auto;
-  padding: 0px;
-  box-sizing: border-box;
-  margin-left: 450px;
-  margin-top: 35px;
-}
-
-.login-container img {
-  width: 200px;
-  margin: 0 0 20px 0;
-}
-
-.login-container p {
-  align-self: flex-start;
-  font-family: 'Roboto', sans-serif;
-  font-size: 0.8rem;
-  color: rgba(0, 0, 0, 0.5);
-}
-
-.login-container p a {
-  color: rgba(0, 0, 0, 0.4);
-}
-
-.login {
-  position: relative;
-  width: 400px;
-  padding: 10px;
-  margin: 0 0 10px 0;
-  box-sizing: border-box;
-  border-radius: 3px;
-  background: #FAFAFA;
-  overflow: hidden;
-  animation: input_opacity 0.2s cubic-bezier(.55, 0, .1, 1);
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-              0 1px 5px 0 rgba(0, 0, 0, 0.12),
-              0 3px 1px -2px rgba(0, 0, 0, 0.2);
-}
-
-.login > header {
-  position: relative;
-  width: 100%;
-  padding: 10px;
-  margin: -10px -10px 25px -10px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  background: #009688;
-  font-family: 'Roboto', sans-serif;
-  font-size: 1.3rem;
-  color: #FAFAFA;
-  animation: scale_header 0.6s cubic-bezier(.55, 0, .1, 1), text_opacity 1s cubic-bezier(.55, 0, .1, 1);
-  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.14),
-              0px 1px 5px 0px rgba(0, 0, 0, 0.12),
-              0px 3px 1px -2px rgba(0, 0, 0, 0.2);
-}
-
-.login > header:before {
-  content: '';
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  width: 100%;
-  height: 5px;
-  padding: 10px;
-  margin: -10px 0 0 -10px;
-  box-sizing: border-box;
-  background: rgba(0, 0, 0, 0.156);
-  font-family: 'Roboto', sans-serif;
-  font-size: 0.9rem;
-  color: transparent;
-  z-index: 5;
-}
-
-
-
-.login > header h2 {
-  margin: 20px 0 10px 0;
-}
-
-.login > header h4 {
-  font-size: 0.7em;
-  animation: text_opacity 1.5s cubic-bezier(.55, 0, .1, 1);
-  color: rgba(255, 255, 255, 0.4);
-}
-
-/* Form */
-.login-form {
-  padding: 15px;
-  box-sizing: border-box;
-}
-/*Label */
-.label-role{
-border: none;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
-  box-sizing: border-box;
-  background: transparent;
-  font-size: 1rem;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;
-  opacity: 1;
-  animation: input_opacity 0.8s cubic-bezier(.55, 0, .1, 1);
-  transition: border-bottom 0.2s cubic-bezier(.55, 0, .1, 1);
-}
-
-/* Inputs */
-.login-input {
-  position: relative;
-  width: 70%;
-  padding: 10px 5px;
-  margin: 0 0 15px 0;
-  border: none;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
-  box-sizing: border-box;
-  background: transparent;
-  font-size: 1rem;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;
-  opacity: 1;
-  animation: input_opacity 0.8s cubic-bezier(.55, 0, .1, 1);
-  transition: border-bottom 0.2s cubic-bezier(.55, 0, .1, 1);
-}
-
-
-.login-input:focus {
-  outline: none;
-  border-bottom: 2px solid #E37F00;
-}
-
-
-/* Submit Button */
-.submit-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  position: relative;
-  padding: 5px;
-  margin: 35px -25px -10px -25px;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.login-button {
-  padding: 10px;
-  border: none;
-  border-radius: 3px;
-  background: transparent;
-  font-family: 'Roboto', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #E37F00;
-  cursor: pointer;
-  opacity: 1;
-  animation: input_opacity 0.8s cubic-bezier(.55, 0, .1, 1);
-  transition: background 0.2s ease-in-out;
-}
-
-.login-button.raised {
-  padding: 5px 10px;
-  color: #FAFAFA;
-  background: #E37F00;
-  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.137255),
-              0px 1px 5px 0px rgba(0, 0, 0, 0.117647),
-              0px 3px 1px -2px rgba(0, 0, 0, 0.2);
-}
-
-.login-button:hover {
-  background: rgba(0, 0, 0, 0.05);
-}
-
-.login-button.raised:hover {
-  background: #FDAB43;
-}
-
-</style>
-
-<body>
-	<div class="toolbar">
-	<button class="button-2" (click)="goBack()" style="margin-left:30px;"> Nazad </button>
-	<button class="button-2" (click)="showTermin()" style="margin-left:150px;">Termini</button>
-	<button class="button-2" (click)="showReservation()" style="margin-left:50px;">Rezervacije</button> 	
-	</div>
-	
-	<div class="notification-panel" *ngIf="flag1" style="margin-top:100px; margin-left:100px;">
-		<table class="table">
-			<tr class="table-header">
-				<th class="header__item">Datum pocetka</th>
-				<th class="header__item">Datum zavrsetka</th>
-				<th class="header__item">Akcija</th>
-				<th class="header__item">Rezervisan</th>
-				<th class="header__item"></th>
-				<th class="header__item"></th>
-			</tr>
-			<tr *ngFor="let termin of termins" class="table-row">
-				<td class="table-data">{{termin.start}}</td>
-				<td class="table-data">{{termin.end}}</td>
-				<td class="table-data">{{termin.action}}</td>
-				<td class="table-data">{{termin.reserved}}</td>
-				<td class="table-data"> <button *ngIf="!termin.reserved" (click)="editTerminShow(termin.id)" class="approve-button">Izmeni</button></td>
-				<td class="table-data"> <button *ngIf="!termin.reserved" (click)="deleteTermin(termin.id)" class="disable-button">Obrisi</button></td>
-			</tr>
-		</table>
-	</div>
-	
-	<div class="login-container" *ngIf="flag2" style="margin-left:900px; margin-top:-200px; position: fixed;">
-		<section class="login" id="login">
-			<header>
-				<h2 style="margin-left:100px;">Izmena termina</h2>
-			</header>
-			<form class="login-form">
-				<label>Datum pocetka:</label><br>
-				<input type="text" class="login-input" [(ngModel)]="termin.start" [ngModelOptions]="{standalone: true}" placeholder="dd-MMM-YYYY HH:mm:ss" required autofocus/><br>
-				<label>Datum zavrsetka:</label><br>
-				<input type="text" style="margin-left:7px;" [(ngModel)]="termin.end" [ngModelOptions]="{standalone: true}" class="login-input" placeholder="dd-MMM-YYYY HH:mm:ss" required autofocus/><br>
-				<label>Trajanje:</label><br>
-				<input type="text" class="login-input" [(ngModel)]="termin.duration" [ngModelOptions]="{standalone: true}" placeholder="Trajanje" required autofocus/>
-				<div class="submit-container">
-					<button style="margin-right:210px;" (click)="reject()" class="login-button">Odustani</button>
-					<button (click)="editTermin()" class="login-button">Potvrdi</button>
-				</div>
-			</form>
-		</section>
-	</div>
-	
-	<div class="notification-panel" *ngIf="flag3" style="margin-top:100px; margin-left:100px; width: 800px;">
-		<table class="table">
-			<tr class="table-header">
-				<th class="header__item">Datum pocetka</th>
-				<th class="header__item">Datum zavrsetka</th>
-				<th class="header__item">Zavrsena</th>
-				<th class="header__item">Naziv avanture</th>
-				<th class="header__item">Ime korisnika</th>
-				<th class="header__item">Prezime korisnika</th>
-				<th class="header__item"></th>
-				<th class="header__item"></th>
-				<th class="header__item"></th>
-				<th class="header__item"></th>
-			</tr>
-			<tr *ngFor="let reservation of reservations" class="table-row">
-				<td class="table-data">{{reservation.start}}</td>
-				<td class="table-data">{{reservation.end}}</td>
-				<td class="table-data">{{reservation.createdReservation}}</td>
-				<td class="table-data">{{reservation.adventureReservation.title}}</td>
-				<td class="table-data">{{reservation.userReservation.firstName}}</td>
-				<td class="table-data">{{reservation.userReservation.lastName}}</td>
-				<td class="table-data"> <button (click)="createReservation(reservation.start,reservation.end,reservation.adventureReservation.id,reservation.userReservation.id)" *ngIf="!reservation.createdReservation" class="approve-button">Potvrdi</button></td>
-				<td class="table-data"> <button (click)="rejectReservation(reservation.id)" *ngIf="!reservation.createdReservation" class="disable-button">Odbij</button></td>
-				<td class="table-data"> <button (click)="deleteReservationTermin(reservation.id,reservation.start,reservation.end)" *ngIf="reservation.createdReservation" class="disable-button">Obrisi</button></td>
-				<td class="table-data"> <button (click)="createComment(reservation.userReservation.id)" *ngIf="reservation.createdReservation" class="approve-button">Unesi komentar</button></td>
-			</tr>
-		</table>
-	</div>
-	
-	<div style="width: 250px; height:150px; margin-left:650px; background-color: white;" *ngIf="flag4">
-		<input type="text" placeholder="Unesite razlog" [(ngModel)]="comment.content" [ngModelOptions]="{standalone: true}" style="width: 97%; height:75%;"/><br>
-		<label>Negativan: </label><input type="checkbox"  [(ngModel)]="comment.negative" [ngModelOptions]="{standalone: true}"/>
-	</div>
-	
 </body>

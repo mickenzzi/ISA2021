@@ -78,7 +78,6 @@
 }
 
 
-
 .login > header h2 {
   margin: 20px 0 10px 0;
 }
@@ -94,8 +93,9 @@
   padding: 15px;
   box-sizing: border-box;
 }
+
 /*Label */
-.label-role{
+.label-role {
   border: none;
   border-bottom: 2px solid rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
@@ -175,6 +175,7 @@
 .login-button.raised:hover {
   background: #FDAB43;
 }
+
 .content {
   height: 100%;
   width: 100%;
@@ -189,12 +190,14 @@
   left: 0;
   right: 0;
 }
-.img-button{
+
+.img-button {
   width: 30px;
   height: 30px;
 }
+
 .button-round {
-  background-color:  #fa6400;
+  background-color: #fa6400;
   border: none;
   border-radius: 30%;
 }

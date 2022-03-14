@@ -56,14 +56,13 @@ public class AdventureController {
 		adventures = adventureService.findAll();
 		List<Adventure> adventures1 = new ArrayList<Adventure>();
 		List<Adventure> searchedAdventures = new ArrayList<Adventure>();
-		System.out.println(search);
 		for (Adventure a : adventures) {
 			if (a.getUserAdventure().getId() == instructorId) {
 				adventures1.add(a);
 			}
 		}
 		for (Adventure a1 : adventures1) {
-			if (a1.getTitle().toLowerCase().contains(search.toLowerCase())) {
+			if (a1.getTitle().toLowerCase().contains(search.toLowerCase()) || a1.getAddress().toLowerCase().contains(search.toLowerCase())) {
 				searchedAdventures.add(a1);
 			}
 		}
@@ -154,10 +153,10 @@ public class AdventureController {
 		return new ResponseEntity<>(adventures, HttpStatus.OK);
 	}
 
-	@PostMapping(value = "/createAction/{instructorId}/{adventureId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/createAction/{instructorId}/{adventureId}/{price}/{capacity}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<Termin> createAction(@RequestBody Termin termin,
-			@PathVariable("instructorId") Long instructorId, @PathVariable("adventureId") Long adventureId)
+			@PathVariable("instructorId") Long instructorId, @PathVariable("adventureId") Long adventureId, @PathVariable("price") Double price, @PathVariable("capacity") Long capacity)
 			throws ParseException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyy HH:mm:ss");
 		boolean check = true;
@@ -171,7 +170,7 @@ public class AdventureController {
 		}
 		if(check == true) {
 		if(termin.getDuration() != 0 ) {
-		boolean flag = userService.createAction(instructorId, adventureId, termin);
+		boolean flag = userService.createAction(instructorId, adventureId, termin, price, capacity);
 		if (flag == true) {
 			System.out.println("The task /createAction was successfully completed.");
 			return new ResponseEntity<>(termin, HttpStatus.CREATED);

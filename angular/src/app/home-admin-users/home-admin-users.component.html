@@ -48,7 +48,7 @@
       <td class="table-data">{{adventure.description}}</td>
       <td class="table-data">{{adventure.address}}</td>
       <td class="table-data">
-        <button class="disable-button" (click)="deleteAdventure(adventure.id)">Obriši</button>
+        <button (click)="deleteAdventure(adventure.id)" class="disable-button">Obriši</button>
       </td>
     </tr>
   </table>

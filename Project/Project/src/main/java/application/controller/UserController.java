@@ -30,10 +30,10 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	TokenUtils tokenUtils;
-	
+
 	@GetMapping(value = "/getAllUsers/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<User>> getAllUsers(@PathVariable("id") Long id) {
@@ -50,7 +50,8 @@ public class UserController {
 		}
 		if (!user.getUsername().equals("mickenzi")) {
 			for (User u : users) {
-				if (!u.getUsername().equals(user.getUsername()) && !u.getRoles().get(0).getName().equals("ROLE_ADMIN")) {
+				if (!u.getUsername().equals(user.getUsername())
+						&& !u.getRoles().get(0).getName().equals("ROLE_ADMIN")) {
 					u.setRole(userService.convertRole(u.getRoles().get(0).getName()));
 					users1.add(u);
 				}
@@ -59,8 +60,7 @@ public class UserController {
 		System.out.println("The task /getAllUsers was successfully completed.");
 		return new ResponseEntity<>(users1, HttpStatus.OK);
 	}
-	
-	
+
 	@GetMapping(value = "/getUserById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ADMIN') or hasRole('USER') or hasROLE('INSTRUCTOR')")
 	public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
@@ -71,7 +71,7 @@ public class UserController {
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		}
 	}
-	
+
 	@GetMapping(value = "/getUserByUsername/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ADMIN') or hasRole('USER') or hasROLE('INSTRUCTOR')")
 	public ResponseEntity<User> getUserById(@PathVariable("username") String username) {
@@ -101,7 +101,7 @@ public class UserController {
 		}
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/deleteUser/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Adventure> deleteUser(@PathVariable("id") Long id) {
@@ -113,7 +113,7 @@ public class UserController {
 		System.out.println("The task /deleteUser was successfully completed.");
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/enableUser/{username}/{idRequest}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<User> enableUser(@PathVariable("username") String username,
@@ -128,7 +128,7 @@ public class UserController {
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		}
 	}
-	
+
 	@GetMapping(value = "/approveDeleteRequest/{username}/{idRequest}/{text}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<User> approveDeleteRequest(@PathVariable("username") String username,
@@ -143,7 +143,7 @@ public class UserController {
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		}
 	}
-	
+
 	@GetMapping(value = "/disableUser/{username}/{idRequest}/{text}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<User> disableUser(@PathVariable("username") String username,
@@ -175,7 +175,7 @@ public class UserController {
 	}
 
 	@PostMapping(value = "/createUser", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> createUser(@RequestBody UserDTO userDTO,UriComponentsBuilder ucBuilder) {
+	public ResponseEntity<User> createUser(@RequestBody UserDTO userDTO, UriComponentsBuilder ucBuilder) {
 		if (userDTO.getFirstName().isEmpty() || userDTO.getLastName().isEmpty() || userDTO.getAddress().isEmpty()
 				|| userDTO.getCity().isEmpty() || userDTO.getCountry().isEmpty() || userDTO.getPhone().isEmpty()
 				|| userDTO.getEmail().isEmpty() || userDTO.getUsername().isEmpty() || userDTO.getPassword1().isEmpty()
@@ -205,15 +205,14 @@ public class UserController {
 		}
 
 	}
-	
-	
+
 	@GetMapping(value = "/whoAmI/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> whoAmI(@PathVariable("username") String username) 
-	{
-	    User user = (User) userService.findByUsername(username);
-	    user.setRole(user.getRoles().get(0).getName());
-	    		
-		return  new ResponseEntity<User>(user, HttpStatus.OK);
+	public ResponseEntity<?> whoAmI(@PathVariable("username") String username) {
+		User user = (User) userService.findByUsername(username);
+		user.setRole(user.getRoles().get(0).getName());
+		user.setPassword(user.getPassword());
+
+		return new ResponseEntity<User>(user, HttpStatus.OK);
 	}
 
 }

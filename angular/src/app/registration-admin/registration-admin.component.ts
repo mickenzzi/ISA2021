@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpErrorResponse} from '@angular/common/http';
-import { UserService } from '../service/user.service';
-import { User } from '../model/user';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {HttpErrorResponse} from '@angular/common/http';
+import {UserService} from '../service/user.service';
+import {User} from '../model/user';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-registration-admin',
@@ -10,8 +10,8 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./registration-admin.component.css']
 })
 export class RegistrationAdminComponent implements OnInit {
- id!: number;
- user: User = {
+  id!: number;
+  user: User = {
     firstName: '',
     lastName: '',
     address: '',
@@ -26,27 +26,30 @@ export class RegistrationAdminComponent implements OnInit {
   }
   flag1 = true;
   //@ts-ignore
-  currentUser = JSON.parse(localStorage.getItem('currentUser')); 
+  currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
   constructor(
-			private userService: UserService,
-			private router: Router,
-			private route: ActivatedRoute,
-  ) { }
+    private userService: UserService,
+    private router: Router,
+    private route: ActivatedRoute,
+  ) {
+  }
 
   ngOnInit(): void {
-		if(this.currentUser === null){
-		alert('Niste se ulogovali');
-		this.logOut();
-		}
+    if (this.currentUser === null) {
+      alert('Niste se ulogovali');
+      this.logOut();
+    }
   }
-  goBack(){
-	this.router.navigate(['/homeAdmin']);
+
+  goBack() {
+    this.router.navigate(['/homeAdmin']);
   }
-  
-   logOut(){
-	localStorage.removeItem('currentUser');
-	localStorage.clear();
-	this.router.navigate(['/login']);
+
+  logOut() {
+    localStorage.removeItem('currentUser');
+    localStorage.clear();
+    this.router.navigate(['/login']);
   }
 
   createUser(): void {
@@ -68,17 +71,15 @@ export class RegistrationAdminComponent implements OnInit {
         response => {
           if (data.firstName === "" || data.lastName === "" || data.address === "" || data.city === "" || data.country === "" || data.phone === "" || data.email === "" || data.username === "" || data.password1 === "" || data.password2 === "" || data.role === "") {
             this.flag1 = false;
-          }
-          else {
+          } else {
             this.flag1 = true;
-			this.router.navigate(['/homeAdmin']);
+            this.router.navigate(['/homeAdmin']);
             alert('Nalog poslat na verifikaciju');
           }
         },
         (error: HttpErrorResponse) => {
           alert(error.message);
         }
-
       );
 
   };

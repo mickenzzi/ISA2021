@@ -67,7 +67,8 @@
 </div>
 <div *ngIf="flag3" style="width: 350px; height:170px; margin-left:750px">
   <button (click)="closeRejectPanel()">X</button>
-  <input [(ngModel)]="rejectText" [ngModelOptions]="{standalone: true}" placeholder="Unesite razlog" style="width: 100%; height:50%;"
+  <input [(ngModel)]="rejectText" [ngModelOptions]="{standalone: true}" placeholder="Unesite razlog"
+         style="width: 100%; height:50%;"
          type="text"/>
 </div>
 <div *ngIf="flag4" class="notification-panel-header">

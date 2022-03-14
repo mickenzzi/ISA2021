@@ -1,4 +1,4 @@
-import { Termin } from './termin';
+import {Termin} from './termin';
 
 describe('Termin', () => {
   it('should create an instance', () => {
