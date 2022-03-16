@@ -66,6 +66,10 @@ export class AdventureService {
     return this.http.get<Reservation[]>(`${this.terminUrl}/getAllReservationInstructor/${id}`, {headers: this.reqHeader});
   }
 
+  public getReservation(id: number) {
+    return this.http.get<Reservation[]>(`${this.terminUrl}/getReservation/${id}`, {headers: this.reqHeader});
+  }
+
   public createAction(idInstructor: number, idAdventure: number, termin: Termin, price: number, capacity: number) {
     return this.http.post(`${this.adventureUrl}/createAction/${idInstructor}/${idAdventure}/${price}/${capacity}`, termin, {headers: this.reqHeader});
   }
@@ -92,6 +96,10 @@ export class AdventureService {
 
   public updateTermin(termin: Termin) {
     return this.http.post(`${this.terminUrl}/updateTermin`, termin, {headers: this.reqHeader});
+  }
+
+  public createTermin(termin: Termin, instructorId: number){
+    return this.http.post(`${this.terminUrl}/createTermin/${instructorId}`, termin, {headers: this.reqHeader});
   }
 
 }

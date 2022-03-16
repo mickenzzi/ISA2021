@@ -74,6 +74,10 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "userAdventure", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Adventure> adventures;
+	
+	@OneToMany(mappedBy = "instructorTermin", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Termin> termins;
 
 	@OneToMany(mappedBy = "userReservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnore
@@ -341,6 +345,16 @@ public class User implements UserDetails {
 	public void setAdminComplains(List<Complaint> adminComplains) {
 		this.adminComplains = adminComplains;
 	}
+	
+	
+	public List<Termin> getTermins() {
+		return termins;
+	}
+
+	public void setTermins(List<Termin> termins) {
+		this.termins = termins;
+	}
+	
 
 	public User() {
 		super();

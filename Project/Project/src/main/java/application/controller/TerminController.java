@@ -36,7 +36,7 @@ public class TerminController {
 		System.out.println("The task /getAllTermins was successfully completed.");
 		return new ResponseEntity<>(termins, HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/getAllReservationInstructor/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<List<Reservation>> getAllReservationInstructor(@PathVariable("id") Long id) {
@@ -45,7 +45,7 @@ public class TerminController {
 		System.out.println("The task /getAllReservation was successfully completed.");
 		return new ResponseEntity<>(reservations, HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/getFreeTerminsInstructor{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<List<Termin>> getFreeTerminsInstructor(@PathVariable("id") Long id) {
@@ -80,30 +80,35 @@ public class TerminController {
 			Date start = dateFormat.parse(termin1.getStart());
 			Date end = dateFormat.parse(termin1.getEnd());
 			check = true;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			check = false;
 		}
-		if(check == true) {
+		if (check == true) {
 			terminService.updateTermin(termin1);
 			System.out.println("The task /updateTermin was successfully completed.");
 			return new ResponseEntity<>(termin, HttpStatus.OK);
-		}
-		else {
+		} else {
 			System.out.println("Dates are not in appropriate format.");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
-	@PostMapping(value = "/createTermin", produces = MediaType.APPLICATION_JSON_VALUE)
-	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<Termin> createTermin(@RequestBody Termin termin1) {
-		
-		Termin termin = terminService.createTermin(termin1);
-		System.out.println("The task /createTermin was successfully completed.");
-		return new ResponseEntity<>(termin, HttpStatus.CREATED);
+	@PostMapping(value = "/createTermin/{instructorId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('INSTRUCTOR')")
+	public ResponseEntity<?> createTermin(@PathVariable("instructorId") Long instructorId, @RequestBody Termin termin1)
+			throws ParseException {
+
+		boolean termin = terminService.createTermin(termin1, instructorId);
+		if (termin) {
+			System.out.println("The task /createTermin was successfully completed.");
+			return new ResponseEntity<>(HttpStatus.CREATED);
+		}
+		else {
+			System.out.println("The termin is already exist.");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
-	
+
 	@GetMapping(value = "/deleteTermin/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<Termin> deleteTermin(@PathVariable("id") Long id) {
@@ -115,25 +120,36 @@ public class TerminController {
 		System.out.println("The task /deleteTermin was successfully completed.");
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/createReservation/{start}/{end}/{adventureId}/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	@PreAuthorize("hasRole('INSTRUCTO') or hasRole('USER')")
-	public ResponseEntity<Reservation> createReservation(@PathVariable("start") String start,@PathVariable("end") String end,@PathVariable("userId") Long userId,@PathVariable("adventureId") Long adventureId) throws ParseException {
-		if(start.isEmpty() || end.isEmpty()) {
+	@PreAuthorize("hasRole('INSTRUCTOR') or hasRole('USER')")
+	public ResponseEntity<Reservation> createReservation(@PathVariable("start") String start,
+			@PathVariable("end") String end, @PathVariable("userId") Long userId,
+			@PathVariable("adventureId") Long adventureId) throws ParseException {
+		if (start.isEmpty() || end.isEmpty()) {
 			System.out.println("Some fields are empty.");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		Boolean flag = terminService.createReservation(start,end,adventureId,userId);
-		if(flag==true) {
-		System.out.println("The task /createReservation was successfully completed.");
-		return new ResponseEntity<>(HttpStatus.CREATED);
-		}
-		else{
+		Boolean flag = terminService.createReservation(start, end, adventureId, userId);
+		if (flag == true) {
+			System.out.println("The task /createReservation was successfully completed.");
+			return new ResponseEntity<>(HttpStatus.CREATED);
+		} else {
 			System.out.println("Termin is already used.");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 	
+	@GetMapping(value = "/getReservation/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('INSTRUCTOR')")
+	public ResponseEntity<List<Reservation>> getReservation(@PathVariable("id") Long id) {
+		List<Reservation> reservations = new ArrayList<Reservation>();
+		Reservation reservation = terminService.findReservationById(id);
+		reservations.add(reservation);
+		System.out.println("The task /getReservation was successfully completed.");
+		return new ResponseEntity<>(reservations, HttpStatus.OK);
+	}
+
 	@GetMapping(value = "/deleteReservation/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('INSTRUCTOR') or hasRole('USER')")
 	public ResponseEntity<Termin> deleteReservation(@PathVariable("id") Long id) {
@@ -145,18 +161,18 @@ public class TerminController {
 		System.out.println("The task /deleteTermin was successfully completed.");
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/deleteReservationTermin/{id}/{start}/{end}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('INSTRUCTOR') or hasRole('USER')")
-	public ResponseEntity<Termin> deleteReservationTermin(@PathVariable("id") Long id,@PathVariable("start") String start,@PathVariable("end") String end) {
+	public ResponseEntity<Termin> deleteReservationTermin(@PathVariable("id") Long id,
+			@PathVariable("start") String start, @PathVariable("end") String end) {
 		if (id == null || start.isEmpty() || end.isEmpty()) {
 			System.out.println("Id is null.");
 			return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
 		}
-		terminService.deleteReservationTermin(id,start,end);
+		terminService.deleteReservationTermin(id, start, end);
 		System.out.println("The task /deleteReservationTermin was successfully completed.");
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
-	
+
 }

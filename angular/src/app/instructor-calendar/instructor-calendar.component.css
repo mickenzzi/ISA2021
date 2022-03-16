@@ -72,8 +72,8 @@ p {
 }
 
 .notification-panel {
-  width: 600px;
-  height: 250px;
+  width: auto;
+  height: auto;
   background-color: rgba(78, 89, 103, 0.8);
   border-style: ridge;
   margin-left: 598px;
@@ -81,7 +81,7 @@ p {
 }
 
 .notification-panel-header {
-  width: 600px;
+  width: auto;
   height: 80px;
   background-color: #AEBACA;
   margin-top: -320px;

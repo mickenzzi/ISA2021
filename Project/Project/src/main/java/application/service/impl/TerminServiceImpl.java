@@ -48,75 +48,80 @@ public class TerminServiceImpl implements TerminService {
 	}
 
 	@Override
-	public Termin createTermin(Termin termin) {
+	public boolean createTermin(Termin termin, Long instructorId) throws ParseException {
 		Termin termin1 = new Termin();
-		termin1.setAdventureTermin(termin.getAdventureTermin());
-		termin1.setStart(termin.getStart());
-		termin1.setEnd(termin.getEnd());
-		termin1.setDuration(termin.getDuration());
-		termin1.setReserved(false);
-		terminRepository.save(termin1);
-		return termin1;
+		boolean create = false;
+		User instructor = userRepository.findById(instructorId).orElseGet(null);
+		List<Termin> termins = new ArrayList<Termin>();
+		List<Termin> termins1 = new ArrayList<Termin>();
+		termins = terminRepository.findAll();
+		for (Termin t : termins) {
+			if (t.getInstructorTermin().getId() == instructorId) {
+				termins1.add(t);
+			}
+		}
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyy HH:mm:ss");
+		Date startDate = dateFormat.parse(termin.getStart());
+		Date endDate = dateFormat.parse(termin.getEnd());
+		for (Termin t1 : termins1) {
+			Date dmin = dateFormat.parse(t1.getStart());
+			Date dmax = dateFormat.parse(t1.getEnd());
+			if ((startDate.compareTo(dmin) >= 0 && endDate.compareTo(dmax) <= 0)
+					|| (startDate.compareTo(dmin) >= 0 && startDate.compareTo(dmax) <= 0)
+					|| (endDate.compareTo(dmin) >= 0 && endDate.compareTo(dmax) <= 0)) {
+				create = false;
+				break;
+			} else {
+				create = true;
+			}
+
+		}
+		if (create) {
+			termin1.setInstructorTermin(instructor);
+			termin1.setStart(termin.getStart());
+			termin1.setEnd(termin.getEnd());
+			termin1.setDuration(termin.getDuration());
+			termin1.setReserved(false);
+			termin1.setAction(false);
+			terminRepository.save(termin1);
+		}
+		return create;
 	}
 
 	@Override
 	public void updateTermin(Termin termin) {
 		Termin termin1 = terminRepository.findById(termin.getId()).orElseGet(null);
-		termin1.setAdventureTermin(termin.getAdventureTermin());
 		termin1.setStart(termin.getStart());
 		termin1.setEnd(termin.getEnd());
 		termin1.setDuration(termin.getDuration());
-		termin1.setReserved(termin.isReserved());
-		termin1.setAction(termin.isAction());
 		terminRepository.save(termin1);
 	}
 
 	@Override
 	public List<Termin> findAllTerminsInstructor(Long instructorId) {
-		User user = userRepository.findById(instructorId).orElseGet(null);
-		List<Adventure> adventures = new ArrayList<Adventure>();
-		adventures = adventureRepository.findAll();
-		List<Termin> adventureTermin = new ArrayList<Termin>();
-		List<Adventure> adventures1 = new ArrayList<Adventure>();
-		for (Adventure a : adventures) {
-			if (a.getUserAdventure().getId() == user.getId()) {
-				adventures1.add(a);
-			}
-		}
 		List<Termin> termins = new ArrayList<Termin>();
+		List<Termin> instructorTermins = new ArrayList<Termin>();
 		termins = terminRepository.findAll();
 		for (Termin t : termins) {
-			for (Adventure a : adventures1) {
-				if (t.getAdventureTermin().getId() == a.getId()) {
-					adventureTermin.add(t);
-				}
+			if (t.getInstructorTermin().getId() == instructorId) {
+				instructorTermins.add(t);
 			}
 		}
-		return adventureTermin;
+		
+		return instructorTermins;
 	}
 
 	@Override
 	public List<Termin> findFreeTerminsInstructor(Long instructorId) {
-		User user = userRepository.findById(instructorId).orElseGet(null);
-		List<Adventure> adventures = new ArrayList<Adventure>();
-		adventures = adventureRepository.findAll();
-		List<Termin> adventureTermin = new ArrayList<Termin>();
-		List<Adventure> adventures1 = new ArrayList<Adventure>();
-		for (Adventure a : adventures) {
-			if (a.getUserAdventure().getId() == user.getId()) {
-				adventures1.add(a);
-			}
-		}
+		List<Termin> instructorTermins = new ArrayList<Termin>();
 		List<Termin> termins = new ArrayList<Termin>();
 		termins = terminRepository.findAll();
 		for (Termin t : termins) {
-			for (Adventure a : adventures1) {
-				if (t.getAdventureTermin().getId() == a.getId() && t.isReserved() == false) {
-					adventureTermin.add(t);
-				}
+			if (t.getInstructorTermin().getId() == instructorId) {
+				instructorTermins.add(t);
 			}
 		}
-		return adventureTermin;
+		return instructorTermins;
 	}
 
 	@Override
@@ -134,30 +139,19 @@ public class TerminServiceImpl implements TerminService {
 		User instructor = userRepository.findById(adventure1.getUserAdventure().getId()).orElseGet(null);
 		boolean free = true;
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyy HH:mm:ss");
-		List<Adventure> adventures1 = new ArrayList<Adventure>();
-		List<Adventure> adventures = new ArrayList<Adventure>();
-		adventures1 = adventureRepository.findAll();
-		for (Adventure a : adventures1) {
-			if (a.getUserAdventure().getId() == instructor.getId()) {
-				adventures.add(a);
-			}
-		}
 		List<Termin> usedTermin = new ArrayList<Termin>();
-		List<Termin> usedAdventureTermin = new ArrayList<Termin>();
+		List<Termin> usedInstructorTermins = new ArrayList<Termin>();
 		usedTermin = terminRepository.findAll();
 		for (Termin t : usedTermin) {
-			for (Adventure a1 : adventures) {
-				if (t.getAdventureTermin().getId() == a1.getId()) {
-					usedAdventureTermin.add(t);
-				}
+			if (t.getInstructorTermin().getId() == instructor.getId()) {
+				usedInstructorTermins.add(t);
 			}
-
 		}
 
 		Date startDate = dateFormat.parse(start);
 		Date endDate = dateFormat.parse(end);
 
-		for (Termin t1 : usedAdventureTermin) {
+		for (Termin t1 : usedInstructorTermins) {
 			Date dmin = dateFormat.parse(t1.getStart());
 			Date dmax = dateFormat.parse(t1.getEnd());
 			if ((startDate.compareTo(dmin) >= 0 && endDate.compareTo(dmax) <= 0)
@@ -245,6 +239,11 @@ public class TerminServiceImpl implements TerminService {
 	public Reservation saveReservation(Reservation reservation) {
 		return reservationRepository.save(reservation);
 	}
+	
+	@Override
+	public Reservation findReservationById(Long id) throws AccessDeniedException {
+		return reservationRepository.findById(id).orElseGet(null);
+	}
 
 	@Override
 	public void deleteReservationTermin(Long reservationId, String start, String end) {
@@ -261,13 +260,12 @@ public class TerminServiceImpl implements TerminService {
 				break;
 			}
 		}
-		if(termin.isAction() == true) {
+		if (termin.isAction() == true) {
 			termin.setReserved(false);
 			terminRepository.save(termin);
-			
-		}
-		else {
-		terminRepository.delete(termin);
+
+		} else {
+			terminRepository.delete(termin);
 		}
 		reservationRepository.delete(reservation);
 

@@ -131,16 +131,16 @@ public class UserController {
 
 	@GetMapping(value = "/approveDeleteRequest/{username}/{idRequest}/{text}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<User> approveDeleteRequest(@PathVariable("username") String username,
+	public ResponseEntity<?> approveDeleteRequest(@PathVariable("username") String username,
 			@PathVariable("idRequest") Long idRequest, @PathVariable("text") String text) throws Exception {
 		User user = userService.findByUsername(username);
 		if (user == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} else {
 			userService.approveDeleteRequest(user.getId(), idRequest, text);
-			user = userService.findById(user.getId());
+
 			System.out.println("The task /approveDeleteRequest was successfully completed.");
-			return new ResponseEntity<>(user, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}
 

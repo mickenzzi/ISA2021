@@ -34,6 +34,10 @@ public class Termin {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "adventure_id")
 	private Adventure adventureTermin;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "instructor_id")
+	private User instructorTermin;
 
 	public Long getId() {
 		return id;
@@ -105,6 +109,14 @@ public class Termin {
 
 	public void setCapacity(Long capacity) {
 		this.capacity = capacity;
+	}
+	
+	public User getInstructorTermin() {
+		return instructorTermin;
+	}
+
+	public void setInstructorTermin(User instructorTermin) {
+		this.instructorTermin = instructorTermin;
 	}
 
 	public Termin() {

@@ -30,9 +30,12 @@ export class InstructorCalendarComponent implements OnInit {
   flag3: boolean = false;
   //tekst komentara
   flag4: boolean = false;
+  //modal za dodavanje termina
+  flag5: boolean = false;
   public termins: Termin[];
   public reservations: Reservation[]
   public termin: Termin = new Termin();
+  public termin1: Termin = new Termin();
   public comment: Comment = new Comment();
   user: User = new User();
   //@ts-ignore
@@ -52,6 +55,7 @@ export class InstructorCalendarComponent implements OnInit {
     this.flag2 = false;
     this.flag3 = false;
     this.flag4 = false;
+    this.flag5 = false;
     if (this.currentUser === null) {
       alert('Niste se ulogovali');
       this.logOut();
@@ -82,11 +86,17 @@ export class InstructorCalendarComponent implements OnInit {
   public showTermin(): void {
     if (!this.flag1) {
       this.flag1 = true;
+      this.flag2 = false;
       this.flag3 = false;
+      this.flag4 = false;
+      this.flag5 = false;
       this.getAllTermins();
     } else {
       this.flag1 = false;
       this.flag2 = false;
+      this.flag3 = false;
+      this.flag4 = false;
+      this.flag5 = false;
     }
   }
 
@@ -94,9 +104,15 @@ export class InstructorCalendarComponent implements OnInit {
     if (!this.flag3) {
       this.flag3 = true;
       this.flag1 = false;
+      this.flag2 = false;
+      this.flag4 = false;
+      this.flag5 = false;
       this.getAllReservations();
     } else {
-      this.flag3 = false;
+      this.flag1 = false;
+      this.flag2 = false;
+      this.flag4 = false;
+      this.flag5 = false;
     }
   }
 
@@ -126,17 +142,37 @@ export class InstructorCalendarComponent implements OnInit {
         alert(error.message);
       });
       this.flag2 = true;
+      this.flag5 = false;
     }
   }
 
   public reject(): void {
     this.flag2 = false;
+    this.flag5 = false
+  }
+
+  public showAddTermin(): void {
+    this.flag5 = true;
+    this.flag2 = false;
+  }
+
+  public createTermin(): void {
+    if (this.user.id === undefined) {
+    } else {
+      this.adventureService.createTermin(this.termin1, this.user.id).subscribe((response) => {
+        this.flag5 = false;
+        this.getAllTermins();
+        this.termin1 = new Termin();
+      }, (error: HttpErrorResponse) => {
+        alert(error.message)
+      });
+    }
   }
 
   public editTermin(): void {
     this.adventureService.updateTermin(this.termin).subscribe((response) => {
       alert('Izmenili ste termin.');
-      this.flag1 = false;
+      this.flag2 = false;
       this.getAllTermins();
     }, (error: HttpErrorResponse) => {
       alert(error.message);
@@ -159,11 +195,15 @@ export class InstructorCalendarComponent implements OnInit {
     } else {
       this.adventureService.getAllReservation(this.user.id).subscribe((response: Reservation[]) => {
         this.reservations = response;
-        console.log(this.reservations);
       }, (error: HttpErrorResponse) => {
         alert(error.message);
       });
     }
+  }
+
+  public closeComment(): void {
+    this.flag4 = false;
+    this.getAllReservations();
   }
 
   public rejectReservation(reservationId1?: number): void {
@@ -207,7 +247,13 @@ export class InstructorCalendarComponent implements OnInit {
     }
   }
 
-  public createComment(userId1?: number): void {
+  public createComment(userId1?: number, reservationId?: number): void {
+    if(reservationId === undefined){}
+    else {
+      this.adventureService.getReservation(reservationId).subscribe((response: Reservation[]) => {
+        this.reservations = response;
+      });
+    }
     if (this.user.id === undefined) {
     } else {
       this.flag4 = true;

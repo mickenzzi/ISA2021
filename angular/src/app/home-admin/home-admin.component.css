@@ -80,7 +80,7 @@ p {
 
 .notification-panel {
   width: 600px;
-  height: 250px;
+  height: auto;
   background-color: rgba(78, 89, 103, 0.8);
   border-style: ridge;
   margin-left: 598px;
