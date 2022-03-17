@@ -28,6 +28,10 @@ export class HomeAdminComponent implements OnInit {
   reviewId!: number;
   commentId!: number;
   complaintId!: number;
+  yearProfit?: string;
+  year: string = "2022";
+  percent: number = 0;
+  monthsProfit!: number[];
   //show menu panel
   flag1?: boolean;
   //show notifications panel
@@ -44,6 +48,7 @@ export class HomeAdminComponent implements OnInit {
   flag7?: boolean;
   //main admin
   flag8?: boolean;
+  flag9?: boolean;
   //@ts-ignore
   currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -62,7 +67,8 @@ export class HomeAdminComponent implements OnInit {
     this.flag5 = false;
     this.flag6 = false;
     this.flag7 = false;
-    this.flag8 = false;
+    this.flag8 = true;
+    this.flag9 = false;
     if (this.currentUser === null) {
       alert('Niste se ulogovali');
       this.logOut();
@@ -88,7 +94,6 @@ export class HomeAdminComponent implements OnInit {
     this.flag5 = true;
     this.flag6 = false;
     this.flag7 = false;
-    this.flag8 = false;
   }
 
   showNotifications() {
@@ -100,7 +105,6 @@ export class HomeAdminComponent implements OnInit {
     this.flag5 = false;
     this.flag6 = false;
     this.flag7 = false;
-    this.flag8 = false;
   }
 
   showReviews() {
@@ -112,7 +116,6 @@ export class HomeAdminComponent implements OnInit {
     this.flag5 = false;
     this.flag6 = false;
     this.flag7 = false;
-    this.flag8 = false;
   }
 
   showComplains() {
@@ -124,7 +127,6 @@ export class HomeAdminComponent implements OnInit {
     this.flag5 = false;
     this.flag6 = true;
     this.flag7 = false;
-    this.flag8 = false;
   }
 
   closeNotification() {
@@ -134,7 +136,17 @@ export class HomeAdminComponent implements OnInit {
     this.flag5 = false;
     this.flag6 = false;
     this.flag7 = false;
-    this.flag8 = false;
+  }
+
+  showFinancies() {
+    if (this.flag9 == false) {
+      this.flag9 = true;
+      this.getPercent();
+      this.getYearProfit(this.year);
+      this.getYearPerMonthProfit();
+    } else {
+      this.flag9 = false;
+    }
   }
 
   redirectAdminRegistration() {
@@ -446,7 +458,32 @@ export class HomeAdminComponent implements OnInit {
     }
   }
 
-  public closeRejectPanel(): void {
+  public getYearProfit(event: any) {
+    this.userService.getYearProfit(this.year).subscribe((response) => {
+      this.yearProfit = response;
+      this.yearProfit = this.yearProfit + " E"
+    });
+  }
+
+  public getYearPerMonthProfit() {
+    this.userService.getYearPerMonthProfit("2022").subscribe((response) => {
+      this.monthsProfit = response;
+    });
+  }
+
+  public getPercent() {
+    this.userService.getPercent().subscribe((response) => {
+      this.percent = response;
+    });
+  }
+
+  public editPercent() {
+    this.userService.editPercent(this.percent.toString()).subscribe((response) => {
+      alert('Uspesno ste izmenili procenat.');
+    });
+  }
+
+  public closeRejectPanel() {
     this.flag3 = false;
   }
 }

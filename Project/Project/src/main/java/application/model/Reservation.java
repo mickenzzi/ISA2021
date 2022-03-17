@@ -28,6 +28,7 @@ public class Reservation {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private User userReservation;
+	private double price;
 	public Long getId() {
 		return id;
 	}
@@ -64,6 +65,13 @@ public class Reservation {
 	}
 	public void setCreatedReservation(boolean createdReservation) {
 		this.createdReservation = createdReservation;
+	}
+	
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
 	}
 	public Reservation() {
 		super();

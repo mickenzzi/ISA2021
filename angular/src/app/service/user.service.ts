@@ -8,6 +8,7 @@ import {AuthenticationService} from './authentication.service';
 })
 export class UserService {
   private userUrl = 'http://localhost:8081/myApp/api/users';
+  private financiesUrl = 'http://localhost:8081/myApp/api/financies';
   private token = this.auth.getToken();
   private reqHeader = new HttpHeaders().set('Authorization', 'Bearer ' + this.token);
 
@@ -55,6 +56,22 @@ export class UserService {
 
   public findUser(username?: string) {
     return this.http.get<User>(`${this.userUrl}/whoAmI/${username}`, {headers: this.reqHeader});
+  }
+
+  public getYearProfit(year: string) {
+    return this.http.get<string>(`${this.financiesUrl}/getYearProfit/${year}`, {headers: this.reqHeader});
+  }
+
+  public getYearPerMonthProfit(year: string) {
+    return this.http.get<number[]>(`${this.financiesUrl}/getYearPerMonthProfit/${year}`, {headers: this.reqHeader});
+  }
+
+  public getPercent(){
+    return this.http.get<number>(`${this.financiesUrl}/getPercent`, {headers: this.reqHeader});
+  }
+
+  public editPercent(percent: string){
+    return this.http.post(`${this.financiesUrl}/editPercent`, percent, {headers: this.reqHeader});
   }
 
 

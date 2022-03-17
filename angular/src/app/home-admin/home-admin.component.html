@@ -6,7 +6,7 @@
 <div *ngIf="flag1" class="menu-container">
   <button (click)="goToProfile()" class="menu-container-button">Profil</button>
   <br>
-  <button (click)="showNotifications()" class="menu-container-button" style="margin-top:2px;">Obavestenja</button>
+  <button (click)="showNotifications()" class="menu-container-button" style="margin-top:2px;">Obaveštenja</button>
   <br>
   <button (click)="showReviews()" class="menu-container-button" style="margin-top:2px;">Recenzije</button>
   <br>
@@ -24,7 +24,7 @@
 </div>
 <div class="functionality-financies-container" style="margin-left: 345px; margin-top: -150px">
   <img src="/assets/img/income.png" style="width: 100%; height: 70%"><br>
-  <button class="button-1" style="margin-left:auto; margin-right: auto">Finansije</button>
+  <button class="button-1" (click)="showFinancies()" style="margin-left:auto; margin-right: auto">Finansije</button>
 </div>
 <br>
 <div class="functionality-new-admin-container" style="margin-left: 25px">
@@ -39,9 +39,9 @@
 </div>
 <div *ngIf="flag2" class="notification-panel-header">
   <label class="title" style="margin-left:170px; margin-top:5px; color: black;"> Prikaz notifikacija</label>
-  <button (click)="closeNotification()" class="notification-panel-button"><img class="notification-panel-button-img"
-                                                                               src="/assets/img/close.png"></button>
+  <button (click)="closeNotification()" class="notification-panel-button"><img class="notification-panel-button-img" src="/assets/img/close.png"></button>
 </div>
+
 <div *ngIf="flag2" class="notification-panel">
   <table class="table">
     <tr class="table-header">
@@ -74,8 +74,20 @@
 </div>
 <div *ngIf="flag4" class="notification-panel-header">
   <label class="title" style="margin-left:170px; margin-top:5px; color: black;"> Prikaz recenzija</label>
-  <button (click)="closeNotification()" class="notification-panel-button"><img class="notification-panel-button-img"
-                                                                               src="/assets/img/close.png"></button>
+  <button (click)="closeNotification()" class="notification-panel-button"><img class="notification-panel-button-img" src="/assets/img/close.png"></button>
+</div>
+<div *ngIf="flag9" class="financies-panel">
+  <br>
+  <label class="mat-optgroup-label" style="margin-left:20px; font-size: medium">Procenat</label>
+  <input [(ngModel)]="percent" style="margin-left:5px; width:50px" type="text" class="mat-input-element"/>
+  <input type="submit" style="margin-left:3px" id="editPercentButton" value="Izmeni" class="mat-flat-button" (click)="editPercent()"/>
+  <label class="mat-optgroup-label" style="margin-left:100px; font-size: medium">Godišnji prihod</label>
+  <select [(ngModel)]="year" style="margin-left:5px" (ngModelChange)="getYearProfit($event)">
+    <option option="2021">2021</option>
+    <option selected="2022">2022</option>
+  </select>
+  <input [(ngModel)]="yearProfit"  style="margin-left:5px; width: auto" type="text" disabled/>
+
 </div>
 <div *ngIf="flag4" class="notification-panel">
   <table class="table">

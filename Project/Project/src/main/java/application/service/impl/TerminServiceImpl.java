@@ -179,6 +179,7 @@ public class TerminServiceImpl implements TerminService {
 					r.setAdventureReservation(adventure1);
 					r.setEnd(end);
 					r.setStart(start);
+					r.setPrice(adventure1.getPriceList());
 					r.setCreatedReservation(true);
 					r.setUserReservation(user);
 					reservationRepository.save(r);

@@ -78,6 +78,16 @@ p {
   margin-left: 5px;
 }
 
+.financies-panel{
+  width: 700px;
+  height: 100px;
+  background-color: rgba(78, 89, 103, 1.0);
+  border-style: ridge;
+  margin-left: 585px;
+  margin-top: -350px;
+}
+
+
 .notification-panel {
   width: 600px;
   height: auto;
