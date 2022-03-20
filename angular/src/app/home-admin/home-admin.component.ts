@@ -58,10 +58,10 @@ export class HomeAdminComponent implements OnInit {
   //@ts-ignore
   currentUser = JSON.parse(localStorage.getItem('currentUser'))
   //chart
-  public barChartLabels: string[] = ["Januar", "Februar", "Mart", "April", "Maj", "Jun", "Jul", "Avgust", "Septembar", "Oktobar", "Novembar", "Decembar"];
-  public barChartData: any[] = [];
-  public chartData: any[] = [];
-  public barChartType: ChartType = "bar";
+  barChartLabels: string[] = ["Januar", "Februar", "Mart", "April", "Maj", "Jun", "Jul", "Avgust", "Septembar", "Oktobar", "Novembar", "Decembar"];
+  barChartData: any[] = [];
+  chartData: any[] = [];
+  barChartType: ChartType = "bar";
 
 
   constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private requestService: RequestService, private reviewService: ReviewService) {
