@@ -3,6 +3,7 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {UserService} from '../service/user.service';
 import {User} from '../model/user';
 import {Router} from '@angular/router';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-registration',
@@ -10,6 +11,7 @@ import {Router} from '@angular/router';
   styleUrls: ['./registration.component.css']
 })
 export class RegistrationComponent implements OnInit {
+  //subscribe
   user: User = {
     firstName: '',
     lastName: '',
@@ -23,22 +25,26 @@ export class RegistrationComponent implements OnInit {
     password2: '',
     role: ''
   }
+  //unsubscribe
+  subs: Subscription[] = [];
+  //flags
   flag1 = true;
 
-  constructor(
-    private userService: UserService,
-    private router: Router
-  ) {
+  constructor(private userService: UserService, private router: Router) {
   }
 
   ngOnInit(): void {
+  }
+
+  ngOnDestroy() {
+    this.subs.forEach(sub => sub.unsubscribe())
   }
 
   goBack() {
     this.router.navigate(['/']);
   }
 
-  createUser(): void {
+  createUser() {
     const data = {
       firstName: this.user.firstName,
       lastName: this.user.lastName,
@@ -52,23 +58,19 @@ export class RegistrationComponent implements OnInit {
       password2: this.user.password2,
       role: this.user.role
     }
-    this.userService.createUser(data)
-      .subscribe(
-        response => {
-          if (data.firstName === "" || data.lastName === "" || data.address === "" || data.city === "" || data.country === "" || data.phone === "" || data.email === "" || data.username === "" || data.password1 === "" || data.password2 === "" || data.role === "") {
-            this.flag1 = false;
-          } else {
-            this.flag1 = true;
-            this.router.navigate(['/login']);
-            alert('Nalog poslat na verifikaciju');
-          }
-        },
-        (error: HttpErrorResponse) => {
-          alert('Neophodno je popuniti sva polja ispravnim podacima.');
+    this.subs.push(this.userService.createUser(data)
+      .subscribe(() => {
+        if (data.firstName === "" || data.lastName === "" || data.address === "" || data.city === "" || data.country === "" || data.phone === "" || data.email === "" || data.username === "" || data.password1 === "" || data.password2 === "" || data.role === "") {
+          this.flag1 = false;
+        } else {
+          this.flag1 = true;
+          this.router.navigate(['/login']);
+          alert('Nalog poslat na verifikaciju');
         }
-      );
-
-  };
+      }, (error: HttpErrorResponse) => {
+        alert('Neophodno je popuniti sva polja ispravnim podacima.');
+      }));
+  }
 
 
 }

@@ -9,18 +9,24 @@ import {UserService} from '../service/user.service';
 import {ReviewService} from '../service/review.service';
 import {RequestService} from '../service/request.service';
 import {HttpErrorResponse} from '@angular/common/http';
+import {Subscription} from "rxjs"
+import {ChartType} from "chart.js";
 
 @Component({
   selector: 'app-home-admin', templateUrl: './home-admin.component.html', styleUrls: ['./home-admin.component.css']
 })
 export class HomeAdminComponent implements OnInit {
+  //subscribe
   user: User = new User();
   user1: User = new User();
-  public requests: Request[];
-  public reviews: Review[];
-  public comments: Comment[];
-  public complains: Complaint[];
-  public complaint1: Complaint = new Complaint();
+  requests: Request[];
+  reviews: Review[];
+  comments: Comment[];
+  complains: Complaint[];
+  complaint1: Complaint = new Complaint();
+  //unsubscribe
+  subs: Subscription[] = [];
+  //local
   username: string = "";
   rejectText?: string;
   title: string = "";
@@ -31,7 +37,7 @@ export class HomeAdminComponent implements OnInit {
   yearProfit?: string;
   year: string = "2022";
   percent: number = 0;
-  monthsProfit!: number[];
+  //flags
   //show menu panel
   flag1?: boolean;
   //show notifications panel
@@ -50,9 +56,15 @@ export class HomeAdminComponent implements OnInit {
   flag8?: boolean;
   flag9?: boolean;
   //@ts-ignore
-  currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  currentUser = JSON.parse(localStorage.getItem('currentUser'))
+  //chart
+  public barChartLabels: string[] = ["Januar", "Februar", "Mart", "April", "Maj", "Jun", "Jul", "Avgust", "Septembar", "Oktobar", "Novembar", "Decembar"];
+  public barChartData: any[] = [];
+  public chartData: any[] = [];
+  public barChartType: ChartType = "bar";
 
-  constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private requestService: RequestService, private reviewService: ReviewService,) {
+
+  constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private requestService: RequestService, private reviewService: ReviewService) {
     this.requests = [];
     this.reviews = [];
     this.comments = [];
@@ -75,6 +87,25 @@ export class HomeAdminComponent implements OnInit {
     } else {
       this.getUser();
     }
+  }
+
+
+  ngOnDestroy() {
+    this.subs.forEach(sub => sub.unsubscribe())
+  }
+
+
+  closeRejectPanel() {
+    this.flag3 = false;
+  }
+
+  closeNotification() {
+    this.flag2 = false;
+    this.flag3 = false;
+    this.flag4 = false;
+    this.flag5 = false;
+    this.flag6 = false;
+    this.flag7 = false;
   }
 
   showHidden() {
@@ -129,17 +160,9 @@ export class HomeAdminComponent implements OnInit {
     this.flag7 = false;
   }
 
-  closeNotification() {
-    this.flag2 = false;
-    this.flag3 = false;
-    this.flag4 = false;
-    this.flag5 = false;
-    this.flag6 = false;
-    this.flag7 = false;
-  }
 
-  showFinancies() {
-    if (this.flag9 == false) {
+  showFinances() {
+    if (this.flag9 === false) {
       this.flag9 = true;
       this.getPercent();
       this.getYearProfit(this.year);
@@ -149,14 +172,14 @@ export class HomeAdminComponent implements OnInit {
     }
   }
 
-  redirectAdminRegistration() {
-    this.router.navigate(['/registrationAdmin']);
-  }
-
   logOut() {
     localStorage.removeItem('currentUser');
     localStorage.clear();
     this.router.navigate(['/login']);
+  }
+
+  redirectAdminRegistration() {
+    this.router.navigate(['/registrationAdmin']);
   }
 
   goToProfile() {
@@ -167,45 +190,50 @@ export class HomeAdminComponent implements OnInit {
     this.router.navigate(['/homeAdminUsers']);
   }
 
-  public getUser(): void {
+  getUser() {
     const username = this.currentUser.username1;
-    this.userService.findUser(username).subscribe((response: User) => {
-      this.user = response;
-      if (this.user.username === "mickenzi") {
-        this.flag8 = true;
-      } else {
-        this.flag8 = false;
-      }
-      if (this.user.firstTimeLogged === true) {
-        alert('Korisnik se loguje prvi put,neophodno je da potvrdi lozinku');
-        this.router.navigate(['/profileAdmin']);
-      }
-    });
+    this.subs.push(this.userService.findUser(username)
+      .subscribe((response: User) => {
+        this.user = response;
+        this.flag8 = this.user.username === "mickenzi";
+        if (this.user.firstTimeLogged === true) {
+          alert('Korisnik se loguje prvi put,neophodno je da potvrdi lozinku');
+          this.router.navigate(['/profileAdmin']);
+        }
+      }));
   }
 
-  public getAllRequest(): void {
+  getAllRequest() {
     if (this.user.id === undefined) {
     } else {
-      this.requestService.getAllRequest(this.user.id).subscribe((response: Request[]) => {
+      this.subs.push(this.requestService.getAllRequest(this.user.id).subscribe((response: Request[]) => {
         this.requests = response;
       }, (error: HttpErrorResponse) => {
         alert(error.message);
-      });
+      }));
     }
   }
 
-  public getRequest(): void {
+  getRequest() {
     if (this.idRequest === undefined) {
     } else {
-      this.requestService.getRequest(this.idRequest).subscribe((response: Request[]) => {
+      this.subs.push(this.requestService.getRequest(this.idRequest).subscribe((response: Request[]) => {
         this.requests = response;
       }, (error: HttpErrorResponse) => {
         alert(error.message);
-      });
+      }));
     }
   }
 
-  public getComment(): void {
+  getAllComments() {
+    this.subs.push(this.reviewService.getAllComments().subscribe((response: Comment[]) => {
+      this.comments = response;
+    }, (error: HttpErrorResponse) => {
+      alert(error.message);
+    }));
+  }
+
+  getComment() {
     if (this.commentId === undefined) {
     } else {
       this.reviewService.getSingleComment(this.commentId).subscribe((response: Comment[]) => {
@@ -216,139 +244,65 @@ export class HomeAdminComponent implements OnInit {
     }
   }
 
-  public getComplaint(): void {
-    if (this.complaintId === undefined) {
-    } else {
-      this.reviewService.getSingleComplaint(this.complaintId).subscribe((response: Complaint[]) => {
-        this.complains = response;
-      }, (error: HttpErrorResponse) => {
-        alert(error.message);
-      });
-    }
-  }
-
-  public getReview(): void {
-    if (this.reviewId === undefined) {
-    } else {
-      this.reviewService.getSingleReview(this.reviewId).subscribe((response: Review[]) => {
-        this.reviews = response;
-      }, (error: HttpErrorResponse) => {
-        alert(error.message);
-      });
-    }
-  }
-
-
-  public getAllReviews(): void {
-    this.reviewService.getAllReviews().subscribe((response: Review[]) => {
-      this.reviews = response;
-    }, (error: HttpErrorResponse) => {
-      alert(error.message);
-    });
-  }
-
-  public getAllComments(): void {
-    this.reviewService.getAllComments().subscribe((response: Comment[]) => {
-      this.comments = response;
-    }, (error: HttpErrorResponse) => {
-      alert(error.message);
-    });
-  }
-
-  public getAllComplains(): void {
-    this.reviewService.getAllComplains().subscribe((response: Complaint[]) => {
+  getAllComplains() {
+    this.subs.push(this.reviewService.getAllComplains().subscribe((response: Complaint[]) => {
       this.complains = response;
     }, (error: HttpErrorResponse) => {
       alert(error.message);
-    });
+    }));
   }
 
-  public enableReview(reviewId1?: number): void {
-    if (reviewId1 === undefined) {
-      alert('Neispravan id');
+  getComplaint() {
+    if (this.complaintId === undefined) {
     } else {
-      this.reviewId = reviewId1;
-      this.reviewService.enableReview(this.reviewId).subscribe((response) => {
-        this.getAllReviews();
-        alert('Validirali ste recenziju');
+      this.subs.push(this.reviewService.getSingleComplaint(this.complaintId).subscribe((response: Complaint[]) => {
+        this.complains = response;
       }, (error: HttpErrorResponse) => {
         alert(error.message);
-      });
+      }));
     }
   }
 
-  public enableComment(commentId1?: number): void {
-    if (commentId1 === undefined) {
-      alert('Neispravan id');
+  getAllReviews() {
+    this.subs.push(this.reviewService.getAllReviews().subscribe((response: Review[]) => {
+      this.reviews = response;
+    }, (error: HttpErrorResponse) => {
+      alert(error.message);
+    }));
+  }
+
+  getReview() {
+    if (this.reviewId === undefined) {
     } else {
-      this.commentId = commentId1;
-      this.reviewService.enableComment(this.commentId).subscribe((response) => {
-        this.getAllComments();
-        alert('Validirali ste komentar');
+      this.subs.push(this.reviewService.getSingleReview(this.reviewId).subscribe((response: Review[]) => {
+        this.reviews = response;
       }, (error: HttpErrorResponse) => {
         alert(error.message);
-      });
+      }));
     }
   }
 
-  public deleteComment(commentId1?: number): void {
-    if (commentId1 === undefined) {
-    } else {
-      this.commentId = commentId1;
-      this.reviewService.deleteComment(this.commentId).subscribe((response) => {
-        this.getAllComments();
-        alert('Obrisali ste komentar');
-      }, (error: HttpErrorResponse) => {
-        alert(error.message);
-      });
-    }
+  getYearProfit(event: any) {
+    this.subs.push(this.userService.getYearProfit(this.year).subscribe((response) => {
+      this.yearProfit = response;
+      this.yearProfit = this.yearProfit + " E"
+    }));
   }
 
-  public deleteComplaint(complaintId1?: number): void {
-    if (complaintId1 === undefined) {
-      alert('Neispravan id');
-    } else {
-      this.complaintId = complaintId1;
-      this.reviewService.deleteComplaint(this.complaintId).subscribe((response) => {
-        this.getAllComplains();
-        alert('Obrisali ste zalbu');
-      }, (error: HttpErrorResponse) => {
-        alert(error.message);
-      });
-    }
+  getYearPerMonthProfit() {
+    this.subs.push(this.userService.getYearPerMonthProfit("2022").subscribe((response) => {
+      this.chartData = response;
+      this.barChartData = [{data: this.chartData, label: 'Prihod po mesecima za 2022.godinu prikazan u eurima'}]
+    }));
   }
 
-
-  public disableReview(reviewId1?: number): void {
-    if (reviewId1 === undefined) {
-      alert('Neispravan id');
-    } else {
-      this.reviewId = reviewId1;
-      this.reviewService.deleteReview(this.reviewId).subscribe((response) => {
-        this.getAllReviews();
-        alert('Komentar nije prosao validaciju');
-      }, (error: HttpErrorResponse) => {
-        alert(error.message);
-      });
-    }
+  getPercent() {
+    this.subs.push(this.userService.getPercent().subscribe((response) => {
+      this.percent = response;
+    }));
   }
 
-  public deleteReview(reviewId1?: number): void {
-    if (reviewId1 === undefined) {
-      alert('Neispravan id');
-    } else {
-      this.reviewId = reviewId1;
-      this.reviewService.deleteReview(this.reviewId).subscribe((response) => {
-        this.getAllReviews();
-        alert('Obrisali ste komentar');
-      }, (error: HttpErrorResponse) => {
-        alert(error.message);
-      });
-    }
-  }
-
-
-  public enableUser(username1?: string, title1?: string, idRequest1?: number): void {
+  enableUser(username1?: string, title1?: string, idRequest1?: number) {
     if (username1 === undefined) {
       alert("Korisnicko ime ne postoji");
     } else {
@@ -367,29 +321,160 @@ export class HomeAdminComponent implements OnInit {
               alert('Unos razloga odbijanja je obavezan');
               this.getRequest();
             } else {
-              this.userService.approveDeleteRequest(this.username, this.idRequest, this.rejectText).subscribe((response: User) => {
+              this.subs.push(this.userService.approveDeleteRequest(this.username, this.idRequest, this.rejectText).subscribe((response: User) => {
                 alert("Nalog je obrisan");
                 this.user1 = response;
                 this.getAllRequest();
                 this.flag3 = false;
                 this.rejectText = undefined;
-              });
+              }));
             }
           } else {
-            this.userService.enableUser(this.username, this.idRequest).subscribe((response: User) => {
+            this.subs.push(this.userService.enableUser(this.username, this.idRequest).subscribe((response: User) => {
               alert("Nalog je verifikovan");
               this.user1 = response;
               this.getAllRequest();
               this.flag3 = false;
               this.rejectText = undefined;
-            });
+            }));
           }
         }
       }
     }
   }
 
-  public answer(complaintId1?: number): void {
+  disableUser(username1?: string, title1?: string, idRequest1?: number) {
+    if (username1 === undefined) {
+      alert("Korisnicko ime ne postoji");
+    } else {
+      this.username = username1;
+      if (title1 === undefined) {
+        alert("Naslov nije validan.");
+      } else {
+        this.title = title1;
+        if (idRequest1 === undefined) {
+          alert("Id nije validan.");
+        } else {
+          this.idRequest = idRequest1;
+          if (this.title.includes("brisanje")) {
+            this.flag3 = true;
+            if (this.rejectText === undefined || this.rejectText === null || this.rejectText.length === 0) {
+              alert('Unos razloga odbijanja je obavezan');
+              this.getRequest();
+            } else {
+              this.subs.push(this.userService.rejectDeleteRequest(this.username, this.idRequest, this.rejectText).subscribe((response: User) => {
+                alert("Nije odobreno brisanje naloga");
+                this.flag3 = false;
+                this.user1 = response;
+                this.getAllRequest();
+                this.rejectText = undefined;
+              }));
+            }
+          } else {
+            this.flag3 = true;
+            if (this.rejectText === undefined || this.rejectText === null || this.rejectText.length === 0) {
+              alert('Unos razloga odbijanja je obavezan');
+              this.getRequest();
+            } else {
+              this.subs.push(this.userService.disableUser(this.username, this.idRequest, this.rejectText).subscribe((response: User) => {
+                alert("Nalog nije verifikovan.");
+                this.flag3 = false;
+                this.user1 = response;
+                this.getAllRequest();
+                this.rejectText = undefined;
+              }));
+            }
+          }
+        }
+      }
+    }
+  }
+
+  enableReview(reviewId1?: number) {
+    if (reviewId1 === undefined) {
+      alert('Neispravan id');
+    } else {
+      this.reviewId = reviewId1;
+      this.subs.push(this.reviewService.enableReview(this.reviewId).subscribe(() => {
+        this.getAllReviews();
+        alert('Validirali ste recenziju');
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }));
+    }
+  }
+
+  disableReview(reviewId1?: number) {
+    if (reviewId1 === undefined) {
+      alert('Neispravan id');
+    } else {
+      this.reviewId = reviewId1;
+      this.subs.push(this.reviewService.deleteReview(this.reviewId).subscribe(() => {
+        this.getAllReviews();
+        alert('Komentar nije prosao validaciju');
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }));
+    }
+  }
+
+  deleteReview(reviewId1?: number) {
+    if (reviewId1 === undefined) {
+      alert('Neispravan id');
+    } else {
+      this.reviewId = reviewId1;
+      this.subs.push(this.reviewService.deleteReview(this.reviewId).subscribe(() => {
+        this.getAllReviews();
+        alert('Obrisali ste komentar');
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }));
+    }
+  }
+
+
+  enableComment(commentId1?: number) {
+    if (commentId1 === undefined) {
+      alert('Neispravan id');
+    } else {
+      this.commentId = commentId1;
+      this.subs.push(this.reviewService.enableComment(this.commentId).subscribe(() => {
+        this.getAllComments();
+        alert('Validirali ste komentar');
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }));
+    }
+  }
+
+  deleteComment(commentId1?: number) {
+    if (commentId1 === undefined) {
+    } else {
+      this.commentId = commentId1;
+      this.subs.push(this.reviewService.deleteComment(this.commentId).subscribe(() => {
+        this.getAllComments();
+        alert('Obrisali ste komentar');
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }));
+    }
+  }
+
+  deleteComplaint(complaintId1?: number) {
+    if (complaintId1 === undefined) {
+      alert('Neispravan id');
+    } else {
+      this.complaintId = complaintId1;
+      this.subs.push(this.reviewService.deleteComplaint(this.complaintId).subscribe(() => {
+        this.getAllComplains();
+        alert('Obrisali ste zalbu');
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }));
+    }
+  }
+
+  answer(complaintId1?: number) {
     if (this.user.id === undefined) {
     } else {
       this.flag7 = true;
@@ -398,92 +483,23 @@ export class HomeAdminComponent implements OnInit {
         this.getComplaint();
       } else {
         this.complaintId = complaintId1;
-        this.reviewService.answerComplaint(this.complaint1, this.user.id, this.complaintId).subscribe((response) => {
+        this.subs.push(this.reviewService.answerComplaint(this.complaint1, this.user.id, this.complaintId).subscribe(() => {
           this.getAllComplains();
           this.flag7 = false;
           alert('Uspesno ste odgovorili na zalbu');
           this.complaint1.content = undefined;
         }, (error: HttpErrorResponse) => {
           alert(error.message);
-        });
-      }
-    }
-
-  }
-
-  public disableUser(username1?: string, title1?: string, idRequest1?: number): void {
-    if (username1 === undefined) {
-      alert("Korisnicko ime ne postoji");
-    } else {
-      this.username = username1;
-      if (title1 === undefined) {
-        alert("Naslov nije validan.");
-      } else {
-        this.title = title1;
-        if (idRequest1 === undefined) {
-          alert("Id nije validan.");
-        } else {
-          this.idRequest = idRequest1;
-          if (this.title.includes("brisanje")) {
-            this.flag3 = true;
-            if (this.rejectText === undefined || this.rejectText === null || this.rejectText.length === 0) {
-              alert('Unos razloga odbijanja je obavezan');
-              this.getRequest();
-            } else {
-              this.userService.rejectDeleteRequest(this.username, this.idRequest, this.rejectText).subscribe((response: User) => {
-                alert("Nije odobreno brisanje naloga");
-                this.flag3 = false;
-                this.user1 = response;
-                this.getAllRequest();
-                this.rejectText = undefined;
-              });
-            }
-          } else {
-            this.flag3 = true;
-            if (this.rejectText === undefined || this.rejectText === null || this.rejectText.length === 0) {
-              alert('Unos razloga odbijanja je obavezan');
-              this.getRequest();
-            } else {
-              this.userService.disableUser(this.username, this.idRequest, this.rejectText).subscribe((response: User) => {
-                alert("Nalog nije verifikovan.");
-                this.flag3 = false;
-                this.user1 = response;
-                this.getAllRequest();
-                this.rejectText = undefined;
-              });
-            }
-          }
-        }
+        }));
       }
     }
   }
 
-  public getYearProfit(event: any) {
-    this.userService.getYearProfit(this.year).subscribe((response) => {
-      this.yearProfit = response;
-      this.yearProfit = this.yearProfit + " E"
-    });
-  }
 
-  public getYearPerMonthProfit() {
-    this.userService.getYearPerMonthProfit("2022").subscribe((response) => {
-      this.monthsProfit = response;
-    });
-  }
-
-  public getPercent() {
-    this.userService.getPercent().subscribe((response) => {
-      this.percent = response;
-    });
-  }
-
-  public editPercent() {
-    this.userService.editPercent(this.percent.toString()).subscribe((response) => {
+  editPercent() {
+    this.subs.push(this.userService.editPercent(this.percent.toString()).subscribe(() => {
       alert('Uspesno ste izmenili procenat.');
-    });
+    }));
   }
 
-  public closeRejectPanel() {
-    this.flag3 = false;
-  }
 }

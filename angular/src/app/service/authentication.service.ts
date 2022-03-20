@@ -28,7 +28,6 @@ export class AuthenticationService {
         this.access_token = res.accessToken;
         const token = this.access_token;
         localStorage.setItem('currentUser', JSON.stringify({username1, token}));
-        console.log(token);
       }));
   }
 

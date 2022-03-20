@@ -22,14 +22,12 @@ import {AddAdventureComponent} from './add-adventure/add-adventure.component';
 import {HomeAdventureComponent} from './home-adventure/home-adventure.component';
 import {HomeAdminUsersComponent} from './home-admin-users/home-admin-users.component';
 import {InstructorCalendarComponent} from "./instructor-calendar/instructor-calendar.component";
-import {adapterFactory} from 'angular-calendar/date-adapters/date-fns';
-import {CalendarModule, DateAdapter} from "angular-calendar";
+import {NgChartsModule} from "ng2-charts";
+
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, HomeAdminComponent, ProfileAdminComponent, RegistrationComponent, LoginComponent, HomeUserComponent, HomeGuestComponent, HomeInstructorComponent, HomeCottageOwnerComponent, HomeBoatOwnerComponent, RegistrationAdminComponent, ProfileInstructorComponent, AddAdventureComponent, HomeAdventureComponent, HomeAdminUsersComponent, InstructorCalendarComponent],
-  imports: [BrowserModule, HttpClientModule, AppRoutingModule, NoopAnimationsModule, MatTableModule, FormsModule, ReactiveFormsModule, CalendarModule.forRoot({
-    provide: DateAdapter, useFactory: adapterFactory,
-  })],
+  imports: [BrowserModule, HttpClientModule, AppRoutingModule, NoopAnimationsModule, MatTableModule, FormsModule, ReactiveFormsModule, NgChartsModule],
   providers: [],
   bootstrap: [AppComponent]
 })

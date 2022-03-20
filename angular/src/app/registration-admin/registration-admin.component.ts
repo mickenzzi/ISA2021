@@ -3,6 +3,7 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {UserService} from '../service/user.service';
 import {User} from '../model/user';
 import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-registration-admin',
@@ -10,7 +11,7 @@ import {ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./registration-admin.component.css']
 })
 export class RegistrationAdminComponent implements OnInit {
-  id!: number;
+  //subscribe
   user: User = {
     firstName: '',
     lastName: '',
@@ -24,15 +25,16 @@ export class RegistrationAdminComponent implements OnInit {
     password2: '',
     role: ''
   }
+  //unsubscribe
+  subs: Subscription[] = [];
+  //local
+  id!: number;
+  //flags
   flag1 = true;
   //@ts-ignore
   currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-  constructor(
-    private userService: UserService,
-    private router: Router,
-    private route: ActivatedRoute,
-  ) {
+  constructor(private userService: UserService, private router: Router, private route: ActivatedRoute,) {
   }
 
   ngOnInit(): void {
@@ -42,8 +44,8 @@ export class RegistrationAdminComponent implements OnInit {
     }
   }
 
-  goBack() {
-    this.router.navigate(['/homeAdmin']);
+  ngOnDestroy() {
+    this.subs.forEach(sub => sub.unsubscribe())
   }
 
   logOut() {
@@ -52,7 +54,12 @@ export class RegistrationAdminComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  createUser(): void {
+  goBack() {
+    this.router.navigate(['/homeAdmin']);
+  }
+
+
+  createUser() {
     const data = {
       firstName: this.user.firstName,
       lastName: this.user.lastName,
@@ -66,21 +73,17 @@ export class RegistrationAdminComponent implements OnInit {
       password2: this.user.password2,
       role: this.user.role
     }
-    this.userService.createUser(data)
-      .subscribe(
-        response => {
-          if (data.firstName === "" || data.lastName === "" || data.address === "" || data.city === "" || data.country === "" || data.phone === "" || data.email === "" || data.username === "" || data.password1 === "" || data.password2 === "" || data.role === "") {
-            this.flag1 = false;
-          } else {
-            this.flag1 = true;
-            this.router.navigate(['/homeAdmin']);
-            alert('Nalog poslat na verifikaciju');
-          }
-        },
-        (error: HttpErrorResponse) => {
-          alert(error.message);
+    this.subs.push(this.userService.createUser(data)
+      .subscribe(() => {
+        if (data.firstName === "" || data.lastName === "" || data.address === "" || data.city === "" || data.country === "" || data.phone === "" || data.email === "" || data.username === "" || data.password1 === "" || data.password2 === "" || data.role === "") {
+          this.flag1 = false;
+        } else {
+          this.flag1 = true;
+          this.router.navigate(['/homeAdmin']);
+          alert('Nalog poslat na verifikaciju');
         }
-      );
-
-  };
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }));
+  }
 }

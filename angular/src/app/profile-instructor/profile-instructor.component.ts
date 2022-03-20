@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core'
 import {UserService} from '../service/user.service';
 import {User} from '../model/user';
 import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-profile-instructor',
@@ -9,16 +10,14 @@ import {ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./profile-instructor.component.css']
 })
 export class ProfileInstructorComponent implements OnInit {
-
+  //subscribe
   user: User = new User();
+  //unsubscribe
+  subs: Subscription[] = [];
   //@ts-ignore
   currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private userService: UserService
-  ) {
+  constructor(private route: ActivatedRoute, private router: Router, private userService: UserService) {
   }
 
   ngOnInit(): void {
@@ -30,26 +29,8 @@ export class ProfileInstructorComponent implements OnInit {
     }
   }
 
-  public getUser(): void {
-    const username = this.currentUser.username1;
-    this.userService.findUser(username).subscribe(
-      (response: User) => {
-        this.user = response;
-      }
-    );
-  }
-
-  public updateUser(): void {
-    if (this.user.password1 === undefined) {
-      alert('Unesite lozinku');
-    } else {
-      this.userService.updateUser(this.user).subscribe(
-        response => {
-          alert('Korisnik je izmenjen.');
-          this.router.navigate(['/homeInstructor'])
-        }
-      );
-    }
+  ngOnDestroy() {
+    this.subs.forEach(sub => sub.unsubscribe())
   }
 
   logOut() {
@@ -60,6 +41,24 @@ export class ProfileInstructorComponent implements OnInit {
 
   goBack() {
     this.router.navigate(['/homeInstructor']);
+  }
+
+  getUser() {
+    const username = this.currentUser.username1;
+    this.subs.push(this.userService.findUser(username).subscribe((response: User) => {
+      this.user = response;
+    }));
+  }
+
+  updateUser() {
+    if (this.user.password1 === undefined) {
+      alert('Unesite lozinku');
+    } else {
+      this.subs.push(this.userService.updateUser(this.user).subscribe(() => {
+        alert('Korisnik je izmenjen.');
+        this.router.navigate(['/homeInstructor'])
+      }));
+    }
   }
 
 }

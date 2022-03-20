@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core'
 import {UserService} from '../service/user.service';
 import {User} from '../model/user';
 import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-profile-admin',
@@ -9,16 +10,16 @@ import {ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./profile-admin.component.css']
 })
 export class ProfileAdminComponent implements OnInit {
+  //subscribe
   user: User = new User();
+  //unsubsribe
+  subs: Subscription[] = [];
+  //local
   id!: number;
   //@ts-ignore
   currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private userService: UserService
-  ) {
+  constructor(private route: ActivatedRoute, private router: Router, private userService: UserService) {
   }
 
   ngOnInit(): void {
@@ -30,31 +31,10 @@ export class ProfileAdminComponent implements OnInit {
     }
   }
 
-  public getUser(): void {
-    const username = this.currentUser.username1;
-    this.userService.findUser(username).subscribe(
-      (response: User) => {
-        this.user = response;
-      }
-    );
+  ngOnDestroy() {
+    this.subs.forEach(sub => sub.unsubscribe())
   }
 
-  public updateUser(): void {
-    if (this.user.password1 === undefined) {
-      alert('Unesite lozinku');
-    } else {
-      this.userService.updateUser(this.user).subscribe(
-        response => {
-          alert('Uspesno ste izmenili podatke');
-          this.router.navigate(['/homeAdmin'])
-        }
-      );
-    }
-  }
-
-  goBack() {
-    this.router.navigate(['/homeAdmin']);
-  }
 
   logOut() {
     localStorage.removeItem('currentUser');
@@ -62,4 +42,26 @@ export class ProfileAdminComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
+  goBack() {
+    this.router.navigate(['/homeAdmin']);
+  }
+
+
+  getUser() {
+    const username = this.currentUser.username1;
+    this.subs.push(this.userService.findUser(username).subscribe((response: User) => {
+      this.user = response;
+    }));
+  }
+
+  updateUser() {
+    if (this.user.password1 === undefined) {
+      alert('Unesite lozinku');
+    } else {
+      this.subs.push(this.userService.updateUser(this.user).subscribe(() => {
+        alert('Uspesno ste izmenili podatke');
+        this.router.navigate(['/homeAdmin'])
+      }));
+    }
+  }
 }

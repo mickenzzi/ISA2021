@@ -77,7 +77,7 @@ export class AddAdventureComponent implements OnInit {
       }
       this.adventureService.createAdventure(data, this.user.id)
         .subscribe(
-          response => {
+          (response )=> {
             alert('Uspesno ste dodali avanturu');
             this.router.navigate(['/homeInstructor']);
           },

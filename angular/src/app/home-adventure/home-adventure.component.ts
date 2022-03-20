@@ -7,6 +7,7 @@ import {UserService} from '../service/user.service';
 import {RequestService} from '../service/request.service';
 import {AdventureService} from '../service/adventure.service';
 import {HttpErrorResponse} from '@angular/common/http';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-home-adventure',
@@ -14,18 +15,22 @@ import {HttpErrorResponse} from '@angular/common/http';
   styleUrls: ['./home-adventure.component.css']
 })
 export class HomeAdventureComponent implements OnInit {
-  //flag for action
-  flag1: Boolean = true;
-  idAdventure!: number;
+  //subscribe
   adventure: Adventure = new Adventure();
-  price!: number;
-  capacity!: number;
   termin: Termin = new Termin();
   user: User = new User();
+  //unsubsribe
+  subs: Subscription[] = [];
+  //local
+  idAdventure!: number;
+  price!: number;
+  capacity!: number;
+  //flags
+  flag1: Boolean = true;
   //@ts-ignore
   currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-  constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private requestService: RequestService, private adventureService: AdventureService,) {
+  constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private requestService: RequestService, private adventureService: AdventureService) {
   }
 
   ngOnInit(): void {
@@ -39,36 +44,18 @@ export class HomeAdventureComponent implements OnInit {
     }
   }
 
-  goBack(): void {
-    this.router.navigate(['/homeInstructor']);
-  }
-
-  public getUser(): void {
-    const username = this.currentUser.username1;
-    this.userService.findUser(username).subscribe((response: User) => {
-      this.user = response;
-    });
-  }
-
-  public getAdventure(): void {
-    this.adventureService.getAdventure(this.idAdventure).subscribe((response: Adventure) => {
-      this.adventure = response;
-    });
-  }
-
-  editAdventure(): void {
-    this.adventureService.updateAdventure(this.adventure).subscribe(response => {
-      alert('Izmenili ste avanturu.');
-      this.getAdventure();
-    }, (error: HttpErrorResponse) => {
-      alert(error.message);
-    });
+  ngOnDestroy() {
+    this.subs.forEach(sub => sub.unsubscribe())
   }
 
   logOut() {
     localStorage.removeItem('currentUser');
     localStorage.clear();
     this.router.navigate(['/login']);
+  }
+
+  goBack() {
+    this.router.navigate(['/homeInstructor']);
   }
 
   showActionModal() {
@@ -82,22 +69,44 @@ export class HomeAdventureComponent implements OnInit {
     }
   }
 
-  createAction(): void {
-    if (this.user.id === undefined) {
-    } else {
-      this.adventureService.createAction(this.user.id, this.idAdventure, this.termin, this.price, this.capacity).subscribe(response => {
-        alert('Uspesno ste kreirali termin za brzu rezervaciju.');
-        this.flag1 = false;
-      }, (error: HttpErrorResponse) => {
-        alert(error.message);
-      });
-    }
-  }
-
   rejectCreateAction() {
     var editButton = <HTMLInputElement>document.getElementById('editButton');
     this.flag1 = true;
     editButton.disabled = false;
+  }
+
+  getUser() {
+    const username = this.currentUser.username1;
+    this.subs.push(this.userService.findUser(username).subscribe((response: User) => {
+      this.user = response;
+    }));
+  }
+
+  getAdventure() {
+    this.subs.push(this.adventureService.getAdventure(this.idAdventure).subscribe((response: Adventure) => {
+      this.adventure = response;
+    }));
+  }
+
+  editAdventure(): void {
+    this.subs.push(this.adventureService.updateAdventure(this.adventure).subscribe(() => {
+      alert('Izmenili ste avanturu.');
+      this.getAdventure();
+    }, (error: HttpErrorResponse) => {
+      alert(error.message);
+    }));
+  }
+
+  createAction() {
+    if (this.user.id === undefined) {
+    } else {
+      this.subs.push(this.adventureService.createAction(this.user.id, this.idAdventure, this.termin, this.price, this.capacity).subscribe(() => {
+        alert('Uspesno ste kreirali termin za brzu rezervaciju.');
+        this.flag1 = false;
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }));
+    }
   }
 
 }

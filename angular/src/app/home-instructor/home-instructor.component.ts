@@ -7,6 +7,7 @@ import {UserService} from '../service/user.service';
 import {RequestService} from '../service/request.service';
 import {AdventureService} from '../service/adventure.service';
 import {HttpErrorResponse} from '@angular/common/http';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-home-instructor',
@@ -14,14 +15,23 @@ import {HttpErrorResponse} from '@angular/common/http';
   styleUrls: ['./home-instructor.component.css']
 })
 export class HomeInstructorComponent implements OnInit {
-
+  //subscribe
   user: User = new User();
   user1: User = new User();
-  public adventures: Adventure[];
-  public requests: Request[];
+  adventures: Adventure[];
+  requests: Request[];
+  //unsubscribe
+  subs: Subscription[] = [];
+  //local
   idAdventure: number = 0;
   username: string = "";
   search: string = "";
+  URL_ss = "";
+  URL: string = "";
+  URL_R: string = ""
+  URL_path: string = "/assets/img/";
+  textRequest: string = "";
+  //flags
   flagTitle?: boolean;
   flagPrice?: boolean;
   flagCapacity?: boolean;
@@ -31,21 +41,10 @@ export class HomeInstructorComponent implements OnInit {
   flag2?: boolean;
   //is adventure reserved
   flag3?: boolean;
-  URL_ss = "";
-  URL: string = "";
-  URL_R: string = ""
-  URL_path: string = "/assets/img/";
-  textRequest: string = "";
   //@ts-ignore
   currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private userService: UserService,
-    private requestService: RequestService,
-    private adventureService: AdventureService,
-  ) {
+  constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private requestService: RequestService, private adventureService: AdventureService) {
     this.adventures = [];
     this.requests = [];
   }
@@ -61,12 +60,8 @@ export class HomeInstructorComponent implements OnInit {
     }
   }
 
-  showHidden() {
-    if (this.flag1 === false) {
-      this.flag1 = true;
-    } else {
-      this.flag1 = false;
-    }
+  ngOnDestroy() {
+    this.subs.forEach(sub => sub.unsubscribe())
   }
 
 
@@ -80,7 +75,62 @@ export class HomeInstructorComponent implements OnInit {
     this.router.navigate(['/profileInstructor']);
   }
 
-  public requestDelete(): void {
+  addAdventure() {
+    this.router.navigate(['/addAdventure']);
+  }
+
+  goToAdventure(idAdventure1?: number) {
+    if (idAdventure1 === undefined) {
+      alert('Id nije validan');
+    } else {
+      this.idAdventure = idAdventure1;
+      this.router.navigate(['/homeAdventure', this.idAdventure]);
+    }
+  }
+
+  goToCalendar() {
+    this.router.navigate(['/instructorCalendar']);
+  }
+
+
+  public uploadImage(event: any) {
+    this.URL_ss = this.URL.substring(12);
+    this.URL_R = this.URL_path + this.URL_ss;
+  }
+
+  showHidden() {
+    if (this.flag1 === false) {
+      this.flag1 = true;
+    } else {
+      this.flag1 = false;
+    }
+  }
+
+  getUser() {
+    const username = this.currentUser.username1;
+    this.subs.push(this.userService.findUser(username).subscribe((response: User) => {
+      this.user = response;
+      this.getAllAdventures();
+    }));
+  }
+
+  getAllAdventures() {
+    if (this.user.id === undefined) {
+    } else {
+      if (this.flag2 === false) {
+        this.subs.push(this.adventureService.getAllAdventures(this.user.id).subscribe((response: Adventure[]) => {
+          this.adventures = response;
+        }, (error: HttpErrorResponse) => {
+          alert(error.message);
+        }));
+      } else {
+        this.adventures = [];
+      }
+    }
+  }
+
+
+  requestDelete() {
     if (this.flag2 === false) {
       this.flag2 = true;
       this.getAllAdventures();
@@ -91,7 +141,7 @@ export class HomeInstructorComponent implements OnInit {
   }
 
 
-  public approveRequest(): void {
+  approveRequest() {
     if (this.user.id === undefined) {
     } else {
       if (this.textRequest === undefined || this.textRequest === null || this.textRequest.length === 0) {
@@ -99,102 +149,46 @@ export class HomeInstructorComponent implements OnInit {
       } else {
         this.flag2 = false;
         this.getAllAdventures();
-        this.requestService.createRequest(this.user.id, this.textRequest).subscribe(
-          response => {
-            alert('Poslali ste zahtev za brisanje naloga')
-            this.textRequest = "";
-          }
-        );
+        this.subs.push(this.requestService.createRequest(this.user.id, this.textRequest).subscribe(() => {
+          alert('Poslali ste zahtev za brisanje naloga')
+          this.textRequest = "";
+        }));
       }
     }
   }
 
-  public rejectRequest(): void {
+  rejectRequest() {
     this.flag2 = false;
     this.getAllAdventures();
   }
 
-  public getUser(): void {
-    const username = this.currentUser.username1;
-    this.userService.findUser(username).subscribe(
-      (response: User) => {
-        this.user = response;
+
+  deleteAdventure(idAdventure1?: number) {
+    if (idAdventure1 === undefined) {
+      alert('Id nije validan');
+    } else {
+      this.idAdventure = idAdventure1;
+      this.subs.push(this.adventureService.deleteAdventure(this.idAdventure).subscribe(() => {
+        alert("Obrisali ste avanturu");
         this.getAllAdventures();
-      }
-    );
-  }
-
-  public uploadImage(event: any): void {
-    this.URL_ss = this.URL.substring(12);
-    this.URL_R = this.URL_path + this.URL_ss;
-    console.log(this.URL_R);
-  }
-
-  addAdventure() {
-    this.router.navigate(['/addAdventure']);
-  }
-
-  public getAllAdventures(): void {
-    if (this.user.id === undefined) {
-    } else {
-      if (this.flag2 === false) {
-        this.adventureService.getAllAdventures(this.user.id).subscribe(
-          (response: Adventure[]) => {
-            this.adventures = response;
-          },
-          (error: HttpErrorResponse) => {
-            alert(error.message);
-          }
-        );
-      } else {
-        this.adventures = [];
-      }
+      }));
     }
   }
 
-  goToCalendar(): void {
-    this.router.navigate(['/instructorCalendar']);
-  }
-
-  goToAdventure(idAdventure1?: number): void {
-    if (idAdventure1 === undefined) {
-      alert('Id nije validan');
-    } else {
-      this.idAdventure = idAdventure1;
-      this.router.navigate(['/homeAdventure', this.idAdventure]);
-    }
-  }
-
-  deleteAdventure(idAdventure1?: number): void {
-    if (idAdventure1 === undefined) {
-      alert('Id nije validan');
-    } else {
-      this.idAdventure = idAdventure1;
-      this.adventureService.deleteAdventure(this.idAdventure).subscribe(
-        (response) => {
-          alert("Obrisali ste avanturu");
-          this.getAllAdventures();
-        }
-      );
-    }
-  }
-
-  searchAdventure(event: any): void {
+  searchAdventure(event: any) {
     if (this.user.id === undefined) {
     } else {
       if (this.search === null || this.search.length === 0) {
         this.getAllAdventures();
       } else {
-        this.adventureService.getSearchAdventures(this.user.id, this.search).subscribe(
-          (response: Adventure[]) => {
-            this.adventures = response;
-          },
-        );
+        this.subs.push(this.adventureService.getSearchAdventures(this.user.id, this.search).subscribe((response: Adventure[]) => {
+          this.adventures = response;
+        }));
       }
     }
   }
 
-  sortByTitle(): void {
+  sortByTitle() {
     if (this.user.id === undefined) {
     } else {
       if (this.flagTitle === false) {
@@ -202,15 +196,13 @@ export class HomeInstructorComponent implements OnInit {
       } else {
         this.flagTitle = false;
       }
-      this.adventureService.sortAdventuresByTitle(this.user.id, this.flagTitle).subscribe(
-        (response: Adventure[]) => {
-          this.adventures = response;
-        }
-      );
+      this.subs.push(this.adventureService.sortAdventuresByTitle(this.user.id, this.flagTitle).subscribe((response: Adventure[]) => {
+        this.adventures = response;
+      }));
     }
   }
 
-  sortByPrice(): void {
+  sortByPrice() {
     if (this.user.id === undefined) {
     } else {
       if (this.flagPrice === false) {
@@ -218,15 +210,13 @@ export class HomeInstructorComponent implements OnInit {
       } else {
         this.flagPrice = false;
       }
-      this.adventureService.sortAdventuresByPrice(this.user.id, this.flagPrice).subscribe(
-        (response: Adventure[]) => {
-          this.adventures = response;
-        }
-      );
+      this.subs.push(this.adventureService.sortAdventuresByPrice(this.user.id, this.flagPrice).subscribe((response: Adventure[]) => {
+        this.adventures = response;
+      }));
     }
   }
 
-  sortByCapacity(): void {
+  sortByCapacity() {
     if (this.user.id === undefined) {
     } else {
       if (this.flagCapacity === false) {
@@ -235,11 +225,9 @@ export class HomeInstructorComponent implements OnInit {
         this.flagCapacity = false;
       }
 
-      this.adventureService.sortAdventuresByCapacity(this.user.id, this.flagCapacity).subscribe(
-        (response: Adventure[]) => {
-          this.adventures = response;
-        }
-      );
+      this.subs.push(this.adventureService.sortAdventuresByCapacity(this.user.id, this.flagCapacity).subscribe((response: Adventure[]) => {
+        this.adventures = response;
+      }));
     }
   }
 }
