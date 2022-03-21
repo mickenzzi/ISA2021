@@ -31,6 +31,10 @@ export class ReviewService {
     return this.http.get<Reservation[]>(`${this.reviewUrl}/getAllUserReservations/${userId}`, {headers: this.reqHeader});
   }
 
+  public getSingleUserReservation(reservationId: number) {
+    return this.http.get<Reservation[]>(`${this.reviewUrl}/getSingleUserReservation/${reservationId}`, {headers: this.reqHeader});
+  }
+
   public getReview(id: number) {
     return this.http.get<Review>(`${this.reviewUrl}/getReviewById/${id}`, {headers: this.reqHeader});
   }

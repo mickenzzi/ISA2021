@@ -97,6 +97,11 @@ export class HomeAdminComponent implements OnInit {
 
   closeRejectPanel() {
     this.flag3 = false;
+    this.flag7 = false;
+    this.getAllReviews();
+    this.getAllComplains();
+    this.getAllComments();
+    this.getAllRequest();
   }
 
   closeNotification() {
@@ -206,7 +211,7 @@ export class HomeAdminComponent implements OnInit {
   getAllRequest() {
     if (this.user.id === undefined) {
     } else {
-      this.subs.push(this.requestService.getAllRequest(this.user.id).subscribe((response: Request[]) => {
+      this.subs.push(this.requestService.getAllRequest(this.user.id).subscribe((response) => {
         this.requests = response;
       }, (error: HttpErrorResponse) => {
         alert(error.message);
@@ -217,7 +222,7 @@ export class HomeAdminComponent implements OnInit {
   getRequest() {
     if (this.idRequest === undefined) {
     } else {
-      this.subs.push(this.requestService.getRequest(this.idRequest).subscribe((response: Request[]) => {
+      this.subs.push(this.requestService.getRequest(this.idRequest).subscribe((response) => {
         this.requests = response;
       }, (error: HttpErrorResponse) => {
         alert(error.message);
@@ -226,7 +231,7 @@ export class HomeAdminComponent implements OnInit {
   }
 
   getAllComments() {
-    this.subs.push(this.reviewService.getAllComments().subscribe((response: Comment[]) => {
+    this.subs.push(this.reviewService.getAllComments().subscribe((response) => {
       this.comments = response;
     }, (error: HttpErrorResponse) => {
       alert(error.message);
@@ -236,7 +241,7 @@ export class HomeAdminComponent implements OnInit {
   getComment() {
     if (this.commentId === undefined) {
     } else {
-      this.reviewService.getSingleComment(this.commentId).subscribe((response: Comment[]) => {
+      this.reviewService.getSingleComment(this.commentId).subscribe((response) => {
         this.comments = response;
       }, (error: HttpErrorResponse) => {
         alert(error.message);
@@ -245,17 +250,17 @@ export class HomeAdminComponent implements OnInit {
   }
 
   getAllComplains() {
-    this.subs.push(this.reviewService.getAllComplains().subscribe((response: Complaint[]) => {
+    this.subs.push(this.reviewService.getAllComplains().subscribe((response) => {
       this.complains = response;
     }, (error: HttpErrorResponse) => {
       alert(error.message);
     }));
   }
 
-  getComplaint() {
-    if (this.complaintId === undefined) {
+  getComplaint(id?: number) {
+    if (id === undefined) {
     } else {
-      this.subs.push(this.reviewService.getSingleComplaint(this.complaintId).subscribe((response: Complaint[]) => {
+      this.subs.push(this.reviewService.getSingleComplaint(id).subscribe((response) => {
         this.complains = response;
       }, (error: HttpErrorResponse) => {
         alert(error.message);
@@ -264,7 +269,7 @@ export class HomeAdminComponent implements OnInit {
   }
 
   getAllReviews() {
-    this.subs.push(this.reviewService.getAllReviews().subscribe((response: Review[]) => {
+    this.subs.push(this.reviewService.getAllReviews().subscribe((response) => {
       this.reviews = response;
     }, (error: HttpErrorResponse) => {
       alert(error.message);
@@ -274,7 +279,7 @@ export class HomeAdminComponent implements OnInit {
   getReview() {
     if (this.reviewId === undefined) {
     } else {
-      this.subs.push(this.reviewService.getSingleReview(this.reviewId).subscribe((response: Review[]) => {
+      this.subs.push(this.reviewService.getSingleReview(this.reviewId).subscribe((response) => {
         this.reviews = response;
       }, (error: HttpErrorResponse) => {
         alert(error.message);
@@ -321,7 +326,7 @@ export class HomeAdminComponent implements OnInit {
               alert('Unos razloga odbijanja je obavezan');
               this.getRequest();
             } else {
-              this.subs.push(this.userService.approveDeleteRequest(this.username, this.idRequest, this.rejectText).subscribe((response: User) => {
+              this.subs.push(this.userService.approveDeleteRequest(this.username, this.idRequest, this.rejectText).subscribe((response) => {
                 alert("Nalog je obrisan");
                 this.user1 = response;
                 this.getAllRequest();
@@ -330,7 +335,7 @@ export class HomeAdminComponent implements OnInit {
               }));
             }
           } else {
-            this.subs.push(this.userService.enableUser(this.username, this.idRequest).subscribe((response: User) => {
+            this.subs.push(this.userService.enableUser(this.username, this.idRequest).subscribe((response) => {
               alert("Nalog je verifikovan");
               this.user1 = response;
               this.getAllRequest();
@@ -362,7 +367,7 @@ export class HomeAdminComponent implements OnInit {
               alert('Unos razloga odbijanja je obavezan');
               this.getRequest();
             } else {
-              this.subs.push(this.userService.rejectDeleteRequest(this.username, this.idRequest, this.rejectText).subscribe((response: User) => {
+              this.subs.push(this.userService.rejectDeleteRequest(this.username, this.idRequest, this.rejectText).subscribe((response) => {
                 alert("Nije odobreno brisanje naloga");
                 this.flag3 = false;
                 this.user1 = response;
@@ -376,7 +381,7 @@ export class HomeAdminComponent implements OnInit {
               alert('Unos razloga odbijanja je obavezan');
               this.getRequest();
             } else {
-              this.subs.push(this.userService.disableUser(this.username, this.idRequest, this.rejectText).subscribe((response: User) => {
+              this.subs.push(this.userService.disableUser(this.username, this.idRequest, this.rejectText).subscribe((response) => {
                 alert("Nalog nije verifikovan.");
                 this.flag3 = false;
                 this.user1 = response;
@@ -467,7 +472,7 @@ export class HomeAdminComponent implements OnInit {
       this.complaintId = complaintId1;
       this.subs.push(this.reviewService.deleteComplaint(this.complaintId).subscribe(() => {
         this.getAllComplains();
-        alert('Obrisali ste zalbu');
+        alert('Obrisali ste žalbu');
       }, (error: HttpErrorResponse) => {
         alert(error.message);
       }));
@@ -480,7 +485,7 @@ export class HomeAdminComponent implements OnInit {
       this.flag7 = true;
       if (complaintId1 === undefined || this.complaint1.content === undefined || this.complaint1.content === null || this.complaint1.content.length === 0) {
         alert('Unesite odgovor.');
-        this.getComplaint();
+        this.getComplaint(complaintId1);
       } else {
         this.complaintId = complaintId1;
         this.subs.push(this.reviewService.answerComplaint(this.complaint1, this.user.id, this.complaintId).subscribe(() => {

@@ -21,7 +21,7 @@ public class Request {
 	@Column(name = "username", nullable = false)
 	private String username;
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "admin_id")
 	private User userRequest;
 	
 	public Long getId() {

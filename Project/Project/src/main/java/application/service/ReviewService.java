@@ -11,6 +11,7 @@ public interface ReviewService {
 	Review create(Review review,Long adventureId);
 	List<Review> findAll();
 	void delete(Long id);
+	Reservation findReservationById(Long id);
 	List<Reservation> findAllUserReservation(Long userId);
 	Review enableReview(Long id);
 }

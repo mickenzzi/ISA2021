@@ -42,6 +42,16 @@ public class ReviewController {
 		return new ResponseEntity<>(reservations, HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/getSingleUserReservation/{reservationId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('INSTRUCTOR') or hasRole('USER')")
+	public ResponseEntity<List<Reservation>> getSingleUserReservation(@PathVariable("reservationId") Long reservationId) {
+		List<Reservation> reservations = new ArrayList<Reservation>();
+		Reservation reservation = reviewService.findReservationById(reservationId);
+		reservations.add(reservation);
+		System.out.println("The task /getSingleUserReservation was successfully completed.");
+		return new ResponseEntity<>(reservations, HttpStatus.OK);
+	}
+	
 	
 	@GetMapping(value = "/getReviewById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ADMIN') or hasRole('INSTRUCTOR') or hasRole('USER')")

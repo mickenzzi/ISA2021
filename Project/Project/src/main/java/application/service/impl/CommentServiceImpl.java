@@ -67,7 +67,7 @@ public class CommentServiceImpl implements CommentService {
 		Comment comment = commentRepository.findById(id).orElseGet(null);
 		User user = userRepository.findById(comment.getUserComment().getId()).orElseGet(null);
 		User instructor = userRepository.findById(comment.getInstructorComment().getId()).orElseGet(null);
-		User admin = userRepository.findByUsername("mickenzi");;
+		User admin = userRepository.findByUsername("mickenzi");
 		comment.setEnabled(true);
 		commentRepository.save(comment);
 		if(comment.isNegative() == true) {
@@ -80,10 +80,10 @@ public class CommentServiceImpl implements CommentService {
 			mail1.setText("Instruktor je uneo negativan komentar o vama.");
 			javaMailSender.send(mail1);
 			SimpleMailMessage mail2 = new SimpleMailMessage();
-			mail1.setTo(instructor.getEmail());
-			mail1.setFrom(admin.getEmail());
-			mail1.setSubject("Komentar");
-			mail1.setText("Vas negativan komentar je prosao validaciju admina.");
+			mail2.setTo(instructor.getEmail());
+			mail2.setFrom(admin.getEmail());
+			mail2.setSubject("Komentar");
+			mail2.setText("Vas negativan komentar je prosao validaciju admina.");
 			javaMailSender.send(mail2);
 		}
 		return comment;

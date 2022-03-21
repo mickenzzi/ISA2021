@@ -12,7 +12,6 @@
       <th class="header__item">Pocetak</th>
       <th class="header__item">Kraj</th>
       <th class="header__item">Avantura</th>
-      <th class="header__item">Korisnik</th>
       <th class="header__item"></th>
       <th class="header__item"></th>
     </tr>
@@ -21,29 +20,44 @@
       <td class="table-data">{{reservation.start}}</td>
       <td class="table-data">{{reservation.end}}</td>
       <td class="table-data">{{reservation.adventureReservation.title}}</td>
-      <td class="table-data">{{reservation.userReservation.firstName}} {{reservation.userReservation.lastName}}</td>
       <td class="table-data">
-        <button (click)="createReview(reservation.adventureReservation.id)" class="approve-button">Unesi recenziju
+        <button (click)="createReview(reservation.adventureReservation.id, reservation.id)" *ngIf="flagButton"
+                class="approve-button">Unesi
+          recenziju
         </button>
       </td>
       <td class="table-data">
-        <button (click)="createComplaint(reservation.adventureReservation.id)" class="approve-button">Unesi zalbu
+        <button (click)="createComplaint(reservation.adventureReservation.id, reservation.id)" *ngIf="flag1Button"
+                class="approve-button">Unesi zalbu
         </button>
       </td>
     </tr>
   </table>
 </div>
-<div *ngIf="flag" style="width: 300px; height: 200px; margin-left:1000px; margin-top:-300px; position: fixed;">
-  <input [(ngModel)]="review1.comment" [ngModelOptions]="{standalone: true}" placeholder="Unesite komentar" style="width: 100%; height:100%"
-         type="text"/>
+<div *ngIf="flag"
+     style="background-color: #D1D4D8; width: 300px; height: 200px; margin-left:1000px; margin-top:-100px; position:fixed">
+  <button (click)="closeModal()" class="mat-button" style="margin-left: 90%; margin-top: 3px">X</button>
+  <br>
+  <label style="margin-left:3px">Izaberite ocenu:</label>
+  <select [(ngModel)]="review1.grade" style="margin-left:5px">
+    <option option="1">1</option>
+    <option selected="2">2</option>
+    <option option="3">3</option>
+    <option selected="4">4</option>
+    <option option="5">5</option>
+  </select>
+  <br>
+  <textarea [(ngModel)]="review1.comment" [ngModelOptions]="{standalone: true}" placeholder="Unesite komentar"
+            style="width:98%; height: 65%" type="text"></textarea>
 </div>
-<div *ngIf="flag" style="width: 300px; height: 30px; margin-left:1000px; margin-top:-50px; position: fixed;">
-  <input [(ngModel)]="review1.grade" [ngModelOptions]="{standalone: true}" placeholder="Unesite ocenu" style="width: 100%; height:100%"
-         type="text"/>
-</div>
-<div *ngIf="flag1" style="width: 300px; height: 200px; margin-left:1000px; margin-top:-300px; position: fixed;">
-  <input [(ngModel)]="complaint.content" [ngModelOptions]="{standalone: true}" placeholder="Unesite tekst" style="width: 100%; height:100%"
-         type="text"/>
+<div *ngIf="flag1"
+     style="background-color: #D1D4D8; width: 300px; height: 200px; margin-left:1000px; margin-top:-200px; position:fixed">
+  <button (click)="closeModal()" class="mat-button" style="margin-left: 90%; margin-top: 3px">X</button>
+  <br>
+  <br>
+  <textarea [(ngModel)]="complaint.content" [ngModelOptions]="{standalone: true}" placeholder="Unesite tekst zalbe"
+            style="width: 98%; height:73%"
+            type="text"></textarea>
 </div>
 
 

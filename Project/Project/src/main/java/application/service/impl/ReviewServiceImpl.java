@@ -104,4 +104,9 @@ public class ReviewServiceImpl implements ReviewService {
 		return review;
 	
 	}
+
+	@Override
+	public Reservation findReservationById(Long id) {
+		return reservationRepository.findById(id).orElseGet(null);
+	}
 }

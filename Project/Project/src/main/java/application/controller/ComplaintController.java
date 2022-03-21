@@ -29,8 +29,14 @@ public class ComplaintController {
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<Complaint>> getAllComplains() {
 		List<Complaint> complains = complaintService.findAll();
+		List<Complaint> complains1 = new ArrayList<Complaint>();
+		for(Complaint c: complains) {
+			if(!c.isAnswered()) {
+				complains1.add(c);
+			}
+		}
 		System.out.println("The task /getAllComplains was successfully completed.");
-		return new ResponseEntity<>(complains, HttpStatus.OK);
+		return new ResponseEntity<>(complains1, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/getComplaintById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -49,6 +55,7 @@ public class ComplaintController {
 	public ResponseEntity<List<Complaint>> getComplaint(@PathVariable("id") Long id) {
 		Complaint complaint = complaintService.findById(id);
 		List<Complaint> complains = new ArrayList<Complaint>();
+		System.out.println("The task /getComplaint was successfully completed.");
 		complains.add(complaint);
 		return new ResponseEntity<>(complains, HttpStatus.OK);
 	}

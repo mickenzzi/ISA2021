@@ -18,9 +18,9 @@ public class Comment {
 	private Long id;
 	@Column(name = "content")
 	private String content;
-	@Column(name = "enabled")
+	@Column(name = "is_enabled")
 	private boolean enabled;
-	@Column(name = "negative")
+	@Column(name = "is_negative")
 	private boolean negative;
 
 	@ManyToOne(fetch = FetchType.EAGER)

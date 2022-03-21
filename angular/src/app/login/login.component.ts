@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
           }
           if (this.user.role === "ROLE_USER") {
             alert('Uspesno ste se ulogovali');
-            this.router.navigate(['/homeUser', this.user.id]);
+            this.router.navigate(['/homeUser']);
           }
         }));
       }, (error: HttpErrorResponse) => {

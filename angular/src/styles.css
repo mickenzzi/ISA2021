@@ -407,6 +407,7 @@ p {
 .table-row {
   display: flex;
   width: 100%;
+  padding-bottom: 3px;
 }
 
 .table-data, .header__item {
@@ -420,6 +421,7 @@ p {
 
 .header__item {
   text-transform: uppercase;
+  color: white;
 }
 
 .approve-button {

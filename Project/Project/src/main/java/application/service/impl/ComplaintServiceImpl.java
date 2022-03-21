@@ -75,6 +75,7 @@ public class ComplaintServiceImpl implements ComplaintService{
 		answer.setInstructorComplaint(instructor);
 		answer.setUserComplaint(user);
 		answer.setAnswered(true);
+		complaint1.setAnswered(true);
 		SimpleMailMessage mail1 = new SimpleMailMessage();
 		mail1.setTo(user.getEmail());
 		mail1.setTo(instructor.getEmail());
@@ -82,6 +83,7 @@ public class ComplaintServiceImpl implements ComplaintService{
 		mail1.setSubject("Odgovor na zalbu");
 		mail1.setText(complaint.getContent());
 		javaMailSender.send(mail1);
+		complaintRepository.save(complaint1);
 		complaintRepository.save(answer);
 		return answer;
 	}

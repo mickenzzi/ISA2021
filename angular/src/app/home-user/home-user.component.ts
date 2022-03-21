@@ -23,10 +23,12 @@ export class HomeUserComponent implements OnInit {
   //local
   adventureId!: number;
   //flags
-  //show review parameter
+  //show review
   flag?: boolean;
-  //show complaint parameter
+  flagButton? : boolean = true;
+  //show complaint
   flag1?: boolean;
+  flag1Button?: boolean = true;
   //@ts-ignore
   currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -35,45 +37,78 @@ export class HomeUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getAllReservations();
     this.flag = false;
     this.flag1 = false;
-    this.getUser();
+    if (this.currentUser === null) {
+      alert('Niste se ulogovali');
+      this.logOut();
+    } else {
+      this.getUser();
+    }
   }
 
   ngOnDestroy() {
     this.subs.forEach(sub => sub.unsubscribe())
   }
 
+  logOut() {
+    localStorage.removeItem('currentUser');
+    localStorage.clear();
+    this.router.navigate(['/login']);
+  }
+
+  closeModal() {
+    this.flag = false;
+    this.flag1 = false;
+    this.flagButton = true;
+    this.flag1Button = true;
+    this.getAllReservations();
+  }
+
   getUser() {
     const username = this.currentUser.username1;
     this.subs.push(this.userService.findUser(username).subscribe((response: User) => {
       this.user = response;
+      this.getAllReservations();
     }));
   }
 
+  getSingleUserReservation(reservationId: number) {
+    this.subs.push(this.reviewService.getSingleUserReservation(reservationId).subscribe((response) => {
+      this.reservations = response;
+    }));
+  }
 
   getAllReservations() {
-    if (this.user.id === undefined) {
-    } else {
-      this.subs.push(this.reviewService.getAllUserReservations(this.user.id).subscribe((response: Reservation[]) => {
+    if (this.user.id != null) {
+      this.subs.push(this.reviewService.getAllUserReservations(this.user.id).subscribe((response) => {
         this.reservations = response;
+        this.flagButton = true;
+        this.flag1Button = true;
       }, (error: HttpErrorResponse) => {
         alert(error.message);
       }));
     }
+
   }
 
-  createReview(idAdventure1?: number) {
+  createReview(idAdventure1?: number, reservationId?: number) {
     this.flag = true;
+    this.flagButton = true;
+    this.flag1Button = false;
     if (this.review1.comment === null || this.review1.comment === undefined || this.review1.comment.length === 0 || idAdventure1 === undefined) {
       alert('Unesite recenziju i ocenu recenzije');
+      if (reservationId === undefined) {
+      } else {
+        this.getSingleUserReservation(reservationId);
+      }
     } else {
       this.review1.userReview = this.user;
       this.adventureId = idAdventure1;
       this.subs.push(this.reviewService.createReview(this.review1, this.adventureId).subscribe(() => {
         this.flag = false;
         this.review1.comment = undefined;
+        this.getAllReservations();
         alert('Vas komentar ceka odobrenje');
       }, (error: HttpErrorResponse) => {
         alert(error.message);
@@ -81,16 +116,23 @@ export class HomeUserComponent implements OnInit {
     }
   }
 
-  createComplaint(idAdventure1?: number) {
+  createComplaint(idAdventure1?: number, reservationId?: number) {
     this.flag1 = true;
+    this.flagButton = false;
+    this.flag1Button = true;
     if (this.complaint.content === null || this.complaint.content === undefined || this.complaint.content.length === 0 || idAdventure1 === undefined || this.user.id === undefined) {
-      alert('Unesite tekst zalbe.');
+      alert('Unesite tekst žalbe.');
+      if(reservationId === undefined){}
+      else {
+        this.getSingleUserReservation(reservationId);
+      }
     } else {
       this.adventureId = idAdventure1;
       this.subs.push(this.reviewService.createComplaint(this.complaint, this.user.id, this.adventureId).subscribe(() => {
         this.flag1 = false;
         alert('Uspesno ste kreirali zalbu.');
         this.complaint.content = undefined;
+        this.getAllReservations();
       }, (error: HttpErrorResponse) => {
         alert(error.message);
       }));
