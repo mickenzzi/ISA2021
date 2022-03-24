@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import application.model.Financies;
+import application.model.Loyalty;
 import application.model.Reservation;
 import application.repository.FinanciesRepository;
+import application.repository.LoyaltyRepository;
 import application.repository.ReservationRepository;
 import application.service.FinanciesService;
 import java.util.Collections;
@@ -23,6 +25,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 	private FinanciesRepository financiesRepository;
 	@Autowired
 	private ReservationRepository reservationRepository;
+	@Autowired
+	private LoyaltyRepository loyaltyRepository;
 
 	@Override
 	public Double getYearProfit(String year) throws ParseException {
@@ -36,8 +40,13 @@ public class FinanciesServiceImpl implements FinanciesService {
 			}
 		}
 		for (Reservation r1 : usableReservations) {
+			Loyalty loyalty = loyaltyRepository.findByName(r1.getUserReservation().getLoyaltyStatus());
 			percent = nearPercent(r1.getEnd());
-			profit += (r1.getPrice() * percent) / 100;
+			double oldPrice = 0;
+			double newPrice = 0;
+			oldPrice = r1.getPrice() * percent / 100;
+			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			profit += newPrice;
 		}
 		return profit;
 	}
@@ -94,74 +103,134 @@ public class FinanciesServiceImpl implements FinanciesService {
 			}
 		}
 		for (Reservation rJan : usableJanReservations) {
+			Loyalty loyalty = loyaltyRepository.findByName(rJan.getUserReservation().getLoyaltyStatus());
 			percent = nearPercent(rJan.getEnd());
-			profit += rJan.getPrice() * (percent / 100);
+			double oldPrice = 0;
+			double newPrice = 0;
+			oldPrice = rJan.getPrice() * percent / 100;
+			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			profit += newPrice;
 		}
 		profits.add(profit);
 		profit = 0;
 		for (Reservation rFeb : usableFebReservations) {
+			Loyalty loyalty = loyaltyRepository.findByName(rFeb.getUserReservation().getLoyaltyStatus());
 			percent = nearPercent(rFeb.getEnd());
-			profit += rFeb.getPrice() * (percent / 100);
+			double oldPrice = 0;
+			double newPrice = 0;
+			oldPrice = rFeb.getPrice() * percent / 100;
+			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			profit += newPrice;
 		}
 		profits.add(profit);
 		profit = 0;
 		for (Reservation rMar : usableMarReservations) {
+			Loyalty loyalty = loyaltyRepository.findByName(rMar.getUserReservation().getLoyaltyStatus());
 			percent = nearPercent(rMar.getEnd());
-			profit += rMar.getPrice() * (percent / 100);
+			double oldPrice = 0;
+			double newPrice = 0;
+			oldPrice = rMar.getPrice() * percent / 100;
+			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			profit += newPrice;
 		}
 		profits.add(profit);
 		profit = 0;
 		for (Reservation rApr : usableAprReservations) {
+			Loyalty loyalty = loyaltyRepository.findByName(rApr.getUserReservation().getLoyaltyStatus());
 			percent = nearPercent(rApr.getEnd());
-			profit += rApr.getPrice() * (percent / 100);
+			double oldPrice = 0;
+			double newPrice = 0;
+			oldPrice = rApr.getPrice() * percent / 100;
+			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			profit += newPrice;
 		}
 		profits.add(profit);
 		profit = 0;
 		for (Reservation rMay : usableMayReservations) {
+			Loyalty loyalty = loyaltyRepository.findByName(rMay.getUserReservation().getLoyaltyStatus());
 			percent = nearPercent(rMay.getEnd());
-			profit += rMay.getPrice() * (percent / 100);
+			double oldPrice = 0;
+			double newPrice = 0;
+			oldPrice = rMay.getPrice() * percent / 100;
+			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			profit += newPrice;
 		}
 		profits.add(profit);
 		profit = 0;
 		for (Reservation rJun : usableJunReservations) {
+			Loyalty loyalty = loyaltyRepository.findByName(rJun.getUserReservation().getLoyaltyStatus());
 			percent = nearPercent(rJun.getEnd());
-			profit += rJun.getPrice() * (percent / 100);
+			double oldPrice = 0;
+			double newPrice = 0;
+			oldPrice = rJun.getPrice() * percent / 100;
+			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			profit += newPrice;
 		}
 		profits.add(profit);
 		profit = 0;
 		for (Reservation rJul : usableJulReservations) {
+			Loyalty loyalty = loyaltyRepository.findByName(rJul.getUserReservation().getLoyaltyStatus());
 			percent = nearPercent(rJul.getEnd());
-			profit += rJul.getPrice() * (percent / 100);
+			double oldPrice = 0;
+			double newPrice = 0;
+			oldPrice = rJul.getPrice() * percent / 100;
+			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			profit += newPrice;
 		}
 		profits.add(profit);
 		profit = 0;
 		for (Reservation rAug : usableAugReservations) {
+			Loyalty loyalty = loyaltyRepository.findByName(rAug.getUserReservation().getLoyaltyStatus());
 			percent = nearPercent(rAug.getEnd());
-			profit += rAug.getPrice() * (percent / 100);
+			double oldPrice = 0;
+			double newPrice = 0;
+			oldPrice = rAug.getPrice() * percent / 100;
+			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			profit += newPrice;
 		}
 		profits.add(profit);
 		profit = 0;
 		for (Reservation rSep : usableSepReservations) {
+			Loyalty loyalty = loyaltyRepository.findByName(rSep.getUserReservation().getLoyaltyStatus());
 			percent = nearPercent(rSep.getEnd());
-			profit += rSep.getPrice() * (percent / 100);
+			double oldPrice = 0;
+			double newPrice = 0;
+			oldPrice = rSep.getPrice() * percent / 100;
+			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			profit += newPrice;
 		}
 		profits.add(profit);
 		profit = 0;
 		for (Reservation rOct : usableOctReservations) {
+			Loyalty loyalty = loyaltyRepository.findByName(rOct.getUserReservation().getLoyaltyStatus());
 			percent = nearPercent(rOct.getEnd());
-			profit += rOct.getPrice() * (percent / 100);
+			double oldPrice = 0;
+			double newPrice = 0;
+			oldPrice = rOct.getPrice() * percent / 100;
+			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			profit += newPrice;
 		}
 		profits.add(profit);
 		profit = 0;
 		for (Reservation rNov : usableNovReservations) {
+			Loyalty loyalty = loyaltyRepository.findByName(rNov.getUserReservation().getLoyaltyStatus());
 			percent = nearPercent(rNov.getEnd());
-			profit += rNov.getPrice() * (percent / 100);
+			double oldPrice = 0;
+			double newPrice = 0;
+			oldPrice = rNov.getPrice() * percent / 100;
+			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			profit += newPrice;
 		}
 		profits.add(profit);
 		profit = 0;
 		for (Reservation rDec : usableDecReservations) {
+			Loyalty loyalty = loyaltyRepository.findByName(rDec.getUserReservation().getLoyaltyStatus());
 			percent = nearPercent(rDec.getEnd());
-			profit += rDec.getPrice() * (percent / 100);
+			double oldPrice = 0;
+			double newPrice = 0;
+			oldPrice = rDec.getPrice() * percent / 100;
+			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			profit += newPrice;
 		}
 		profits.add(profit);
 		profit = 0;
@@ -176,16 +245,21 @@ public class FinanciesServiceImpl implements FinanciesService {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyy HH:mm:ss");
 		Date resEnd = dateFormat.parse(reservationEnd);
 		List<Financies> financies = financiesRepository.findAll();
-		for (Financies f : financies) {
-			Date finDefine = dateFormat.parse(f.getDefine());
-			if (resEnd.compareTo(finDefine) >= 0) {
-				min = resEnd.getTime() - finDefine.getTime();
-				map.put(min, f.getPercent());
-				percents.add(min);
+		if (!financies.isEmpty()) {
+			for (Financies f : financies) {
+				Date finDefine = dateFormat.parse(f.getDefine());
+				if (resEnd.compareTo(finDefine) >= 0) {
+					min = resEnd.getTime() - finDefine.getTime();
+					map.put(min, f.getPercent());
+					percents.add(min);
+				}
 			}
+
+			min = Collections.min(percents);
+			percent = map.get(min);
+		} else {
+			percent = 1;
 		}
-		min = Collections.min(percents);
-		percent = map.get(min);
 		return percent;
 	}
 

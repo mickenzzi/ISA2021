@@ -16,6 +16,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
 
 import application.model.Adventure;
+import application.model.Loyalty;
 import application.model.Request;
 import application.model.Role;
 import application.model.Termin;
@@ -26,6 +27,7 @@ import application.repository.RoleRepository;
 import application.repository.TerminRepository;
 import application.repository.UserRepository;
 import application.repository.AdventureRepository;
+import application.repository.LoyaltyRepository;
 import application.service.UserService;
 
 @Service
@@ -41,6 +43,8 @@ public class UserServiceImpl implements UserService {
 	private AdventureRepository adventureRepository;
 	@Autowired
 	private RoleRepository roleRepository;
+	@Autowired
+	private LoyaltyRepository loyaltyRepository;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	@Autowired
@@ -184,6 +188,8 @@ public class UserServiceImpl implements UserService {
 			}
 			user.setFirstTimeLogged(false);
 			user.setPenalty(0);
+			user.setLoyaltyStatus("BRONZE");
+			user.setCollectedPoints(0);
 			userRepository.save(user);
 			Request request = new Request();
 			request.setTitle("Zahtev za verifikaciju naloga");
@@ -225,7 +231,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean createAction(Long instructorId, Long adventureId, Termin term, Double price, Long capacity) throws ParseException {
+	public boolean createAction(Long instructorId, Long adventureId, Termin term, Double price, Long capacity)
+			throws ParseException {
 		boolean free;
 		free = true;
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyy HH:mm:ss");
@@ -301,22 +308,62 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public String convertRole(String role) {
 		String finalRole = "";
-		if(role.equals("ROLE_ADMIN")) {
+		if (role.equals("ROLE_ADMIN")) {
 			finalRole = "Admin";
-		}
-		else if(role.equals("ROLE_INSTRUCTOR")) {
+		} else if (role.equals("ROLE_INSTRUCTOR")) {
 			finalRole = "Instruktor pecanja";
-		}
-		else if(role.equals("ROLE_USER")) {
+		} else if (role.equals("ROLE_USER")) {
 			finalRole = "Klijent";
-		}
-		else if(role.equals("ROLE_BOAT_OWNER")) {
+		} else if (role.equals("ROLE_BOAT_OWNER")) {
 			finalRole = "Vlasnik broda";
-		}
-		else {
+		} else {
 			finalRole = "Vlasnik vikendice";
 		}
 		return finalRole;
+	}
+
+	@Override
+	public void updateLoyaltyStatus(String name, int points) {
+		Loyalty loyalty = loyaltyRepository.findByName(name);
+		loyalty.setName(name);
+		loyalty.setPoints(points);
+		loyaltyRepository.save(loyalty);
+		Loyalty bronze = loyaltyRepository.findByName("BRONZE");
+		Loyalty silver = loyaltyRepository.findByName("SILVER");
+		Loyalty gold = loyaltyRepository.findByName("GOLD");
+		List<User> users = userRepository.findAll();
+		for(User u: users) {
+			if(u.getCollectedPoints() >= bronze.getPoints() && u.getCollectedPoints() < silver.getPoints()) {
+				u.setLoyaltyStatus(bronze.getName());
+				userRepository.save(u);
+			}
+			else if(u.getCollectedPoints() >= silver.getPoints() && u.getCollectedPoints() < gold.getPoints()) {
+				u.setLoyaltyStatus(silver.getName());
+				userRepository.save(u);
+			}
+			else if(u.getCollectedPoints() >= gold.getPoints()) {
+				u.setLoyaltyStatus(gold.getName());
+				userRepository.save(u);
+			}
+		}
+	}
+
+	@Override
+	public Loyalty findGold() {
+		Loyalty loyalty = loyaltyRepository.findByName("GOLD");
+		return loyalty;
+	}
+
+	@Override
+	public Loyalty findSilver() {
+		Loyalty loyalty = loyaltyRepository.findByName("SILVER");
+		return loyalty;
+	}
+
+	@Override
+	public Loyalty findBronze() {
+		Loyalty loyalty = loyaltyRepository.findByName("BRONZE");
+		return loyalty;
 	}
 
 }

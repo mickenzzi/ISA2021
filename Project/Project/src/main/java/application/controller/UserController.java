@@ -18,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import application.model.Adventure;
+import application.model.Loyalty;
 import application.model.User;
 import application.model.dto.UserDTO;
 import application.service.UserService;
@@ -204,6 +205,38 @@ public class UserController {
 			}
 		}
 
+	}
+
+	@GetMapping(value = "/updateLoyalty/{name}/{points}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<?> deleteUser(@PathVariable("name") String name, @PathVariable("points") int points) {
+		userService.updateLoyaltyStatus(name, points);
+		System.out.println("The task /updateLoyalty was successfully completed.");
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/findGold", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<?> findGold() {
+		Loyalty loyalty = userService.findGold();
+		System.out.println("The task /findGold was successfully completed.");
+		return new ResponseEntity<Loyalty>(loyalty, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/findSilver", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<?> findSilver() {
+		Loyalty loyalty = userService.findSilver();
+		System.out.println("The task /findSilver was successfully completed.");
+		return new ResponseEntity<Loyalty>(loyalty, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/findBronze", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<?> findBronze() {
+		Loyalty loyalty = userService.findBronze();
+		System.out.println("The task /findBronze was successfully completed.");
+		return new ResponseEntity<Loyalty>(loyalty, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/whoAmI/{username}", produces = MediaType.APPLICATION_JSON_VALUE)

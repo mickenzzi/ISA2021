@@ -13,9 +13,11 @@ import org.springframework.stereotype.Service;
 import application.model.Termin;
 import application.model.User;
 import application.model.Adventure;
+import application.model.Loyalty;
 import application.model.Reservation;
 import application.repository.TerminRepository;
 import application.repository.AdventureRepository;
+import application.repository.LoyaltyRepository;
 import application.repository.UserRepository;
 import application.repository.ReservationRepository;
 import application.service.TerminService;
@@ -31,6 +33,8 @@ public class TerminServiceImpl implements TerminService {
 	private ReservationRepository reservationRepository;
 	@Autowired
 	private AdventureRepository adventureRepository;
+	@Autowired
+	private LoyaltyRepository loyaltyRepository;
 
 	@Override
 	public Termin findById(Long id) throws AccessDeniedException {
@@ -201,6 +205,19 @@ public class TerminServiceImpl implements TerminService {
 			}
 			adventure1.setReserved(true);
 			adventureRepository.save(adventure1);
+			user.setCollectedPoints(user.getCollectedPoints()+1);
+			Loyalty bronze = loyaltyRepository.findByName("BRONZE");
+			Loyalty silver = loyaltyRepository.findByName("SILVER");
+			Loyalty gold = loyaltyRepository.findByName("GOLD");
+			if(user.getCollectedPoints() == silver.getPoints()) {
+				user.setLoyaltyStatus(silver.getName());
+			}
+			else if(user.getCollectedPoints() == gold.getPoints()) {
+				user.setLoyaltyStatus(gold.getName());
+			}
+			else {
+				user.setLoyaltyStatus(bronze.getName());
+			}
 		}
 
 		return free;

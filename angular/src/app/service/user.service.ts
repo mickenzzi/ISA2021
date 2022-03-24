@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from '../model/user';
 import {AuthenticationService} from './authentication.service';
+import {Loyalty} from "../model/loyalty";
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,7 @@ export class UserService {
   private token = this.auth.getToken();
   private reqHeader = new HttpHeaders().set('Authorization', 'Bearer ' + this.token);
 
-  constructor(
-    private http: HttpClient,
-    private auth: AuthenticationService,
-  ) {
+  constructor(private http: HttpClient, private auth: AuthenticationService,) {
   }
 
   public getAllUsers(id: number) {
@@ -66,13 +64,30 @@ export class UserService {
     return this.http.get<number[]>(`${this.financiesUrl}/getYearPerMonthProfit/${year}`, {headers: this.reqHeader});
   }
 
-  public getPercent(){
+  public getPercent() {
     return this.http.get<number>(`${this.financiesUrl}/getPercent`, {headers: this.reqHeader});
   }
 
-  public editPercent(percent: string){
+  public editPercent(percent: string) {
     return this.http.post(`${this.financiesUrl}/editPercent`, percent, {headers: this.reqHeader});
   }
 
+  public getGold() {
+    return this.http.get<Loyalty>(`${this.userUrl}/findGold`, {headers: this.reqHeader})
+  }
 
+  public getSilver() {
+    return this.http.get<Loyalty>(`${this.userUrl}/findSilver`, {headers: this.reqHeader})
+  }
+
+  public getBronze() {
+    return this.http.get<Loyalty>(`${this.userUrl}/findBronze`, {headers: this.reqHeader})
+  }
+
+  public updateLoyalty(name: string, points: number) {
+    return this.http.get<Loyalty>(`${this.userUrl}/updateLoyalty/${name}/${points}`, {headers: this.reqHeader})
+  }
 }
+
+
+

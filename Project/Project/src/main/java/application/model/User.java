@@ -59,6 +59,10 @@ public class User implements UserDetails {
 	private boolean firstTimeLogged;
 	@Column(name = "penalty")
 	private int penalty;
+	@Column(name = "loyalty_status")
+	private String loyaltyStatus;
+	@Column(name = "collected_points")
+	private int collectedPoints;
 	private String role;
 
 	// fetch - Lazy koristimo kada zelimo samo podatke tabele u kojoj se nalazimo a
@@ -74,7 +78,7 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "userAdventure", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Adventure> adventures;
-	
+
 	@OneToMany(mappedBy = "instructorTermin", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Termin> termins;
@@ -224,7 +228,7 @@ public class User implements UserDetails {
 		this.setLastPasswordResetDate(now);
 		this.password = password;
 	}
-	
+
 	@Override
 	public boolean isEnabled() {
 		return enabled;
@@ -345,8 +349,7 @@ public class User implements UserDetails {
 	public void setAdminComplains(List<Complaint> adminComplains) {
 		this.adminComplains = adminComplains;
 	}
-	
-	
+
 	public List<Termin> getTermins() {
 		return termins;
 	}
@@ -354,7 +357,22 @@ public class User implements UserDetails {
 	public void setTermins(List<Termin> termins) {
 		this.termins = termins;
 	}
-	
+
+	public String getLoyaltyStatus() {
+		return loyaltyStatus;
+	}
+
+	public void setLoyaltyStatus(String loyaltyStatus) {
+		this.loyaltyStatus = loyaltyStatus;
+	}
+
+	public int getCollectedPoints() {
+		return collectedPoints;
+	}
+
+	public void setCollectedPoints(int collectedPoints) {
+		this.collectedPoints = collectedPoints;
+	}
 
 	public User() {
 		super();
@@ -397,6 +415,5 @@ public class User implements UserDetails {
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
-
 
 }

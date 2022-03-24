@@ -86,4 +86,13 @@
   <input (click)="editAdventure()" *ngIf="!adventure.reserved" class="mat-button" id="editButton" style="margin-left: 40%"
          type="submit" value="Izmeni"/>
 </div>
+<br>
+<div style="margin-left: 700px; margin-top: 100px; padding-bottom: 100px; width: 580px; height: 400px">
+<agm-map style="height: 90%; width: 100%"
+  [latitude]='lat'
+  [longitude]='long'>
+  <agm-marker [latitude]='lat' [longitude]='long'>
+  </agm-marker>
+</agm-map>
+</div>
 </body>

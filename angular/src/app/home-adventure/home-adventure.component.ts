@@ -8,6 +8,7 @@ import {RequestService} from '../service/request.service';
 import {AdventureService} from '../service/adventure.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {Subscription} from "rxjs";
+import {AgmGeocoder, GeocoderStatus} from '@agm/core';
 
 @Component({
   selector: 'app-home-adventure',
@@ -27,6 +28,9 @@ export class HomeAdventureComponent implements OnInit {
   capacity!: number;
   //flags
   flag1: Boolean = true;
+  lat = 44.38605;
+  long = 19.10247;
+  googleMapType = 'satellite';
   //@ts-ignore
   currentUser = JSON.parse(localStorage.getItem('currentUser'));
 

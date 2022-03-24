@@ -11,6 +11,7 @@ import {RequestService} from '../service/request.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {Subscription} from "rxjs"
 import {ChartType} from "chart.js";
+import {Loyalty} from "../model/loyalty";
 
 @Component({
   selector: 'app-home-admin', templateUrl: './home-admin.component.html', styleUrls: ['./home-admin.component.css']
@@ -24,6 +25,9 @@ export class HomeAdminComponent implements OnInit {
   comments: Comment[];
   complains: Complaint[];
   complaint1: Complaint = new Complaint();
+  gold: Loyalty = new Loyalty();
+  silver: Loyalty = new Loyalty();
+  bronze: Loyalty = new Loyalty();
   //unsubscribe
   subs: Subscription[] = [];
   //local
@@ -54,7 +58,10 @@ export class HomeAdminComponent implements OnInit {
   flag7?: boolean;
   //main admin
   flag8?: boolean;
+  //finances
   flag9?: boolean;
+  //loyalty
+  flag10?: boolean;
   //@ts-ignore
   currentUser = JSON.parse(localStorage.getItem('currentUser'))
   //chart
@@ -81,6 +88,7 @@ export class HomeAdminComponent implements OnInit {
     this.flag7 = false;
     this.flag8 = true;
     this.flag9 = false;
+    this.flag10 = false;
     if (this.currentUser === null) {
       alert('Niste se ulogovali');
       this.logOut();
@@ -167,6 +175,7 @@ export class HomeAdminComponent implements OnInit {
 
 
   showFinances() {
+    this.flag10 = false;
     if (this.flag9 === false) {
       this.flag9 = true;
       this.getPercent();
@@ -174,6 +183,18 @@ export class HomeAdminComponent implements OnInit {
       this.getYearPerMonthProfit();
     } else {
       this.flag9 = false;
+    }
+  }
+
+  showLoyaltyProgram() {
+    this.flag9 = false;
+    if (this.flag10 === false) {
+      this.flag10 = true;
+      this.getGold();
+      this.getSilver();
+      this.getBronze();
+    } else {
+      this.flag10 = false;
     }
   }
 
@@ -305,6 +326,54 @@ export class HomeAdminComponent implements OnInit {
     this.subs.push(this.userService.getPercent().subscribe((response) => {
       this.percent = response;
     }));
+  }
+
+  getGold() {
+    this.subs.push(this.userService.getGold().subscribe((response) => {
+      this.gold = response;
+    }));
+  }
+
+  getSilver() {
+    this.subs.push(this.userService.getSilver().subscribe((response) => {
+      this.silver = response;
+    }));
+  }
+
+  getBronze() {
+    this.subs.push(this.userService.getBronze().subscribe((response) => {
+      this.bronze = response;
+    }));
+  }
+
+  editGold(goldPoints?: number) {
+    if (goldPoints === undefined) {
+    } else {
+      this.subs.push(this.userService.updateLoyalty("GOLD", goldPoints).subscribe(() => {
+        this.getGold();
+        alert('Uspesno ste izmenili granicu za zlatne korisnike')
+      }));
+    }
+  }
+
+  editSilver(silverPoints?: number) {
+    if (silverPoints === undefined) {
+    } else {
+      this.subs.push(this.userService.updateLoyalty("SILVER", silverPoints).subscribe(() => {
+        this.getSilver();
+        alert('Uspesno ste izmenili granicu za srebrne korisnike')
+      }));
+    }
+  }
+
+  editBronze(bronzePoints?: number) {
+    if (bronzePoints === undefined) {
+    } else {
+      this.subs.push(this.userService.updateLoyalty("BRONZE", bronzePoints).subscribe(() => {
+        this.getBronze();
+        alert('Uspesno ste izmenili granicu za bronzane korisnike')
+      }));
+    }
   }
 
   enableUser(username1?: string, title1?: string, idRequest1?: number) {

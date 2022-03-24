@@ -23,11 +23,12 @@ import {HomeAdventureComponent} from './home-adventure/home-adventure.component'
 import {HomeAdminUsersComponent} from './home-admin-users/home-admin-users.component';
 import {InstructorCalendarComponent} from "./instructor-calendar/instructor-calendar.component";
 import {NgChartsModule} from "ng2-charts";
+import { AgmCoreModule } from '@agm/core';
 
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, HomeAdminComponent, ProfileAdminComponent, RegistrationComponent, LoginComponent, HomeUserComponent, HomeGuestComponent, HomeInstructorComponent, HomeCottageOwnerComponent, HomeBoatOwnerComponent, RegistrationAdminComponent, ProfileInstructorComponent, AddAdventureComponent, HomeAdventureComponent, HomeAdminUsersComponent, InstructorCalendarComponent],
-  imports: [BrowserModule, HttpClientModule, AppRoutingModule, NoopAnimationsModule, MatTableModule, FormsModule, ReactiveFormsModule, NgChartsModule],
+  imports: [BrowserModule, HttpClientModule, AppRoutingModule, NoopAnimationsModule, MatTableModule, FormsModule, ReactiveFormsModule, NgChartsModule, AgmCoreModule.forRoot({apiKey: 'AIzaSyC9guE6bI9x1oAsg63x2CKSN0AfKPgWhr0', libraries: ['places']})],
   providers: [],
   bootstrap: [AppComponent]
 })

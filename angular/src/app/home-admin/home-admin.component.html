@@ -35,7 +35,7 @@
 </div>
 <div class="functionality-loyality-program-container" style="margin-top: -180px; margin-left: 190px">
   <img src="/assets/img/loyaliti.png" style="width: 100%; height:70%">
-  <button class="button-1" style="margin-left:auto;margin-right: auto">Program lojalnosti</button>
+  <button class="button-1" (click)="showLoyaltyProgram()" style="margin-left:auto;margin-right: auto">Program lojalnosti</button>
 </div>
 <div *ngIf="flag2" class="notification-panel-header">
   <label class="title" style="margin-left:170px; margin-top:5px; color: black;"> Prikaz notifikacija</label>
@@ -93,6 +93,38 @@
           [datasets]="barChartData"
           [labels]="barChartLabels"
           [type]= "barChartType"></canvas>
+</div>
+<div *ngIf="flag10" class="loyalty-panel">
+  <div style="margin-top:30px; margin-left:20px; width: 150px; height: 130px; background-color: darkgrey">
+    <br>
+    <label style="margin-left: 10px">Tip:</label>
+    <input type="text" style="margin-left: 3px; width: 70px;" disabled [(ngModel)]="gold.name"/>
+    <br>
+    <br>
+    <label style="margin-left: 10px">Broj poena:</label>
+    <input type="text" style="margin-left: 3px; width: 50px;" [(ngModel)]="gold.points"/>
+    <button (click)="editGold(gold.points)" style="margin-top: 10px; margin-left: 30px;" class="button-2">Izmeni</button>
+  </div>
+  <div style="margin-top:-130px; margin-left:190px; width: 150px; height: 130px; background-color: darkgrey">
+    <br>
+    <label style="margin-left: 10px">Tip:</label>
+    <input type="text" style="margin-left: 3px; width: 70px;" disabled [(ngModel)]="silver.name"/>
+    <br>
+    <br>
+    <label style="margin-left: 10px">Broj poena:</label>
+    <input type="text" style="margin-left: 3px; width: 50px;" [(ngModel)]="silver.points"/>
+    <button (click)="editSilver(silver.points)" style="margin-top: 10px; margin-left: 30px;" class="button-2">Izmeni</button>
+  </div>
+  <div style="margin-top:-130px; margin-left:360px; width: 150px; height: 130px; background-color: darkgrey">
+    <br>
+    <label style="margin-left: 10px">Tip:</label>
+    <input type="text" style="margin-left: 3px; width: 70px;" disabled [(ngModel)]="bronze.name"/>
+    <br>
+    <br>
+    <label style="margin-left: 10px">Broj poena:</label>
+    <input type="text" style="margin-left: 3px; width: 50px;" [(ngModel)]="bronze.points"/>
+    <button (click)="editBronze(bronze.points)" style="margin-top: 10px; margin-left: 30px;" class="button-2">Izmeni</button>
+  </div>
 </div>
 <div *ngIf="flag4" class="notification-panel">
   <table class="table">
