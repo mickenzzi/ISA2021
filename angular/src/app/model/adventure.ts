@@ -11,4 +11,5 @@ export class Adventure {
   priceList?: number;
   cancelCondition?: string;
   reserved?: boolean;
+  avgGrade?: string;
 }

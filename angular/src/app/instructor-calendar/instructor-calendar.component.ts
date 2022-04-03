@@ -62,8 +62,6 @@ export class InstructorCalendarComponent implements OnInit {
       this.logOut();
     } else {
       this.getUser();
-      this.getAllTermins();
-      this.getAllReservations();
     }
   }
 
@@ -134,6 +132,8 @@ export class InstructorCalendarComponent implements OnInit {
     this.subs.push(this.userService.findUser(username).subscribe((response: User) => {
       this.user = response;
     }));
+    this.getAllReservations();
+    this.getAllTermins();
   }
 
   getAllTermins() {

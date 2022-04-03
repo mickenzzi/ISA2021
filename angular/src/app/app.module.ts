@@ -22,8 +22,8 @@ import {AddAdventureComponent} from './add-adventure/add-adventure.component';
 import {HomeAdventureComponent} from './home-adventure/home-adventure.component';
 import {HomeAdminUsersComponent} from './home-admin-users/home-admin-users.component';
 import {InstructorCalendarComponent} from "./instructor-calendar/instructor-calendar.component";
-import {NgChartsModule} from "ng2-charts";
-import { AgmCoreModule } from '@agm/core';
+import {NgChartsModule} from 'ng2-charts';
+import {AgmCoreModule} from '@agm/core';
 
 
 @NgModule({

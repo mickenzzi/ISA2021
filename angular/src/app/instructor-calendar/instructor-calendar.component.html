@@ -85,8 +85,7 @@
       <th class="header__item">Datum zavrsetka</th>
       <th class="header__item">Zavrsena</th>
       <th class="header__item">Naziv avanture</th>
-      <th class="header__item">Ime korisnika</th>
-      <th class="header__item">Prezime korisnika</th>
+      <th class="header__item">Korisnik</th>
       <th class="header__item"></th>
       <th class="header__item"></th>
       <th class="header__item"></th>
@@ -97,8 +96,7 @@
       <td class="table-data">{{reservation.end}}</td>
       <td class="table-data">{{reservation.createdReservation}}</td>
       <td class="table-data">{{reservation.adventureReservation.title}}</td>
-      <td class="table-data">{{reservation.userReservation.firstName}}</td>
-      <td class="table-data">{{reservation.userReservation.lastName}}</td>
+      <td class="table-data">{{reservation.userReservation.firstName}} {{reservation.userReservation.lastName}}</td>
       <td class="table-data">
         <button
           (click)="createReservation(reservation.start,reservation.end,reservation.adventureReservation.id,reservation.userReservation.id)"

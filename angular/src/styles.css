@@ -361,7 +361,7 @@ p {
 
 
 .notification-panel {
-  width: 600px;
+  width: auto;
   height: auto;
   background-color: rgba(78, 89, 103, 0.8);
   border-style: ridge;
@@ -370,7 +370,7 @@ p {
 }
 
 .notification-panel-header {
-  width: 600px;
+  width: auto;
   height: 50px;
   background-color: #AEBACA;
   margin-top: -320px;
@@ -400,8 +400,8 @@ p {
 
 .table-header {
   display: flex;
-  width: 100%;
   background: #000;
+  width: auto;
 }
 
 .table-row {
@@ -422,6 +422,7 @@ p {
 .header__item {
   text-transform: uppercase;
   color: white;
+  width: auto;
 }
 
 .approve-button {

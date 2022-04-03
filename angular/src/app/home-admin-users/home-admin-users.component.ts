@@ -86,6 +86,8 @@ export class HomeAdminUsersComponent implements OnInit {
     this.subs.push(this.userService.findUser(username).subscribe((response: User) => {
       this.user = response;
     }));
+    this.getEntities();
+    this.getAllUsers();
   }
 
   deleteUser(idUser1?: number) {

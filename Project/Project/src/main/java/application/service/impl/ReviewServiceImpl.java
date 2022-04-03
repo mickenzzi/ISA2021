@@ -22,19 +22,19 @@ import application.service.ReviewService;
 public class ReviewServiceImpl implements ReviewService {
 	@Autowired
 	private ReviewRepository reviewRepository;
-	
+
 	@Autowired
 	private ReservationRepository reservationRepository;
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private AdventureRepository adventureRepository;
-	
+
 	@Autowired
 	private JavaMailSender javaMailSender;
-	
+
 	@Override
 	public Review saveReview(Review review) {
 		return reviewRepository.save(review);
@@ -54,11 +54,11 @@ public class ReviewServiceImpl implements ReviewService {
 	public void delete(Long id) {
 		Review review = reviewRepository.findById(id).orElseGet(null);
 		reviewRepository.delete(review);
-		
+
 	}
 
 	@Override
-	public Review create(Review review,Long adventureId) {
+	public Review create(Review review, Long adventureId) {
 		User admin = userRepository.findByUsername("mickenzi");
 		Adventure adventure = adventureRepository.findById(adventureId).orElseGet(null);
 		User instructor = userRepository.findById(adventure.getId()).orElseGet(null);
@@ -79,8 +79,8 @@ public class ReviewServiceImpl implements ReviewService {
 		List<Reservation> reservations1 = new ArrayList<Reservation>();
 		reservations1 = reservationRepository.findAll();
 		List<Reservation> reservations = new ArrayList<Reservation>();
-		for(Reservation r: reservations1) {
-			if(r.getUserReservation().getId() == userId && r.isCreatedReservation()==true ) {
+		for (Reservation r : reservations1) {
+			if (r.getUserReservation().getId() == userId && r.isCreatedReservation() == true) {
 				reservations.add(r);
 			}
 		}
@@ -97,16 +97,39 @@ public class ReviewServiceImpl implements ReviewService {
 		mail.setTo(instructor.getEmail());
 		mail.setFrom(admin.getEmail());
 		mail.setSubject("Recenzija");
-		mail.setText("Korisnik "+user.getFirstName()+" "+user.getLastName()+" je ocenio vas rad ocenom " + review.getGrade()+".");		
+		mail.setText("Korisnik " + user.getFirstName() + " " + user.getLastName() + " je ocenio vas rad ocenom "
+				+ review.getGrade() + ".");
 		javaMailSender.send(mail);
 		review.setEnabled(true);
 		reviewRepository.save(review);
+		this.setAverageGrade(review.getAdventureReview().getId());
 		return review;
-	
+
 	}
 
 	@Override
 	public Reservation findReservationById(Long id) {
 		return reservationRepository.findById(id).orElseGet(null);
+	}
+
+	private void setAverageGrade(Long adventureId) {
+		System.out.println("Adventure id" + adventureId);
+		Adventure adventure = adventureRepository.findById(adventureId).orElseGet(null);
+		float count = 0;
+		float grade = 0;
+		List<Review> reviews = new ArrayList<Review>();
+		reviews = reviewRepository.findAll();
+		for (Review r : reviews) {
+			if (r.getAdventureReview().getId() == adventureId && r.isEnabled() == true) {
+				count = count + 1;
+				grade = r.getGrade() + grade;
+			}
+		}
+		if (count != 0) {
+			float avg = 0;
+			avg = grade / count;
+			adventure.setAvgGrade(Double.toString(avg));
+		}
+		adventureRepository.save(adventure);
 	}
 }

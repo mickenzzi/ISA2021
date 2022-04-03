@@ -44,6 +44,8 @@ public class Adventure {
 	private String description;
 	@Column(name="reserved")
 	private boolean reserved;
+	@Column(name="average_grade")
+	private String avgGrade;
 	
 
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -188,6 +190,14 @@ public class Adventure {
 
 	public void setReserved(boolean reserved) {
 		this.reserved = reserved;
+	}
+
+	public String getAvgGrade() {
+		return avgGrade;
+	}
+
+	public void setAvgGrade(String avgGrade) {
+		this.avgGrade = avgGrade;
 	}
 
 	public Adventure() {

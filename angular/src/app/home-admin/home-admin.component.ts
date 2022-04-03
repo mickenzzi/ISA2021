@@ -12,6 +12,7 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {Subscription} from "rxjs"
 import {ChartType} from "chart.js";
 import {Loyalty} from "../model/loyalty";
+import { TouchSequence } from 'selenium-webdriver';
 
 @Component({
   selector: 'app-home-admin', templateUrl: './home-admin.component.html', styleUrls: ['./home-admin.component.css']
@@ -227,6 +228,17 @@ export class HomeAdminComponent implements OnInit {
           this.router.navigate(['/profileAdmin']);
         }
       }));
+      this.getGold();
+      this.getSilver();
+      this.getBronze();
+      this.getPercent();
+      this.getYearPerMonthProfit();
+      this.getYearProfit(this.year);
+      this.getAllComments();
+      this.getAllComments();
+      this.getAllComplains();
+      this.getAllRequest();
+      this.getAllReviews();
   }
 
   getAllRequest() {

@@ -7,8 +7,8 @@ import {UserService} from '../service/user.service';
 import {RequestService} from '../service/request.service';
 import {AdventureService} from '../service/adventure.service';
 import {HttpErrorResponse} from '@angular/common/http';
-import {Subscription} from "rxjs";
-import {AgmGeocoder, GeocoderStatus} from '@agm/core';
+import {Subscription} from 'rxjs';
+import {MapsAPILoader} from "@agm/core";
 
 @Component({
   selector: 'app-home-adventure',
@@ -44,7 +44,6 @@ export class HomeAdventureComponent implements OnInit {
     } else {
       this.getUser();
       this.idAdventure = this.route.snapshot.params['idAdventure'];
-      this.getAdventure();
     }
   }
 
@@ -84,6 +83,7 @@ export class HomeAdventureComponent implements OnInit {
     this.subs.push(this.userService.findUser(username).subscribe((response: User) => {
       this.user = response;
     }));
+    this.getAdventure()
   }
 
   getAdventure() {

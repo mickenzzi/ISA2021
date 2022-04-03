@@ -20,8 +20,8 @@ insert into loyalty_table(name,points,discount) values ('SILVER', 20, 9.5);
 insert into loyalty_table(name,points,discount) values ('GOLD', 50, 15.5);
 
 
-insert into adventure_table (title,address,instructor_biography,image,max_number,rule,equipment,price_list,cancel_condition,description,user_id,reserved) values ('Luda avantura','Zvornik','Na ovu avanturu povesce vas Jovan Jovic,strastveni ribolovac i borac za zastitu prirode.Covek koji je odrastao na reci Drini','/assets/img/fishing.jpg',10,'Neophodno je ispostovati pravila koja ce vam na predociti instruktor','Sva oprema neophodna za ribolov dolazi uz aranzman plus camac',170,'U slucaju otkaza rezervacije avans se ne vraca','Nezaboravna avantura na reci Drini pruzice uzitak mnogim ribolovcima i pravim ljubiteljima prirode',2,false);
-insert into adventure_table (title,address,instructor_biography,image,max_number,rule,equipment,price_list,cancel_condition,description,user_id,reserved) values ('Moc prirode','Zlatibor','Na ovu avanturu povesce vas Jovan Jovic,strastveni ribolovac i borac za zastitu prirode.Covek koji je odrastao na reci Drini','/assets/img/cottage.jpg',15,'Neophodno je ispostovati pravila koja ce vam na predociti instruktor','Sva oprema neophodna za ribolov dolazi uz aranzman plus camac',210,'U slucaju otkaza rezervacije avans se ne vraca','Visednevno kampovanje na Zlatiboru u divljini sume',2,false);
+insert into adventure_table (title,address,instructor_biography,image,max_number,rule,equipment,price_list,cancel_condition,description,user_id,reserved,average_grade) values ('Luda avantura','Zvornik','Na ovu avanturu povesce vas Jovan Jovic,strastveni ribolovac i borac za zastitu prirode.Covek koji je odrastao na reci Drini','/assets/img/fishing.jpg',10,'Neophodno je ispostovati pravila koja ce vam na predociti instruktor','Sva oprema neophodna za ribolov dolazi uz aranzman plus camac',170,'U slucaju otkaza rezervacije avans se ne vraca','Nezaboravna avantura na reci Drini pruzice uzitak mnogim ribolovcima i pravim ljubiteljima prirode',2,false,'0.0');
+insert into adventure_table (title,address,instructor_biography,image,max_number,rule,equipment,price_list,cancel_condition,description,user_id,reserved,average_grade) values ('Moc prirode','Zlatibor','Na ovu avanturu povesce vas Jovan Jovic,strastveni ribolovac i borac za zastitu prirode.Covek koji je odrastao na reci Drini','/assets/img/cottage.jpg',15,'Neophodno je ispostovati pravila koja ce vam na predociti instruktor','Sva oprema neophodna za ribolov dolazi uz aranzman plus camac',210,'U slucaju otkaza rezervacije avans se ne vraca','Visednevno kampovanje na Zlatiboru u divljini sume',2,false,'4.0');
 
 insert into termin_table(start_date,end_date,duration,reserved,is_action,adventure_id, price, capacity, instructor_id) values('19-Jan-2022 10:20:20','22-Jan-2022 10:20:20',5,false,true,1, 160, 10, 2);
 insert into termin_table(start_date,end_date,duration,reserved,is_action,adventure_id, price, capacity, instructor_id) values('26-Jan-2022 10:20:20','28-Jan-2022 10:20:20',5,false,true,1, 170, 10, 2);
@@ -29,7 +29,7 @@ insert into termin_table(start_date,end_date,duration,reserved,is_action,adventu
 insert into reservation_table(start_date,end_date,is_created,adventure_id,user_id,price) values('19-Jan-2022 10:20:20','22-Jan-2022 10:20:20',true,1,3,170);
 insert into reservation_table(start_date,end_date,is_created,adventure_id,user_id,price) values('13-Jan-2022 10:20:20','15-Jan-2022 10:20:20',true,1,3,170);
 insert into reservation_table(start_date,end_date,is_created,adventure_id,user_id,price) values('22-May-2022 10:20:20','25-May-2022 10:20:20',true,1,3,270);
-insert into reservation_table(start_date,end_date,is_created,adventure_id,user_id,price) values('22-May-2021 10:20:20','25-May-2021 10:20:20',true,1,3,270);
+insert into reservation_table(start_date,end_date,is_created,adventure_id,user_id,price) values('22-May-2021 10:20:20','25-May-2021 10:20:20',true,2,3,270);
 
 
 insert into financies_table(percent, define) values (10.55, '10-Jan-2021 10:20:20');
@@ -45,5 +45,5 @@ insert into complaint_table(content,answered,user_id,instructor_id,admin_id) val
 insert into request_table(title,username,admin_id) values ('Zahtev za brisanje naloga','jovan',1);
 insert into request_table(title,username,admin_id) values ('Zahtev za verifikaciju naloga','milos',1);
 
-insert into review_table(comment,grade,enabled,user_id,admin_id,instructor_id,adventure_id) values ('Dobro je bilo',4,true,3,1,2,1);
+insert into review_table(comment,grade,enabled,user_id,admin_id,instructor_id,adventure_id) values ('Dobro je bilo',4,true,3,1,2,2);
 insert into review_table(comment,grade,enabled,user_id,admin_id,instructor_id,adventure_id) values ('Lose je bilo',2,false,3,1,2,2);

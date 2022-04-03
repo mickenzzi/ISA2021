@@ -28,6 +28,7 @@
   <button (click)="rejectRequest()" class="disable-button" style="margin-left:135px; margin-top:30px;">Odustani</button>
 </div>
 <div *ngFor="let adventure of adventures" class="cards">
+  <label style="margin-left:-100px; color: darkgray;">{{adventure.avgGrade}}/5<img style="width:15px; height:15px; margin-left:4px;" src="/assets/img/star.png"></label>
   <button (click)="deleteAdventure(adventure.id)" *ngIf="!adventure.reserved" style="float: right">X</button>
   <br><br>
   <img class="cards-img" src="{{adventure.image}}">

@@ -69,8 +69,8 @@ export class HomeUserComponent implements OnInit {
     const username = this.currentUser.username1;
     this.subs.push(this.userService.findUser(username).subscribe((response: User) => {
       this.user = response;
-      this.getAllReservations();
     }));
+    this.getAllReservations();
   }
 
   getSingleUserReservation(reservationId: number) {
