@@ -39,28 +39,30 @@ export class LoginComponent implements OnInit {
     const data = {
       username: this.loginDetails.username, password: this.loginDetails.password
     }
-    this.subs.push(this.authenticationService.loginUser(data)
-      .subscribe(() => {
-        this.subs.push(this.userService.findUser(this.loginDetails.username).subscribe((response: User) => {
-          this.user = response;
-          if (this.user.role === "ROLE_ADMIN") {
-            alert('Uspesno ste se ulogovali');
-            this.router.navigate(['/homeAdmin']);
-          }
-          if (this.user.role === "ROLE_INSTRUCTOR") {
-            alert('Uspesno ste se ulogovali');
-            this.router.navigate(['/homeInstructor']);
-          }
-          if (this.user.role === "ROLE_USER") {
-            alert('Uspesno ste se ulogovali');
-            this.router.navigate(['/homeUser']);
-          }
-        }));
-      }, (error: HttpErrorResponse) => {
-        this.loginDetails.username = "";
-        this.loginDetails.password = "";
-        alert('Neophodno je prvo izvrsiti registraciju ili nalog jos nije prosao verifikaciju');
-      }));
-  }
-
+    this.subs.push(this.authenticationService.loginUser(data).subscribe(()=>
+    {
+      const currentUser = this.authenticationService.getCurrentUser()
+      if(currentUser === undefined || currentUser === null){
+        alert("Vas nalog nije validan.")
+      }
+      else{
+        this.userService.findUser(currentUser.username1).subscribe( response =>
+          {
+             this.user = response
+             if (this.user.role === "ROLE_ADMIN") {
+              alert('Uspesno ste se ulogovali');
+              this.router.navigate(['/homeAdmin']);
+            }
+            if (this.user.role === "ROLE_INSTRUCTOR") {
+              alert('Uspesno ste se ulogovali');
+              this.router.navigate(['/homeInstructor']);
+            }
+            if (this.user.role === "ROLE_USER") {
+              alert('Uspesno ste se ulogovali');
+              this.router.navigate(['/homeUser']);
+            }
+          })
+      }
+    }))
+    }
 }

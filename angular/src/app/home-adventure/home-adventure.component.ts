@@ -9,6 +9,7 @@ import {AdventureService} from '../service/adventure.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {Subscription} from 'rxjs';
 import {MapsAPILoader} from "@agm/core";
+import { google } from '@agm/core/services/google-maps-types';
 
 @Component({
   selector: 'app-home-adventure',
@@ -43,6 +44,7 @@ export class HomeAdventureComponent implements OnInit {
       this.logOut();
     } else {
       this.getUser();
+      this.getLatLng("Zvornik")
       this.idAdventure = this.route.snapshot.params['idAdventure'];
     }
   }
@@ -111,6 +113,16 @@ export class HomeAdventureComponent implements OnInit {
         alert(error.message);
       }));
     }
+  }
+
+  getLatLng(address: string) {
+    var term = "Mechelsesteenweg+64";
+    return this.adventureService.getLatLngAddress(address)
+    .subscribe((json: any) => {
+         var obj = JSON.parse(json);
+         console.log(obj)
+         var jsonParsed = obj["results"];
+     });
   }
 
 }

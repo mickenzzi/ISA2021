@@ -43,4 +43,12 @@ export class AuthenticationService {
     return this.access_token != undefined && this.access_token != null;
   }
 
+  getCurrentUser(): any {
+    if (localStorage['currentUser']) {
+      return JSON.parse(localStorage['currentUser']);
+    } else {
+      return undefined;
+    }
+  }
+
 }

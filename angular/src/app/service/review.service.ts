@@ -21,6 +21,8 @@ export class ReviewService {
     private http: HttpClient,
     private auth: AuthenticationService
   ) {
+    this.token = this.auth.getToken();
+    this.reqHeader = new HttpHeaders().set('Authorization', 'Bearer ' + this.token);
   }
 
   public getAllReviews() {

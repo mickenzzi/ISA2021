@@ -111,8 +111,8 @@ export class HomeInstructorComponent implements OnInit {
     const username = this.currentUser.username1;
     this.subs.push(this.userService.findUser(username).subscribe((response: User) => {
       this.user = response;
+      this.getAllAdventures();
     }));
-    this.getAllAdventures();
   }
 
   getAllAdventures() {
@@ -179,7 +179,7 @@ export class HomeInstructorComponent implements OnInit {
   searchAdventure(event: any) {
     if (this.user.id === undefined) {
     } else {
-      if (this.search === null || this.search.length === 0) {
+      if (this.search === null || this.search.length === 0 || this.search === undefined) {
         this.getAllAdventures();
       } else {
         this.subs.push(this.adventureService.getSearchAdventures(this.user.id, this.search).subscribe((response: Adventure[]) => {

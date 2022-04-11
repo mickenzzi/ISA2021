@@ -16,6 +16,8 @@ export class RequestService {
     private http: HttpClient,
     private auth: AuthenticationService
   ) {
+    this.token = this.auth.getToken();
+    this.reqHeader = new HttpHeaders().set('Authorization', 'Bearer ' + this.token);
   }
 
   public getAllRequest(id: number) {

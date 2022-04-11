@@ -12,6 +12,7 @@ export class AdventureService {
 
   private adventureUrl = 'http://localhost:8081/myApp/api/adventures';
   private terminUrl = 'http://localhost:8081/myApp/api/termins';
+  private googleMapsApiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=Someroad+64&key=AIzkeystuffjXDm6eU5mPP9Nczg';
   private token = this.auth.getToken();
   private reqHeader = new HttpHeaders().set('Authorization', 'Bearer ' + this.token);
 
@@ -19,6 +20,8 @@ export class AdventureService {
     private http: HttpClient,
     private auth: AuthenticationService,
   ) {
+    this.token = this.auth.getToken();
+    this.reqHeader = new HttpHeaders().set('Authorization', 'Bearer ' + this.token);
   }
 
   public createAdventure(adventure: Adventure, id: number) {
@@ -100,6 +103,10 @@ export class AdventureService {
 
   public createTermin(termin: Termin, instructorId: number){
     return this.http.post(`${this.terminUrl}/createTermin/${instructorId}`, termin, {headers: this.reqHeader});
+  }
+
+  public getLatLngAddress(address: string){
+    return this.http.get<any>(`${this.googleMapsApiUrl}`);
   }
 
 }

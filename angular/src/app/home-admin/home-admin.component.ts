@@ -139,6 +139,7 @@ export class HomeAdminComponent implements OnInit {
     this.flag5 = true;
     this.flag6 = false;
     this.flag7 = false;
+  
   }
 
   showNotifications() {
@@ -228,21 +229,10 @@ export class HomeAdminComponent implements OnInit {
           this.router.navigate(['/profileAdmin']);
         }
       }));
-      this.getGold();
-      this.getSilver();
-      this.getBronze();
-      this.getPercent();
-      this.getYearPerMonthProfit();
-      this.getYearProfit(this.year);
-      this.getAllComments();
-      this.getAllComments();
-      this.getAllComplains();
-      this.getAllRequest();
-      this.getAllReviews();
   }
 
   getAllRequest() {
-    if (this.user.id === undefined) {
+    if (this.user.id === undefined) { 
     } else {
       this.subs.push(this.requestService.getAllRequest(this.user.id).subscribe((response) => {
         this.requests = response;
