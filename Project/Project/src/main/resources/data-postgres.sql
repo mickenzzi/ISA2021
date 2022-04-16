@@ -9,11 +9,13 @@ insert into user_table(first_name,last_name,address,city,country,phone,email,use
 insert into user_table(first_name,last_name,address,city,country,phone,email,username,password,enabled,last_password_reset_date,first_time_logged,penalty,loyalty_status,collected_points) values ('Jovan','Jovic','Danila Kisa 15','Novi Sad','Srbija','021853','isaproject0@gmail.com','jovan','$2a$10$3N8f6MgFXc0PKfew.y4qQeEhLPh9d3g0FtDGGz4ep3xPz5AAsb9uW',true,'2017-10-01 21:58:58.508-07',false,0,'SILVER',20);
 insert into user_table(first_name,last_name,address,city,country,phone,email,username,password,enabled,last_password_reset_date,first_time_logged,penalty,loyalty_status,collected_points) values ('Aleksa','Aleksic','Gogoljeva 25','Novi Sad','Srbija','174641','isaproject0@gmail.com','aleksa','$2a$10$3N8f6MgFXc0PKfew.y4qQeEhLPh9d3g0FtDGGz4ep3xPz5AAsb9uW',true,'2017-10-01 21:58:58.508-07',false,0,'GOLD',52);
 insert into user_table(first_name,last_name,address,city,country,phone,email,username,password,enabled,last_password_reset_date,first_time_logged,penalty,loyalty_status,collected_points) values ('Milos','Milosevic','Tolstojeva 1','Novi Sad','Srbija','1123123641','isaproject0@gmail.com','milos','$2a$10$3N8f6MgFXc0PKfew.y4qQeEhLPh9d3g0FtDGGz4ep3xPz5AAsb9uW',false,'2017-10-01 21:58:58.508-07',false,0, 'BRONZE',19);
+insert into user_table(first_name,last_name,address,city,country,phone,email,username,password,enabled,last_password_reset_date,first_time_logged,penalty,loyalty_status,collected_points) values ('Vladimir','Ciric','Boska Buhe 19','Kac','Srbija','123412345','isaproject0@gmail.com','vladakac','$2a$10$3N8f6MgFXc0PKfew.y4qQeEhLPh9d3g0FtDGGz4ep3xPz5AAsb9uW',true,'2017-10-01 21:58:58.508-07',false,0, 'BRONZE',0);
 
 insert into USER_ROLE (user_id,role_id) values (1,2);
 insert into USER_ROLE (user_id,role_id) values (2,3);
 insert into USER_ROLE (user_id,role_id) values (3,1);
 insert into USER_ROLE (user_id,role_id) values (4,1);
+insert into USER_ROLE (user_id,role_id) values (5,4);
 
 insert into loyalty_table(name,points,discount) values ('BRONZE', 0, 1.0);
 insert into loyalty_table(name,points,discount) values ('SILVER', 20, 9.5);

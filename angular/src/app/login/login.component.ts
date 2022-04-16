@@ -55,6 +55,14 @@ export class LoginComponent implements OnInit {
             alert('Uspesno ste se ulogovali');
             this.router.navigate(['/homeUser']);
           }
+          if (this.user.role === "ROLE_COTTAGE_OWNER") {
+            alert('Uspesno ste se ulogovali');
+            this.router.navigate(['/homeCottageOwner']);
+          }
+          if (this.user.role === "ROLE_BOAT_OWNER") {
+            alert('Uspesno ste se ulogovali');
+            this.router.navigate(['/homeBoatOwner']);
+          }
         }));
       }, (error: HttpErrorResponse) => {
         this.loginDetails.username = "";

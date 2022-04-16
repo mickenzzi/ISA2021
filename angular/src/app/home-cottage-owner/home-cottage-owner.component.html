@@ -1,1 +1,27 @@
-<p>home-cottage-owner works!</p>
+<div class="cottage-owner-content">
+    <div class="toolbar">
+        <label style="margin-left:100px;">Dobro dosao {{user.username}}</label>
+        <button (click)="logOut()" style="padding: 10px 24px; border-radius: 8px; margin-left: 75%; cursor:pointer;">Odjavite se</button>
+    </div>
+    <div class="links-containter">
+        <hr>
+        <div (click)="goToCottageList()" class="link-container" style="background-image: url(/assets/img/cottageLink.jpg);">
+            <div class="right"><h1><b>Vikendice</b></h1></div>
+        </div>
+        <p></p>
+        <div class="link-container" style="background-image: url(/assets/img/calendar.jpeg);">
+            <div class="right"><h1><b>Termini</b></h1></div>
+        </div>
+        <p></p>
+        <div (click)="goToProfile()" class="link-container" style="background-image: url(/assets/img/desk.png); background-position: top;">
+            <div class="right"><h1><b>Profil</b></h1></div>
+        </div>
+        <hr>
+    </div>
+    <div class="profile-card">
+        <hr>
+        <img src="/assets/img/profile.png" style="width: 100%;" >
+        <label style="text-align: center; color: white;"><h3>{{user.firstName}} {{user.lastName}}</h3></label>
+        <hr>
+    </div>
+</div>

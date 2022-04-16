@@ -18,16 +18,18 @@ import {HomeCottageOwnerComponent} from './home-cottage-owner/home-cottage-owner
 import {HomeBoatOwnerComponent} from './home-boat-owner/home-boat-owner.component';
 import {RegistrationAdminComponent} from './registration-admin/registration-admin.component';
 import {ProfileInstructorComponent} from './profile-instructor/profile-instructor.component';
+import { ProfileCottageOwnerComponent } from './profile-cottage-owner/profile-cottage-owner.component';
 import {AddAdventureComponent} from './add-adventure/add-adventure.component';
 import {HomeAdventureComponent} from './home-adventure/home-adventure.component';
 import {HomeAdminUsersComponent} from './home-admin-users/home-admin-users.component';
 import {InstructorCalendarComponent} from "./instructor-calendar/instructor-calendar.component";
+import { CottageOwnerCottageListComponent } from './cottage-owner-cottage-list/cottage-owner-cottage-list.component';
 import {NgChartsModule} from "ng2-charts";
 import { AgmCoreModule } from '@agm/core';
 
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, HomeAdminComponent, ProfileAdminComponent, RegistrationComponent, LoginComponent, HomeUserComponent, HomeGuestComponent, HomeInstructorComponent, HomeCottageOwnerComponent, HomeBoatOwnerComponent, RegistrationAdminComponent, ProfileInstructorComponent, AddAdventureComponent, HomeAdventureComponent, HomeAdminUsersComponent, InstructorCalendarComponent],
+  declarations: [AppComponent, HomeComponent, HomeAdminComponent, ProfileAdminComponent, RegistrationComponent, LoginComponent, HomeUserComponent, HomeGuestComponent, HomeInstructorComponent, HomeCottageOwnerComponent, HomeBoatOwnerComponent, RegistrationAdminComponent, ProfileInstructorComponent, ProfileCottageOwnerComponent, AddAdventureComponent, HomeAdventureComponent, HomeAdminUsersComponent, InstructorCalendarComponent, CottageOwnerCottageListComponent],
   imports: [BrowserModule, HttpClientModule, AppRoutingModule, NoopAnimationsModule, MatTableModule, FormsModule, ReactiveFormsModule, NgChartsModule, AgmCoreModule.forRoot({apiKey: 'AIzaSyC9guE6bI9x1oAsg63x2CKSN0AfKPgWhr0', libraries: ['places']})],
   providers: [],
   bootstrap: [AppComponent]

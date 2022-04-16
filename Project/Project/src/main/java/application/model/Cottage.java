@@ -1,5 +1,7 @@
 package application.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,6 +26,8 @@ public class Cottage {
 	private String address;
 	@Column(name = "description", nullable = false)
 	private String description;
+	//@Column(name = "pictures", nullable = false)
+	//private List<String> pictures;
 	@Column(name = "room", nullable = false)
 	private String room;
 	@Column(name = "term", nullable = false)
