@@ -111,6 +111,8 @@ export class HomeAdminComponent implements OnInit {
     this.getAllComplains();
     this.getAllComments();
     this.getAllRequest();
+    this.complaint1 = new Complaint();
+    this.rejectText = ""
   }
 
   closeNotification() {
@@ -151,6 +153,7 @@ export class HomeAdminComponent implements OnInit {
     this.flag5 = false;
     this.flag6 = false;
     this.flag7 = false;
+    this.flag9 = false;
   }
 
   showReviews() {
@@ -162,6 +165,7 @@ export class HomeAdminComponent implements OnInit {
     this.flag5 = false;
     this.flag6 = false;
     this.flag7 = false;
+    this.flag9 = false;
   }
 
   showComplains() {
@@ -173,12 +177,20 @@ export class HomeAdminComponent implements OnInit {
     this.flag5 = false;
     this.flag6 = true;
     this.flag7 = false;
+    this.flag9 = false;
   }
 
 
   showFinances() {
     this.flag10 = false;
     if (this.flag9 === false) {
+      this.flag1 = false;
+      this.flag2 = false;
+      this.flag3 = false
+      this.flag4 = false;
+      this.flag5 = false;
+      this.flag6 = false;
+      this.flag7 = false;
       this.flag9 = true;
       this.getPercent();
       this.getYearProfit(this.year);

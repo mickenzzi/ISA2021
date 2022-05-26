@@ -14,4 +14,5 @@ public interface AdventureService {
 	List<Adventure> sortByTitle(Long instructorId,boolean asc);
 	List<Adventure> sortByPrice(Long instructorId,boolean asc);
 	List<Adventure> sortByCapacity(Long instructorId,boolean asc);
+	List<Adventure> sortByGrade(Long instructorId,boolean asc);
 }

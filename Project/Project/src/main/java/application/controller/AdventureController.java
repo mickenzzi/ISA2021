@@ -152,6 +152,16 @@ public class AdventureController {
 		System.out.println("The task /sortAdventuresByCapacity was successfully completed.");
 		return new ResponseEntity<>(adventures, HttpStatus.OK);
 	}
+	
+	@GetMapping(value = "/sortAdventuresByGrade/{instructorId}/{asc}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('INSTRUCTOR')")
+	public ResponseEntity<List<Adventure>> sortAdventuresGrade(@PathVariable("instructorId") Long instructorId,
+			@PathVariable("asc") boolean asc) {
+		List<Adventure> adventures = new ArrayList<Adventure>();
+		adventures = adventureService.sortByGrade(instructorId, asc);
+		System.out.println("The task /sortAdventuresByGrade was successfully completed.");
+		return new ResponseEntity<>(adventures, HttpStatus.OK);
+	}
 
 	@PostMapping(value = "/createAction/{instructorId}/{adventureId}/{price}/{capacity}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('INSTRUCTOR')")

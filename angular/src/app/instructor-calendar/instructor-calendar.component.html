@@ -43,7 +43,7 @@
              placeholder="dd-MMM-YYYY HH:mm:ss" required type="text"/><br>
       <label>Datum zavrsetka:</label><br>
       <input [(ngModel)]="termin1.end" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
-             placeholder="dd-MMM-YYYY HH:mm:ss" required style="margin-left:7px;" type="text"/><br>
+             placeholder="dd-MMM-YYYY HH:mm:ss" required type="text"/><br>
       <label>Trajanje:</label><br>
       <input [(ngModel)]="termin1.duration" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
              placeholder="Trajanje" required type="text"/>
@@ -66,7 +66,7 @@
              placeholder="dd-MMM-YYYY HH:mm:ss" required type="text"/><br>
       <label>Datum zavrsetka:</label><br>
       <input [(ngModel)]="termin.end" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
-             placeholder="dd-MMM-YYYY HH:mm:ss" required style="margin-left:7px;" type="text"/><br>
+             placeholder="dd-MMM-YYYY HH:mm:ss" required  type="text"/><br>
       <label>Trajanje:</label><br>
       <input [(ngModel)]="termin.duration" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
              placeholder="Trajanje" required type="text"/>
@@ -83,7 +83,6 @@
     <tr class="table-header">
       <th class="header__item">Datum pocetka</th>
       <th class="header__item">Datum zavrsetka</th>
-      <th class="header__item">Zavrsena</th>
       <th class="header__item">Naziv avanture</th>
       <th class="header__item">Korisnik</th>
       <th class="header__item"></th>
@@ -94,7 +93,6 @@
     <tr *ngFor="let reservation of reservations" class="table-row">
       <td class="table-data">{{reservation.start}}</td>
       <td class="table-data">{{reservation.end}}</td>
-      <td class="table-data">{{reservation.createdReservation}}</td>
       <td class="table-data">{{reservation.adventureReservation.title}}</td>
       <td class="table-data">{{reservation.userReservation.firstName}} {{reservation.userReservation.lastName}}</td>
       <td class="table-data">

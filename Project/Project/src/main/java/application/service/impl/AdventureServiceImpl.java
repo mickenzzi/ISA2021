@@ -46,6 +46,13 @@ public class AdventureServiceImpl implements AdventureService {
 			return Double.compare(a1.getPriceList(), a2.getPriceList());
 		}
 	};
+	
+	Comparator<Adventure> compareByGrade = new Comparator<Adventure>() {
+		@Override
+		public int compare(Adventure a1, Adventure a2) {
+			return Double.compare(Double.parseDouble(a1.getAvgGrade()), Double.parseDouble(a2.getAvgGrade()));
+		}
+	};
 
 	@Override
 	public Adventure findById(Long id) throws AccessDeniedException {
@@ -176,6 +183,24 @@ public class AdventureServiceImpl implements AdventureService {
 			Collections.sort(adventures1, compareByCapacity);
 		} else {
 			Collections.sort(adventures1, compareByCapacity.reversed());
+		}
+		return adventures1;
+	}
+	
+	@Override
+	public List<Adventure> sortByGrade(Long instructorId, boolean asc) {
+		List<Adventure> adventures = new ArrayList<Adventure>();
+		adventures = adventureRepository.findAll();
+		List<Adventure> adventures1 = new ArrayList<Adventure>();
+		for (Adventure a : adventures) {
+			if (a.getUserAdventure().getId() == instructorId) {
+				adventures1.add(a);
+			}
+		}
+		if (asc == true) {
+			Collections.sort(adventures1, compareByGrade);
+		} else {
+			Collections.sort(adventures1, compareByGrade.reversed());
 		}
 		return adventures1;
 	}

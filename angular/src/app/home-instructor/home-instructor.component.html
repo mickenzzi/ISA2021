@@ -7,9 +7,10 @@
   <button (click)="sortByTitle()" class="button-2" style="margin-left: 2px">Naziv</button>
   <button (click)="sortByPrice()" class="button-2">Cena</button>
   <button (click)="sortByCapacity()" class="button-2">Kapacitet</button>
+  <button (click)="sortByGrade()" class="button-2">Ocena</button>
   <input (keyup)="searchAdventure($event)" [(ngModel)]="search" [ngModelOptions]="{standalone: true}"
          placeholder="Unesite parametre pretrage..."
-         style="margin-left:180px; height: 20px; width:auto" type="text"/>
+         style="margin-left:100px; height: 20px; width:auto" type="text"/>
 </div>
 <div *ngIf="flag1" class="menu-container">
   <button (click)="goToProfile()" class="menu-container-button">Profil</button>

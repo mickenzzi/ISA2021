@@ -62,6 +62,8 @@ export class HomeUserComponent implements OnInit {
     this.flag1 = false;
     this.flagButton = true;
     this.flag1Button = true;
+    this.review1.comment = undefined;
+    this.complaint.content = undefined;
     this.getAllReservations();
   }
 
@@ -69,8 +71,8 @@ export class HomeUserComponent implements OnInit {
     const username = this.currentUser.username1;
     this.subs.push(this.userService.findUser(username).subscribe((response: User) => {
       this.user = response;
+      this.getAllReservations();
     }));
-    this.getAllReservations();
   }
 
   getSingleUserReservation(reservationId: number) {

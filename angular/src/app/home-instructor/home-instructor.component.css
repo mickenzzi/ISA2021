@@ -1,5 +1,14 @@
 .home-instructor-content {
+  height: 100%;
+  width: 100%;
   background-color: #F8F4F9;
+  background-position: center;
+  margin: 0;
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 .delete-container {
   width: 300px;

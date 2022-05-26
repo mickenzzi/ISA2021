@@ -64,6 +64,8 @@ public class User implements UserDetails {
 	@Column(name = "collected_points")
 	private int collectedPoints;
 	private String role;
+	@Column(name="member")
+	private boolean member;
 
 	// fetch - Lazy koristimo kada zelimo samo podatke tabele u kojoj se nalazimo a
 	// ne podatke i povezanih tabela
@@ -197,6 +199,14 @@ public class User implements UserDetails {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	
+	public boolean isMember() {
+		return member;
+	}
+	
+	public void setMember(boolean member) {
+		this.member = member;
 	}
 
 	public String getRole() {

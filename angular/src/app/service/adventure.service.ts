@@ -34,6 +34,7 @@ export class AdventureService {
   }
 
   public getAdventure(id: number) {
+    console.log(id);
     return this.http.get<Adventure>(`${this.adventureUrl}/getAdventureById/${id}`, {headers: this.reqHeader});
   }
 
@@ -59,6 +60,10 @@ export class AdventureService {
 
   public sortAdventuresByCapacity(id: number, asc: boolean) {
     return this.http.get<Adventure[]>(`${this.adventureUrl}/sortAdventuresByCapacity/${id}/${asc}`, {headers: this.reqHeader});
+  }
+
+  public sortAdventuresByGrade(id: number, asc: boolean) {
+    return this.http.get<Adventure[]>(`${this.adventureUrl}/sortAdventuresByGrade/${id}/${asc}`, {headers: this.reqHeader});
   }
 
   public getAllTermins(id: number) {

@@ -86,8 +86,6 @@ export class HomeAdminUsersComponent implements OnInit {
     this.subs.push(this.userService.findUser(username).subscribe((response: User) => {
       this.user = response;
     }));
-    this.getEntities();
-    this.getAllUsers();
   }
 
   deleteUser(idUser1?: number) {
@@ -108,7 +106,6 @@ export class HomeAdminUsersComponent implements OnInit {
 
   getEntities(userId?: number, role?: string, username?: string) {
     if (userId === undefined || role === undefined || username === undefined) {
-      alert("Neispravni podaci.")
     } else {
       this.entityOwnerUsername = username;
       this.entityOwnerRole = role;

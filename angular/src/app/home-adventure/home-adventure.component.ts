@@ -84,8 +84,8 @@ export class HomeAdventureComponent implements OnInit {
     const username = this.currentUser.username1;
     this.subs.push(this.userService.findUser(username).subscribe((response: User) => {
       this.user = response;
+      this.getAdventure()
     }));
-    this.getAdventure()
   }
 
   getAdventure() {
@@ -108,7 +108,7 @@ export class HomeAdventureComponent implements OnInit {
     } else {
       this.subs.push(this.adventureService.createAction(this.user.id, this.idAdventure, this.termin, this.price, this.capacity).subscribe(() => {
         alert('Uspesno ste kreirali termin za brzu rezervaciju.');
-        this.flag1 = false;
+        this.flag1 = true;
       }, (error: HttpErrorResponse) => {
         alert(error.message);
       }));

@@ -56,6 +56,13 @@ public class TerminServiceImpl implements TerminService {
 		Termin termin1 = new Termin();
 		boolean create = false;
 		User instructor = userRepository.findById(instructorId).orElseGet(null);
+		List<Adventure> adventures = adventureRepository.findAll();
+		List<Adventure> adventures1 = new ArrayList<Adventure>();
+		for (Adventure a : adventures) {
+			if (a.getUserAdventure().getId() == instructorId) {
+				adventures1.add(a);
+			}
+		}
 		List<Termin> termins = new ArrayList<Termin>();
 		List<Termin> termins1 = new ArrayList<Termin>();
 		termins = terminRepository.findAll();
@@ -87,6 +94,7 @@ public class TerminServiceImpl implements TerminService {
 			termin1.setDuration(termin.getDuration());
 			termin1.setReserved(false);
 			termin1.setAction(false);
+			termin1.setAdventureTermin(adventures1.get(0));
 			terminRepository.save(termin1);
 		}
 		return create;
@@ -201,6 +209,8 @@ public class TerminServiceImpl implements TerminService {
 				termin1.setDuration(0);
 				termin1.setAction(false);
 				termin1.setReserved(true);
+				termin1.setCapacity((long) adventure1.getMaxNumber());
+				termin1.setInstructorTermin(instructor);
 				terminRepository.save(termin1);
 			}
 			adventure1.setReserved(true);
@@ -245,7 +255,7 @@ public class TerminServiceImpl implements TerminService {
 		reservations1 = reservationRepository.findAll();
 		for (Reservation r : reservations1) {
 			for (Adventure a1 : adventures) {
-				if (a1.getId() == r.getId()) {
+				if (a1.getId() == r.getAdventureReservation().getId()) {
 					reservations.add(r);
 				}
 			}

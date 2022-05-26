@@ -132,8 +132,6 @@ export class InstructorCalendarComponent implements OnInit {
     this.subs.push(this.userService.findUser(username).subscribe((response: User) => {
       this.user = response;
     }));
-    this.getAllReservations();
-    this.getAllTermins();
   }
 
   getAllTermins() {
@@ -166,7 +164,7 @@ export class InstructorCalendarComponent implements OnInit {
         this.getAllTermins();
         this.termin1 = new Termin();
       }, (error: HttpErrorResponse) => {
-        alert(error.message)
+        alert("Termin vec postoji.")
       }));
     }
   }

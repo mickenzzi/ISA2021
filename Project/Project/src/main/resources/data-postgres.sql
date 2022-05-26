@@ -5,10 +5,10 @@ insert into ROLE (name) values ('ROLE_INSTRUCTOR');
 insert into ROLE (name) values ('ROLE_COTTAGE_OWNER');
 insert into ROLE (name) values ('ROLE_BOAT_OWNER');
 
-insert into user_table(first_name,last_name,address,city,country,phone,email,username,password,enabled,last_password_reset_date,first_time_logged,penalty,loyalty_status,collected_points) values ('Milorad','Vulovic','Puskinova 3','Novi Sad','Srbija','887214','isaproject0@gmail.com','mickenzi','$2a$10$3N8f6MgFXc0PKfew.y4qQeEhLPh9d3g0FtDGGz4ep3xPz5AAsb9uW',true,'2017-10-01 21:58:58.508-07',false,0,'GOLD',52);
-insert into user_table(first_name,last_name,address,city,country,phone,email,username,password,enabled,last_password_reset_date,first_time_logged,penalty,loyalty_status,collected_points) values ('Jovan','Jovic','Danila Kisa 15','Novi Sad','Srbija','021853','isaproject0@gmail.com','jovan','$2a$10$3N8f6MgFXc0PKfew.y4qQeEhLPh9d3g0FtDGGz4ep3xPz5AAsb9uW',true,'2017-10-01 21:58:58.508-07',false,0,'SILVER',20);
-insert into user_table(first_name,last_name,address,city,country,phone,email,username,password,enabled,last_password_reset_date,first_time_logged,penalty,loyalty_status,collected_points) values ('Aleksa','Aleksic','Gogoljeva 25','Novi Sad','Srbija','174641','isaproject0@gmail.com','aleksa','$2a$10$3N8f6MgFXc0PKfew.y4qQeEhLPh9d3g0FtDGGz4ep3xPz5AAsb9uW',true,'2017-10-01 21:58:58.508-07',false,0,'GOLD',52);
-insert into user_table(first_name,last_name,address,city,country,phone,email,username,password,enabled,last_password_reset_date,first_time_logged,penalty,loyalty_status,collected_points) values ('Milos','Milosevic','Tolstojeva 1','Novi Sad','Srbija','1123123641','isaproject0@gmail.com','milos','$2a$10$3N8f6MgFXc0PKfew.y4qQeEhLPh9d3g0FtDGGz4ep3xPz5AAsb9uW',false,'2017-10-01 21:58:58.508-07',false,0, 'BRONZE',19);
+insert into user_table(first_name,last_name,address,city,country,phone,email,username,password,enabled,last_password_reset_date,first_time_logged,penalty,loyalty_status,collected_points, member) values ('Milorad','Vulovic','Puskinova 3','Novi Sad','Srbija','887214','isaproject0@gmail.com','mickenzi','$2a$10$3N8f6MgFXc0PKfew.y4qQeEhLPh9d3g0FtDGGz4ep3xPz5AAsb9uW',true,'2017-10-01 21:58:58.508-07',false,0,'GOLD',52, false);
+insert into user_table(first_name,last_name,address,city,country,phone,email,username,password,enabled,last_password_reset_date,first_time_logged,penalty,loyalty_status,collected_points, member) values ('Jovan','Jovic','Danila Kisa 15','Novi Sad','Srbija','021853','isaproject0@gmail.com','jovan','$2a$10$3N8f6MgFXc0PKfew.y4qQeEhLPh9d3g0FtDGGz4ep3xPz5AAsb9uW',true,'2017-10-01 21:58:58.508-07',false,0,'SILVER',20, false);
+insert into user_table(first_name,last_name,address,city,country,phone,email,username,password,enabled,last_password_reset_date,first_time_logged,penalty,loyalty_status,collected_points, member) values ('Aleksa','Aleksic','Gogoljeva 25','Novi Sad','Srbija','174641','isaproject0@gmail.com','aleksa','$2a$10$3N8f6MgFXc0PKfew.y4qQeEhLPh9d3g0FtDGGz4ep3xPz5AAsb9uW',true,'2017-10-01 21:58:58.508-07',false,0,'GOLD',52, true);
+insert into user_table(first_name,last_name,address,city,country,phone,email,username,password,enabled,last_password_reset_date,first_time_logged,penalty,loyalty_status,collected_points, member) values ('Milos','Milosevic','Tolstojeva 1','Novi Sad','Srbija','1123123641','isaproject0@gmail.com','milos','$2a$10$3N8f6MgFXc0PKfew.y4qQeEhLPh9d3g0FtDGGz4ep3xPz5AAsb9uW',false,'2017-10-01 21:58:58.508-07',false,0, 'BRONZE',19, false);
 
 insert into USER_ROLE (user_id,role_id) values (1,2);
 insert into USER_ROLE (user_id,role_id) values (2,3);
@@ -28,7 +28,7 @@ insert into termin_table(start_date,end_date,duration,reserved,is_action,adventu
 
 insert into reservation_table(start_date,end_date,is_created,adventure_id,user_id,price) values('19-Jan-2022 10:20:20','22-Jan-2022 10:20:20',true,1,3,170);
 insert into reservation_table(start_date,end_date,is_created,adventure_id,user_id,price) values('13-Jan-2022 10:20:20','15-Jan-2022 10:20:20',true,1,3,170);
-insert into reservation_table(start_date,end_date,is_created,adventure_id,user_id,price) values('22-May-2022 10:20:20','25-May-2022 10:20:20',true,1,3,270);
+insert into reservation_table(start_date,end_date,is_created,adventure_id,user_id,price) values('22-May-2022 10:20:20','25-May-2022 10:20:20',false,1,3,270);
 insert into reservation_table(start_date,end_date,is_created,adventure_id,user_id,price) values('22-May-2021 10:20:20','25-May-2021 10:20:20',true,2,3,270);
 
 

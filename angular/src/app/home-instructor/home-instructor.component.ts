@@ -231,4 +231,18 @@ export class HomeInstructorComponent implements OnInit {
       }));
     }
   }
+
+  sortByGrade() {
+    if (this.user.id === undefined) {
+    } else {
+      if (this.flagPrice === false) {
+        this.flagPrice = true;
+      } else {
+        this.flagPrice = false;
+      }
+      this.subs.push(this.adventureService.sortAdventuresByGrade(this.user.id, this.flagPrice).subscribe((response: Adventure[]) => {
+        this.adventures = response;
+      }));
+    }
+  }
 }

@@ -63,6 +63,8 @@ export class LoginComponent implements OnInit {
             }
           })
       }
+    }, (error: HttpErrorResponse) => {
+      alert("Vas nalog nije validan.")
     }))
     }
 }
