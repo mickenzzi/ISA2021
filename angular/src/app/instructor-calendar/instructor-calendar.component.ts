@@ -202,6 +202,7 @@ export class InstructorCalendarComponent implements OnInit {
     this.subs.push(this.userService.findUser(username).subscribe((response: User) => {
       this.user = response;
       this.getAllTermins();
+      this.getAllReservations();
     }));
   }
 
@@ -216,7 +217,7 @@ export class InstructorCalendarComponent implements OnInit {
     }
   }
 
-  getAllReservations() {
+  getAllReservations() { 
     if (this.user.id === undefined) {
     } else {
       this.subs.push(this.adventureService.getAllReservation(this.user.id).subscribe((response) => {
