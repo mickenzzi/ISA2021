@@ -1,28 +1,56 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {User} from '../model/user';
-import {Comment} from '../model/comment';
-import {Termin} from '../model/termin';
-import {Reservation} from '../model/reservation';
-import {UserService} from '../service/user.service';
-import {ReviewService} from '../service/review.service';
-import {AdventureService} from '../service/adventure.service';
-import {HttpErrorResponse} from '@angular/common/http';
-import {Subscription} from "rxjs";
+import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { User } from '../model/user';
+import { Comment } from '../model/comment';
+import { Termin } from '../model/termin';
+import { Reservation } from '../model/reservation';
+import { UserService } from '../service/user.service';
+import { ReviewService } from '../service/review.service';
+import { AdventureService } from '../service/adventure.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Subscription } from "rxjs";
+import { 
+  CalendarEvent, 
+  CalendarMonthViewBeforeRenderEvent,
+  CalendarWeekViewBeforeRenderEvent,
+  CalendarDayViewBeforeRenderEvent,
+  CalendarView } from 'angular-calendar';
+import { HttpClient } from '@angular/common/http';
+import { startOfYear, subYears } from 'date-fns';
+import { TouchSequence } from 'selenium-webdriver';
+
+
+const colors: any = {
+  red: {
+    primary: '#ad2121',
+    secondary: '#FAE3E3',
+  },
+  blue: {
+    primary: '#1e90ff',
+    secondary: '#D1E8FF',
+  },
+  yellow: {
+    primary: '#e3bc08',
+    secondary: '#FDF1BA',
+  },
+};
 
 @Component({
   selector: 'app-instructor-calendar',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './instructor-calendar.component.html',
   styleUrls: ['./instructor-calendar.component.css']
 })
 export class InstructorCalendarComponent implements OnInit {
   //subsribe
-  termins: Termin[];
+  termins: Termin[] = new Array<Termin>();
   reservations: Reservation[]
   termin: Termin = new Termin();
   termin1: Termin = new Termin();
   comment: Comment = new Comment();
   user: User = new User();
+  selectedTermin: Termin = new Termin();
   //unsubscribe
   subs: Subscription[] = [];
   //local
@@ -45,10 +73,53 @@ export class InstructorCalendarComponent implements OnInit {
   //@ts-ignore
   currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
+  view: CalendarView = CalendarView.Month;
 
-  constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private reviewService: ReviewService, private adventureService: AdventureService) {
-    this.termins = [];
+  viewDate: Date = new Date();
+
+  events: CalendarEvent[] = [];
+
+  activeDayIsOpen: boolean = true;
+
+  CalendarView = CalendarView;
+
+  
+  beforeMonthViewRender(renderEvent: CalendarMonthViewBeforeRenderEvent): void {
+    renderEvent.body.forEach((day) => {
+      const dayOfMonth = day.date
+      this.getAllTermins();
+      for(let term of this.termins){
+        const start = new Date(term.start ?? "")
+        const end = new Date(term.end ?? "")
+        if (dayOfMonth >= start && dayOfMonth <= end) {
+          if(term.reserved === true){
+          day.cssClass = 'bg-red';
+          }
+          else {
+            day.cssClass = 'bg-blue';
+          }
+        }
+      }
+    });
+  }
+
+  constructor(private userService: UserService, private reviewService: ReviewService, private adventureService: AdventureService, private router: Router) {
     this.reservations = [];
+  }
+
+  changeDay(date: Date) {
+    this.getAllTermins();
+    for(let term of this.termins){
+      const start = new Date(term.start ?? "")
+      const end = new Date(term.end ?? "")
+      if(date >= start && date <= end){
+          this.selectedTermin = term;
+          break;
+      }
+    }
+
+    this.editTerminShow(this.selectedTermin.id);
+    this.selectedTermin = new Termin();
   }
 
   ngOnInit(): void {
@@ -64,7 +135,6 @@ export class InstructorCalendarComponent implements OnInit {
       this.getUser();
     }
   }
-
   ngOnDestroy() {
     this.subs.forEach(sub => sub.unsubscribe())
   }
@@ -119,7 +189,7 @@ export class InstructorCalendarComponent implements OnInit {
 
   showAddTermin() {
     this.flag5 = true;
-    this.flag2 = false;
+    this.flag1 = false;
   }
 
   public closeComment(): void {
@@ -131,12 +201,13 @@ export class InstructorCalendarComponent implements OnInit {
     const username = this.currentUser.username1;
     this.subs.push(this.userService.findUser(username).subscribe((response: User) => {
       this.user = response;
+      this.getAllTermins();
     }));
   }
 
   getAllTermins() {
-    if (this.user.id === undefined) {
-    } else {
+    if (this.user.id === undefined) { }
+    else {
       this.subs.push(this.adventureService.getAllTermins(this.user.id).subscribe((response) => {
         this.termins = response;
       }, (error: HttpErrorResponse) => {
@@ -161,6 +232,7 @@ export class InstructorCalendarComponent implements OnInit {
     } else {
       this.subs.push(this.adventureService.createTermin(this.termin1, this.user.id).subscribe(() => {
         this.flag5 = false;
+        this.flag1 = true;
         this.getAllTermins();
         this.termin1 = new Termin();
       }, (error: HttpErrorResponse) => {
@@ -169,26 +241,19 @@ export class InstructorCalendarComponent implements OnInit {
     }
   }
 
-  deleteTermin(idTermin1?: number) {
-    if (idTermin1 === undefined) {
-      alert('Id ne postoji');
-    } else {
-      this.idTermin = idTermin1;
-      this.subs.push(this.adventureService.deleteTermin(this.idTermin).subscribe(() => {
+  deleteTermin() {
+      this.subs.push(this.adventureService.deleteTermin(this.termin.id ?? 0).subscribe(() => {
         alert('Uspesno ste izbrisali termin');
-        this.flag2 = false;
         this.getAllTermins();
       }, (error: HttpErrorResponse) => {
         alert(error.message);
       }));
-    }
+      this.flag2 = false;
   }
 
 
   editTerminShow(idTermin1?: number) {
-    if (idTermin1 === undefined) {
-      alert('Id ne postoji');
-    } else {
+    if (idTermin1 === undefined) {} else {
       this.idTermin = idTermin1;
       this.subs.push(this.adventureService.getTermin(this.idTermin).subscribe((response: Termin) => {
         this.termin = response;
@@ -196,6 +261,7 @@ export class InstructorCalendarComponent implements OnInit {
         alert(error.message);
       }));
       this.flag2 = true;
+      this.flag1 = false;
       this.flag5 = false;
     }
   }
@@ -203,11 +269,12 @@ export class InstructorCalendarComponent implements OnInit {
   editTermin() {
     this.subs.push(this.adventureService.updateTermin(this.termin).subscribe(() => {
       alert('Izmenili ste termin.');
-      this.flag2 = false;
       this.getAllTermins();
     }, (error: HttpErrorResponse) => {
-      alert(error.message);
+      alert("Zeljeni termin je vec zauzet.");
     }));
+    this.flag2 = false;
+    this.flag5 = false; 
   }
 
   createReservation(start1?: string, end1?: string, adventureId1?: number, userId1?: number) {
@@ -310,6 +377,14 @@ export class InstructorCalendarComponent implements OnInit {
         }));
       }
     }
+  }
+
+  setView(view: CalendarView) {
+    this.view = view;
+  }
+
+  closeOpenMonthViewDay() {
+    this.activeDayIsOpen = false;
   }
 
 

@@ -3,6 +3,8 @@ package application.service.impl;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -35,6 +37,14 @@ public class TerminServiceImpl implements TerminService {
 	private AdventureRepository adventureRepository;
 	@Autowired
 	private LoyaltyRepository loyaltyRepository;
+	
+	Comparator<Reservation> compareByReserved = new Comparator<Reservation>() {
+		@Override
+		public int compare(Reservation r1, Reservation r2) {
+			return Boolean.compare(r1.isCreatedReservation(), r2.isCreatedReservation());
+		}
+	};
+
 
 	@Override
 	public Termin findById(Long id) throws AccessDeniedException {
@@ -260,6 +270,7 @@ public class TerminServiceImpl implements TerminService {
 				}
 			}
 		}
+		Collections.sort(reservations, compareByReserved);
 		return reservations;
 	}
 

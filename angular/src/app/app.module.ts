@@ -24,12 +24,48 @@ import {HomeAdminUsersComponent} from './home-admin-users/home-admin-users.compo
 import {InstructorCalendarComponent} from "./instructor-calendar/instructor-calendar.component";
 import {NgChartsModule} from 'ng2-charts';
 import {AgmCoreModule} from '@agm/core';
+import { ScheduleModule, DayService, WeekService, WorkWeekService, MonthService, MonthAgendaService } from '@syncfusion/ej2-angular-schedule';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, HomeAdminComponent, ProfileAdminComponent, RegistrationComponent, LoginComponent, HomeUserComponent, HomeGuestComponent, HomeInstructorComponent, HomeCottageOwnerComponent, HomeBoatOwnerComponent, RegistrationAdminComponent, ProfileInstructorComponent, AddAdventureComponent, HomeAdventureComponent, HomeAdminUsersComponent, InstructorCalendarComponent],
-  imports: [BrowserModule, HttpClientModule, AppRoutingModule, NoopAnimationsModule, MatTableModule, FormsModule, ReactiveFormsModule, NgChartsModule, AgmCoreModule.forRoot({apiKey: 'AIzaSyC9guE6bI9x1oAsg63x2CKSN0AfKPgWhr0', libraries: ['places']})],
-  providers: [],
+  declarations: [
+    AppComponent,
+    HomeComponent, 
+    HomeAdminComponent, 
+    ProfileAdminComponent, 
+    RegistrationComponent, 
+    LoginComponent, 
+    HomeUserComponent, 
+    HomeGuestComponent, 
+    HomeInstructorComponent, 
+    HomeCottageOwnerComponent, 
+    HomeBoatOwnerComponent, 
+    RegistrationAdminComponent, 
+    ProfileInstructorComponent, 
+    AddAdventureComponent, 
+    HomeAdventureComponent, 
+    HomeAdminUsersComponent, 
+    InstructorCalendarComponent
+  ],
+  imports: [
+    BrowserModule, 
+    HttpClientModule, 
+    AppRoutingModule, 
+    NoopAnimationsModule, 
+    MatTableModule, 
+    FormsModule, 
+    ReactiveFormsModule, 
+    NgChartsModule, 
+    AgmCoreModule.forRoot({apiKey: 'AIzaSyC9guE6bI9x1oAsg63x2CKSN0AfKPgWhr0', libraries: ['places']}),
+    ScheduleModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    })
+  ],
+  providers: [DayService, WeekService, WorkWeekService, MonthAgendaService, MonthService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

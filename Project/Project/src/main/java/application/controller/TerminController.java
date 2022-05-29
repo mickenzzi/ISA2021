@@ -33,7 +33,7 @@ public class TerminController {
 	public ResponseEntity<List<Termin>> getAllTerminsInstructor(@PathVariable("id") Long id) {
 		List<Termin> termins = new ArrayList<Termin>();
 		termins = terminService.findAllTerminsInstructor(id);
-		System.out.println("The task /getAllTermins was successfully completed.");
+		System.out.println("The task /getAllTerminsInstructor was successfully completed.");
 		return new ResponseEntity<>(termins, HttpStatus.OK);
 	}
 
@@ -66,11 +66,13 @@ public class TerminController {
 			return new ResponseEntity<>(termin, HttpStatus.OK);
 		}
 	}
+	
 
 	@PostMapping(value = "/updateTermin", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<Termin> updateTermin(@RequestBody Termin termin1) throws Exception {
 		Termin termin = terminService.findById(termin1.getId());
+		List<Termin> termins = terminService.findAllTerminsInstructor(termin1.getInstructorTermin().getId());
 		boolean check = true;
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyy HH:mm:ss");
 		if (termin == null) {
@@ -84,6 +86,14 @@ public class TerminController {
 			check = false;
 		}
 		if (check == true) {
+			Date start = dateFormat.parse(termin1.getStart());
+			Date end = dateFormat.parse(termin1.getEnd());
+			for(Termin t: termins) {
+				if(start.compareTo(dateFormat.parse(t.getStart())) >=0 || end.compareTo(dateFormat.parse(t.getEnd())) <= 0) {
+					System.out.println("Termin already exist.");
+					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+				}
+			}
 			terminService.updateTermin(termin1);
 			System.out.println("The task /updateTermin was successfully completed.");
 			return new ResponseEntity<>(termin, HttpStatus.OK);
