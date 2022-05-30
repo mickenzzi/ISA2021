@@ -58,13 +58,15 @@ public class TerminController {
 	@GetMapping(value = "/getTerminById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('USER') or hasRole('INSTRUCTOR')")
 	public ResponseEntity<Termin> getTerminById(@PathVariable("id") Long id) {
-		Termin termin = terminService.findById(id);
-		if (termin == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} else {
-			System.out.println("The task /getTermin was successfully completed.");
-			return new ResponseEntity<>(termin, HttpStatus.OK);
+		List<Termin> termins = new ArrayList<Termin>();
+		termins = terminService.findAll();
+		for(Termin t: termins) {
+			if(t.getId() == id) {
+				System.out.println("The task /getTermin was successfully completed.");
+				return new ResponseEntity<>(t, HttpStatus.OK);
+			}
 		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
 

@@ -325,7 +325,7 @@ export class HomeAdminComponent implements OnInit {
   getYearProfit(event: any) {
     this.subs.push(this.userService.getYearProfit(this.year).subscribe((response) => {
       this.yearProfit = response;
-      this.yearProfit = this.yearProfit + " E"
+      this.yearProfit = this.yearProfit + " €";
     }));
   }
 

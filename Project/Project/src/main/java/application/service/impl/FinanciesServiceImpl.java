@@ -288,4 +288,33 @@ public class FinanciesServiceImpl implements FinanciesService {
 		financies.setDefine(date1);
 		financiesRepository.save(financies);
 	}
+
+	@Override
+	public Double getInstructorProfit(Long id, String start, String end) throws ParseException {
+		double profit = 0;
+		double price = 0;
+		double percent = 1;
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyy");
+		Date min = dateFormat.parse(start);
+		Date max = dateFormat.parse(end);
+		List<Reservation> reservations = reservationRepository.findAll();
+		List<Reservation> usableReservations = new ArrayList<Reservation>();
+		for(Reservation r: reservations) {
+			Date startDate = dateFormat.parse(r.getStart());
+			Date endDate = dateFormat.parse(r.getEnd());
+			if(startDate.compareTo(min) >= 0 && endDate.compareTo(max) <= 0 && r.getAdventureReservation().getUserAdventure().getId() == id) {
+				usableReservations.add(r);
+			}
+		}
+		for(Reservation r1: usableReservations) {
+			Loyalty loyalty = loyaltyRepository.findByName(r1.getUserReservation().getLoyaltyStatus());
+			percent = nearPercent(r1.getEnd());
+			double oldPrice = 0;
+			double newPrice = 0;
+			oldPrice = r1.getPrice() * percent / 100;
+			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			profit += newPrice;
+		}
+		return profit;
+	}
 }

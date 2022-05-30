@@ -6,7 +6,7 @@
   </div>
   <br><br><br><br>
 
-  <div class="login-container" *ngIf="flag5" style="margin-left:900px;">
+  <div class="login-container" *ngIf="flag5" style="margin-left:400px;">
     <section class="login">
       <header>
         <h2 style="margin-left:100px;">Kreiranje termina</h2>
@@ -29,24 +29,78 @@
     </section>
   </div>
 
-  <div *ngIf="flag2" class="login-container" style="margin-left:900px">
+  <div *ngIf="flag2" class="login-container" style="margin-left:400px">
     <section class="login" id="login">
       <header>
         <h2 style="margin-left:100px;">Izmena termina</h2>
       </header>
       <form class="login-form">
         <label>Datum pocetka:</label><br>
-        <input [(ngModel)]="termin.start" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+        <input [(ngModel)]="selectedTermin.start" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
           placeholder="dd-MMM-YYYY HH:mm:ss" required type="text" /><br>
         <label>Datum zavrsetka:</label><br>
-        <input [(ngModel)]="termin.end" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+        <input [(ngModel)]="selectedTermin.end" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
           placeholder="dd-MMM-YYYY HH:mm:ss" required type="text" /><br>
         <label>Trajanje:</label><br>
-        <input [(ngModel)]="termin.duration" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+        <input [(ngModel)]="selectedTermin.duration" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
           placeholder="Trajanje" required type="text" />
-          <button (click)="reject()" class="button-2">Odustani</button>
-          <button *ngIf="!termin.reserved" class="button-2" (click)="deleteTermin()" style="margin-left: 30px;">Obrisi</button>
-          <button *ngIf="!termin.reserved" (click)="editTermin()" class="button-2" style="margin-left: 35px;">Izmeni</button>
+        <button (click)="reject()" class="button-2">Odustani</button>
+        <button *ngIf="!selectedTermin.reserved" class="button-2" (click)="deleteTermin()"
+          style="margin-left: 30px;">Obrisi</button>
+        <button *ngIf="!selectedTermin.reserved" (click)="editTermin()" class="button-2"
+          style="margin-left: 35px;">Izmeni</button>
+      </form>
+    </section>
+  </div>
+
+  <div *ngIf="flag6" class="login-container" style="margin-left:400px">
+    <section class="login" id="login">
+      <header>
+        <h2 style="margin-left:100px;">Prikaz rezervacije</h2>
+      </header>
+      <form class="login-form">
+        <label>Datum pocetka:</label><br>
+        <input [(ngModel)]="selectedReservation.start" [ngModelOptions]="{standalone: true}" autofocus
+          class="login-input" disabled required type="text" /><br>
+        <label>Datum zavrsetka:</label><br>
+        <input [(ngModel)]="selectedReservation.end" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+          disabled required type="text" /><br>
+        <label>Trajanje:</label><br>
+        <input [(ngModel)]="selectedTermin.duration" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+          disabled required type="text" />
+        <label>Korisnik:</label><br>
+        <input [(ngModel)]="fullName" [ngModelOptions]="{standalone: true}" autofocus class="login-input" disabled
+          required type="text" />
+        <label>Avantura:</label><br>
+        <input [(ngModel)]="selectedReservation.adventureReservation.title" [ngModelOptions]="{standalone: true}"
+          autofocus class="login-input" disabled required type="text" />
+        <button (click)="reject()" class="button-2">Zatvori</button>
+      </form>
+    </section>
+  </div>
+
+  <div *ngIf="flag7" class="login-container" style="margin-left:400px">
+    <section class="login" id="login">
+      <header>
+        <h2 style="margin-left:100px;">Profil klijenta</h2>
+      </header>
+      <form class="login-form">
+        <label>Ime korisnika:</label><br>
+        <input [(ngModel)]="client.firstName" [ngModelOptions]="{standalone: true}" autofocus
+          class="login-input" disabled required type="text" /><br>
+        <label>Prezime korisnika:</label><br>
+        <input [(ngModel)]="client.lastName" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+          disabled required type="text" /><br>
+        <label>Grad:</label><br>
+        <input [(ngModel)]="client.city" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+          disabled required type="text" />
+        <label>Ulica:</label><br>
+        <input [(ngModel)]="client.address" [ngModelOptions]="{standalone: true}" autofocus class="login-input" disabled
+          required type="text" />
+        <label>Drzava:</label><br>
+        <input [(ngModel)]="client.country" [ngModelOptions]="{standalone: true}"
+          autofocus class="login-input" disabled required type="text" />
+        <button (click)="reject()" class="button-2">Zatvori</button>
       </form>
     </section>
   </div>
@@ -67,7 +121,7 @@
         <td class="table-data">{{reservation.start}}</td>
         <td class="table-data">{{reservation.end}}</td>
         <td class="table-data">{{reservation.adventureReservation.title}}</td>
-        <td class="table-data">{{reservation.userReservation.firstName}} {{reservation.userReservation.lastName}}</td>
+        <td class="table-data"><button (click)="showClientProfile(reservation.userReservation)" style="color: blue; background-color: gainsboro;">{{reservation.userReservation.firstName}} {{reservation.userReservation.lastName}}</button></td>
         <td class="table-data">
           <button
             (click)="createReservation(reservation.start,reservation.end,reservation.adventureReservation.id,reservation.userReservation.id)"
@@ -101,7 +155,7 @@
       [ngModelOptions]="{standalone: true}" type="checkbox" />
   </div>
 
-  <div *ngIf="flag1" style="width:800px; height:500px; margin-left: 150px; position: fixed; overflow-y: auto;">
+  <div *ngIf="flag1" style="width:1000px; height:500px; margin-left: 150px; position: fixed; overflow-y: auto;">
     <span class="dot-red"></span><label
       style="color: dimgrey; font-family: 'Courier New', Courier, monospace; font-size: medium;">-Rezervisano</label>
     <span class="dot-blue" style="margin-left: 20px"></span><label
@@ -121,7 +175,15 @@
       <label style=" margin-left: 10px; font-size: medium;">
         {{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}
       </label>
+      <button class="button-2" style="margin-left: 10px" (click)="setView(CalendarView.Month)"
+        [class.active]="view === CalendarView.Month">Mesec</button>
+      <button class="button-2" (click)="setView(CalendarView.Week)"
+        [class.active]="view === CalendarView.Week">Sedmica</button>
+      <button class="button-2" (click)="setView(CalendarView.Day)"
+        [class.active]="view === CalendarView.Day">Dan</button>
+
       <button class="button-2" style="margin-left: 50px" (click)="showAddTermin()">Novi termin</button>
+
     </div>
     <br />
 
@@ -129,6 +191,12 @@
       <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events"
         (dayClicked)="changeDay($event.day.date)" (beforeViewRender)="beforeMonthViewRender($event)">
       </mwl-calendar-month-view>
+      <mwl-calendar-week-view *ngSwitchCase="'week'" [viewDate]="viewDate" [events]="events"
+        (beforeViewRender)="beforeWeekViewRender($event)">
+      </mwl-calendar-week-view>
+      <mwl-calendar-day-view *ngSwitchCase="'day'" [viewDate]="viewDate" [events]="events"
+        (beforeViewRender)="beforeDayViewRender($event)">
+      </mwl-calendar-day-view>
     </div>
 
   </div>

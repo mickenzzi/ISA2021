@@ -25,11 +25,11 @@ insert into adventure_table (title,address,instructor_biography,image,max_number
 
 insert into termin_table(start_date,end_date,duration,reserved,is_action,adventure_id, price, capacity, instructor_id) values('19-Jan-2022 10:20:20','22-Jan-2022 10:20:20',5,false,true,1, 160, 10, 2);
 insert into termin_table(start_date,end_date,duration,reserved,is_action,adventure_id, price, capacity, instructor_id) values('26-Jan-2022 10:20:20','28-Jan-2022 10:20:20',5,false,true,1, 170, 10, 2);
+insert into termin_table(start_date,end_date,duration,reserved,is_action,adventure_id, price, capacity, instructor_id) values('22-May-2022 10:20:20','25-May-2022 10:20:20',5,true,false,2, 170, 10, 2);
+insert into termin_table(start_date,end_date,duration,reserved,is_action,adventure_id, price, capacity, instructor_id) values('10-May-2022 10:20:20','12-May-2022 10:20:20',5,false,true,2, 170, 10, 2);
 
-insert into reservation_table(start_date,end_date,is_created,adventure_id,user_id,price) values('19-Jan-2022 10:20:20','22-Jan-2022 10:20:20',true,1,3,170);
-insert into reservation_table(start_date,end_date,is_created,adventure_id,user_id,price) values('13-Jan-2022 10:20:20','15-Jan-2022 10:20:20',true,1,3,170);
-insert into reservation_table(start_date,end_date,is_created,adventure_id,user_id,price) values('22-May-2022 10:20:20','25-May-2022 10:20:20',false,1,3,270);
-insert into reservation_table(start_date,end_date,is_created,adventure_id,user_id,price) values('22-May-2021 10:20:20','25-May-2021 10:20:20',true,2,3,270);
+insert into reservation_table(start_date,end_date,is_created,adventure_id,user_id,price) values('10-May-2022 10:20:20','12-May-2022 10:20:20',false,2,3,270);
+insert into reservation_table(start_date,end_date,is_created,adventure_id,user_id,price) values('22-May-2022 10:20:20','25-May-2022 10:20:20',true,2,3,270);
 
 
 insert into financies_table(percent, define) values (10.55, '10-Jan-2021 10:20:20');

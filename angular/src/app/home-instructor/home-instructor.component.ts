@@ -31,7 +31,10 @@ export class HomeInstructorComponent implements OnInit {
   URL_R: string = ""
   URL_path: string = "/assets/img/";
   textRequest: string = "";
-  averageGrade = "0"
+  averageGrade = "0";
+  startDate: string = "";
+  endDate: string = "";
+  profit: string = "";
   //flags
   flagTitle?: boolean;
   flagPrice?: boolean;
@@ -42,6 +45,10 @@ export class HomeInstructorComponent implements OnInit {
   flag2?: boolean;
   //is adventure reserved
   flag3?: boolean;
+  //prikaz avanutura
+  flag4: boolean = true;
+  //prikaz finansija
+  flag5: boolean = false;
   //@ts-ignore
   currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -132,6 +139,7 @@ export class HomeInstructorComponent implements OnInit {
 
 
   requestDelete() {
+    this.flag5 = false;
     if (this.flag2 === false) {
       this.flag2 = true;
       this.getAllAdventures();
@@ -161,6 +169,22 @@ export class HomeInstructorComponent implements OnInit {
   rejectRequest() {
     this.flag2 = false;
     this.getAllAdventures();
+  }
+
+  reject() {
+    this.flag5 = false;
+    this.flag4 = true;
+  }
+
+  showProfit() {
+    this.subs.push(this.userService.getInstructorProfit(this.user.id ?? 0, this.startDate, this.endDate).subscribe((response: string) => {
+      this.profit = response + " €"
+    }, (error: HttpErrorResponse) => {
+      alert("Datumi nisu uneti u ispravnom formatu.");
+      this.startDate = "";
+      this.endDate = "";
+     }
+    ));
   }
 
 
@@ -244,5 +268,12 @@ export class HomeInstructorComponent implements OnInit {
         this.adventures = response;
       }));
     }
+  }
+
+
+  showFinancies(){
+    this.flag4 = false;
+    this.flag1 = false;
+    this.flag5 = true;
   }
 }

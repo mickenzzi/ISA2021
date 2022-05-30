@@ -1,43 +1,66 @@
 <body class="home-instructor-content">
-<div class="toolbar">
-  <button (click)="showHidden()" style="margin-left: 30px;"><img class="menu-img" src="/assets/img/menu.png"></button>
-  <label style="margin-left:100px;">Dobro dosao {{user.username}}</label>
-  <button (click)="addAdventure()" class="button-2" style="margin-left: 50px; width: 200px;">Dodaj avanturu</button>
-  <label style="margin-left:80px;">Sortiraj po:</label>
-  <button (click)="sortByTitle()" class="button-2" style="margin-left: 2px">Naziv</button>
-  <button (click)="sortByPrice()" class="button-2">Cena</button>
-  <button (click)="sortByCapacity()" class="button-2">Kapacitet</button>
-  <button (click)="sortByGrade()" class="button-2">Ocena</button>
-  <input (keyup)="searchAdventure($event)" [(ngModel)]="search" [ngModelOptions]="{standalone: true}"
-         placeholder="Unesite parametre pretrage..."
-         style="margin-left:100px; height: 20px; width:auto" type="text"/>
-</div>
-<div *ngIf="flag1" class="menu-container">
-  <button (click)="goToProfile()" class="menu-container-button">Profil</button>
-  <br>
-  <button (click)="requestDelete()" class="menu-container-button" style="margin-top:2px;">Obrisi nalog</button>
-  <br>
-  <button (click)="goToCalendar()" class="menu-container-button" style="margin-top:2px;">Dostupnost</button>
-  <br>
-  <button (click)="logOut()" class="menu-container-button" style="margin-top:2px;">Odjavi se</button>
-</div>
-<div *ngIf="flag2" class="delete-container" style="margin-top:120px; margin-left: 20px;">
-  <input [(ngModel)]="textRequest" [ngModelOptions]="{standalone: true}" autofocus
-         placeholder="Unesite razlog gasenja naloga..." required
-         style="width:260px; height:200px; margin-left:15px; margin-top:20px;" type="text"/>
-  <button (click)="approveRequest()" class="approve-button" style="margin-left:15px; margin-top:30px;">Potvrdi</button>
-  <button (click)="rejectRequest()" class="disable-button" style="margin-left:135px; margin-top:30px;">Odustani</button>
-</div>
-<div *ngFor="let adventure of adventures" class="cards">
-  <label style="margin-left:-100px; color: darkgray;">{{adventure.avgGrade}}/5<img style="width:15px; height:15px; margin-left:4px;" src="/assets/img/star.png"></label>
-  <button (click)="deleteAdventure(adventure.id)" *ngIf="!adventure.reserved" style="float: right">X</button>
-  <br><br>
-  <img class="cards-img" src="{{adventure.image}}">
-  <br>
-  <label>{{adventure.title}}<br>{{adventure.address}}</label>
-  <br>
-  <button (click)="goToAdventure(adventure.id)" class="button-2" style="align-items: center">Prikazi</button>
-  <br>
-</div>
+  <div class="toolbar">
+    <button (click)="showHidden()" style="margin-left: 30px;"><img class="menu-img" src="/assets/img/menu.png"></button>
+    <label style="margin-left:100px;">Dobro dosao {{user.username}}</label>
+    <button (click)="addAdventure()" class="button-2" style="margin-left: 50px; width: 200px;">Dodaj avanturu</button>
+    <label style="margin-left:80px;">Sortiraj po:</label>
+    <button (click)="sortByTitle()" class="button-2" style="margin-left: 2px">Naziv</button>
+    <button (click)="sortByPrice()" class="button-2">Cena</button>
+    <button (click)="sortByCapacity()" class="button-2">Kapacitet</button>
+    <button (click)="sortByGrade()" class="button-2">Ocena</button>
+    <input (keyup)="searchAdventure($event)" [(ngModel)]="search" [ngModelOptions]="{standalone: true}"
+      placeholder="Unesite parametre pretrage..." style="margin-left:100px; height: 20px; width:auto" type="text" />
+  </div>
+  <div *ngIf="flag1" class="menu-container">
+    <button (click)="goToProfile()" class="menu-container-button">Profil</button>
+    <br>
+    <button (click)="requestDelete()" class="menu-container-button" style="margin-top:2px;">Obrisi nalog</button>
+    <br>
+    <button (click)="goToCalendar()" class="menu-container-button" style="margin-top:2px;">Dostupnost</button>
+    <br>
+    <button (click)="showFinancies()" class="menu-container-button" style="margin-top:2px;">Analitika</button>
+    <br>
+    <button (click)="logOut()" class="menu-container-button" style="margin-top:2px;">Odjavi se</button>
+  </div>
+  <div *ngIf="flag2" class="delete-container" style="margin-top:120px; margin-left: 20px;">
+    <input [(ngModel)]="textRequest" [ngModelOptions]="{standalone: true}" autofocus
+      placeholder="Unesite razlog gasenja naloga..." required
+      style="width:260px; height:200px; margin-left:15px; margin-top:20px;" type="text" />
+    <button (click)="approveRequest()" class="approve-button"
+      style="margin-left:15px; margin-top:30px;">Potvrdi</button>
+    <button (click)="rejectRequest()" class="disable-button"
+      style="margin-left:135px; margin-top:30px;">Odustani</button>
+  </div>
+  <div *ngIf="flag4">
+    <div *ngFor="let adventure of adventures" class="cards">
+      <label style="margin-left:-100px; color: darkgray;">{{adventure.avgGrade}}/5<img
+          style="width:15px; height:15px; margin-left:4px;" src="/assets/img/star.png"></label>
+      <button (click)="deleteAdventure(adventure.id)" *ngIf="!adventure.reserved" style="float: right">X</button>
+      <br><br>
+      <img class="cards-img" src="{{adventure.image}}">
+      <br>
+      <label>{{adventure.title}}<br>{{adventure.address}}</label>
+      <br>
+      <button (click)="goToAdventure(adventure.id)" class="button-2" style="align-items: center">Prikazi</button>
+      <br>
+    </div>
+  </div>
+
+  <div *ngIf="flag5" class="financies-panel">
+    <button (click)="reject()" style="margin-left:670px; margin-top: 10px">X</button>
+    <br>
+    <label style="font-size: large; font-family:Verdana, Geneva, Tahoma, sans-serif; color: black;">Unesite zeljene datume:</label>
+    <br>
+    <br>
+    <label style="font-size: medium; font-family:Verdana, Geneva, Tahoma, sans-serif; color: black;">Pocetak:</label> 
+    <input [(ngModel)]="startDate"  type="text" style="margin-left:5px" placeholder="dd-MMM-yyyy"/>
+    <label style=" margin-left:25px; font-size: medium; font-family:Verdana, Geneva, Tahoma, sans-serif; color: black;">Kraj:</label>
+    <input [(ngModel)]="endDate"  type="text" style="margin-left:5px" placeholder="dd-MMM-yyyy"/>
+    <br>
+    <br>
+    <button class="button-2" (click)="showProfit()">Prikazi profit</button>
+    <input [(ngModel)]="profit" type="text" style="width: 55px; height:25px; margin-left: 5px" disabled/>
+    <br>
+  </div>
 
 </body>

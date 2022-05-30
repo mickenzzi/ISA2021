@@ -2,6 +2,8 @@ package application.controller;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,7 @@ import application.service.FinanciesService;
 public class FinanciesController {
 	@Autowired
 	private FinanciesService financiesService;
-	
+
 	@GetMapping(value = "/getYearProfit/{year}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> getYearProfit(@PathVariable("year") String year) throws ParseException {
@@ -35,7 +37,7 @@ public class FinanciesController {
 		System.out.println("The task /getYearProfit was successfully completed.");
 		return new ResponseEntity<>(realProfit, HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/getYearPerMonthProfit/{year}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> getYearPerMonthProfit(@PathVariable("year") String year) throws ParseException {
@@ -43,7 +45,7 @@ public class FinanciesController {
 		System.out.println("The task /getYearPerMonthProfit was successfully completed.");
 		return new ResponseEntity<>(profits, HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/getPercent", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> getPercent() {
@@ -51,7 +53,31 @@ public class FinanciesController {
 		System.out.println("The task /getPercent was successfully completed.");
 		return new ResponseEntity<>(percent, HttpStatus.OK);
 	}
-	
+
+	@GetMapping(value = "/getInstructorProfit/{id}/{start}/{end}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('INSTRUCTOR')")
+	public ResponseEntity<?> getInstructorProfit(@PathVariable("id") Long id, @PathVariable("start") String start,
+			@PathVariable("end") String end) throws ParseException {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+		boolean check = false;
+		try {
+			Date startDate = dateFormat.parse(start);
+			Date endDate = dateFormat.parse(end);
+			check = true;
+		} catch (Exception e) {
+			check = false;
+		}
+		if (check == false) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} else {
+			Double profit = financiesService.getInstructorProfit(id, start, end);
+			DecimalFormat df = new DecimalFormat("#.##");
+			String realProfit = df.format(profit);
+			System.out.println("The task /getInstructorProfit was successfully completed.");
+			return new ResponseEntity<>(realProfit, HttpStatus.OK);
+		}
+	}
+
 	@PostMapping(value = "/editPercent", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Double> editPercent(@RequestBody String percent) {
@@ -59,5 +85,5 @@ public class FinanciesController {
 		System.out.println("The task /editPercent was successfully completed.");
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
+
 }

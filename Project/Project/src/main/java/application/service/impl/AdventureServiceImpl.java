@@ -105,6 +105,7 @@ public class AdventureServiceImpl implements AdventureService {
 		User instructor = userRepository.findById(id).orElseGet(null);
 		adventure1.setUserAdventure(instructor);
 		adventure1.setReserved(false);
+		adventure1.setAvgGrade("0");
 		adventureRepository.save(adventure1);
 		return adventure1;
 	}

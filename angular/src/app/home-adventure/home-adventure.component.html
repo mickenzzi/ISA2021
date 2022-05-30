@@ -4,7 +4,7 @@
     <button (click)="showActionModal()" class="button-2" style="margin-left:120px">Kreiraj akciju</button>
   </div>
   <div class="card1">
-    <img src="{{adventure.image}}" style="width:550px; height:250px;">
+    <img src="{{adventure.image}}" style="width:550px; height:250px;"><br>
     <img class="small-images" src="/assets/img/meeting1.jpg">
     <img class="small-images" src="/assets/img/meeting2.jpg"><br>
     <img class="small-images" src="/assets/img/meeting3.jpg">
@@ -27,7 +27,7 @@
     <input autofocus required type="text" [(ngModel)]="termin.duration" [ngModelOptions]="{standalone: true}" /><br><br>
     <label class="label-margin-left>" style="color:black">Maksimalan broj osoba:</label><br>
     <input autofocus required type="text" [(ngModel)]="capacity" [ngModelOptions]="{standalone: true}" /><br><br>
-    <label class="label-margin-left>" style="color:black">Cena:</label><br>
+    <label class="label-margin-left>" style="color:black">Cena(EUR):</label><br>
     <input autofocus required type="text" [(ngModel)]="price" [ngModelOptions]="{standalone: true}" /><br><br>
     <input type="submit" id="createActionButton" value="Kreiraj" class="mat-button" (click)="createAction()"
       style="margin-left: 25px; margin-top:10px" />

@@ -62,7 +62,8 @@ public class AdventureController {
 			}
 		}
 		for (Adventure a1 : adventures1) {
-			if (a1.getTitle().toLowerCase().contains(search.toLowerCase()) || a1.getAddress().toLowerCase().contains(search.toLowerCase())) {
+			if (a1.getTitle().toLowerCase().contains(search.toLowerCase())
+					|| a1.getAddress().toLowerCase().contains(search.toLowerCase())) {
 				searchedAdventures.add(a1);
 			}
 		}
@@ -73,13 +74,16 @@ public class AdventureController {
 	@GetMapping(value = "/getAdventureById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<Adventure> getAdventureById(@PathVariable("id") Long id) {
-		Adventure adventure = adventureService.findById(id);
-		if (adventure == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} else {
-			System.out.println("The task /getAdventure was successfully completed.");
-			return new ResponseEntity<>(adventure, HttpStatus.OK);
+		List<Adventure> adventures = new ArrayList<Adventure>();
+		adventures = adventureService.findAll();
+		for (Adventure a : adventures) {
+			if (a.getId() == id) {
+				System.out.println("The task /getAdventure was successfully completed.");
+				return new ResponseEntity<>(a, HttpStatus.OK);
+			}
 		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
 	}
 
 	@PostMapping(value = "/updateAdventure", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -152,7 +156,7 @@ public class AdventureController {
 		System.out.println("The task /sortAdventuresByCapacity was successfully completed.");
 		return new ResponseEntity<>(adventures, HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/sortAdventuresByGrade/{instructorId}/{asc}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<List<Adventure>> sortAdventuresGrade(@PathVariable("instructorId") Long instructorId,
@@ -166,35 +170,32 @@ public class AdventureController {
 	@PostMapping(value = "/createAction/{instructorId}/{adventureId}/{price}/{capacity}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<Termin> createAction(@RequestBody Termin termin,
-			@PathVariable("instructorId") Long instructorId, @PathVariable("adventureId") Long adventureId, @PathVariable("price") Double price, @PathVariable("capacity") Long capacity)
-			throws ParseException {
+			@PathVariable("instructorId") Long instructorId, @PathVariable("adventureId") Long adventureId,
+			@PathVariable("price") Double price, @PathVariable("capacity") Long capacity) throws ParseException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyy HH:mm:ss");
 		boolean check = true;
 		try {
 			Date start = dateFormat.parse(termin.getStart());
 			Date end = dateFormat.parse(termin.getEnd());
 			check = true;
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			check = false;
 		}
-		if(check == true) {
-		if(termin.getDuration() != 0 ) {
-		boolean flag = userService.createAction(instructorId, adventureId, termin, price, capacity);
-		if (flag == true) {
-			System.out.println("The task /createAction was successfully completed.");
-			return new ResponseEntity<>(termin, HttpStatus.CREATED);
+		if (check == true) {
+			if (termin.getDuration() != 0) {
+				boolean flag = userService.createAction(instructorId, adventureId, termin, price, capacity);
+				if (flag == true) {
+					System.out.println("The task /createAction was successfully completed.");
+					return new ResponseEntity<>(termin, HttpStatus.CREATED);
+				} else {
+					System.out.println("Termin is already used.");
+					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+				}
+			} else {
+				System.out.println("Some fields are empty.");
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
 		} else {
-			System.out.println("Termin is already used.");
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-		}
-		else {
-			System.out.println("Some fields are empty.");
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-		}
-		else {
 			System.out.println("Dates are not in appropriate format.");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}

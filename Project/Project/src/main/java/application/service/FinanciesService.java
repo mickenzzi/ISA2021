@@ -8,4 +8,5 @@ public interface FinanciesService {
 	List<Double> getMonthProfit(String year) throws ParseException;
 	Double getPercent();
 	void editPercent(double percent);
+	Double getInstructorProfit(Long id, String start, String end) throws ParseException;
 }

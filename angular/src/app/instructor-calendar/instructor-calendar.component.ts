@@ -9,15 +9,18 @@ import { ReviewService } from '../service/review.service';
 import { AdventureService } from '../service/adventure.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subscription } from "rxjs";
-import { 
-  CalendarEvent, 
+import {
+  CalendarEvent,
   CalendarMonthViewBeforeRenderEvent,
   CalendarWeekViewBeforeRenderEvent,
   CalendarDayViewBeforeRenderEvent,
-  CalendarView } from 'angular-calendar';
+  CalendarView
+} from 'angular-calendar';
 import { HttpClient } from '@angular/common/http';
-import { startOfYear, subYears } from 'date-fns';
+import { startOfToday, startOfYear, subYears } from 'date-fns';
 import { TouchSequence } from 'selenium-webdriver';
+import { enNZ } from 'date-fns/locale';
+import { stagger } from '@angular/animations';
 
 
 const colors: any = {
@@ -51,6 +54,8 @@ export class InstructorCalendarComponent implements OnInit {
   comment: Comment = new Comment();
   user: User = new User();
   selectedTermin: Termin = new Termin();
+  selectedReservation: Reservation = new Reservation();
+  client: User = new User();
   //unsubscribe
   subs: Subscription[] = [];
   //local
@@ -60,6 +65,7 @@ export class InstructorCalendarComponent implements OnInit {
   adventureId!: number;
   userId!: number;
   reservationId!: number;
+  fullName: string = ""
   //flags
   flag1: boolean = false;
   //izmena termina
@@ -70,6 +76,10 @@ export class InstructorCalendarComponent implements OnInit {
   flag4: boolean = false;
   //modal za dodavanje termina
   flag5: boolean = false;
+  //prikaz podataka rezervacije
+  flag6: boolean = false;
+  //profil klijenta
+  flag7: boolean = false;
   //@ts-ignore
   currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -83,17 +93,18 @@ export class InstructorCalendarComponent implements OnInit {
 
   CalendarView = CalendarView;
 
-  
+
   beforeMonthViewRender(renderEvent: CalendarMonthViewBeforeRenderEvent): void {
     renderEvent.body.forEach((day) => {
       const dayOfMonth = day.date
       this.getAllTermins();
-      for(let term of this.termins){
+      for (let term of this.termins) {
         const start = new Date(term.start ?? "")
+        start.setHours(0, 0, 0);
         const end = new Date(term.end ?? "")
-        if (dayOfMonth >= start && dayOfMonth <= end) {
-          if(term.reserved === true){
-          day.cssClass = 'bg-red';
+        if ((dayOfMonth >= start && dayOfMonth <= end && dayOfMonth.getFullYear() >= start.getFullYear() && dayOfMonth.getFullYear() <= end.getFullYear())) {
+          if (term.reserved === true) {
+            day.cssClass = 'bg-red';
           }
           else {
             day.cssClass = 'bg-blue';
@@ -103,23 +114,136 @@ export class InstructorCalendarComponent implements OnInit {
     });
   }
 
+  beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
+    renderEvent.hourColumns.forEach((hourColumn) => {
+      hourColumn.hours.forEach((hour) => {
+        hour.segments.forEach((segment) => {
+          for (let term of this.termins) {
+            const start = new Date(term.start ?? "")
+            const end = new Date(term.end ?? "")
+            if (segment.date.getDate() >= start.getDate() && segment.date.getDate() <= end.getDate() && segment.date.getMonth() >= start.getMonth() && segment.date.getMonth() <= end.getMonth() && segment.date.getFullYear() >= start.getFullYear() && segment.date.getFullYear() <= end.getFullYear()) {
+              if (segment.date.getHours() >= start.getHours() && segment.date.getHours() <= end.getHours() && start.getDate() === end.getDate()) {
+                if (term.reserved === true) {
+                  segment.cssClass = 'bg-red';
+                }
+                else {
+                  segment.cssClass = 'bg-blue';
+                }
+              }
+              else if (segment.date.getDate() === start.getDate() && segment.date.getDate() + 1 <= end.getDate() && segment.date.getHours() >= start.getHours() && segment.date.getHours() <= 20) {
+                if (term.reserved === true) {
+                  segment.cssClass = 'bg-red';
+                }
+                else {
+                  segment.cssClass = 'bg-blue';
+                }
+              }
+              else if (segment.date.getDate() > start.getDate() && segment.date.getDate() + 1 <= end.getDate() && segment.date.getHours() >= 8 && segment.date.getHours() <= 20) {
+                if (term.reserved === true) {
+                  segment.cssClass = 'bg-red';
+                }
+                else {
+                  segment.cssClass = 'bg-blue';
+                }
+              }
+              else if (segment.date.getDate() === end.getDate() && segment.date.getHours() >= 8 && segment.date.getHours() <= end.getHours()) {
+                if (term.reserved === true) {
+                  segment.cssClass = 'bg-red';
+                }
+                else {
+                  segment.cssClass = 'bg-blue';
+                }
+              }
+            }
+          }
+        });
+      });
+    });
+  }
+
+
+  beforeDayViewRender(renderEvent: CalendarDayViewBeforeRenderEvent) {
+    renderEvent.hourColumns.forEach((hourColumn) => {
+      hourColumn.hours.forEach((hour) => {
+        hour.segments.forEach((segment) => {
+          for (let term of this.termins) {
+            const start = new Date(term.start ?? "")
+            const end = new Date(term.end ?? "")
+            if (segment.date.getDate() >= start.getDate() && segment.date.getDate() <= end.getDate() && segment.date.getFullYear() >= start.getFullYear() && segment.date.getFullYear() <= end.getFullYear() && segment.date.getMonth() >= start.getMonth() && segment.date.getMonth() <= end.getMonth()) {
+              if(start.getDate() === end.getDate() &&  segment.date.getHours() >= start.getHours() && segment.date.getHours() <= end.getHours()){
+                if (term.reserved === true) {
+                  segment.cssClass = 'bg-red';
+                }
+                else {
+                  segment.cssClass = 'bg-blue';
+                }
+              }
+              else if (segment.date.getDate() === start.getDate() && segment.date.getDate() + 1 <= end.getDate() && segment.date.getHours() >= start.getHours() && segment.date.getHours() <= 20) {
+                if (term.reserved === true) {
+                  segment.cssClass = 'bg-red';
+                }
+                else {
+                  segment.cssClass = 'bg-blue';
+                }
+              }
+              else if (segment.date.getDate() > start.getDate() && segment.date.getDate() + 1 <= end.getDate() && segment.date.getHours() >= 8 && segment.date.getHours() <= 20) {
+                if (term.reserved === true) {
+                  segment.cssClass = 'bg-red';
+                }
+                else {
+                  segment.cssClass = 'bg-blue';
+                }
+              }
+              else if (segment.date.getDate() === end.getDate() && segment.date.getHours() >= 8 && segment.date.getHours() <= end.getHours()) {
+                if (term.reserved === true) {
+                  segment.cssClass = 'bg-red';
+                }
+                else {
+                  segment.cssClass = 'bg-blue';
+                }
+              }
+            }
+          }
+        });
+      });
+    });
+  }
+
   constructor(private userService: UserService, private reviewService: ReviewService, private adventureService: AdventureService, private router: Router) {
     this.reservations = [];
   }
 
   changeDay(date: Date) {
     this.getAllTermins();
-    for(let term of this.termins){
+    this.getAllReservations()
+    for (let term of this.termins) {
       const start = new Date(term.start ?? "")
+      start.setHours(0, 0, 0);
       const end = new Date(term.end ?? "")
-      if(date >= start && date <= end){
-          this.selectedTermin = term;
-          break;
+      if (date >= start && date <= end) {
+        this.selectedTermin = term;
+        break;
       }
     }
 
-    this.editTerminShow(this.selectedTermin.id);
-    this.selectedTermin = new Termin();
+    for (let res of this.reservations) {
+      const start = new Date(res.start ?? "")
+      start.setHours(0, 0, 0);
+      const end = new Date(res.end ?? "")
+      if (date >= start && date <= end) {
+        this.selectedReservation = res
+        this.fullName = res.userReservation.firstName + " " + res.userReservation.lastName
+        break;
+      }
+    }
+    if (this.selectedTermin.reserved) {
+      this.flag6 = true;
+      this.flag1 = false;
+      this.flag2 = false;
+    }
+    else {
+      this.editTerminShow(this.selectedTermin.id);
+    }
   }
 
   ngOnInit(): void {
@@ -128,6 +252,7 @@ export class InstructorCalendarComponent implements OnInit {
     this.flag3 = false;
     this.flag4 = false;
     this.flag5 = false;
+    this.flag6 = false;
     if (this.currentUser === null) {
       alert('Niste se ulogovali');
       this.logOut();
@@ -156,6 +281,7 @@ export class InstructorCalendarComponent implements OnInit {
       this.flag3 = false;
       this.flag4 = false;
       this.flag5 = false;
+      this.flag6 = false;
       this.getAllTermins();
     } else {
       this.flag1 = false;
@@ -163,6 +289,7 @@ export class InstructorCalendarComponent implements OnInit {
       this.flag3 = false;
       this.flag4 = false;
       this.flag5 = false;
+      this.flag6 = false;
     }
   }
 
@@ -173,18 +300,23 @@ export class InstructorCalendarComponent implements OnInit {
       this.flag2 = false;
       this.flag4 = false;
       this.flag5 = false;
+      this.flag6 = false;
       this.getAllReservations();
     } else {
       this.flag1 = false;
       this.flag2 = false;
       this.flag4 = false;
       this.flag5 = false;
+      this.flag6 = false;
     }
   }
 
   reject() {
+    this.flag1 = true;
     this.flag2 = false;
-    this.flag5 = false
+    this.flag5 = false;
+    this.flag6 = false;
+    this.flag7 = false;
   }
 
   showAddTermin() {
@@ -217,7 +349,7 @@ export class InstructorCalendarComponent implements OnInit {
     }
   }
 
-  getAllReservations() { 
+  getAllReservations() {
     if (this.user.id === undefined) {
     } else {
       this.subs.push(this.adventureService.getAllReservation(this.user.id).subscribe((response) => {
@@ -231,39 +363,47 @@ export class InstructorCalendarComponent implements OnInit {
   createTermin() {
     if (this.user.id === undefined) {
     } else {
-      this.subs.push(this.adventureService.createTermin(this.termin1, this.user.id).subscribe(() => {
-        this.flag5 = false;
-        this.flag1 = true;
-        this.getAllTermins();
-        this.termin1 = new Termin();
-      }, (error: HttpErrorResponse) => {
-        alert("Termin vec postoji.")
-      }));
+      if (new Date(this.termin1.start ?? "") >= new Date(this.termin1.end ?? "")) {
+        alert("Datumi nisu validni");
+      }
+      else {
+        this.subs.push(this.adventureService.createTermin(this.termin1, this.user.id).subscribe(() => {
+          this.getAllTermins();
+          this.termin1 = new Termin();
+          alert('Uspesno ste kreirali termin');
+        }, (error: HttpErrorResponse) => {
+          alert("Termin vec postoji.")
+        }));
+      }
     }
+    this.flag5 = false;
   }
 
   deleteTermin() {
-      this.subs.push(this.adventureService.deleteTermin(this.termin.id ?? 0).subscribe(() => {
-        alert('Uspesno ste izbrisali termin');
-        this.getAllTermins();
-      }, (error: HttpErrorResponse) => {
-        alert(error.message);
-      }));
-      this.flag2 = false;
+    this.subs.push(this.adventureService.deleteTermin(this.termin.id ?? 0).subscribe(() => {
+      alert('Uspesno ste izbrisali termin');
+      this.getAllTermins();
+    }, (error: HttpErrorResponse) => {
+      alert(error.message);
+    }));
+    this.flag2 = false;
+    this.flag5 = false;
+    this.flag6 = false;
   }
 
 
   editTerminShow(idTermin1?: number) {
-    if (idTermin1 === undefined) {} else {
+    if (idTermin1 === undefined) { } else {
       this.idTermin = idTermin1;
       this.subs.push(this.adventureService.getTermin(this.idTermin).subscribe((response: Termin) => {
         this.termin = response;
       }, (error: HttpErrorResponse) => {
         alert(error.message);
       }));
-      this.flag2 = true;
       this.flag1 = false;
       this.flag5 = false;
+      this.flag2 = true;
+      this.flag6 = false;
     }
   }
 
@@ -274,8 +414,9 @@ export class InstructorCalendarComponent implements OnInit {
     }, (error: HttpErrorResponse) => {
       alert("Zeljeni termin je vec zauzet.");
     }));
+    this.flag1 = true;
     this.flag2 = false;
-    this.flag5 = false; 
+    this.flag5 = false;
   }
 
   createReservation(start1?: string, end1?: string, adventureId1?: number, userId1?: number) {
@@ -296,8 +437,9 @@ export class InstructorCalendarComponent implements OnInit {
           } else {
             this.userId = userId1;
             this.subs.push(this.adventureService.createReservation(this.start, this.end, this.adventureId, this.userId).subscribe(() => {
-              alert('Potvrdili ste rezervaciju');
+              this.flag3 = false;
               this.getAllReservations();
+              alert('Potvrdili ste rezervaciju');
               this.getAllTermins();
             }, (error: HttpErrorResponse) => {
               alert(error.message);
@@ -306,6 +448,7 @@ export class InstructorCalendarComponent implements OnInit {
         }
       }
     }
+
   }
 
 
@@ -378,6 +521,12 @@ export class InstructorCalendarComponent implements OnInit {
         }));
       }
     }
+  }
+
+  showClientProfile(client: User) {
+    this.client = client;
+    this.flag7 = true;
+    this.flag3 = false;
   }
 
   setView(view: CalendarView) {
