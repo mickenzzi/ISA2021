@@ -27,6 +27,14 @@
   display: inline-block;
 }
 
+.dot-green {
+  height: 10px;
+  width: 10px;
+  background-color: seagreen ;
+  border-radius: 50%;
+  display: inline-block;
+}
+
 .cal-month-view .bg-red, .cal-week-view .cal-day-columns .bg-red, .cal-day-view .bg-red {
   background-color: red !important;
 }
@@ -35,6 +43,6 @@
   background-color: darkcyan !important;
 }
 
-.cal-month-view .bg-green, .cal-week-green .cal-day-columns .bg-green, .cal-day-view .bg-green {
+.cal-month-view .bg-green, .cal-week-view .cal-day-columns .bg-green, .cal-day-view .bg-green {
   background-color: seagreen !important;
 }

@@ -206,7 +206,9 @@ public class TerminServiceImpl implements TerminService {
 					r.setAdventureReservation(adventure1);
 					r.setEnd(end);
 					r.setStart(start);
-					r.setPrice(adventure1.getPriceList());
+					double newPrice = 0;
+					newPrice = adventure1.getPriceList()- checkUserLoyality(user.getLoyaltyStatus())*adventure1.getPriceList();
+					r.setPrice(newPrice);
 					r.setCreatedReservation(true);
 					r.setUserReservation(user);
 					reservationRepository.save(r);
@@ -247,9 +249,25 @@ public class TerminServiceImpl implements TerminService {
 			} else {
 				user.setLoyaltyStatus(bronze.getName());
 			}
+			userRepository.save(user);
 		}
 
 		return free;
+	}
+	
+	public double checkUserLoyality(String status) {
+		Loyalty bronze = loyaltyRepository.findByName("BRONZE");
+		Loyalty silver = loyaltyRepository.findByName("SILVER");
+		Loyalty gold = loyaltyRepository.findByName("GOLD");
+		if(status.toLowerCase().equals(gold.getName().toLowerCase())) {
+			return gold.getDiscount();
+		}
+		else if(status.toLowerCase().equals(silver.getName().toLowerCase())) {
+			return silver.getDiscount();
+		}
+		else {
+			return bronze.getDiscount();
+		}
 	}
 
 	@Override

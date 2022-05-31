@@ -107,7 +107,12 @@ export class InstructorCalendarComponent implements OnInit {
             day.cssClass = 'bg-red';
           }
           else {
-            day.cssClass = 'bg-blue';
+            if (term.action === true) {
+              day.cssClass = 'bg-green';
+            }
+            else {
+              day.cssClass = 'bg-blue';
+            }
           }
         }
       }
@@ -127,7 +132,12 @@ export class InstructorCalendarComponent implements OnInit {
                   segment.cssClass = 'bg-red';
                 }
                 else {
-                  segment.cssClass = 'bg-blue';
+                  if (term.action === true) {
+                    segment.cssClass = 'bg-green';
+                  }
+                  else {
+                    segment.cssClass = 'bg-blue';
+                  }
                 }
               }
               else if (segment.date.getDate() === start.getDate() && segment.date.getDate() + 1 <= end.getDate() && segment.date.getHours() >= start.getHours() && segment.date.getHours() <= 20) {
@@ -135,7 +145,12 @@ export class InstructorCalendarComponent implements OnInit {
                   segment.cssClass = 'bg-red';
                 }
                 else {
-                  segment.cssClass = 'bg-blue';
+                  if (term.action === true) {
+                    segment.cssClass = 'bg-green';
+                  }
+                  else {
+                    segment.cssClass = 'bg-blue';
+                  }
                 }
               }
               else if (segment.date.getDate() > start.getDate() && segment.date.getDate() + 1 <= end.getDate() && segment.date.getHours() >= 8 && segment.date.getHours() <= 20) {
@@ -143,7 +158,12 @@ export class InstructorCalendarComponent implements OnInit {
                   segment.cssClass = 'bg-red';
                 }
                 else {
-                  segment.cssClass = 'bg-blue';
+                  if (term.action === true) {
+                    segment.cssClass = 'bg-green';
+                  }
+                  else {
+                    segment.cssClass = 'bg-blue';
+                  }
                 }
               }
               else if (segment.date.getDate() === end.getDate() && segment.date.getHours() >= 8 && segment.date.getHours() <= end.getHours()) {
@@ -151,7 +171,12 @@ export class InstructorCalendarComponent implements OnInit {
                   segment.cssClass = 'bg-red';
                 }
                 else {
-                  segment.cssClass = 'bg-blue';
+                  if (term.action === true) {
+                    segment.cssClass = 'bg-green';
+                  }
+                  else {
+                    segment.cssClass = 'bg-blue';
+                  }
                 }
               }
             }
@@ -170,12 +195,16 @@ export class InstructorCalendarComponent implements OnInit {
             const start = new Date(term.start ?? "")
             const end = new Date(term.end ?? "")
             if (segment.date.getDate() >= start.getDate() && segment.date.getDate() <= end.getDate() && segment.date.getFullYear() >= start.getFullYear() && segment.date.getFullYear() <= end.getFullYear() && segment.date.getMonth() >= start.getMonth() && segment.date.getMonth() <= end.getMonth()) {
-              if(start.getDate() === end.getDate() &&  segment.date.getHours() >= start.getHours() && segment.date.getHours() <= end.getHours()){
+              if (start.getDate() === end.getDate() && segment.date.getHours() >= start.getHours() && segment.date.getHours() <= end.getHours()) {
                 if (term.reserved === true) {
                   segment.cssClass = 'bg-red';
                 }
                 else {
-                  segment.cssClass = 'bg-blue';
+                  if (term.action === true) {
+                    segment.cssClass = 'bg-green';
+                  } else {
+                    segment.cssClass = 'bg-blue';
+                  }
                 }
               }
               else if (segment.date.getDate() === start.getDate() && segment.date.getDate() + 1 <= end.getDate() && segment.date.getHours() >= start.getHours() && segment.date.getHours() <= 20) {
@@ -183,7 +212,12 @@ export class InstructorCalendarComponent implements OnInit {
                   segment.cssClass = 'bg-red';
                 }
                 else {
-                  segment.cssClass = 'bg-blue';
+                  if (term.action === true) {
+                    segment.cssClass = 'bg-green';
+                  }
+                  else {
+                    segment.cssClass = 'bg-blue';
+                  }
                 }
               }
               else if (segment.date.getDate() > start.getDate() && segment.date.getDate() + 1 <= end.getDate() && segment.date.getHours() >= 8 && segment.date.getHours() <= 20) {
@@ -191,7 +225,12 @@ export class InstructorCalendarComponent implements OnInit {
                   segment.cssClass = 'bg-red';
                 }
                 else {
-                  segment.cssClass = 'bg-blue';
+                  if (term.action === true) {
+                    segment.cssClass = 'bg-green';
+                  }
+                  else {
+                    segment.cssClass = 'bg-blue';
+                  }
                 }
               }
               else if (segment.date.getDate() === end.getDate() && segment.date.getHours() >= 8 && segment.date.getHours() <= end.getHours()) {
@@ -199,7 +238,12 @@ export class InstructorCalendarComponent implements OnInit {
                   segment.cssClass = 'bg-red';
                 }
                 else {
-                  segment.cssClass = 'bg-blue';
+                   if (term.action === true) {
+                    segment.cssClass = 'bg-green';
+                  }
+                  else {
+                    segment.cssClass = 'bg-blue';
+                  }
                 }
               }
             }
@@ -308,6 +352,7 @@ export class InstructorCalendarComponent implements OnInit {
       this.flag4 = false;
       this.flag5 = false;
       this.flag6 = false;
+      this.flag3 = false;
     }
   }
 
@@ -326,6 +371,7 @@ export class InstructorCalendarComponent implements OnInit {
 
   public closeComment(): void {
     this.flag4 = false;
+    this.flag3 = false;
     this.getAllReservations();
   }
 
@@ -354,6 +400,7 @@ export class InstructorCalendarComponent implements OnInit {
     } else {
       this.subs.push(this.adventureService.getAllReservation(this.user.id).subscribe((response) => {
         this.reservations = response;
+        console.log(this.reservations)
       }, (error: HttpErrorResponse) => {
         alert(error.message);
       }));
@@ -361,10 +408,13 @@ export class InstructorCalendarComponent implements OnInit {
   }
 
   createTermin() {
-    if (this.user.id === undefined) {
+    if (this.user.id === undefined || this.termin1.start === undefined || this.termin1.end === undefined) {
     } else {
       if (new Date(this.termin1.start ?? "") >= new Date(this.termin1.end ?? "")) {
         alert("Datumi nisu validni");
+      }
+      else if (this.termin1.start.length !== 20 || this.termin1.end.length !== 20) {
+        alert("Nevalidan format datuma.");
       }
       else {
         this.subs.push(this.adventureService.createTermin(this.termin1, this.user.id).subscribe(() => {
@@ -444,6 +494,7 @@ export class InstructorCalendarComponent implements OnInit {
             }, (error: HttpErrorResponse) => {
               alert(error.message);
             }));
+            this.flag3 = false;
           }
         }
       }
@@ -464,7 +515,7 @@ export class InstructorCalendarComponent implements OnInit {
       }, (error: HttpErrorResponse) => {
         alert(error.message);
       }));
-
+      this.flag3 = false;
     }
   }
 
@@ -494,31 +545,27 @@ export class InstructorCalendarComponent implements OnInit {
   }
 
   createComment(userId1?: number, reservationId?: number) {
-    if (reservationId === undefined) {
-    } else {
-      this.subs.push(this.adventureService.getReservation(reservationId).subscribe((response) => {
-        this.reservations = response;
-      }));
-    }
-    if (this.user.id === undefined) {
+    if (this.user.id === undefined || reservationId === undefined) {
     } else {
       this.flag4 = true;
       if (userId1 === undefined || this.comment.content === null || this.comment.content === undefined || this.comment.content.length === 0) {
         alert('Unesite sadrzaj komentara.');
+        this.getReservation(reservationId);
       } else {
         if (this.comment.negative === undefined) {
           this.comment.negative = false;
         }
         this.userId = userId1;
-        this.subs.push(this.reviewService.createComment(this.comment, this.userId, this.user.id).subscribe(() => {
-          this.flag4 = false;
+        this.reviewService.createComment(this.comment, this.userId, this.user.id).subscribe(() => {
           alert('Uspesno ste kreirali komentar');
-          this.getAllReservations();
-          this.getAllTermins();
-          this.comment.content = undefined;
         }, (error: HttpErrorResponse) => {
           alert(error.message);
-        }));
+        });
+        this.getAllTermins();
+        this.getAllReservations();
+        this.comment.content = undefined;
+        this.flag4 = false;
+        this.flag3 = false;
       }
     }
   }
@@ -535,6 +582,19 @@ export class InstructorCalendarComponent implements OnInit {
 
   closeOpenMonthViewDay() {
     this.activeDayIsOpen = false;
+  }
+
+  getReservation(id?: number) {
+    if (id === undefined) {
+    } else {
+      for(let res of this.reservations){
+        if(res.id === id){
+          this.reservations = [];
+          this.reservations.push(res);
+          break;
+        }
+      }
+    }
   }
 
 
