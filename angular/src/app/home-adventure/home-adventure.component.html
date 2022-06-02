@@ -4,13 +4,20 @@
     <button (click)="showActionModal()" class="button-2" style="margin-left:120px">Kreiraj akciju</button>
   </div>
   <div class="card1">
-    <img src="{{adventure.image}}" style="width:550px; height:250px;"><br>
-    <img class="small-images" src="/assets/img/meeting1.jpg">
-    <img class="small-images" src="/assets/img/meeting2.jpg"><br>
-    <img class="small-images" src="/assets/img/meeting3.jpg">
-    <img class="small-images" src="/assets/img/meeting4.jpg"><br>
-    <img class="small-images" src="/assets/img/meeting5.jpg">
-    <img class="small-images" src="/assets/img/meeting6.jpg">
+    <img src="{{adventure.image}}" style="width:550px; height:200px;"><br>
+    <button class="button-2" onclick="document.getElementById('getFile1').click()">Select
+      image</button>
+    <input type='file' (change)="onSelectFile1($event)" [(ngModel)]="url1" id="getFile1" style="display:none">
+    <br>
+    <img class="small-images" src="{{url1}}"><br>
+    <button class="button-2" onclick="document.getElementById('getFile2').click()">Select
+      image</button>
+    <input type='file' (change)="onSelectFile2($event)" [(ngModel)]="url2" id="getFile2" style="display:none"><br>
+    <img class="small-images" src="{{url2}}"><br>
+    <button class="button-2" [(ngModel)]="url3"
+      onclick="document.getElementById('getFile3').click()">Select image</button>
+    <input type='file' (change)="onSelectFile3($event)" id="getFile3" style="display:none"><br>
+    <img class="small-images" src="{{url3}}">
   </div>
   <div *ngIf="!flag1" class="card3">
     <br>

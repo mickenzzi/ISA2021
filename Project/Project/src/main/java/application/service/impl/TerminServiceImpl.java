@@ -156,6 +156,7 @@ public class TerminServiceImpl implements TerminService {
 		boolean freeAction = false;
 		Long actionId = (long) 0;
 		Long terminId = (long) 0;
+		boolean checkRes = false;
 		User user = userRepository.findById(userId).orElseGet(null);
 		Adventure adventure1 = adventureRepository.findById(adventureId).orElseGet(null);
 		User instructor = userRepository.findById(adventure1.getUserAdventure().getId()).orElseGet(null);
@@ -203,16 +204,29 @@ public class TerminServiceImpl implements TerminService {
 			for (Reservation r : reservations) {
 				if (r.getUserReservation().getId() == userId && r.getAdventureReservation().getId() == adventureId
 						&& r.getStart().equals(start)) {
+					checkRes = true;
 					r.setAdventureReservation(adventure1);
 					r.setEnd(end);
 					r.setStart(start);
 					double newPrice = 0;
-					newPrice = adventure1.getPriceList()- checkUserLoyality(user.getLoyaltyStatus())*adventure1.getPriceList();
+					newPrice = adventure1.getPriceList()-checkUserLoyality(user.getLoyaltyStatus())*adventure1.getPriceList()/100;
 					r.setPrice(newPrice);
 					r.setCreatedReservation(true);
 					r.setUserReservation(user);
 					reservationRepository.save(r);
 				}
+			}
+			if(checkRes == false) {
+				Reservation r = new Reservation();
+				r.setAdventureReservation(adventure1);
+				r.setEnd(end);
+				r.setStart(start);
+				double newPrice = 0;
+				newPrice = adventure1.getPriceList()-checkUserLoyality(user.getLoyaltyStatus())*adventure1.getPriceList()/100;
+				r.setPrice(newPrice);
+				r.setCreatedReservation(true);
+				r.setUserReservation(user);
+				reservationRepository.save(r);
 			}
 			if (freeAction == true) {
 				Termin termin1 = terminRepository.findById(actionId).orElseGet(null);

@@ -47,6 +47,11 @@ public class Adventure {
 	@Column(name="average_grade")
 	private String avgGrade;
 	
+	
+	@OneToMany(mappedBy="adventureImage", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Image> images;
+	
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
@@ -110,6 +115,14 @@ public class Adventure {
 
 	public void setMaxNumber(int maxNumber) {
 		this.maxNumber = maxNumber;
+	}
+	
+	public List<Image> getImages(){
+		return images;
+	}
+	
+	public void setImages(List<Image> images) {
+		this.images = images;
 	}
 
 	public String getRule() {

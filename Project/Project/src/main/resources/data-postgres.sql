@@ -19,9 +19,15 @@ insert into loyalty_table(name,points,discount) values ('BRONZE', 0, 1.0);
 insert into loyalty_table(name,points,discount) values ('SILVER', 20, 9.5);
 insert into loyalty_table(name,points,discount) values ('GOLD', 50, 15.5);
 
-
 insert into adventure_table (title,address,instructor_biography,image,max_number,rule,equipment,price_list,cancel_condition,description,user_id,reserved,average_grade) values ('Luda avantura','Zvornik','Na ovu avanturu povesce vas Jovan Jovic,strastveni ribolovac i borac za zastitu prirode.Covek koji je odrastao na reci Drini','/assets/img/fishing.jpg',10,'Neophodno je ispostovati pravila koja ce vam na predociti instruktor','Sva oprema neophodna za ribolov dolazi uz aranzman plus camac',170,'U slucaju otkaza rezervacije avans se ne vraca','Nezaboravna avantura na reci Drini pruzice uzitak mnogim ribolovcima i pravim ljubiteljima prirode',2,false,'0.0');
 insert into adventure_table (title,address,instructor_biography,image,max_number,rule,equipment,price_list,cancel_condition,description,user_id,reserved,average_grade) values ('Moc prirode','Zlatibor','Na ovu avanturu povesce vas Jovan Jovic,strastveni ribolovac i borac za zastitu prirode.Covek koji je odrastao na reci Drini','/assets/img/cottage.jpg',15,'Neophodno je ispostovati pravila koja ce vam na predociti instruktor','Sva oprema neophodna za ribolov dolazi uz aranzman plus camac',210,'U slucaju otkaza rezervacije avans se ne vraca','Visednevno kampovanje na Zlatiboru u divljini sume',2,false,'4.0');
+
+insert into image_table(url,adventure_id) values ('/assets/img/meeting1.jpg',1);
+insert into image_table(url,adventure_id) values ('/assets/img/meeting2.jpg',1);
+insert into image_table(url,adventure_id) values ('/assets/img/meeting3.jpg',1);
+insert into image_table(url,adventure_id) values ('/assets/img/meeting4.jpg',2);
+insert into image_table(url,adventure_id) values ('/assets/img/meeting5.jpg',2);
+insert into image_table(url,adventure_id) values ('/assets/img/meeting6.jpg',2);
 
 insert into termin_table(start_date,end_date,duration,reserved,is_action,adventure_id, price, capacity, instructor_id) values('19-Jan-2022 10:20:20','22-Jan-2022 10:20:20',5,false,true,1, 160, 10, 2);
 insert into termin_table(start_date,end_date,duration,reserved,is_action,adventure_id, price, capacity, instructor_id) values('26-Jan-2022 10:20:20','28-Jan-2022 10:20:20',5,false,true,1, 170, 10, 2);

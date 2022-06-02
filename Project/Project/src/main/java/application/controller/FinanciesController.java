@@ -45,6 +45,31 @@ public class FinanciesController {
 		System.out.println("The task /getYearPerMonthProfit was successfully completed.");
 		return new ResponseEntity<>(profits, HttpStatus.OK);
 	}
+	
+	@GetMapping(value = "/getReservationsPerMonth/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('INSTRUCTOR')")
+	public ResponseEntity<?> getInstructorReservationPerMonth(@PathVariable("id") Long id) throws ParseException {
+		List<Double> reservations = financiesService.getReservationsPerMonth(id);
+		System.out.println("The task /getReservationsPerMonth was successfully completed.");
+		return new ResponseEntity<>(reservations, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getReservationsPerWeek/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('INSTRUCTOR')")
+	public ResponseEntity<?> getInstructorReservationPerWeek(@PathVariable("id") Long id) throws ParseException {
+		List<Double> reservations = financiesService.getReservationsPerWeek(id);
+		System.out.println("The task /getReservationsPerWeek was successfully completed.");
+		return new ResponseEntity<>(reservations, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getReservationsPerDay/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('INSTRUCTOR')")
+	public ResponseEntity<?> getInstructorReservationPerDay(@PathVariable("id") Long id) throws ParseException {
+		List<Double> reservations = financiesService.getReservationsPerDay(id);
+		System.out.println("The task /getReservationsPerWeek was successfully completed.");
+		return new ResponseEntity<>(reservations, HttpStatus.OK);
+	}
+
 
 	@GetMapping(value = "/getPercent", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ADMIN')")

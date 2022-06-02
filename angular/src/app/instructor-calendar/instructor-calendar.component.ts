@@ -3,12 +3,13 @@ import { Router } from '@angular/router';
 import { User } from '../model/user';
 import { Comment } from '../model/comment';
 import { Termin } from '../model/termin';
+import { Adventure } from '../model/adventure';
 import { Reservation } from '../model/reservation';
 import { UserService } from '../service/user.service';
 import { ReviewService } from '../service/review.service';
 import { AdventureService } from '../service/adventure.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Subscription } from "rxjs";
+import { Subscription, throwIfEmpty } from "rxjs";
 import {
   CalendarEvent,
   CalendarMonthViewBeforeRenderEvent,
@@ -48,6 +49,7 @@ const colors: any = {
 export class InstructorCalendarComponent implements OnInit {
   //subsribe
   termins: Termin[] = new Array<Termin>();
+  adventures: Adventure[] = [];
   reservations: Reservation[]
   termin: Termin = new Termin();
   termin1: Termin = new Termin();
@@ -55,6 +57,7 @@ export class InstructorCalendarComponent implements OnInit {
   user: User = new User();
   selectedTermin: Termin = new Termin();
   selectedReservation: Reservation = new Reservation();
+  selectedAdventure: Adventure = new Adventure();
   client: User = new User();
   //unsubscribe
   subs: Subscription[] = [];
@@ -64,8 +67,11 @@ export class InstructorCalendarComponent implements OnInit {
   end: string = "";
   adventureId!: number;
   userId!: number;
+  userId1!: number;
   reservationId!: number;
   fullName: string = ""
+  startRes = "";
+  endRes = "";
   //flags
   flag1: boolean = false;
   //izmena termina
@@ -80,6 +86,10 @@ export class InstructorCalendarComponent implements OnInit {
   flag6: boolean = false;
   //profil klijenta
   flag7: boolean = false;
+  //kreiranje rezervacije
+  flag8: boolean = false;
+  //prikaz avantura
+  flag9: boolean = false;
   //@ts-ignore
   currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -238,7 +248,7 @@ export class InstructorCalendarComponent implements OnInit {
                   segment.cssClass = 'bg-red';
                 }
                 else {
-                   if (term.action === true) {
+                  if (term.action === true) {
                     segment.cssClass = 'bg-green';
                   }
                   else {
@@ -364,6 +374,11 @@ export class InstructorCalendarComponent implements OnInit {
     this.flag7 = false;
   }
 
+  rejectCreateRes() {
+    this.flag8 = false;
+    this.flag3 = true;
+  }
+
   showAddTermin() {
     this.flag5 = true;
     this.flag1 = false;
@@ -405,6 +420,7 @@ export class InstructorCalendarComponent implements OnInit {
         alert(error.message);
       }));
     }
+    this.flag8 = false;
   }
 
   createTermin() {
@@ -499,6 +515,7 @@ export class InstructorCalendarComponent implements OnInit {
         }
       }
     }
+    this.flag8 = false;
 
   }
 
@@ -587,14 +604,45 @@ export class InstructorCalendarComponent implements OnInit {
   getReservation(id?: number) {
     if (id === undefined) {
     } else {
-      for(let res of this.reservations){
-        if(res.id === id){
+      for (let res of this.reservations) {
+        if (res.id === id) {
           this.reservations = [];
           this.reservations.push(res);
           break;
         }
       }
     }
+  }
+
+  showNewReservation() {
+    this.flag8 = true;
+    this.flag3 = false;
+    this.getEntities();
+  }
+
+  showAdventure() {
+    this.getEntities();
+    this.flag9 = true;
+    this.flag8 = false;
+  }
+
+  getEntities() {
+    this.subs.push(this.adventureService.getAllAdventures(this.user.id ?? 0).subscribe((response: Adventure[]) => {
+      this.adventures = response;
+    }, (error: HttpErrorResponse) => {
+      alert(error.message);
+    }));
+  }
+
+  selectAdventure(id?: number){
+    for(let adventure of this.adventures){
+      if(adventure.id === id){
+        this.selectedAdventure = adventure;
+        break;
+      }
+    }
+    this.flag9 = false;
+    this.flag8 = true;
   }
 
 

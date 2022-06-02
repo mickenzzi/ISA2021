@@ -106,6 +106,7 @@
   </div>
 
   <div *ngIf="flag3" class="notification-panel" style="margin-top:100px; margin-left:20px;">
+    <button class="button-2" (click)="showNewReservation()">Nova rezervacija</button>
     <table class="table">
       <tr class="table-header">
         <th class="header__item">Datum pocetka</th>
@@ -149,12 +150,56 @@
     </table>
   </div>
 
+  <div *ngIf="flag9" class="notification-panel" style="margin-top:100px; margin-left:5px;">
+    <table class="table">
+      <tr class="table-header">
+        <th class="header__item">Instruktor</th>
+        <th class="header__item">Avantura</th>
+        <th class="header__item">Opis</th>
+        <th class="header__item">Adresa</th>
+        <th class="header__item"></th>
+      </tr>
+      <tr *ngFor="let adventure of adventures" class="table-row">
+        <td class="table-data">{{adventure.title}}</td>
+        <td class="table-data">{{adventure.description}}</td>
+        <td class="table-data">{{adventure.address}}</td>
+        <td class="table-data">
+          <button (click)="selectAdventure(adventure.id)" class="button-2">Izaberi</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+
   <div *ngIf="flag4" style="width: 250px; height:150px; margin-left:650px; background-color:lightgrey">
     <button (click)="closeComment()" style="margin-top:2px; margin-left:220px;">X</button>
     <input [(ngModel)]="comment.content" [ngModelOptions]="{standalone: true}" placeholder="Unesite razlog"
       style="width: 90%; height:60%; margin-top: 3px; margin-left: 8px" type="text" /><br>
     <label style="margin-left:8px">Negativan: </label><input [(ngModel)]="comment.negative"
       [ngModelOptions]="{standalone: true}" type="checkbox" />
+  </div>
+
+  <div class="login-container" *ngIf="flag8" style="margin-left:400px;">
+    <section class="login">
+      <header>
+        <h2 style="margin-left:100px;">Kreiranje rezervacije</h2>
+      </header>
+      <form class="login-form">
+        <label>Datum pocetka:</label><br>
+        <input [(ngModel)]="startRes" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+          placeholder="dd-MMM-YYYY HH:mm:ss" required type="text" /><br>
+        <label>Datum zavrsetka:</label><br>
+        <input [(ngModel)]="endRes" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+          placeholder="dd-MMM-YYYY HH:mm:ss" required type="text" /><br>
+        <label>Id korisnika:</label><br>
+        <input [(ngModel)]="userId1" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+          placeholder="Id korisnika" required type="text" /><br>
+        <label>Avantura:{{selectedAdventure.title}}</label><button class="button-2" (click)="showAdventure()" style="margin-left: 10px">Prikazi avanture</button><br>
+        <div class="submit-container">
+          <button (click)="rejectCreateRes()" class="login-button" style="margin-right:210px;">Odustani</button>
+          <button (click)="createReservation(startRes, endRes, selectedAdventure.id, userId1)" class="login-button">Potvrdi</button>
+        </div>
+      </form>
+    </section>
   </div>
 
   <div *ngIf="flag1" style="width:1000px; height:500px; margin-left: 150px; position: fixed; overflow-y: auto;">

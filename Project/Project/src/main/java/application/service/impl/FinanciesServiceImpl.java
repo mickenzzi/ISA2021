@@ -10,12 +10,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import application.model.Adventure;
 import application.model.Financies;
 import application.model.Loyalty;
 import application.model.Reservation;
+import application.model.User;
+import application.repository.AdventureRepository;
 import application.repository.FinanciesRepository;
 import application.repository.LoyaltyRepository;
 import application.repository.ReservationRepository;
+import application.repository.UserRepository;
 import application.service.FinanciesService;
 import java.util.Collections;
 
@@ -27,6 +31,11 @@ public class FinanciesServiceImpl implements FinanciesService {
 	private ReservationRepository reservationRepository;
 	@Autowired
 	private LoyaltyRepository loyaltyRepository;
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private AdventureRepository adventureRepository;
+
 
 	@Override
 	public Double getYearProfit(String year) throws ParseException {
@@ -316,5 +325,180 @@ public class FinanciesServiceImpl implements FinanciesService {
 			profit += newPrice;
 		}
 		return profit;
+	}
+
+	@Override
+	public List<Double> getReservationsPerMonth(Long id) throws ParseException {
+		List<Double> resNumber = new ArrayList<Double>();
+		User instructor = userRepository.findById(id).orElseGet(null);
+		List<Adventure> adventures = adventureRepository.findAll();
+		List<Adventure> instructorAdventures = new ArrayList<Adventure>();
+		for(Adventure a: adventures) {
+			if(a.getUserAdventure().getId() == instructor.getId()) {
+				instructorAdventures.add(a);
+			}
+		}
+		List<Reservation> reservations = reservationRepository.findAll();
+		List<Reservation> usableReservations = new ArrayList<Reservation>();
+		List<Reservation> usableJanReservations = new ArrayList<Reservation>();
+		List<Reservation> usableFebReservations = new ArrayList<Reservation>();
+		List<Reservation> usableMarReservations = new ArrayList<Reservation>();
+		List<Reservation> usableAprReservations = new ArrayList<Reservation>();
+		List<Reservation> usableMayReservations = new ArrayList<Reservation>();
+		List<Reservation> usableJunReservations = new ArrayList<Reservation>();
+		List<Reservation> usableJulReservations = new ArrayList<Reservation>();
+		List<Reservation> usableAugReservations = new ArrayList<Reservation>();
+		List<Reservation> usableSepReservations = new ArrayList<Reservation>();
+		List<Reservation> usableOctReservations = new ArrayList<Reservation>();
+		List<Reservation> usableNovReservations = new ArrayList<Reservation>();
+		List<Reservation> usableDecReservations = new ArrayList<Reservation>();
+		for(Adventure a: instructorAdventures) {
+			for(Reservation r: reservations) {
+				if(r.getAdventureReservation().getId() == a.getId())
+				usableReservations.add(r);
+			}
+		}
+		for(Reservation r: usableReservations) {
+			if (r.getStart().contains("Jan")) {
+				usableJanReservations.add(r);
+			} else if (r.getStart().contains("Feb")) {
+				usableFebReservations.add(r);
+			} else if (r.getStart().contains("Mar")) {
+				usableMarReservations.add(r);
+			} else if (r.getStart().contains("Apr")) {
+				usableAprReservations.add(r);
+			} else if (r.getStart().contains("May")) {
+				usableMayReservations.add(r);
+			} else if (r.getStart().contains("Jun")) {
+				usableJunReservations.add(r);
+			} else if (r.getStart().contains("Jul")) {
+				usableJulReservations.add(r);
+			} else if (r.getStart().contains("Aug")) {
+				usableAugReservations.add(r);
+			} else if (r.getStart().contains("Sep")) {
+				usableSepReservations.add(r);
+			} else if (r.getStart().contains("Oct")) {
+				usableOctReservations.add(r);
+			} else if (r.getStart().contains("Nov")) {
+				usableNovReservations.add(r);
+			} else if (r.getStart().contains("Dec")) {
+				usableDecReservations.add(r);
+			}
+		}
+		resNumber.add((double) usableJanReservations.size());
+		resNumber.add((double) usableFebReservations.size());
+		resNumber.add((double) usableMarReservations.size());
+		resNumber.add((double) usableAprReservations.size());
+		resNumber.add((double) usableMayReservations.size());
+		resNumber.add((double) usableJunReservations.size());
+		resNumber.add((double) usableJulReservations.size());
+		resNumber.add((double) usableAugReservations.size());
+		resNumber.add((double) usableSepReservations.size());
+		resNumber.add((double) usableOctReservations.size());
+		resNumber.add((double) usableNovReservations.size());
+		resNumber.add((double) usableDecReservations.size());
+		return resNumber;
+	}
+
+	@Override
+	public List<Double> getReservationsPerWeek(Long id) throws ParseException {
+		List<Double> resNumber = new ArrayList<Double>();
+		User instructor = userRepository.findById(id).orElseGet(null);
+		List<Adventure> adventures = adventureRepository.findAll();
+		List<Adventure> instructorAdventures = new ArrayList<Adventure>();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyy");
+		for(Adventure a: adventures) {
+			if(a.getUserAdventure().getId() == instructor.getId()) {
+				instructorAdventures.add(a);
+			}
+		}
+		List<Reservation> reservations = reservationRepository.findAll();
+		List<Reservation> usableReservations = new ArrayList<Reservation>();
+		List<Reservation> usableFirstWeekReservations = new ArrayList<Reservation>();
+		List<Reservation> usableSecondWeekReservations = new ArrayList<Reservation>();
+		List<Reservation> usableThirdWeekReservations = new ArrayList<Reservation>();
+		List<Reservation> usableFourthWeekReservations = new ArrayList<Reservation>();
+		List<Reservation> usableFifthWeekReservations = new ArrayList<Reservation>();
+		for(Adventure a: instructorAdventures) {
+			for(Reservation r: reservations) {
+				if(r.getAdventureReservation().getId() == a.getId())
+				usableReservations.add(r);
+			}
+		}
+		for(Reservation r: usableReservations) {
+			Date start = dateFormat.parse(r.getStart());
+			if (start.getDate() <= 7) {
+				usableFirstWeekReservations.add(r);
+			} else if (start.getDate() <= 14) {
+				usableSecondWeekReservations.add(r);
+			} else if (start.getDate() <= 21) {
+				usableThirdWeekReservations.add(r);
+			} else if (start.getDate() <= 28) {
+				usableFourthWeekReservations.add(r);
+			} else if (start.getDate() <= 31) {
+				usableFifthWeekReservations.add(r);
+			}
+		}
+		resNumber.add((double) usableFirstWeekReservations.size());
+		resNumber.add((double) usableSecondWeekReservations.size());
+		resNumber.add((double) usableThirdWeekReservations.size());
+		resNumber.add((double) usableFourthWeekReservations.size());
+		resNumber.add((double) usableFifthWeekReservations.size());
+		return resNumber;
+	}
+
+	@Override
+	public List<Double> getReservationsPerDay(Long id) throws ParseException {
+		List<Double> resNumber = new ArrayList<Double>();
+		User instructor = userRepository.findById(id).orElseGet(null);
+		List<Adventure> adventures = adventureRepository.findAll();
+		List<Adventure> instructorAdventures = new ArrayList<Adventure>();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyy");
+		for(Adventure a: adventures) {
+			if(a.getUserAdventure().getId() == instructor.getId()) {
+				instructorAdventures.add(a);
+			}
+		}
+		List<Reservation> reservations = reservationRepository.findAll();
+		List<Reservation> usableReservations = new ArrayList<Reservation>();
+		List<Reservation> usableMondayReservations = new ArrayList<Reservation>();
+		List<Reservation> usableTuesdayReservations = new ArrayList<Reservation>();
+		List<Reservation> usableWednesdayReservations = new ArrayList<Reservation>();
+		List<Reservation> usableThursdayReservations = new ArrayList<Reservation>();
+		List<Reservation> usableFridayReservations = new ArrayList<Reservation>();
+		List<Reservation> usableSaturdayReservations = new ArrayList<Reservation>();
+		List<Reservation> usableSundayReservations = new ArrayList<Reservation>();
+		for(Adventure a: instructorAdventures) {
+			for(Reservation r: reservations) {
+				if(r.getAdventureReservation().getId() == a.getId())
+				usableReservations.add(r);
+			}
+		}
+		for(Reservation r: usableReservations) {
+			Date start = dateFormat.parse(r.getStart());
+			if (start.getDay() == 0) {
+				usableSundayReservations.add(r);
+			} else if (start.getDay() == 1) {
+				usableMondayReservations.add(r);
+			} else if (start.getDay() == 2) {
+				usableTuesdayReservations.add(r);
+			} else if (start.getDay() == 3) {
+				usableThursdayReservations.add(r);
+			} else if (start.getDay() == 4) {
+				usableFridayReservations.add(r);
+			} else if (start.getDay() == 5) {
+				usableFridayReservations.add(r);
+			} else if (start.getDay() == 6) {
+				usableFridayReservations.add(r);
+			}
+		}
+		resNumber.add((double) usableMondayReservations.size());
+		resNumber.add((double) usableTuesdayReservations.size());
+		resNumber.add((double) usableWednesdayReservations.size());
+		resNumber.add((double) usableThursdayReservations.size());
+		resNumber.add((double) usableFridayReservations.size());
+		resNumber.add((double) usableSaturdayReservations.size());
+		resNumber.add((double) usableSundayReservations.size());
+		return resNumber;
 	}
 }

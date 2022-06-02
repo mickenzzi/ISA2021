@@ -46,7 +46,7 @@
     </div>
   </div>
 
-  <div *ngIf="flag5" class="financies-panel">
+  <div *ngIf="flag5" class="financies-panel" style="height: 500px;">
     <button (click)="reject()" style="margin-left:670px; margin-top: 10px">X</button>
     <br>
     <label style="font-size: large; font-family:Verdana, Geneva, Tahoma, sans-serif; color: black;">Unesite zeljene datume:</label>
@@ -61,6 +61,27 @@
     <button class="button-2" (click)="showProfit()">Prikazi profit</button>
     <input [(ngModel)]="profit" type="text" style="width: 55px; height:25px; margin-left: 5px" disabled/>
     <br>
+    <br>
+    <br>
+    <button class="button-2" (click)="showMonthReservation()">Mesec</button>
+    <button class="button-2" (click)="showWeekReservation()">Sedmica</button>
+    <button class="button-2" (click)="showDayReservation()">Dan</button>
+    <br>
+    <canvas *ngIf="flag6" baseChart style="height: auto; width: auto; background-color: mintcream"
+    [height]="120"
+    [datasets]="barChartData1"
+    [labels]="barChartLabels1"
+    [type]= "barChartType1"></canvas>
+    <canvas *ngIf="flag7" baseChart style="height: auto; width: auto; background-color: mintcream"
+    [height]="120"
+    [datasets]="barChartData2"
+    [labels]="barChartLabels2"
+    [type]= "barChartType2"></canvas>
+    <canvas *ngIf="flag8" baseChart style="height: auto; width: auto; background-color: mintcream"
+    [height]="120"
+    [datasets]="barChartData3"
+    [labels]="barChartLabels3"
+    [type]= "barChartType3"></canvas>
   </div>
 
 </body>

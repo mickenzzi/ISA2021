@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import application.model.Adventure;
+import application.model.Image;
 import application.model.Termin;
 import application.service.AdventureService;
 import application.service.UserService;
@@ -46,6 +47,16 @@ public class AdventureController {
 		}
 		System.out.println("The task /getAllAdventures was successfully completed.");
 		return new ResponseEntity<>(adventures1, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getAllAdventureImages/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('INSTRUCTOR') or hasRole('ADMIN')")
+	public ResponseEntity<List<Image>> getAllAdventureImages(@PathVariable("id") Long id) {
+		List<Image> images = new ArrayList<Image>();
+		images = adventureService.getAdventureImages(id);
+
+		System.out.println("The task /getAllAdventures was successfully completed.");
+		return new ResponseEntity<>(images, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/getSearchAdventures/{instructorId}/{search}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -97,6 +108,20 @@ public class AdventureController {
 		adventureService.updateAdventure(adventure1);
 		System.out.println("The task /updateAdventure was successfully completed.");
 		return new ResponseEntity<>(adventure, HttpStatus.OK);
+	}
+	
+
+	@PostMapping(value = "/updateImage", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('INSTRUCTOR')")
+	public ResponseEntity<Image> updateImage(@RequestBody Image image) throws Exception {
+		Image image1 = adventureService.findImageById(image.getId());
+		if (image1== null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		adventureService.updateImage(image);
+		System.out.println("The task /updateImage was successfully completed.");
+		return new ResponseEntity<>(image, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/createAdventure/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

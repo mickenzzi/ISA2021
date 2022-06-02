@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {User} from '../model/user';
-import {AuthenticationService} from './authentication.service';
-import {Loyalty} from "../model/loyalty";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { User } from '../model/user';
+import { AuthenticationService } from './authentication.service';
+import { Loyalty } from "../model/loyalty";
 
 @Injectable({
   providedIn: 'root'
@@ -54,7 +54,7 @@ export class UserService {
     return this.http.get<User>(`${this.userUrl}/whoAmI/${username}`);
   }
 
-  public getInstructorProfit(id: number, start: string, end: string){
+  public getInstructorProfit(id: number, start: string, end: string) {
     return this.http.get<string>(`${this.financiesUrl}/getInstructorProfit/${id}/${start}/${end}`);
   }
 
@@ -64,6 +64,16 @@ export class UserService {
 
   public getYearPerMonthProfit(year: string) {
     return this.http.get<number[]>(`${this.financiesUrl}/getYearPerMonthProfit/${year}`);
+  }
+
+  public getReservationsPerMonth(id: number) {
+    return this.http.get<number[]>(`${this.financiesUrl}/getReservationsPerMonth/${id}`);
+  }
+  public getReservationsPerWeek(id: number) {
+    return this.http.get<number[]>(`${this.financiesUrl}/getReservationsPerWeek/${id}`);
+  }
+  public getReservationsPerDay(id: number) {
+    return this.http.get<number[]>(`${this.financiesUrl}/getReservationsPerDay/${id}`);
   }
 
   public getPercent() {

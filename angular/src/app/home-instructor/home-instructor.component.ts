@@ -8,6 +8,7 @@ import {RequestService} from '../service/request.service';
 import {AdventureService} from '../service/adventure.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {Subscription} from "rxjs";
+import { ChartType } from 'chart.js';
 
 @Component({
   selector: 'app-home-instructor',
@@ -49,8 +50,32 @@ export class HomeInstructorComponent implements OnInit {
   flag4: boolean = true;
   //prikaz finansija
   flag5: boolean = false;
+  //prikaz mesecnih rezervacija
+  flag6: boolean = false;
+  //prikaz sedmicnih rezervacija
+  flag7: boolean = false;
+  //prikaz dnevnih rezervacija
+  flag8: boolean = false;
   //@ts-ignore
   currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+   //chart1
+   barChartLabels1: string[] = ["Januar", "Februar", "Mart", "April", "Maj", "Jun", "Jul", "Avgust", "Septembar", "Oktobar", "Novembar", "Decembar"];
+   barChartData1: any[] = [];
+   chartData1: any[] = [];
+   barChartType1: ChartType = "bar";
+
+    //chart2
+  barChartLabels2: string[] = ["Prva", "Druga", "Treca", "Cetvrta", "Peta"];
+  barChartData2: any[] = [];
+  chartData2: any[] = [];
+  barChartType2: ChartType = "bar";
+
+   //chart3
+   barChartLabels3: string[] = ["Ponedeljak", "Utorak", "Sreda", "Cetvrtak", "Petak", "Subota", "Nedelja"];
+   barChartData3: any[] = [];
+   chartData3: any[] = [];
+   barChartType3: ChartType = "bar";
 
   constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private requestService: RequestService, private adventureService: AdventureService) {
     this.adventures = [];
@@ -174,6 +199,9 @@ export class HomeInstructorComponent implements OnInit {
   reject() {
     this.flag5 = false;
     this.flag4 = true;
+    this.flag6 = false;
+    this.flag7 = false;
+    this.flag8 = false;
   }
 
   showProfit() {
@@ -270,10 +298,52 @@ export class HomeInstructorComponent implements OnInit {
     }
   }
 
-
   showFinancies(){
     this.flag4 = false;
     this.flag1 = false;
     this.flag5 = true;
+    this.getReservationsPerMonth();
+    this.getReservationsPerWeek();
+    this.getReservationsPerDay();
   }
+
+  getReservationsPerMonth() {
+    this.subs.push(this.userService.getReservationsPerMonth(this.user.id ?? 0).subscribe((response) => {
+      this.chartData1 = response;
+      this.barChartData1 = [{data: this.chartData1, label: 'Broj rezervacija prikazan po mesecima'}]
+    }));
+  }
+
+  getReservationsPerWeek() {
+    this.subs.push(this.userService.getReservationsPerWeek(this.user.id ?? 0).subscribe((response) => {
+      this.chartData2 = response;
+      this.barChartData2 = [{data: this.chartData2, label: 'Broj rezervacija prikazan po sedmicama'}]
+    }));
+  }
+
+  getReservationsPerDay() {
+    this.subs.push(this.userService.getReservationsPerDay(this.user.id ?? 0).subscribe((response) => {
+      this.chartData3 = response;
+      this.barChartData3 = [{data: this.chartData3, label: 'Broj rezervacija prikazan po danima'}]
+    }));
+  }
+
+  showMonthReservation() {
+    this.flag6 = true;
+    this.flag7 = false;
+    this.flag8 = false;
+  }
+
+  showWeekReservation() {
+    this.flag6 = false;
+    this.flag7 = true;
+    this.flag8 = false;
+  }
+
+  showDayReservation() {
+    this.flag6 = false;
+    this.flag7 = false;
+    this.flag8 = true;
+  }
+
 }

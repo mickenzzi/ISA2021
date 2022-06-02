@@ -8,8 +8,7 @@ import { RequestService } from '../service/request.service';
 import { AdventureService } from '../service/adventure.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { MapsAPILoader } from "@agm/core";
-import { google } from '@agm/core/services/google-maps-types';
+import {Image} from '../model/image';
 
 @Component({
   selector: 'app-home-adventure',
@@ -21,6 +20,10 @@ export class HomeAdventureComponent implements OnInit {
   adventure: Adventure = new Adventure();
   termin: Termin = new Termin();
   user: User = new User();
+  images: Image []  = [];
+  url1: string = "";
+  url2: string = "";
+  url3: string = "";
   //unsubsribe
   subs: Subscription[] = [];
   //local
@@ -67,6 +70,22 @@ export class HomeAdventureComponent implements OnInit {
     this.router.navigate(['/homeInstructor']);
   }
 
+  onSelectFile1(event: any) {
+    this.url1 = this.URL_path + this.url1.substring(12);
+    this.images[0].url = this.url1;
+    this.adventureService.updateImage(this.images[0]).subscribe();
+  }
+  onSelectFile2(event: any) {
+    this.url2 = this.URL_path + this.url2.substring(12);
+    this.images[1].url = this.url2;
+    this.adventureService.updateImage(this.images[1]).subscribe();
+  }
+  onSelectFile3(event: any) {
+    this.url3 = this.URL_path + this.url3.substring(12);
+    this.images[2].url = this.url3;
+    this.adventureService.updateImage(this.images[2]).subscribe();
+  }
+
   showActionModal() {
     var editButton = <HTMLInputElement>document.getElementById('editButton');
     if (!this.flag1) {
@@ -95,10 +114,20 @@ export class HomeAdventureComponent implements OnInit {
   getAdventure() {
     this.subs.push(this.adventureService.getAdventure(this.idAdventure).subscribe((response: Adventure) => {
       this.adventure = response;
+      this.getAdventureImages();
       if (this.adventure.reserved) {
         var editButton = <HTMLInputElement>document.getElementById('editButton');
         editButton.disabled = true;
       }
+    }));
+  }
+
+  getAdventureImages() {
+    this.subs.push(this.adventureService.getAllAdventureImages(this.idAdventure).subscribe((response: Image[]) => {
+      this.images = response;
+      this.url1 = this.images[0].url ?? "";
+      this.url2 = this.images[1].url ?? "";
+      this.url3 = this.images[2].url ?? "";
     }));
   }
 

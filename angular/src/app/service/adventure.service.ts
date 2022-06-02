@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Adventure} from '../model/adventure';
 import {Termin} from '../model/termin';
+import {Image} from '../model/image';
 import {Reservation} from '../model/reservation';
 import {AuthenticationService} from './authentication.service';
 
@@ -27,6 +28,10 @@ export class AdventureService {
   //id instruktora
   public getAllAdventures(id: number) {
     return this.http.get<Adventure[]>(`${this.adventureUrl}/getAllAdventures/${id}`);
+  }
+
+  public getAllAdventureImages(id: number) {
+    return this.http.get<Image[]>(`${this.adventureUrl}/getAllAdventureImages/${id}`);
   }
 
   public getAdventure(id: number) {
@@ -99,6 +104,10 @@ export class AdventureService {
 
   public updateTermin(termin: Termin) {
     return this.http.post(`${this.terminUrl}/updateTermin`, termin);
+  }
+
+  public updateImage(image: Image) {
+    return this.http.post(`${this.adventureUrl}/updateImage`, image);
   }
 
   public createTermin(termin: Termin, instructorId: number){

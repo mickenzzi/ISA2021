@@ -1,3 +1,4 @@
+
 export class Adventure {
   id?: number;
   title?: string;
