@@ -107,6 +107,8 @@ public class AdventureServiceImpl implements AdventureService {
 		adventure1.setTitle(adventure.getTitle());
 		adventure1.setUserAdventure(adventure.getUserAdventure());
 		adventure1.setDescription(adventure.getDescription());
+		adventure1.setLatitude(adventure.getLatitude());
+		adventure1.setLongitude(adventure.getLongitude());
 		User instructor = userRepository.findById(id).orElseGet(null);
 		adventure1.setUserAdventure(instructor);
 		adventure1.setReserved(false);
@@ -132,6 +134,8 @@ public class AdventureServiceImpl implements AdventureService {
 		adventure1.setDescription(adventure.getDescription());
 		adventure1.setUserAdventure(adventure.getUserAdventure());
 		adventure1.setImages(adventure.getImages());
+		adventure1.setLatitude(adventure.getLatitude());
+		adventure1.setLongitude(adventure.getLongitude());
 		adventureRepository.save(adventure1);
 	}
 

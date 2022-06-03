@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import application.model.Adventure;
@@ -97,10 +99,17 @@ public class AdventureController {
 
 	}
 
-	@PostMapping(value = "/updateAdventure", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/updateAdventure", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<Adventure> updateAdventure(@RequestBody Adventure adventure1) throws Exception {
 		Adventure adventure = adventureService.findById(adventure1.getId());
+		if (adventure1.getAddress().isEmpty() || adventure1.getCancelCondition().isEmpty() || adventure1.getLatitude() == 0 || adventure1.getLongitude() == 0
+				|| adventure1.getDescription().isEmpty() || adventure1.getEquipment().isEmpty()
+				|| adventure1.getRule().isEmpty() || adventure1.getTitle().isEmpty()
+				|| adventure1.getInstructorBiography().isEmpty()) {
+			System.out.println("Some fields are empty.");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		if (adventure == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
@@ -111,7 +120,7 @@ public class AdventureController {
 	}
 	
 
-	@PostMapping(value = "/updateImage", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/updateImage", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<Image> updateImage(@RequestBody Image image) throws Exception {
 		Image image1 = adventureService.findImageById(image.getId());
@@ -127,7 +136,7 @@ public class AdventureController {
 	@PostMapping(value = "/createAdventure/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('INSTRUCTOR')")
 	public ResponseEntity<Adventure> createAdventure(@RequestBody Adventure adventure1, @PathVariable("id") Long id) {
-		if (adventure1.getAddress().isEmpty() || adventure1.getCancelCondition().isEmpty()
+		if (adventure1.getAddress().isEmpty() || adventure1.getCancelCondition().isEmpty() || adventure1.getLatitude() == 0 || adventure1.getLongitude() == 0
 				|| adventure1.getDescription().isEmpty() || adventure1.getEquipment().isEmpty()
 				|| adventure1.getRule().isEmpty() || adventure1.getTitle().isEmpty()
 				|| adventure1.getInstructorBiography().isEmpty()) {

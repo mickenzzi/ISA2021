@@ -13,4 +13,6 @@ export class Adventure {
   cancelCondition?: string;
   reserved?: boolean;
   avgGrade?: string;
+  latitude?: number;
+  longitude?: number;
 }

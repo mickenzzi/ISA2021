@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Adventure} from '../model/adventure';
 import {Termin} from '../model/termin';
 import {Image} from '../model/image';
@@ -13,7 +13,6 @@ export class AdventureService {
 
   private adventureUrl = 'http://localhost:8081/myApp/api/adventures';
   private terminUrl = 'http://localhost:8081/myApp/api/termins';
-  private googleMapsApiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=Someroad+64&key=AIzkeystuffjXDm6eU5mPP9Nczg';
 
   constructor(
     private http: HttpClient,
@@ -43,7 +42,7 @@ export class AdventureService {
   }
 
   public updateAdventure(adventure: Adventure) {
-    return this.http.post(`${this.adventureUrl}/updateAdventure`, adventure);
+    return this.http.put(`${this.adventureUrl}/updateAdventure`, adventure);
   }
 
   public getSearchAdventures(id: number, search: string) {
@@ -107,15 +106,10 @@ export class AdventureService {
   }
 
   public updateImage(image: Image) {
-    return this.http.post(`${this.adventureUrl}/updateImage`, image);
+    return this.http.put(`${this.adventureUrl}/updateImage`, image);
   }
 
   public createTermin(termin: Termin, instructorId: number){
     return this.http.post(`${this.terminUrl}/createTermin/${instructorId}`, termin);
   }
-
-  public getLatLngAddress(address: string){
-    return this.http.get<any>(`${this.googleMapsApiUrl}`);
-  }
-
 }

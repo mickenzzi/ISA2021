@@ -32,6 +32,7 @@ export class HomeAdventureComponent implements OnInit {
   capacity!: number;
   //flags
   flag1: Boolean = true;
+  isDisabled: boolean = false;
   lat = 44.38605;
   long = 19.10247;
   googleMapType = 'satellite';
@@ -51,7 +52,6 @@ export class HomeAdventureComponent implements OnInit {
       this.logOut();
     } else {
       this.getUser();
-      this.getLatLng("Zvornik")
       this.idAdventure = this.route.snapshot.params['idAdventure'];
     }
   }
@@ -115,6 +115,9 @@ export class HomeAdventureComponent implements OnInit {
     this.subs.push(this.adventureService.getAdventure(this.idAdventure).subscribe((response: Adventure) => {
       this.adventure = response;
       this.getAdventureImages();
+      this.lat = this.adventure.latitude ?? 44;
+      this.long = this.adventure.longitude ?? 19;
+      this.isDisabled = this.adventure.reserved ?? false;
       if (this.adventure.reserved) {
         var editButton = <HTMLInputElement>document.getElementById('editButton');
         editButton.disabled = true;
@@ -138,7 +141,7 @@ export class HomeAdventureComponent implements OnInit {
       this.URL_R = this.URL_path + this.URL_ss;
       this.getAdventure();
     }, (error: HttpErrorResponse) => {
-      alert(error.message);
+      alert("Unos nije validan");
     }));
   }
 
@@ -157,16 +160,6 @@ export class HomeAdventureComponent implements OnInit {
         }));
       }
     }
-  }
-
-  getLatLng(address: string) {
-    var term = "Mechelsesteenweg+64";
-    return this.adventureService.getLatLngAddress(address)
-      .subscribe((json: any) => {
-        var obj = JSON.parse(json);
-        console.log(obj)
-        var jsonParsed = obj["results"];
-      });
   }
 
 }

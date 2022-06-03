@@ -1,5 +1,5 @@
 <body class="add-adventure-content">
-<div class="login-container">
+<div class="login-container" style="margin-top: 0px;">
   <section class="login" id="login">
     <header>
       <h2 style="margin-left:100px;">Dodavanje avanture</h2>
@@ -14,19 +14,21 @@
       <input [(ngModel)]="URL" [ngModelOptions]="{standalone: true}" accept="image/*" autofocus required
              style="width:40%" type="file"/>
       <br>
+      <input [(ngModel)]="adventure.latitude" [ngModelOptions]="{standalone: true}" autofocus placeholder="Geografska sirina" required style="width:280px; height:30px;" type="number"/>
+      <input [(ngModel)]="adventure.longitude" [ngModelOptions]="{standalone: true}" autofocus placeholder="Geografska duzina" required style="width:280px; height:30px;" type="number"/>
       <input [(ngModel)]="adventure.maxNumber" [ngModelOptions]="{standalone: true}" autofocus
-             placeholder="Dozvoljen broj osoba" required style="width:280px; height:30px;" type="text"/>
+             placeholder="Dozvoljen broj osoba" required style="width:280px; height:25px;" type="text"/>
       <input [(ngModel)]="adventure.instructorBiography" [ngModelOptions]="{standalone: true}" autofocus
-             placeholder="Biografija" required style="width:280px; height:30px;" type="text"/><br>
+             placeholder="Biografija" required style="width:280px; height:25px;" type="text"/><br>
       <input [(ngModel)]="adventure.rule" [ngModelOptions]="{standalone: true}" autofocus
-             placeholder="Pravila ponasanja i dodatne usluge" required style="width:280px; height:30px;" type="text"/><br>
+             placeholder="Pravila ponasanja i dodatne usluge" required style="width:280px; height:25px;" type="text"/><br>
       <input [(ngModel)]="adventure.equipment" [ngModelOptions]="{standalone: true}" autofocus
-             placeholder="Oprema" required style="width:280px; height:30px;" type="text"/><br>
+             placeholder="Oprema" required style="width:280px; height:25px;" type="text"/><br>
       <input [(ngModel)]="adventure.priceList" [ngModelOptions]="{standalone: true}" autofocus
-             placeholder="Cena u EUR" required style="width:280px; height:30px;" type="text"/><br>
+             placeholder="Cena u EUR" required style="width:280px; height:25px;" type="text"/><br>
       <input [(ngModel)]="adventure.cancelCondition" [ngModelOptions]="{standalone: true}" autofocus
-             placeholder="Uslov otkaza rezervacije" required style="width:280px; height:30px;" type="text"/>
-      <div class="submit-container">
+             placeholder="Uslov otkaza rezervacije" required style="width:280px; height:25px;" type="text"/>
+      <div class="submit-container" style="height: 30px; margin-top: 10px">
         <button (click)="goBack()" class="login-button" style="margin-right:260px;">Odustani</button>
         <button (click)="addAdventure()" class="login-button">Dodaj</button>
       </div>
