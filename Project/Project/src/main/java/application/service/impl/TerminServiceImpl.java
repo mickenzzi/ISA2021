@@ -104,6 +104,8 @@ public class TerminServiceImpl implements TerminService {
 			termin1.setReserved(false);
 			termin1.setAction(false);
 			termin1.setAdventureTermin(adventures1.get(0));
+			termin1.setPrice(adventures1.get(0).getPriceList());
+			termin1.setCapacity((long)10);
 			terminRepository.save(termin1);
 		}
 		return create;
@@ -209,8 +211,6 @@ public class TerminServiceImpl implements TerminService {
 					r.setEnd(end);
 					r.setStart(start);
 					double newPrice = 0;
-					newPrice = adventure1.getPriceList()-checkUserLoyality(user.getLoyaltyStatus())*adventure1.getPriceList()/100;
-					r.setPrice(newPrice);
 					r.setCreatedReservation(true);
 					r.setUserReservation(user);
 					reservationRepository.save(r);
@@ -253,6 +253,7 @@ public class TerminServiceImpl implements TerminService {
 			adventure1.setReserved(true);
 			adventureRepository.save(adventure1);
 			user.setCollectedPoints(user.getCollectedPoints() + 1);
+			instructor.setCollectedPoints(instructor.getCollectedPoints() + 1);
 			Loyalty bronze = loyaltyRepository.findByName("BRONZE");
 			Loyalty silver = loyaltyRepository.findByName("SILVER");
 			Loyalty gold = loyaltyRepository.findByName("GOLD");
@@ -263,6 +264,14 @@ public class TerminServiceImpl implements TerminService {
 			} else {
 				user.setLoyaltyStatus(bronze.getName());
 			}
+			if (instructor.getCollectedPoints() == silver.getPoints()) {
+				instructor.setLoyaltyStatus(silver.getName());
+			} else if (user.getCollectedPoints() == gold.getPoints()) {
+				instructor.setLoyaltyStatus(gold.getName());
+			} else {
+				instructor.setLoyaltyStatus(bronze.getName());
+			}
+			userRepository.save(instructor);
 			userRepository.save(user);
 		}
 

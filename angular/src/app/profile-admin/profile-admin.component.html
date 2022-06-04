@@ -25,7 +25,7 @@
              placeholder="Lozinka" required type="password"/>
       <input [(ngModel)]="user.password2" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
              placeholder="Potvrda lozinke" required type="password"/>
-      <div class="submit-container">
+      <div class="submit-container" style="margin-top: -5px;">
         <button (click)="goBack()" class="login-button" style="margin-right:210px;">Odustani</button>
         <button (click)="updateUser()" class="login-button" style="margin-right: 20px;">Potvrdi</button>
       </div>

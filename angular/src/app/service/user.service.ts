@@ -47,7 +47,7 @@ export class UserService {
   }
 
   public updateUser(user: User) {
-    return this.http.post(`${this.userUrl}/updateUser`, user);
+    return this.http.put(`${this.userUrl}/updateUser`, user);
   }
 
   public findUser(username?: string) {

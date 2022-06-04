@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -84,7 +85,7 @@ public class UserController {
 		}
 	}
 
-	@PostMapping(value = "/updateUser", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/updateUser", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ADMIN') or hasRole('INSTRUCTOR') or hasRole('USER')")
 	public ResponseEntity<User> updateUser(@RequestBody UserDTO userDTO) throws Exception {
 		User user = userService.findById(userDTO.getId());

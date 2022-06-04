@@ -148,13 +148,12 @@ export class HomeInstructorComponent implements OnInit {
   }
 
   getAllAdventures() {
+    this.getUser();
     if (this.user.id === undefined) {
     } else {
       if (this.flag2 === false) {
         this.subs.push(this.adventureService.getAllAdventures(this.user.id).subscribe((response: Adventure[]) => {
           this.adventures = response;
-        }, (error: HttpErrorResponse) => {
-          alert(error.message);
         }));
       } else {
         this.adventures = [];

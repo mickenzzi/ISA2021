@@ -47,7 +47,6 @@ public class AdventureController {
 				adventures1.add(a);
 			}
 		}
-		System.out.println("The task /getAllAdventures was successfully completed.");
 		return new ResponseEntity<>(adventures1, HttpStatus.OK);
 	}
 	

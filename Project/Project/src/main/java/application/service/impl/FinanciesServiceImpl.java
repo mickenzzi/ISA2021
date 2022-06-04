@@ -53,8 +53,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(r1.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = r1.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = r1.getPrice() - loyalty.getDiscount()*r1.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		return profit;
@@ -116,8 +116,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(rJan.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = rJan.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = rJan.getPrice() - loyalty.getDiscount()*rJan.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		profits.add(profit);
@@ -127,8 +127,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(rFeb.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = rFeb.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = rFeb.getPrice() - loyalty.getDiscount()*rFeb.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		profits.add(profit);
@@ -138,8 +138,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(rMar.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = rMar.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = rMar.getPrice() - loyalty.getDiscount()*rMar.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		profits.add(profit);
@@ -149,8 +149,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(rApr.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = rApr.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = rApr.getPrice() - loyalty.getDiscount()*rApr.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		profits.add(profit);
@@ -160,8 +160,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(rMay.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = rMay.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = rMay.getPrice() - loyalty.getDiscount()*rMay.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		profits.add(profit);
@@ -171,8 +171,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(rJun.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = rJun.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = rJun.getPrice() - loyalty.getDiscount()*rJun.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		profits.add(profit);
@@ -182,8 +182,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(rJul.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = rJul.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = rJul.getPrice() - loyalty.getDiscount()*rJul.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		profits.add(profit);
@@ -193,8 +193,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(rAug.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = rAug.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = rAug.getPrice() - loyalty.getDiscount()*rAug.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		profits.add(profit);
@@ -204,8 +204,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(rSep.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = rSep.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = rSep.getPrice() - loyalty.getDiscount()*rSep.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		profits.add(profit);
@@ -215,8 +215,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(rOct.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = rOct.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = rOct.getPrice() - loyalty.getDiscount()*rOct.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		profits.add(profit);
@@ -226,8 +226,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(rNov.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = rNov.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = rNov.getPrice() - loyalty.getDiscount()*rNov.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		profits.add(profit);
@@ -237,8 +237,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(rDec.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = rDec.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = rDec.getPrice() - loyalty.getDiscount()*rDec.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		profits.add(profit);
@@ -317,12 +317,15 @@ public class FinanciesServiceImpl implements FinanciesService {
 		}
 		for(Reservation r1: usableReservations) {
 			Loyalty loyalty = loyaltyRepository.findByName(r1.getUserReservation().getLoyaltyStatus());
+			Loyalty loyalty1 = loyaltyRepository.findByName(r1.getAdventureReservation().getUserAdventure().getLoyaltyStatus());
 			percent = nearPercent(r1.getEnd());
-			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = r1.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
-			profit += newPrice;
+			double oldPrice = 0;
+			double instructorProfit = 0;
+			oldPrice = r1.getPrice() - loyalty.getDiscount()*r1.getPrice()/100;
+			newPrice = percent*oldPrice/100;
+			instructorProfit = newPrice*loyalty1.getDiscount()/100;
+			profit += instructorProfit;
 		}
 		return profit;
 	}

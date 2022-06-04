@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void disableUser(Long userId, Long requestId, String text) {
 		User user = userRepository.findById(userId).orElseGet(null);
-		user.setEnabled(true);
+		user.setEnabled(false);
 		Request request = requestRepository.findById(requestId).orElseGet(null);
 		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(user.getEmail());

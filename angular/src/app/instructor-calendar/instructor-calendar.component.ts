@@ -508,7 +508,7 @@ export class InstructorCalendarComponent implements OnInit {
               alert('Potvrdili ste rezervaciju');
               this.getAllTermins();
             }, (error: HttpErrorResponse) => {
-              alert(error.message);
+              alert("Termin je vec rezervisan.");
             }));
             this.flag3 = false;
           }
@@ -615,6 +615,8 @@ export class InstructorCalendarComponent implements OnInit {
   }
 
   showNewReservation() {
+    this.userId1 = this.selectedReservation.userReservation.id ?? 0;
+    this.flag6 = false;
     this.flag8 = true;
     this.flag3 = false;
     this.getEntities();

@@ -58,6 +58,7 @@
       <header>
         <h2 style="margin-left:100px;">Prikaz rezervacije</h2>
       </header>
+      <button class="button-2" (click)="showNewReservation()">Nova rezervacija</button>
       <form class="login-form">
         <label>Datum pocetka:</label><br>
         <input [(ngModel)]="selectedReservation.start" [ngModelOptions]="{standalone: true}" autofocus
@@ -106,7 +107,6 @@
   </div>
 
   <div *ngIf="flag3" class="notification-panel" style="margin-top:100px; margin-left:20px;">
-    <button class="button-2" (click)="showNewReservation()">Nova rezervacija</button>
     <table class="table">
       <tr class="table-header">
         <th class="header__item">Datum pocetka</th>
@@ -191,7 +191,7 @@
         <input [(ngModel)]="endRes" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
           placeholder="dd-MMM-YYYY HH:mm:ss" required type="text" /><br>
         <label>Id korisnika:</label><br>
-        <input [(ngModel)]="userId1" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+        <input [(ngModel)]="userId1" [ngModelOptions]="{standalone: true}" autofocus class="login-input" disabled
           placeholder="Id korisnika" required type="text" /><br>
         <label>Avantura:{{selectedAdventure.title}}</label><button class="button-2" (click)="showAdventure()" style="margin-left: 10px">Prikazi avanture</button><br>
         <div class="submit-container">

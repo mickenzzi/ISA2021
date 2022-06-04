@@ -156,7 +156,7 @@ export class HomeAdventureComponent implements OnInit {
           alert('Uspesno ste kreirali termin za brzu rezervaciju.');
           this.flag1 = true;
         }, (error: HttpErrorResponse) => {
-          alert(error.message);
+          alert("Postoji vec definisana akcija u ovom terminu");
         }));
       }
     }
