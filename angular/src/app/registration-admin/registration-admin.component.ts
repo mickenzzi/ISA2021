@@ -83,7 +83,7 @@ export class RegistrationAdminComponent implements OnInit {
           alert('Nalog poslat na verifikaciju');
         }
       }, (error: HttpErrorResponse) => {
-        alert(error.message);
+        alert("Neophodno je sva polja popuniti ispravnim podacima.");
       }));
   }
 }

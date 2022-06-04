@@ -148,7 +148,6 @@ export class HomeInstructorComponent implements OnInit {
   }
 
   getAllAdventures() {
-    this.getUser();
     if (this.user.id === undefined) {
     } else {
       if (this.flag2 === false) {

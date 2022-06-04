@@ -86,7 +86,7 @@ export class AddAdventureComponent implements OnInit {
             this.router.navigate(['/homeInstructor']);
           },
           (error: HttpErrorResponse) => {
-            alert("Neophodno je uneti sve podatke");
+            alert("Neophodno je uneti ispravne podatke.");
           }
         );
     }

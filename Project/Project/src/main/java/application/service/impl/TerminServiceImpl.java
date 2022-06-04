@@ -210,7 +210,6 @@ public class TerminServiceImpl implements TerminService {
 					r.setAdventureReservation(adventure1);
 					r.setEnd(end);
 					r.setStart(start);
-					double newPrice = 0;
 					r.setCreatedReservation(true);
 					r.setUserReservation(user);
 					reservationRepository.save(r);
@@ -221,9 +220,6 @@ public class TerminServiceImpl implements TerminService {
 				r.setAdventureReservation(adventure1);
 				r.setEnd(end);
 				r.setStart(start);
-				double newPrice = 0;
-				newPrice = adventure1.getPriceList()-checkUserLoyality(user.getLoyaltyStatus())*adventure1.getPriceList()/100;
-				r.setPrice(newPrice);
 				r.setCreatedReservation(true);
 				r.setUserReservation(user);
 				reservationRepository.save(r);
@@ -257,19 +253,23 @@ public class TerminServiceImpl implements TerminService {
 			Loyalty bronze = loyaltyRepository.findByName("BRONZE");
 			Loyalty silver = loyaltyRepository.findByName("SILVER");
 			Loyalty gold = loyaltyRepository.findByName("GOLD");
-			if (user.getCollectedPoints() == silver.getPoints()) {
-				user.setLoyaltyStatus(silver.getName());
-			} else if (user.getCollectedPoints() == gold.getPoints()) {
-				user.setLoyaltyStatus(gold.getName());
-			} else {
+			if(user.getCollectedPoints() < silver.getPoints()) {
 				user.setLoyaltyStatus(bronze.getName());
 			}
-			if (instructor.getCollectedPoints() == silver.getPoints()) {
-				instructor.setLoyaltyStatus(silver.getName());
-			} else if (user.getCollectedPoints() == gold.getPoints()) {
-				instructor.setLoyaltyStatus(gold.getName());
-			} else {
+			else if (user.getCollectedPoints() >= silver.getPoints() && user.getCollectedPoints() < gold.getPoints()) {
+				user.setLoyaltyStatus(silver.getName());
+			}
+			else {
+				user.setLoyaltyStatus(gold.getName());
+			}
+			if(instructor.getCollectedPoints() < silver.getPoints()) {
 				instructor.setLoyaltyStatus(bronze.getName());
+			}
+			else if (instructor.getCollectedPoints() >= silver.getPoints() && instructor.getCollectedPoints() < gold.getPoints()) {
+				instructor.setLoyaltyStatus(silver.getName());
+			}
+			else {
+				instructor.setLoyaltyStatus(gold.getName());
 			}
 			userRepository.save(instructor);
 			userRepository.save(user);

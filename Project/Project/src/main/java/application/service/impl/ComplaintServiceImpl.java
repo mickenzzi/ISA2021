@@ -77,12 +77,17 @@ public class ComplaintServiceImpl implements ComplaintService{
 		answer.setAnswered(true);
 		complaint1.setAnswered(true);
 		SimpleMailMessage mail1 = new SimpleMailMessage();
+		SimpleMailMessage mail2 = new SimpleMailMessage();
 		mail1.setTo(user.getEmail());
-		mail1.setTo(instructor.getEmail());
+		mail2.setTo(instructor.getEmail());
 		mail1.setFrom(admin.getEmail());
+		mail2.setFrom(admin.getEmail());
 		mail1.setSubject("Odgovor na zalbu");
+		mail2.setSubject("Odgovor na zalbu");
 		mail1.setText(complaint.getContent());
+		mail2.setText(complaint.getContent());
 		javaMailSender.send(mail1);
+		javaMailSender.send(mail2);
 		complaintRepository.save(complaint1);
 		complaintRepository.save(answer);
 		return answer;
