@@ -18,6 +18,7 @@ import { HomeCottageOwnerComponent } from './home-cottage-owner/home-cottage-own
 import { HomeBoatOwnerComponent } from './home-boat-owner/home-boat-owner.component';
 import { RegistrationAdminComponent } from './registration-admin/registration-admin.component';
 import { ProfileInstructorComponent } from './profile-instructor/profile-instructor.component';
+import { ProfileCottageOwnerComponent } from './profile-cottage-owner/profile-cottage-owner.component';
 import { AddAdventureComponent } from './add-adventure/add-adventure.component';
 import { HomeAdventureComponent } from './home-adventure/home-adventure.component';
 import { HomeAdminUsersComponent } from './home-admin-users/home-admin-users.component';
@@ -48,7 +49,8 @@ import { authInterceptorProviders } from './helpers/token-interceptor';
     AddAdventureComponent,
     HomeAdventureComponent,
     HomeAdminUsersComponent,
-    InstructorCalendarComponent
+    InstructorCalendarComponent,
+    ProfileCottageOwnerComponent
   ],
   imports: [
     BrowserModule,
