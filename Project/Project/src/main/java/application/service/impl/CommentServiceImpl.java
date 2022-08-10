@@ -72,6 +72,15 @@ public class CommentServiceImpl implements CommentService {
 		commentRepository.save(comment);
 		if(comment.isNegative() == true) {
 			user.setPenalty(user.getPenalty()+1);
+			if(user.getPenalty() >= 5) {
+				if(user.getLoyaltyStatus().toLowerCase().equals("gold")) {
+					user.setLoyaltyStatus("SILVER");
+				}
+				else if(user.getLoyaltyStatus().toLowerCase().equals("silver")) {
+					user.setLoyaltyStatus("BRONZE");
+				}
+				user.setPenalty(0);
+			}
 			userRepository.save(user);
 			SimpleMailMessage mail1 = new SimpleMailMessage();
 			mail1.setTo(user.getEmail());

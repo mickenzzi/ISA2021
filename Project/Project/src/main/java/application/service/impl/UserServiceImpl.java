@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void disableUser(Long userId, Long requestId, String text) {
 		User user = userRepository.findById(userId).orElseGet(null);
-		user.setEnabled(true);
+		user.setEnabled(false);
 		Request request = requestRepository.findById(requestId).orElseGet(null);
 		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(user.getEmail());
@@ -176,6 +176,7 @@ public class UserServiceImpl implements UserService {
 			user.setEmail(userDTO.getEmail());
 			user.setPassword(passwordEncoder.encode(userDTO.getPassword1()));
 			user.setEnabled(false);
+			user.setMember(false);
 			if (userDTO.getRole().equals("ADMIN")) {
 				List<Role> roles = roleRepository.findByName("ROLE_ADMIN");
 				user.setRoles(roles);
@@ -289,6 +290,7 @@ public class UserServiceImpl implements UserService {
 			termin1.setAction(true);
 			termin1.setReserved(false);
 			User instructor = userRepository.findById(instructorId).orElseGet(null);
+			termin1.setInstructorTermin(instructor);
 			SimpleMailMessage mail = new SimpleMailMessage();
 			mail.setFrom(instructor.getEmail());
 			List<User> users = new ArrayList<>();
@@ -300,10 +302,12 @@ public class UserServiceImpl implements UserService {
 				}
 			}
 			for (User u : users) {
-				mail.setTo(u.getEmail());
-				mail.setSubject("Akcija-avantura");
-				mail.setText("Kreirana je akcija koja nudi razne pogodnosti prilikom rezervisanja avanture");
-				javaMailSender.send(mail);
+				if(u.isMember()) {
+					mail.setTo(u.getEmail());
+					mail.setSubject("Akcija-avantura");
+					mail.setText("Kreirana je akcija koja nudi razne pogodnosti prilikom rezervisanja avanture");
+					javaMailSender.send(mail);
+				}
 			}
 			terminRepository.save(termin1);
 		}

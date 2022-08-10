@@ -3,6 +3,8 @@ package application.service.impl;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -36,6 +38,13 @@ public class TerminServiceImpl implements TerminService {
 	@Autowired
 	private LoyaltyRepository loyaltyRepository;
 
+	Comparator<Reservation> compareByReserved = new Comparator<Reservation>() {
+		@Override
+		public int compare(Reservation r1, Reservation r2) {
+			return Boolean.compare(r1.isCreatedReservation(), r2.isCreatedReservation());
+		}
+	};
+
 	@Override
 	public Termin findById(Long id) throws AccessDeniedException {
 		return terminRepository.findById(id).orElseGet(null);
@@ -56,6 +65,13 @@ public class TerminServiceImpl implements TerminService {
 		Termin termin1 = new Termin();
 		boolean create = false;
 		User instructor = userRepository.findById(instructorId).orElseGet(null);
+		List<Adventure> adventures = adventureRepository.findAll();
+		List<Adventure> adventures1 = new ArrayList<Adventure>();
+		for (Adventure a : adventures) {
+			if (a.getUserAdventure().getId() == instructorId) {
+				adventures1.add(a);
+			}
+		}
 		List<Termin> termins = new ArrayList<Termin>();
 		List<Termin> termins1 = new ArrayList<Termin>();
 		termins = terminRepository.findAll();
@@ -87,6 +103,9 @@ public class TerminServiceImpl implements TerminService {
 			termin1.setDuration(termin.getDuration());
 			termin1.setReserved(false);
 			termin1.setAction(false);
+			termin1.setAdventureTermin(adventures1.get(0));
+			termin1.setPrice(adventures1.get(0).getPriceList());
+			termin1.setCapacity((long)10);
 			terminRepository.save(termin1);
 		}
 		return create;
@@ -111,7 +130,7 @@ public class TerminServiceImpl implements TerminService {
 				instructorTermins.add(t);
 			}
 		}
-		
+
 		return instructorTermins;
 	}
 
@@ -138,6 +157,8 @@ public class TerminServiceImpl implements TerminService {
 	public boolean createReservation(String start, String end, Long adventureId, Long userId) throws ParseException {
 		boolean freeAction = false;
 		Long actionId = (long) 0;
+		Long terminId = (long) 0;
+		boolean checkRes = false;
 		User user = userRepository.findById(userId).orElseGet(null);
 		Adventure adventure1 = adventureRepository.findById(adventureId).orElseGet(null);
 		User instructor = userRepository.findById(adventure1.getUserAdventure().getId()).orElseGet(null);
@@ -166,13 +187,18 @@ public class TerminServiceImpl implements TerminService {
 					freeAction = true;
 					actionId = t1.getId();
 					break;
-				} else {
+				} else if (t1.isReserved() == false && t1.isAction() == false) {
+					free = true;
+					freeAction = false;
+					terminId = t1.getId();
+					break;
+				}
+				else {
 					free = false;
 					break;
 				}
 			} else {
 				free = true;
-				break;
 			}
 		}
 		if (free == true) {
@@ -180,47 +206,91 @@ public class TerminServiceImpl implements TerminService {
 			for (Reservation r : reservations) {
 				if (r.getUserReservation().getId() == userId && r.getAdventureReservation().getId() == adventureId
 						&& r.getStart().equals(start)) {
+					checkRes = true;
 					r.setAdventureReservation(adventure1);
 					r.setEnd(end);
 					r.setStart(start);
-					r.setPrice(adventure1.getPriceList());
 					r.setCreatedReservation(true);
 					r.setUserReservation(user);
 					reservationRepository.save(r);
 				}
+			}
+			if(checkRes == false) {
+				Reservation r = new Reservation();
+				r.setAdventureReservation(adventure1);
+				r.setEnd(end);
+				r.setStart(start);
+				r.setCreatedReservation(true);
+				r.setUserReservation(user);
+				reservationRepository.save(r);
 			}
 			if (freeAction == true) {
 				Termin termin1 = terminRepository.findById(actionId).orElseGet(null);
 				termin1.setReserved(true);
 				terminRepository.save(termin1);
 			} else {
-				Termin termin1 = new Termin();
-				termin1.setAdventureTermin(adventure1);
-				termin1.setStart(start);
-				termin1.setEnd(end);
-				termin1.setDuration(0);
-				termin1.setAction(false);
-				termin1.setReserved(true);
-				terminRepository.save(termin1);
+				if (terminId == 0) {
+					Termin termin1 = new Termin();
+					termin1.setAdventureTermin(adventure1);
+					termin1.setStart(start);
+					termin1.setEnd(end);
+					termin1.setDuration(0);
+					termin1.setAction(false);
+					termin1.setReserved(true);
+					termin1.setCapacity((long) adventure1.getMaxNumber());
+					termin1.setInstructorTermin(instructor);
+					terminRepository.save(termin1);
+				} else {
+					Termin termin1 = terminRepository.findById(terminId).orElseGet(null);
+					termin1.setReserved(true);
+					terminRepository.save(termin1);
+				}
 			}
 			adventure1.setReserved(true);
 			adventureRepository.save(adventure1);
-			user.setCollectedPoints(user.getCollectedPoints()+1);
+			user.setCollectedPoints(user.getCollectedPoints() + 1);
+			instructor.setCollectedPoints(instructor.getCollectedPoints() + 1);
 			Loyalty bronze = loyaltyRepository.findByName("BRONZE");
 			Loyalty silver = loyaltyRepository.findByName("SILVER");
 			Loyalty gold = loyaltyRepository.findByName("GOLD");
-			if(user.getCollectedPoints() == silver.getPoints()) {
-				user.setLoyaltyStatus(silver.getName());
-			}
-			else if(user.getCollectedPoints() == gold.getPoints()) {
-				user.setLoyaltyStatus(gold.getName());
-			}
-			else {
+			if(user.getCollectedPoints() < silver.getPoints()) {
 				user.setLoyaltyStatus(bronze.getName());
 			}
+			else if (user.getCollectedPoints() >= silver.getPoints() && user.getCollectedPoints() < gold.getPoints()) {
+				user.setLoyaltyStatus(silver.getName());
+			}
+			else {
+				user.setLoyaltyStatus(gold.getName());
+			}
+			if(instructor.getCollectedPoints() < silver.getPoints()) {
+				instructor.setLoyaltyStatus(bronze.getName());
+			}
+			else if (instructor.getCollectedPoints() >= silver.getPoints() && instructor.getCollectedPoints() < gold.getPoints()) {
+				instructor.setLoyaltyStatus(silver.getName());
+			}
+			else {
+				instructor.setLoyaltyStatus(gold.getName());
+			}
+			userRepository.save(instructor);
+			userRepository.save(user);
 		}
 
 		return free;
+	}
+	
+	public double checkUserLoyality(String status) {
+		Loyalty bronze = loyaltyRepository.findByName("BRONZE");
+		Loyalty silver = loyaltyRepository.findByName("SILVER");
+		Loyalty gold = loyaltyRepository.findByName("GOLD");
+		if(status.toLowerCase().equals(gold.getName().toLowerCase())) {
+			return gold.getDiscount();
+		}
+		else if(status.toLowerCase().equals(silver.getName().toLowerCase())) {
+			return silver.getDiscount();
+		}
+		else {
+			return bronze.getDiscount();
+		}
 	}
 
 	@Override
@@ -245,11 +315,12 @@ public class TerminServiceImpl implements TerminService {
 		reservations1 = reservationRepository.findAll();
 		for (Reservation r : reservations1) {
 			for (Adventure a1 : adventures) {
-				if (a1.getId() == r.getId()) {
+				if (a1.getId() == r.getAdventureReservation().getId()) {
 					reservations.add(r);
 				}
 			}
 		}
+		Collections.sort(reservations, compareByReserved);
 		return reservations;
 	}
 
@@ -257,7 +328,7 @@ public class TerminServiceImpl implements TerminService {
 	public Reservation saveReservation(Reservation reservation) {
 		return reservationRepository.save(reservation);
 	}
-	
+
 	@Override
 	public Reservation findReservationById(Long id) throws AccessDeniedException {
 		return reservationRepository.findById(id).orElseGet(null);

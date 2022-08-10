@@ -106,7 +106,6 @@ export class HomeAdminUsersComponent implements OnInit {
 
   getEntities(userId?: number, role?: string, username?: string) {
     if (userId === undefined || role === undefined || username === undefined) {
-      alert("Neispravni podaci.")
     } else {
       this.entityOwnerUsername = username;
       this.entityOwnerRole = role;

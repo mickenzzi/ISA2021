@@ -9,8 +9,6 @@ import {AuthenticationService} from './authentication.service';
 export class RequestService {
 
   private requestUrl = 'http://localhost:8081/myApp/api/requests';
-  private token = this.auth.getToken();
-  private reqHeader = new HttpHeaders().set('Authorization', 'Bearer ' + this.token);
 
   constructor(
     private http: HttpClient,
@@ -19,15 +17,15 @@ export class RequestService {
   }
 
   public getAllRequest(id: number) {
-    return this.http.get<Request[]>(`${this.requestUrl}/getAllRequests/${id}`, {headers: this.reqHeader});
+    return this.http.get<Request[]>(`${this.requestUrl}/getAllRequests/${id}`);
   }
 
   //request id
   public getRequest(id: number) {
-    return this.http.get<Request[]>(`${this.requestUrl}/getRequest/${id}`, {headers: this.reqHeader})
+    return this.http.get<Request[]>(`${this.requestUrl}/getRequest/${id}`)
   }
 
   public createRequest(id: number, textRequest: string) {
-    return this.http.get(`${this.requestUrl}/createRequest/${id}/${textRequest}`, {headers: this.reqHeader});
+    return this.http.get(`${this.requestUrl}/createRequest/${id}/${textRequest}`);
   }
 }

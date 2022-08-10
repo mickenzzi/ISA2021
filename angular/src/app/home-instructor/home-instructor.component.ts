@@ -8,6 +8,7 @@ import {RequestService} from '../service/request.service';
 import {AdventureService} from '../service/adventure.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {Subscription} from "rxjs";
+import { ChartType } from 'chart.js';
 
 @Component({
   selector: 'app-home-instructor',
@@ -31,6 +32,10 @@ export class HomeInstructorComponent implements OnInit {
   URL_R: string = ""
   URL_path: string = "/assets/img/";
   textRequest: string = "";
+  averageGrade = "0";
+  startDate: string = "";
+  endDate: string = "";
+  profit: string = "";
   //flags
   flagTitle?: boolean;
   flagPrice?: boolean;
@@ -41,8 +46,36 @@ export class HomeInstructorComponent implements OnInit {
   flag2?: boolean;
   //is adventure reserved
   flag3?: boolean;
+  //prikaz avanutura
+  flag4: boolean = true;
+  //prikaz finansija
+  flag5: boolean = false;
+  //prikaz mesecnih rezervacija
+  flag6: boolean = false;
+  //prikaz sedmicnih rezervacija
+  flag7: boolean = false;
+  //prikaz dnevnih rezervacija
+  flag8: boolean = false;
   //@ts-ignore
   currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+   //chart1
+   barChartLabels1: string[] = ["Januar", "Februar", "Mart", "April", "Maj", "Jun", "Jul", "Avgust", "Septembar", "Oktobar", "Novembar", "Decembar"];
+   barChartData1: any[] = [];
+   chartData1: any[] = [];
+   barChartType1: ChartType = "bar";
+
+    //chart2
+  barChartLabels2: string[] = ["Prva", "Druga", "Treca", "Cetvrta", "Peta"];
+  barChartData2: any[] = [];
+  chartData2: any[] = [];
+  barChartType2: ChartType = "bar";
+
+   //chart3
+   barChartLabels3: string[] = ["Ponedeljak", "Utorak", "Sreda", "Cetvrtak", "Petak", "Subota", "Nedelja"];
+   barChartData3: any[] = [];
+   chartData3: any[] = [];
+   barChartType3: ChartType = "bar";
 
   constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private requestService: RequestService, private adventureService: AdventureService) {
     this.adventures = [];
@@ -120,8 +153,6 @@ export class HomeInstructorComponent implements OnInit {
       if (this.flag2 === false) {
         this.subs.push(this.adventureService.getAllAdventures(this.user.id).subscribe((response: Adventure[]) => {
           this.adventures = response;
-        }, (error: HttpErrorResponse) => {
-          alert(error.message);
         }));
       } else {
         this.adventures = [];
@@ -131,6 +162,7 @@ export class HomeInstructorComponent implements OnInit {
 
 
   requestDelete() {
+    this.flag5 = false;
     if (this.flag2 === false) {
       this.flag2 = true;
       this.getAllAdventures();
@@ -162,6 +194,25 @@ export class HomeInstructorComponent implements OnInit {
     this.getAllAdventures();
   }
 
+  reject() {
+    this.flag5 = false;
+    this.flag4 = true;
+    this.flag6 = false;
+    this.flag7 = false;
+    this.flag8 = false;
+  }
+
+  showProfit() {
+    this.subs.push(this.userService.getInstructorProfit(this.user.id ?? 0, this.startDate, this.endDate).subscribe((response: string) => {
+      this.profit = response + " €"
+    }, (error: HttpErrorResponse) => {
+      alert("Datumi nisu uneti u ispravnom formatu.");
+      this.startDate = "";
+      this.endDate = "";
+     }
+    ));
+  }
+
 
   deleteAdventure(idAdventure1?: number) {
     if (idAdventure1 === undefined) {
@@ -178,7 +229,7 @@ export class HomeInstructorComponent implements OnInit {
   searchAdventure(event: any) {
     if (this.user.id === undefined) {
     } else {
-      if (this.search === null || this.search.length === 0) {
+      if (this.search === null || this.search.length === 0 || this.search === undefined) {
         this.getAllAdventures();
       } else {
         this.subs.push(this.adventureService.getSearchAdventures(this.user.id, this.search).subscribe((response: Adventure[]) => {
@@ -230,4 +281,67 @@ export class HomeInstructorComponent implements OnInit {
       }));
     }
   }
+
+  sortByGrade() {
+    if (this.user.id === undefined) {
+    } else {
+      if (this.flagPrice === false) {
+        this.flagPrice = true;
+      } else {
+        this.flagPrice = false;
+      }
+      this.subs.push(this.adventureService.sortAdventuresByGrade(this.user.id, this.flagPrice).subscribe((response: Adventure[]) => {
+        this.adventures = response;
+      }));
+    }
+  }
+
+  showFinancies(){
+    this.flag4 = false;
+    this.flag1 = false;
+    this.flag5 = true;
+    this.getReservationsPerMonth();
+    this.getReservationsPerWeek();
+    this.getReservationsPerDay();
+  }
+
+  getReservationsPerMonth() {
+    this.subs.push(this.userService.getReservationsPerMonth(this.user.id ?? 0).subscribe((response) => {
+      this.chartData1 = response;
+      this.barChartData1 = [{data: this.chartData1, label: 'Broj rezervacija prikazan po mesecima'}]
+    }));
+  }
+
+  getReservationsPerWeek() {
+    this.subs.push(this.userService.getReservationsPerWeek(this.user.id ?? 0).subscribe((response) => {
+      this.chartData2 = response;
+      this.barChartData2 = [{data: this.chartData2, label: 'Broj rezervacija prikazan po sedmicama'}]
+    }));
+  }
+
+  getReservationsPerDay() {
+    this.subs.push(this.userService.getReservationsPerDay(this.user.id ?? 0).subscribe((response) => {
+      this.chartData3 = response;
+      this.barChartData3 = [{data: this.chartData3, label: 'Broj rezervacija prikazan po danima'}]
+    }));
+  }
+
+  showMonthReservation() {
+    this.flag6 = true;
+    this.flag7 = false;
+    this.flag8 = false;
+  }
+
+  showWeekReservation() {
+    this.flag6 = false;
+    this.flag7 = true;
+    this.flag8 = false;
+  }
+
+  showDayReservation() {
+    this.flag6 = false;
+    this.flag7 = false;
+    this.flag8 = true;
+  }
+
 }

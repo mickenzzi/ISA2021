@@ -19,6 +19,8 @@ export class AddAdventureComponent implements OnInit {
   URL_path: string = "/assets/img/";
   public adventure: Adventure = new Adventure();
   user: User = new User();
+  lat: string = "";
+  long: string = "";
   //@ts-ignore
   currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -73,7 +75,9 @@ export class AddAdventureComponent implements OnInit {
         rule: this.adventure.rule,
         equipment: this.adventure.equipment,
         priceList: this.adventure.priceList,
-        cancelCondition: this.adventure.cancelCondition
+        cancelCondition: this.adventure.cancelCondition,
+        latitude: this.adventure.latitude,
+        longitude: this.adventure.longitude
       }
       this.adventureService.createAdventure(data, this.user.id)
         .subscribe(
@@ -82,7 +86,7 @@ export class AddAdventureComponent implements OnInit {
             this.router.navigate(['/homeInstructor']);
           },
           (error: HttpErrorResponse) => {
-            alert(error.message);
+            alert("Neophodno je uneti ispravne podatke.");
           }
         );
     }

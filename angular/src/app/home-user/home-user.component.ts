@@ -62,6 +62,8 @@ export class HomeUserComponent implements OnInit {
     this.flag1 = false;
     this.flagButton = true;
     this.flag1Button = true;
+    this.review1.comment = undefined;
+    this.complaint.content = undefined;
     this.getAllReservations();
   }
 

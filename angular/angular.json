@@ -28,7 +28,8 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
-              "src/styles.css"
+              "src/styles.css",
+              "./node_modules/@syncfusion/ej2-material-theme/styles/material.css"
             ],
             "scripts": []
           },
@@ -98,13 +99,26 @@
               "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
               "./node_modules/@fullcalendar/core/main.css",
               "./node_modules/@fullcalendar/daygrid/main.css",
-              "src/styles.css"
+              "src/styles.css",
+              "./node_modules/@syncfusion/ej2-material-theme/styles/material.css"
             ],
             "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         }
       }
     }
   },
-  "defaultProject": "angular-app"
+  "defaultProject": "angular-app",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }

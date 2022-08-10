@@ -1,7 +1,8 @@
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
 /* You can add global styles to this file, and also import other style files */
 
 html, body {
-  height: 100%;
+  height: auto;
 }
 
 body {
@@ -57,7 +58,6 @@ p {
   position: relative;
   width: 340px;
   height: auto;
-  padding: 0px;
   box-sizing: border-box;
   margin-left: 450px;
   margin-top: 35px;
@@ -85,8 +85,8 @@ p {
   padding: 10px;
   margin: 0 0 10px 0;
   box-sizing: border-box;
-  border-radius: 3px;
-  background: #FAFAFA;
+  border-radius: 5px;
+  background-color: mintcream;
   overflow: hidden;
   animation: input_opacity 0.2s cubic-bezier(.55, 0, .1, 1);
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
@@ -98,11 +98,11 @@ p {
   position: relative;
   width: 100%;
   padding: 10px;
-  margin: -10px -10px 25px -10px;
+  margin: -10px -5px 20px -10px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   background: #009688;
   font-family: 'Roboto', sans-serif;
-  font-size: 1.3rem;
+  font-size: 1.6rem;
   color: #FAFAFA;
   animation: scale_header 0.6s cubic-bezier(.55, 0, .1, 1), text_opacity 1s cubic-bezier(.55, 0, .1, 1);
   box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.14),
@@ -148,8 +148,8 @@ p {
 .login-input {
   position: relative;
   width: 100%;
-  padding: 10px 5px;
-  margin: 0 0 25px 0;
+  padding: 5px 5px;
+  margin: 0 0 15px 0;
   border: none;
   border-bottom: 2px solid rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
@@ -209,6 +209,19 @@ p {
 
 .login-button.raised:hover {
   background: #FDAB43;
+}
+
+.home-registration-content {
+  height: 100%;
+  width: 100%;
+  background-color: lightslategray;
+  background-position: center;
+  margin: 0;
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 
@@ -361,7 +374,7 @@ p {
 
 
 .notification-panel {
-  width: 600px;
+  width: auto;
   height: auto;
   background-color: rgba(78, 89, 103, 0.8);
   border-style: ridge;
@@ -370,7 +383,7 @@ p {
 }
 
 .notification-panel-header {
-  width: 600px;
+  width: auto;
   height: 50px;
   background-color: #AEBACA;
   margin-top: -320px;
@@ -378,7 +391,7 @@ p {
 }
 
 .notification-panel-button {
-  margin-left: 230px;
+  margin-left: 370px;
   margin-top: 10px;
 }
 
@@ -400,8 +413,8 @@ p {
 
 .table-header {
   display: flex;
-  width: 100%;
   background: #000;
+  width: auto;
 }
 
 .table-row {
@@ -422,6 +435,7 @@ p {
 .header__item {
   text-transform: uppercase;
   color: white;
+  width: auto;
 }
 
 .approve-button {

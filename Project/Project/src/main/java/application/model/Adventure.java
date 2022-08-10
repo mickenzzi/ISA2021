@@ -44,6 +44,33 @@ public class Adventure {
 	private String description;
 	@Column(name="reserved")
 	private boolean reserved;
+	@Column(name="latitude")
+	private double latitude;
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+
+	@Column(name="longitude")
+	private double longitude;
+	@Column(name="average_grade")
+	private String avgGrade;
+	
+	
+	@OneToMany(mappedBy="adventureImage", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Image> images;
 	
 
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -108,6 +135,14 @@ public class Adventure {
 
 	public void setMaxNumber(int maxNumber) {
 		this.maxNumber = maxNumber;
+	}
+	
+	public List<Image> getImages(){
+		return images;
+	}
+	
+	public void setImages(List<Image> images) {
+		this.images = images;
 	}
 
 	public String getRule() {
@@ -188,6 +223,14 @@ public class Adventure {
 
 	public void setReserved(boolean reserved) {
 		this.reserved = reserved;
+	}
+
+	public String getAvgGrade() {
+		return avgGrade;
+	}
+
+	public void setAvgGrade(String avgGrade) {
+		this.avgGrade = avgGrade;
 	}
 
 	public Adventure() {

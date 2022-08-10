@@ -1,98 +1,82 @@
 <body class="home-adventure-content">
-<div class="toolbar">
-  <button (click)="goBack()" class="button-2" style="margin-left:20px;">Nazad</button>
-  <button (click)="showActionModal()" class="button-2" style="margin-left:120px">Kreiraj akciju</button>
-</div>
-<div class="card1">
-  <img src="{{adventure.image}}" style="width:550px; height:250px;">
-  <img class="small-images" src="/assets/img/meeting1.jpg">
-  <img class="small-images" src="/assets/img/meeting2.jpg"><br>
-  <img class="small-images" src="/assets/img/meeting3.jpg">
-  <img class="small-images" src="/assets/img/meeting4.jpg"><br>
-  <img class="small-images" src="/assets/img/meeting5.jpg">
-  <img class="small-images" src="/assets/img/meeting6.jpg">
-</div>
-<div *ngIf="!flag1" class="card3">
+  <div class="toolbar">
+    <button (click)="goBack()" class="button-2" style="margin-left:20px;">Nazad</button>
+    <button (click)="showActionModal()" class="button-2" style="margin-left:120px">Kreiraj akciju</button>
+  </div>
+  <div class="card1">
+    <img src="{{adventure.image}}" style="width:550px; height:200px;"><br>
+    <button class="button-2" onclick="document.getElementById('getFile1').click()">Select
+      image</button>
+    <input type='file' (change)="onSelectFile1($event)" [(ngModel)]="url1" id="getFile1" style="display:none">
+    <br>
+    <img class="small-images" src="{{url1}}"><br>
+    <button class="button-2" onclick="document.getElementById('getFile2').click()">Select
+      image</button>
+    <input type='file' (change)="onSelectFile2($event)" [(ngModel)]="url2" id="getFile2" style="display:none"><br>
+    <img class="small-images" src="{{url2}}"><br>
+    <button class="button-2" [(ngModel)]="url3"
+      onclick="document.getElementById('getFile3').click()">Select image</button>
+    <input type='file' (change)="onSelectFile3($event)" id="getFile3" style="display:none"><br>
+    <img class="small-images" src="{{url3}}">
+  </div>
+  <div *ngIf="!flag1" class="card3">
+    <br>
+    <label class="label-margin-left>" style="color:black">Datum početka akcije:</label><br>
+    <input autofocus required type="text" [(ngModel)]="termin.start" [ngModelOptions]="{standalone: true}"
+      placeholder="dd-MMM-yyy HH:mm:ss" /><br><br>
+    <label class="label-margin-left>" style="color:black">Datum kraja akcije:</label><br>
+    <input autofocus required type="text" [(ngModel)]="termin.end" [ngModelOptions]="{standalone: true}"
+      placeholder="dd-MMM-yyy HH:mm:ss" /><br><br>
+    <label class="label-margin-left>" style="color:black">Mesto:</label><br>
+    <input [(ngModel)]="adventure.address" disabled="true" [ngModelOptions]="{standalone: true}" autofocus required
+      type="text" /><br><br>
+    <label class="label-margin-left>" style="color:black">Trajanje:</label><br>
+    <input autofocus required type="text" [(ngModel)]="termin.duration" [ngModelOptions]="{standalone: true}" /><br><br>
+    <label class="label-margin-left>" style="color:black">Maksimalan broj osoba:</label><br>
+    <input autofocus required type="text" [(ngModel)]="capacity" [ngModelOptions]="{standalone: true}" /><br><br>
+    <label class="label-margin-left>" style="color:black">Cena(EUR):</label><br>
+    <input autofocus required type="text" [(ngModel)]="price" [ngModelOptions]="{standalone: true}" /><br><br>
+    <input type="submit" id="createActionButton" value="Kreiraj" class="mat-button" (click)="createAction()"
+      style="margin-left: 25px; margin-top:10px" />
+    <button (click)="rejectCreateAction()" class="mat-button" style="margin-left: 5px">Odustani</button>
+  </div>
+  <div class="card2">
+    <div class="header"><label style="font-size: medium; color: white">Izmeni avanturu</label></div>
+    <br><br>
+    <label class="label-margin-left">Naziv avanture:</label><input [(ngModel)]="adventure.title" [disabled]='isDisabled'
+      [ngModelOptions]="{standalone: true}" autofocus class="input-margin-left" required type="text" /><br><br>
+    <label class="label-margin-left">Lokacija:</label><input [(ngModel)]="adventure.address" [disabled]='isDisabled'
+      [ngModelOptions]="{standalone: true}" autofocus class="input-margin-left" required type="text" /><br><br>
+      <label class="label-margin-left">Geografska sirina:</label><input [(ngModel)]="adventure.latitude" [disabled]='isDisabled'
+      [ngModelOptions]="{standalone: true}" autofocus class="input-margin-left" required type="number" /><br><br>
+      <label class="label-margin-left">Geografska duzina:</label><input [(ngModel)]="adventure.longitude" [disabled]='isDisabled'
+      [ngModelOptions]="{standalone: true}" autofocus class="input-margin-left" required type="number" /><br><br>
+    <label class="label-margin-left">Maksimalan broj osoba:</label><input [(ngModel)]="adventure.maxNumber" [disabled]='isDisabled'
+      [ngModelOptions]="{standalone: true}" autofocus class="input-margin-left" required type="text" /><br><br>
+    <label class="label-margin-left">Cena(EUR):</label><input [(ngModel)]="adventure.priceList" [disabled]='isDisabled'
+      [ngModelOptions]="{standalone: true}" autofocus class="input-margin-left" required type="text" /><br><br>
+    <label class="label-margin-left">Besplatna oprema:</label><br><textarea [(ngModel)]="adventure.equipment"
+      [ngModelOptions]="{standalone: true}" autofocus class="label-margin-left" required [disabled]='isDisabled'
+      style="width: 450px; height: 70px" type="text"></textarea><br><br>
+    <label class="label-margin-left">Kratak opis avanture:</label><br><textarea [(ngModel)]="adventure.description"
+      [ngModelOptions]="{standalone: true}" autofocus class="label-margin-left" required [disabled]='isDisabled'
+      style="width: 450px; height: 70px" type="text"></textarea><br><br>
+    <label class="label-margin-left">Biografija instruktora:</label><br><textarea
+      [(ngModel)]="adventure.instructorBiography" [ngModelOptions]="{standalone: true}" autofocus [disabled]='isDisabled'
+      class="label-margin-left" required style="width: 450px; height: 70px" type="text"></textarea><br><br>
+    <label class="label-margin-left">Pravila ponasanja i dodatne usluge:</label><br><textarea
+      [(ngModel)]="adventure.rule" [ngModelOptions]="{standalone: true}" autofocus class="label-margin-left" required [disabled]='isDisabled'
+      style="width: 450px; height:70px" type="text"></textarea><br><br>
+    <label class="label-margin-left">Uslovi otkazivanja:</label><br><textarea [(ngModel)]="adventure.cancelCondition"
+      [ngModelOptions]="{standalone: true}" autofocus class="label-margin-left" required [disabled]='isDisabled'
+      style="width: 450px; height: 70px" type="text"></textarea><br><br>
+    <input (click)="editAdventure()" *ngIf="!adventure.reserved" class="mat-button" id="editButton" 
+      style="margin-left: 40%" type="submit" value="Izmeni" />
+  </div>
   <br>
-  <label class="label-margin-left>" style="color:black">Datum početka akcije:</label><br>
-  <input autofocus required type="text" [(ngModel)]="termin.start" [ngModelOptions]="{standalone: true}" placeholder="dd-MMM-yyy HH:mm:ss"/><br><br>
-  <label class="label-margin-left>" style="color:black" >Datum kraja akcije:</label><br>
-  <input autofocus required type="text" [(ngModel)]="termin.end" [ngModelOptions]="{standalone: true}" placeholder="dd-MMM-yyy HH:mm:ss"/><br><br>
-  <label class="label-margin-left>" style="color:black">Mesto:</label><br>
-  <input [(ngModel)]="adventure.address" disabled="true" [ngModelOptions]="{standalone: true}" autofocus required type="text"/><br><br>
-  <label class="label-margin-left>" style="color:black">Trajanje:</label><br>
-  <input autofocus required type="text" [(ngModel)]="termin.duration" [ngModelOptions]="{standalone: true}"/><br><br>
-  <label class="label-margin-left>" style="color:black">Maksimalan broj osoba:</label><br>
-  <input autofocus required type="text" [(ngModel)]="capacity" [ngModelOptions]="{standalone: true}"/><br><br>
-  <label class="label-margin-left>" style="color:black">Cena:</label><br>
-  <input autofocus required type="text" [(ngModel)]="price" [ngModelOptions]="{standalone: true}"/><br><br>
-  <input type="submit" id="createActionButton" value="Kreiraj" class="mat-button" (click)="createAction()" style="margin-left: 25px; margin-top:10px"/>
-  <button (click)="rejectCreateAction()" class="mat-button" style="margin-left: 5px">Odustani</button>
-</div>
-<div class="card2">
-  <div class="header"><label style="font-size: medium; color: white">Izmeni avanturu</label></div>
-  <br><br>
-  <label class="label-margin-left">Naziv avanture:</label><input [(ngModel)]="adventure.title"
-                                                                 [ngModelOptions]="{standalone: true}"
-                                                                 autofocus class="input-margin-left"
-                                                                 required type="text"/><br><br>
-  <label class="label-margin-left">Lokacija:</label><input [(ngModel)]="adventure.address"
-                                                           [ngModelOptions]="{standalone: true}"
-                                                           autofocus class="input-margin-left" required
-                                                           type="text"/><br><br>
-  <label class="label-margin-left">Maksimalan broj osoba:</label><input [(ngModel)]="adventure.maxNumber"
-                                                                        [ngModelOptions]="{standalone: true}"
-                                                                        autofocus class="input-margin-left"
-                                                                        required type="text"/><br><br>
-  <label class="label-margin-left">Cena(EUR):</label><input [(ngModel)]="adventure.priceList"
-                                                            [ngModelOptions]="{standalone: true}"
-                                                            autofocus class="input-margin-left" required
-                                                            type="text"/><br><br>
-  <label class="label-margin-left">Besplatna oprema:</label><br><textarea [(ngModel)]="adventure.equipment"
-                                                                          [ngModelOptions]="{standalone: true}"
-                                                                          autofocus class="label-margin-left"
-                                                                          required
-                                                                          style="width: 450px; height: 70px"
-                                                                          type="text"></textarea><br><br>
-  <label class="label-margin-left">Kratak opis avanture:</label><br><textarea [(ngModel)]="adventure.description"
-                                                                              [ngModelOptions]="{standalone: true}"
-                                                                              autofocus
-                                                                              class="label-margin-left"
-                                                                              required
-                                                                              style="width: 450px; height: 70px"
-                                                                              type="text"></textarea><br><br>
-  <label class="label-margin-left">Biografija instruktora:</label><br><textarea
-  [(ngModel)]="adventure.instructorBiography"
-  [ngModelOptions]="{standalone: true}"
-  autofocus
-  class="label-margin-left"
-  required
-  style="width: 450px; height: 70px"
-  type="text"></textarea><br><br>
-  <label class="label-margin-left">Pravila ponasanja i dodatne usluge:</label><br><textarea [(ngModel)]="adventure.rule"
-                                                                                            [ngModelOptions]="{standalone: true}"
-                                                                                            autofocus
-                                                                                            class="label-margin-left"
-                                                                                            required
-                                                                                            style="width: 450px; height:70px"
-                                                                                            type="text"></textarea><br><br>
-  <label class="label-margin-left">Uslovi otkazivanja:</label><br><textarea [(ngModel)]="adventure.cancelCondition"
-                                                                            [ngModelOptions]="{standalone: true}"
-                                                                            autofocus
-                                                                            class="label-margin-left"
-                                                                            required
-                                                                            style="width: 450px; height: 70px"
-                                                                            type="text"></textarea><br><br>
-  <input (click)="editAdventure()" *ngIf="!adventure.reserved" class="mat-button" id="editButton" style="margin-left: 40%"
-         type="submit" value="Izmeni"/>
-</div>
-<br>
-<div style="margin-left: 700px; margin-top: 100px; padding-bottom: 100px; width: 580px; height: 400px">
-<agm-map style="height: 90%; width: 100%"
-  [latitude]='lat'
-  [longitude]='long'>
-  <agm-marker [latitude]='lat' [longitude]='long'>
-  </agm-marker>
-</agm-map>
-</div>
+  <div style="margin-left: 700px; margin-top: 100px; padding-bottom: 100px; width: 580px; height: 400px">
+    <agm-map id="map" style="height: 90%; width: 100%" [latitude]='lat' [longitude]='long'>
+      <agm-marker [latitude]="lat" [longitude]="long"></agm-marker>
+    </agm-map>
+  </div>
 </body>

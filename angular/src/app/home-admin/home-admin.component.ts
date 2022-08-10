@@ -12,6 +12,7 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {Subscription} from "rxjs"
 import {ChartType} from "chart.js";
 import {Loyalty} from "../model/loyalty";
+import { TouchSequence } from 'selenium-webdriver';
 
 @Component({
   selector: 'app-home-admin', templateUrl: './home-admin.component.html', styleUrls: ['./home-admin.component.css']
@@ -110,6 +111,8 @@ export class HomeAdminComponent implements OnInit {
     this.getAllComplains();
     this.getAllComments();
     this.getAllRequest();
+    this.complaint1 = new Complaint();
+    this.rejectText = ""
   }
 
   closeNotification() {
@@ -138,6 +141,7 @@ export class HomeAdminComponent implements OnInit {
     this.flag5 = true;
     this.flag6 = false;
     this.flag7 = false;
+  
   }
 
   showNotifications() {
@@ -149,6 +153,7 @@ export class HomeAdminComponent implements OnInit {
     this.flag5 = false;
     this.flag6 = false;
     this.flag7 = false;
+    this.flag9 = false;
   }
 
   showReviews() {
@@ -160,6 +165,7 @@ export class HomeAdminComponent implements OnInit {
     this.flag5 = false;
     this.flag6 = false;
     this.flag7 = false;
+    this.flag9 = false;
   }
 
   showComplains() {
@@ -171,12 +177,20 @@ export class HomeAdminComponent implements OnInit {
     this.flag5 = false;
     this.flag6 = true;
     this.flag7 = false;
+    this.flag9 = false;
   }
 
 
   showFinances() {
     this.flag10 = false;
     if (this.flag9 === false) {
+      this.flag1 = false;
+      this.flag2 = false;
+      this.flag3 = false
+      this.flag4 = false;
+      this.flag5 = false;
+      this.flag6 = false;
+      this.flag7 = false;
       this.flag9 = true;
       this.getPercent();
       this.getYearProfit(this.year);
@@ -230,7 +244,7 @@ export class HomeAdminComponent implements OnInit {
   }
 
   getAllRequest() {
-    if (this.user.id === undefined) {
+    if (this.user.id === undefined) { 
     } else {
       this.subs.push(this.requestService.getAllRequest(this.user.id).subscribe((response) => {
         this.requests = response;
@@ -311,7 +325,7 @@ export class HomeAdminComponent implements OnInit {
   getYearProfit(event: any) {
     this.subs.push(this.userService.getYearProfit(this.year).subscribe((response) => {
       this.yearProfit = response;
-      this.yearProfit = this.yearProfit + " E"
+      this.yearProfit = this.yearProfit + " €";
     }));
   }
 

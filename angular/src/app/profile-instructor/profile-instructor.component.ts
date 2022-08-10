@@ -3,6 +3,7 @@ import {UserService} from '../service/user.service';
 import {User} from '../model/user';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from "rxjs";
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-profile-instructor',
@@ -55,8 +56,10 @@ export class ProfileInstructorComponent implements OnInit {
       alert('Unesite lozinku');
     } else {
       this.subs.push(this.userService.updateUser(this.user).subscribe(() => {
-        alert('Korisnik je izmenjen.');
-        this.router.navigate(['/homeInstructor'])
+        alert('Korisnik je izmenjen. Redirekcija na logovanje zbog autentifikacije');
+        this.router.navigate(['/login']);
+      }, (error: HttpErrorResponse) => {
+        alert("Podaci nisu validni");
       }));
     }
   }

@@ -2,10 +2,10 @@
 <div class="toolbar">
 </div>
 <br><br>
-<div class="notification-panel-header" style="margin-top: 100px; margin-left:100px;">
+<div class="notification-panel-header" style="margin-top: 100px; margin-left:10px">
   <label class="title" style="margin-left:170px; margin-top:5px; color: black;"> Prikaz rezervacija</label>
 </div>
-<div class="notification-panel" style=" margin-left:100px;">
+<div class="notification-panel" style=" margin-left:10px;">
   <table class="table">
     <tr class="table-header">
       <th class="header__item">Id</th>
@@ -35,7 +35,7 @@
   </table>
 </div>
 <div *ngIf="flag"
-     style="background-color: #D1D4D8; width: 300px; height: 200px; margin-left:1000px; margin-top:-100px; position:fixed">
+     style="background-color: #D1D4D8; width: 300px; height: 200px; margin-left:500px; margin-top:50px; position:fixed">
   <button (click)="closeModal()" class="mat-button" style="margin-left: 90%; margin-top: 3px">X</button>
   <br>
   <label style="margin-left:3px">Izaberite ocenu:</label>
@@ -51,12 +51,12 @@
             style="width:98%; height: 65%" type="text"></textarea>
 </div>
 <div *ngIf="flag1"
-     style="background-color: #D1D4D8; width: 300px; height: 200px; margin-left:1000px; margin-top:-200px; position:fixed">
+     style="background-color: #D1D4D8; width: 300px; height: 200px; margin-left:500px; margin-top: 50px; position:fixed">
   <button (click)="closeModal()" class="mat-button" style="margin-left: 90%; margin-top: 3px">X</button>
   <br>
   <br>
   <textarea [(ngModel)]="complaint.content" [ngModelOptions]="{standalone: true}" placeholder="Unesite tekst zalbe"
-            style="width: 98%; height:73%"
+            style="width: 98%; height:73%;"
             type="text"></textarea>
 </div>
 

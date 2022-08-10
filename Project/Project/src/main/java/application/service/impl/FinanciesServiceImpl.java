@@ -10,12 +10,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import application.model.Adventure;
 import application.model.Financies;
 import application.model.Loyalty;
 import application.model.Reservation;
+import application.model.User;
+import application.repository.AdventureRepository;
 import application.repository.FinanciesRepository;
 import application.repository.LoyaltyRepository;
 import application.repository.ReservationRepository;
+import application.repository.UserRepository;
 import application.service.FinanciesService;
 import java.util.Collections;
 
@@ -27,6 +31,11 @@ public class FinanciesServiceImpl implements FinanciesService {
 	private ReservationRepository reservationRepository;
 	@Autowired
 	private LoyaltyRepository loyaltyRepository;
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private AdventureRepository adventureRepository;
+
 
 	@Override
 	public Double getYearProfit(String year) throws ParseException {
@@ -44,8 +53,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(r1.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = r1.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = r1.getPrice() - loyalty.getDiscount()*r1.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		return profit;
@@ -107,8 +116,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(rJan.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = rJan.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = rJan.getPrice() - loyalty.getDiscount()*rJan.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		profits.add(profit);
@@ -118,8 +127,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(rFeb.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = rFeb.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = rFeb.getPrice() - loyalty.getDiscount()*rFeb.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		profits.add(profit);
@@ -129,8 +138,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(rMar.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = rMar.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = rMar.getPrice() - loyalty.getDiscount()*rMar.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		profits.add(profit);
@@ -140,8 +149,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(rApr.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = rApr.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = rApr.getPrice() - loyalty.getDiscount()*rApr.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		profits.add(profit);
@@ -151,8 +160,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(rMay.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = rMay.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = rMay.getPrice() - loyalty.getDiscount()*rMay.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		profits.add(profit);
@@ -162,8 +171,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(rJun.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = rJun.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = rJun.getPrice() - loyalty.getDiscount()*rJun.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		profits.add(profit);
@@ -173,8 +182,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(rJul.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = rJul.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = rJul.getPrice() - loyalty.getDiscount()*rJul.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		profits.add(profit);
@@ -184,8 +193,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(rAug.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = rAug.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = rAug.getPrice() - loyalty.getDiscount()*rAug.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		profits.add(profit);
@@ -195,8 +204,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(rSep.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = rSep.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = rSep.getPrice() - loyalty.getDiscount()*rSep.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		profits.add(profit);
@@ -206,8 +215,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(rOct.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = rOct.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = rOct.getPrice() - loyalty.getDiscount()*rOct.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		profits.add(profit);
@@ -217,8 +226,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(rNov.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = rNov.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = rNov.getPrice() - loyalty.getDiscount()*rNov.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		profits.add(profit);
@@ -228,8 +237,8 @@ public class FinanciesServiceImpl implements FinanciesService {
 			percent = nearPercent(rDec.getEnd());
 			double oldPrice = 0;
 			double newPrice = 0;
-			oldPrice = rDec.getPrice() * percent / 100;
-			newPrice = oldPrice - ((loyalty.getDiscount()*oldPrice)/100);
+			oldPrice = rDec.getPrice() - loyalty.getDiscount()*rDec.getPrice()/100;
+			newPrice = percent*oldPrice/100;
 			profit += newPrice;
 		}
 		profits.add(profit);
@@ -287,5 +296,207 @@ public class FinanciesServiceImpl implements FinanciesService {
 		String date1 = dateFormat.format(date);
 		financies.setDefine(date1);
 		financiesRepository.save(financies);
+	}
+
+	@Override
+	public Double getInstructorProfit(Long id, String start, String end) throws ParseException {
+		double profit = 0;
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyy");
+		Date min = dateFormat.parse(start);
+		Date max = dateFormat.parse(end);
+		List<Reservation> reservations = reservationRepository.findAll();
+		List<Reservation> usableReservations = new ArrayList<Reservation>();
+		for(Reservation r: reservations) {
+			Date startDate = dateFormat.parse(r.getStart());
+			Date endDate = dateFormat.parse(r.getEnd());
+			if(r.isCreatedReservation()== true && startDate.compareTo(min) >= 0 && endDate.compareTo(max) <= 0 && r.getAdventureReservation().getUserAdventure().getId() == id) {
+				usableReservations.add(r);
+			}
+		}
+		for(Reservation r1: usableReservations) {
+			Loyalty loyalty = loyaltyRepository.findByName(r1.getUserReservation().getLoyaltyStatus());
+			Loyalty loyalty1 = loyaltyRepository.findByName(r1.getAdventureReservation().getUserAdventure().getLoyaltyStatus());
+			double newPrice = 0;
+			double instructorProfit = 0;
+			newPrice = r1.getPrice() - loyalty.getDiscount()*r1.getPrice()/100;
+			instructorProfit = newPrice*loyalty1.getDiscount()/100;
+			profit = profit + instructorProfit;
+		}
+		return profit;
+	}
+
+	@Override
+	public List<Double> getReservationsPerMonth(Long id) throws ParseException {
+		List<Double> resNumber = new ArrayList<Double>();
+		User instructor = userRepository.findById(id).orElseGet(null);
+		List<Adventure> adventures = adventureRepository.findAll();
+		List<Adventure> instructorAdventures = new ArrayList<Adventure>();
+		for(Adventure a: adventures) {
+			if(a.getUserAdventure().getId() == instructor.getId()) {
+				instructorAdventures.add(a);
+			}
+		}
+		List<Reservation> reservations = reservationRepository.findAll();
+		List<Reservation> usableReservations = new ArrayList<Reservation>();
+		List<Reservation> usableJanReservations = new ArrayList<Reservation>();
+		List<Reservation> usableFebReservations = new ArrayList<Reservation>();
+		List<Reservation> usableMarReservations = new ArrayList<Reservation>();
+		List<Reservation> usableAprReservations = new ArrayList<Reservation>();
+		List<Reservation> usableMayReservations = new ArrayList<Reservation>();
+		List<Reservation> usableJunReservations = new ArrayList<Reservation>();
+		List<Reservation> usableJulReservations = new ArrayList<Reservation>();
+		List<Reservation> usableAugReservations = new ArrayList<Reservation>();
+		List<Reservation> usableSepReservations = new ArrayList<Reservation>();
+		List<Reservation> usableOctReservations = new ArrayList<Reservation>();
+		List<Reservation> usableNovReservations = new ArrayList<Reservation>();
+		List<Reservation> usableDecReservations = new ArrayList<Reservation>();
+		for(Adventure a: instructorAdventures) {
+			for(Reservation r: reservations) {
+				if(r.getAdventureReservation().getId() == a.getId())
+				usableReservations.add(r);
+			}
+		}
+		for(Reservation r: usableReservations) {
+			if (r.getStart().contains("Jan")) {
+				usableJanReservations.add(r);
+			} else if (r.getStart().contains("Feb")) {
+				usableFebReservations.add(r);
+			} else if (r.getStart().contains("Mar")) {
+				usableMarReservations.add(r);
+			} else if (r.getStart().contains("Apr")) {
+				usableAprReservations.add(r);
+			} else if (r.getStart().contains("May")) {
+				usableMayReservations.add(r);
+			} else if (r.getStart().contains("Jun")) {
+				usableJunReservations.add(r);
+			} else if (r.getStart().contains("Jul")) {
+				usableJulReservations.add(r);
+			} else if (r.getStart().contains("Aug")) {
+				usableAugReservations.add(r);
+			} else if (r.getStart().contains("Sep")) {
+				usableSepReservations.add(r);
+			} else if (r.getStart().contains("Oct")) {
+				usableOctReservations.add(r);
+			} else if (r.getStart().contains("Nov")) {
+				usableNovReservations.add(r);
+			} else if (r.getStart().contains("Dec")) {
+				usableDecReservations.add(r);
+			}
+		}
+		resNumber.add((double) usableJanReservations.size());
+		resNumber.add((double) usableFebReservations.size());
+		resNumber.add((double) usableMarReservations.size());
+		resNumber.add((double) usableAprReservations.size());
+		resNumber.add((double) usableMayReservations.size());
+		resNumber.add((double) usableJunReservations.size());
+		resNumber.add((double) usableJulReservations.size());
+		resNumber.add((double) usableAugReservations.size());
+		resNumber.add((double) usableSepReservations.size());
+		resNumber.add((double) usableOctReservations.size());
+		resNumber.add((double) usableNovReservations.size());
+		resNumber.add((double) usableDecReservations.size());
+		return resNumber;
+	}
+
+	@Override
+	public List<Double> getReservationsPerWeek(Long id) throws ParseException {
+		List<Double> resNumber = new ArrayList<Double>();
+		User instructor = userRepository.findById(id).orElseGet(null);
+		List<Adventure> adventures = adventureRepository.findAll();
+		List<Adventure> instructorAdventures = new ArrayList<Adventure>();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyy");
+		for(Adventure a: adventures) {
+			if(a.getUserAdventure().getId() == instructor.getId()) {
+				instructorAdventures.add(a);
+			}
+		}
+		List<Reservation> reservations = reservationRepository.findAll();
+		List<Reservation> usableReservations = new ArrayList<Reservation>();
+		List<Reservation> usableFirstWeekReservations = new ArrayList<Reservation>();
+		List<Reservation> usableSecondWeekReservations = new ArrayList<Reservation>();
+		List<Reservation> usableThirdWeekReservations = new ArrayList<Reservation>();
+		List<Reservation> usableFourthWeekReservations = new ArrayList<Reservation>();
+		List<Reservation> usableFifthWeekReservations = new ArrayList<Reservation>();
+		for(Adventure a: instructorAdventures) {
+			for(Reservation r: reservations) {
+				if(r.getAdventureReservation().getId() == a.getId())
+				usableReservations.add(r);
+			}
+		}
+		for(Reservation r: usableReservations) {
+			Date start = dateFormat.parse(r.getStart());
+			if (start.getDate() <= 7) {
+				usableFirstWeekReservations.add(r);
+			} else if (start.getDate() <= 14) {
+				usableSecondWeekReservations.add(r);
+			} else if (start.getDate() <= 21) {
+				usableThirdWeekReservations.add(r);
+			} else if (start.getDate() <= 28) {
+				usableFourthWeekReservations.add(r);
+			} else if (start.getDate() <= 31) {
+				usableFifthWeekReservations.add(r);
+			}
+		}
+		resNumber.add((double) usableFirstWeekReservations.size());
+		resNumber.add((double) usableSecondWeekReservations.size());
+		resNumber.add((double) usableThirdWeekReservations.size());
+		resNumber.add((double) usableFourthWeekReservations.size());
+		resNumber.add((double) usableFifthWeekReservations.size());
+		return resNumber;
+	}
+
+	@Override
+	public List<Double> getReservationsPerDay(Long id) throws ParseException {
+		List<Double> resNumber = new ArrayList<Double>();
+		User instructor = userRepository.findById(id).orElseGet(null);
+		List<Adventure> adventures = adventureRepository.findAll();
+		List<Adventure> instructorAdventures = new ArrayList<Adventure>();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyy");
+		for(Adventure a: adventures) {
+			if(a.getUserAdventure().getId() == instructor.getId()) {
+				instructorAdventures.add(a);
+			}
+		}
+		List<Reservation> reservations = reservationRepository.findAll();
+		List<Reservation> usableReservations = new ArrayList<Reservation>();
+		List<Reservation> usableMondayReservations = new ArrayList<Reservation>();
+		List<Reservation> usableTuesdayReservations = new ArrayList<Reservation>();
+		List<Reservation> usableWednesdayReservations = new ArrayList<Reservation>();
+		List<Reservation> usableThursdayReservations = new ArrayList<Reservation>();
+		List<Reservation> usableFridayReservations = new ArrayList<Reservation>();
+		List<Reservation> usableSaturdayReservations = new ArrayList<Reservation>();
+		List<Reservation> usableSundayReservations = new ArrayList<Reservation>();
+		for(Adventure a: instructorAdventures) {
+			for(Reservation r: reservations) {
+				if(r.getAdventureReservation().getId() == a.getId())
+				usableReservations.add(r);
+			}
+		}
+		for(Reservation r: usableReservations) {
+			Date start = dateFormat.parse(r.getStart());
+			if (start.getDay() == 0) {
+				usableSundayReservations.add(r);
+			} else if (start.getDay() == 1) {
+				usableMondayReservations.add(r);
+			} else if (start.getDay() == 2) {
+				usableTuesdayReservations.add(r);
+			} else if (start.getDay() == 3) {
+				usableThursdayReservations.add(r);
+			} else if (start.getDay() == 4) {
+				usableFridayReservations.add(r);
+			} else if (start.getDay() == 5) {
+				usableFridayReservations.add(r);
+			} else if (start.getDay() == 6) {
+				usableFridayReservations.add(r);
+			}
+		}
+		resNumber.add((double) usableMondayReservations.size());
+		resNumber.add((double) usableTuesdayReservations.size());
+		resNumber.add((double) usableWednesdayReservations.size());
+		resNumber.add((double) usableThursdayReservations.size());
+		resNumber.add((double) usableFridayReservations.size());
+		resNumber.add((double) usableSaturdayReservations.size());
+		resNumber.add((double) usableSundayReservations.size());
+		return resNumber;
 	}
 }

@@ -1,3 +1,4 @@
+
 export class Adventure {
   id?: number;
   title?: string;
@@ -11,4 +12,7 @@ export class Adventure {
   priceList?: number;
   cancelCondition?: string;
   reserved?: boolean;
+  avgGrade?: string;
+  latitude?: number;
+  longitude?: number;
 }

@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import application.model.Adventure;
 import application.model.User;
 import application.model.Termin;
+import application.model.Image;
 import application.repository.AdventureRepository;
+import application.repository.ImageRepository;
 import application.repository.TerminRepository;
 import application.repository.UserRepository;
 import application.service.AdventureService;
@@ -25,6 +27,8 @@ public class AdventureServiceImpl implements AdventureService {
 	private UserRepository userRepository;
 	@Autowired
 	private TerminRepository terminRepository;
+	@Autowired
+	private ImageRepository imageRepository;
 
 	Comparator<Adventure> compareByTitle = new Comparator<Adventure>() {
 		@Override
@@ -44,6 +48,13 @@ public class AdventureServiceImpl implements AdventureService {
 		@Override
 		public int compare(Adventure a1, Adventure a2) {
 			return Double.compare(a1.getPriceList(), a2.getPriceList());
+		}
+	};
+	
+	Comparator<Adventure> compareByGrade = new Comparator<Adventure>() {
+		@Override
+		public int compare(Adventure a1, Adventure a2) {
+			return Double.compare(Double.parseDouble(a1.getAvgGrade()), Double.parseDouble(a2.getAvgGrade()));
 		}
 	};
 
@@ -67,9 +78,10 @@ public class AdventureServiceImpl implements AdventureService {
 				else {
 					a.setReserved(false);
 				}
-			adventureRepository.save(a);
 			}
 			adventures.add(a);
+			adventureRepository.save(a);
+			
 		}
 		return adventures;
 		
@@ -95,9 +107,13 @@ public class AdventureServiceImpl implements AdventureService {
 		adventure1.setTitle(adventure.getTitle());
 		adventure1.setUserAdventure(adventure.getUserAdventure());
 		adventure1.setDescription(adventure.getDescription());
+		adventure1.setLatitude(adventure.getLatitude());
+		adventure1.setLongitude(adventure.getLongitude());
 		User instructor = userRepository.findById(id).orElseGet(null);
 		adventure1.setUserAdventure(instructor);
 		adventure1.setReserved(false);
+		adventure1.setAvgGrade("0");
+		adventure.setImages(null);
 		adventureRepository.save(adventure1);
 		return adventure1;
 	}
@@ -117,6 +133,9 @@ public class AdventureServiceImpl implements AdventureService {
 		adventure1.setTitle(adventure.getTitle());
 		adventure1.setDescription(adventure.getDescription());
 		adventure1.setUserAdventure(adventure.getUserAdventure());
+		adventure1.setImages(adventure.getImages());
+		adventure1.setLatitude(adventure.getLatitude());
+		adventure1.setLongitude(adventure.getLongitude());
 		adventureRepository.save(adventure1);
 	}
 
@@ -178,6 +197,48 @@ public class AdventureServiceImpl implements AdventureService {
 			Collections.sort(adventures1, compareByCapacity.reversed());
 		}
 		return adventures1;
+	}
+	
+	@Override
+	public List<Adventure> sortByGrade(Long instructorId, boolean asc) {
+		List<Adventure> adventures = new ArrayList<Adventure>();
+		adventures = adventureRepository.findAll();
+		List<Adventure> adventures1 = new ArrayList<Adventure>();
+		for (Adventure a : adventures) {
+			if (a.getUserAdventure().getId() == instructorId) {
+				adventures1.add(a);
+			}
+		}
+		if (asc == true) {
+			Collections.sort(adventures1, compareByGrade);
+		} else {
+			Collections.sort(adventures1, compareByGrade.reversed());
+		}
+		return adventures1;
+	}
+
+	@Override
+	public List<Image> getAdventureImages(Long adventureId) {
+		List<Image> images = imageRepository.findAll();
+		List<Image> adventureImages = new ArrayList<Image>();
+		for(Image im: images) {
+			if(adventureId==im.getAdventureImage().getId()) {
+				adventureImages.add(im);
+			}
+		}
+		return adventureImages;
+	}
+
+	@Override
+	public void updateImage(Image image) {
+		Image image1 = imageRepository.findById(image.getId()).orElseGet(null);
+		image1.setUrl(image.getUrl());
+		imageRepository.save(image1);
+	}
+
+	@Override
+	public Image findImageById(Long id) {
+		return imageRepository.findById(id).orElseGet(null);
 	}
 
 

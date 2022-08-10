@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core'
-import {UserService} from '../service/user.service';
-import {User} from '../model/user';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from "rxjs";
+import { Component, OnInit } from '@angular/core'
+import { UserService } from '../service/user.service';
+import { User } from '../model/user';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from "rxjs";
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-profile-admin',
@@ -59,8 +60,10 @@ export class ProfileAdminComponent implements OnInit {
       alert('Unesite lozinku');
     } else {
       this.subs.push(this.userService.updateUser(this.user).subscribe(() => {
-        alert('Uspesno ste izmenili podatke');
-        this.router.navigate(['/homeAdmin'])
+        alert('Korisnik je izmenjen. Redirekcija na logovanje zbog autentifikacije');
+        this.router.navigate(['/login']);
+      }, (error: HttpErrorResponse) => {
+        alert("Podaci nisu validni");
       }));
     }
   }
