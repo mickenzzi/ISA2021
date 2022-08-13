@@ -1,5 +1,7 @@
 package application.model;
 
+import application.model.dto.CottageDTO;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -136,5 +138,17 @@ public class Cottage {
 		this.price = price;
 		this.info = info;
 		this.termin = termin;
+	}
+
+	public Cottage(CottageDTO cottageDTO){
+
+		this.name = cottageDTO.getName();
+		this.address = cottageDTO.getAddress();
+		this.description = cottageDTO.getDescription();
+		this.room = cottageDTO.getRoom();
+		this.term = cottageDTO.getTerm();
+		this.price = cottageDTO.getPrice();
+		this.info = cottageDTO.getInfo();
+		this.termin = cottageDTO.getTermin();
 	}
 }
