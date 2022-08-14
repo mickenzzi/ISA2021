@@ -54,6 +54,6 @@ export class HomeCottageOwnerComponent implements OnInit {
   }
 
   goToProfile() {
-    this.router.navigate(['/profileCottageOwner']);
+    this.router.navigate(['/profileOwner']);
   }
 }

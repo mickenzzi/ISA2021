@@ -3,13 +3,14 @@ import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
 import { User } from "../model/user";
 import { UserService } from "../service/user.service";
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 @Component({
-    selector: 'app-profile-cottage-owner',
-    templateUrl: './profile-cottage-owner.component.html',
-    styleUrls: ['./profile-cottage-owner.component.css']
+    selector: 'app-profile-owner',
+    templateUrl: './profile-owner.component.html',
+    styleUrls: ['./profile-owner.component.css']
 })
-export class ProfileCottageOwnerComponent implements OnInit {
+export class ProfileOwnerComponent implements OnInit {
 
     //subscribe
     user: User = new User();
@@ -54,12 +55,15 @@ export class ProfileCottageOwnerComponent implements OnInit {
       }
     
       updateUser() {
+        console.log(this.user);
         if (this.user.password1 === undefined) {
           alert('Unesite lozinku');
         } else {
           this.subs.push(this.userService.updateUser(this.user).subscribe(() => {
-            alert('Uspesno ste izmenili podatke');
-            this.router.navigate(['/homeCottageOwner'])
+            alert('Korisnik je izmenjen. Redirekcija na logovanje zbog autentifikacije');
+            this.logOut()
+          }, (error: HttpErrorResponse) => {
+            alert("Podaci nisu validni");
           }));
         }
       }

@@ -1,19 +1,19 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import { ProfileCottageOwnerComponent } from './profile-cottage-owner.component';
+import { ProfileOwnerComponent } from './profile-owner.component';
 
 describe('ProfileCottageOwnerComponent', () => {
-  let component: ProfileCottageOwnerComponent;
-  let fixture: ComponentFixture<ProfileCottageOwnerComponent>;
+  let component: ProfileOwnerComponent;
+  let fixture: ComponentFixture<ProfileOwnerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ProfileCottageOwnerComponent]
+      declarations: [ProfileOwnerComponent]
     })
       .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProfileCottageOwnerComponent);
+    fixture = TestBed.createComponent(ProfileOwnerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

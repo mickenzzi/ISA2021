@@ -1,8 +1,13 @@
 <div class="cottage-owner-content">
-    <div class="toolbar">
-        <label style="margin-left:100px;">Dobro dosao {{user.username}}</label>
-        <button (click)="logOut()" style="padding: 10px 24px; border-radius: 8px; margin-left: 75%; cursor:pointer;">Odjavite se</button>
-    </div>
+    <mat-toolbar >
+        <div style="width: 50%; float:left">
+            <label style="margin-left:5%;">Dobro dosao, {{user.username}}!</label>
+        </div>
+        
+        <div style="width: 50%; float:right; text-align: right;">
+            <button mat-raised-button color="primary" (click)="logOut()" style="margin-left: 5%; margin-right: 5%; cursor:pointer;">Odjavite se</button>
+        </div>
+    </mat-toolbar>
     <div class="links-containter">
         <hr>
         <div (click)="goToCottageList()" class="link-container" style="background-image: url(/assets/img/cottageLink.jpg);">
@@ -18,6 +23,7 @@
         </div>
         <hr>
     </div>
+    
     <div class="profile-card">
         <hr>
         <img src="/assets/img/profile.png" style="width: 100%;" >
