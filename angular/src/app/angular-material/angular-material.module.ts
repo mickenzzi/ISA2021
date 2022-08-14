@@ -9,6 +9,7 @@ import {NgModule} from '@angular/core';
 import {
 } from '@angular/material';
 
+
 @NgModule({
   exports: [
     A11yModule,
@@ -17,7 +18,7 @@ import {
     CdkTreeModule,
     DragDropModule,
     PortalModule,
-    ScrollingModule,
+    ScrollingModule
   ]
 })
 export class AngularMaterialModule {

@@ -86,7 +86,7 @@ public class UserController {
 	}
 
 	@PutMapping(value = "/updateUser", produces = MediaType.APPLICATION_JSON_VALUE)
-	@PreAuthorize("hasRole('ADMIN') or hasRole('INSTRUCTOR') or hasRole('USER')")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('INSTRUCTOR') or hasRole('USER') or hasRole('COTTAGE_OWNER') or hasRole('BOAT_OWNER')")
 	public ResponseEntity<User> updateUser(@RequestBody UserDTO userDTO) throws Exception {
 		User user = userService.findById(userDTO.getId());
 		if (user == null) {
@@ -113,7 +113,7 @@ public class UserController {
 		}
 		userService.deleteUser(id);
 		System.out.println("The task /deleteUser was successfully completed.");
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK); 
 	}
 
 	@GetMapping(value = "/enableUser/{username}/{idRequest}", produces = MediaType.APPLICATION_JSON_VALUE)

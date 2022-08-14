@@ -18,7 +18,7 @@ import { HomeCottageOwnerComponent } from './home-cottage-owner/home-cottage-own
 import { HomeBoatOwnerComponent } from './home-boat-owner/home-boat-owner.component';
 import { RegistrationAdminComponent } from './registration-admin/registration-admin.component';
 import { ProfileInstructorComponent } from './profile-instructor/profile-instructor.component';
-import { ProfileCottageOwnerComponent } from './profile-cottage-owner/profile-cottage-owner.component';
+import { ProfileOwnerComponent } from './profile-owner/profile-owner.component';
 import { AddAdventureComponent } from './add-adventure/add-adventure.component';
 import { HomeAdventureComponent } from './home-adventure/home-adventure.component';
 import { HomeAdminUsersComponent } from './home-admin-users/home-admin-users.component';
@@ -29,6 +29,24 @@ import { ScheduleModule, DayService, WeekService, WorkWeekService, MonthService,
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { authInterceptorProviders } from './helpers/token-interceptor';
+import { CottageOwnerCottageListComponent } from './cottage-owner-cottage-list/cottage-owner-cottage-list.component';
+import { AddCottageComponent } from './add-cottage/add-cottage.component';
+
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatFormFieldModule} from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule} from '@angular/material/menu'
+import { MatListModule } from '@angular/material/list'
+import { MatToolbarModule} from '@angular/material/toolbar'
+import { MatIconModule} from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input'
+import { MatCardModule} from '@angular/material/card';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatTabsModule} from '@angular/material/tabs';
+import { HomeCottageComponent } from './home-cottage/home-cottage.component';
 
 
 @NgModule({
@@ -50,7 +68,10 @@ import { authInterceptorProviders } from './helpers/token-interceptor';
     HomeAdventureComponent,
     HomeAdminUsersComponent,
     InstructorCalendarComponent,
-    ProfileCottageOwnerComponent
+    ProfileOwnerComponent,
+    CottageOwnerCottageListComponent,
+    AddCottageComponent,
+    HomeCottageComponent
   ],
   imports: [
     BrowserModule,
@@ -59,8 +80,22 @@ import { authInterceptorProviders } from './helpers/token-interceptor';
     NoopAnimationsModule,
     MatTableModule,
     FormsModule,
+    MatFormFieldModule,
     ReactiveFormsModule,
     NgChartsModule,
+    MatGridListModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatListModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatInputModule,
+    MatCardModule,
+    MatDatepickerModule,
+    MatRadioModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatTabsModule,
     AgmCoreModule.forRoot({ apiKey: 'AIzaSyC9guE6bI9x1oAsg63x2CKSN0AfKPgWhr0', libraries: ['places'] }),
     ScheduleModule,
     CalendarModule.forRoot({

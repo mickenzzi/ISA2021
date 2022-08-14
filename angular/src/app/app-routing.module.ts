@@ -18,7 +18,9 @@ import {HomeAdventureComponent} from './home-adventure/home-adventure.component'
 import {HomeAdminUsersComponent} from './home-admin-users/home-admin-users.component';
 import {InstructorCalendarComponent} from './instructor-calendar/instructor-calendar.component';
 import { CottageOwnerCottageListComponent } from './cottage-owner-cottage-list/cottage-owner-cottage-list.component';
-import { ProfileCottageOwnerComponent } from './profile-cottage-owner/profile-cottage-owner.component';
+import { ProfileOwnerComponent } from './profile-owner/profile-owner.component';
+import { AddCottageComponent } from './add-cottage/add-cottage.component';
+import { HomeCottageComponent } from './home-cottage/home-cottage.component';
 
 const routes: Routes = [
   {
@@ -91,8 +93,16 @@ const routes: Routes = [
     component: InstructorCalendarComponent,
   },
   {
-    path: 'profileCottageOwner',
-    component: ProfileCottageOwnerComponent,
+    path: 'profileOwner',
+    component: ProfileOwnerComponent,
+  },
+  {
+    path: 'cottage',
+    component: AddCottageComponent,
+  },
+  {
+    path: 'cottage/:id',
+    component: HomeCottageComponent,
   }
 ];
 

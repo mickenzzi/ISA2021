@@ -5,8 +5,9 @@ export class Cottage {
   description?: string;
   numberOfRooms?: number;
   numberOfBeds?: number;
-  //terms?: array<Termin>;
+  image?: string;
   rules?: string;
   price?: string;
   info?: string;
+  reserved?: boolean;
 }

@@ -1,69 +1,34 @@
-package application.model;
+package application.model.dto;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import application.model.User;
 
+public class CottageDTO {
 
-@Entity
-@Table(name = "cottage_table")
-public class Cottage {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "name", nullable = false)
 	private String name;
-	@Column(name = "address", nullable = false)
 	private String address;
-	@Column(name = "description", nullable = false)
 	private String description;
-	@Column(name = "image")
-	private String image;
-	@Column(name = "number_of_rooms", nullable = false)
 	private int numberOfRooms;
-	@Column(name = "number_of_beds", nullable = false)
 	private int numberOfBeds;
-	@Column(name = "rules", nullable = false)
 	private String rules;
-	@Column(name = "price", nullable = false)
 	private String price;
-	@Column(name = "info", nullable = false)
 	private String info;
-	@Column(name = "reserved", nullable = false)
-	private boolean reserved;
-	//fetch - Eager koristimo kada su nam neophodni podaci i povezanih tabela 
-	//preporuka je koristiti Lazy kad god mozemo
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "user_id")
 	private User userCottage;
+	private List<String> images;
 
 	public Long getId() {
 		return id;
 	}
-
-	public String getImage() {
-		return image;
+	
+	public List<String> getImages(){
+		return images;
 	}
-
-	public boolean isReserved() {
-		return reserved;
-	}
-
-	public void setReserved(boolean reserved) {
-		this.reserved = reserved;
-	}
-
-	public void setImage(String image) {
-		this.image = image;
+	
+	public void setImages(List<String> images) {
+		this.images = images;
 	}
 
 	public void setId(Long id) {
@@ -114,7 +79,7 @@ public class Cottage {
 		return rules;
 	}
 
-	public void setRules(String rules) {
+	public void setTerm(String rules) {
 		this.rules = rules;
 	}
 
@@ -142,18 +107,17 @@ public class Cottage {
 		this.userCottage = userCottage;
 	}
 
-	public Cottage() {
+	public CottageDTO() {
 		super();
 	}
 
-	public Cottage(Long id, String name, String address, String description, String image, int numberOfRooms, int numberOfBeds, String rules, String price,
+	public CottageDTO(Long id, String name, String address, String description, int numberOfRooms, int numberOfBeds, String rules, String price,
 			String info) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.address = address;
 		this.description = description;
-		this.image = image;
 		this.numberOfRooms = numberOfRooms;
 		this.numberOfBeds = numberOfBeds;
 		this.rules = rules;
