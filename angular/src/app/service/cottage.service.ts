@@ -41,6 +41,18 @@ export class CottageService {
   public getAllCottages() {
     return this.http.get<Cottage[]>(`${this.cottageUrl}/getAllCottages`);
   }
+  
+  public getAllCottageImages(id: number) {
+    return this.http.get<String[]>(`${this.cottageUrl}/getAllCottageImages/${id}`);
+  }
 
+
+  public updateImage(image: Image) {
+    return this.http.put(`${this.cottageUrl}/updateImage`, image);
+  }
+
+  public saveImage(id: number, url: String) {
+    return this.http.post(`${this.cottageUrl}/saveImage/${id}`, url);
+  }
 
 }

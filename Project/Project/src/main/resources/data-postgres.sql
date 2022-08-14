@@ -9,11 +9,12 @@ insert into user_table(first_name,last_name,address,city,country,phone,email,use
 insert into user_table(first_name,last_name,address,city,country,phone,email,username,password,enabled,last_password_reset_date,first_time_logged,penalty,loyalty_status,collected_points, member) values ('Jovan','Jovic','Danila Kisa 15','Novi Sad','Srbija','021853','isaproject0@gmail.com','jovan','$2a$10$3N8f6MgFXc0PKfew.y4qQeEhLPh9d3g0FtDGGz4ep3xPz5AAsb9uW',true,'2017-10-01 21:58:58.508-07',false,0,'SILVER',20, false);
 insert into user_table(first_name,last_name,address,city,country,phone,email,username,password,enabled,last_password_reset_date,first_time_logged,penalty,loyalty_status,collected_points, member) values ('Aleksa','Aleksic','Gogoljeva 25','Novi Sad','Srbija','174641','isaproject0@gmail.com','aleksa','$2a$10$3N8f6MgFXc0PKfew.y4qQeEhLPh9d3g0FtDGGz4ep3xPz5AAsb9uW',true,'2017-10-01 21:58:58.508-07',false,0,'SILVER',50, true);
 insert into user_table(first_name,last_name,address,city,country,phone,email,username,password,enabled,last_password_reset_date,first_time_logged,penalty,loyalty_status,collected_points, member) values ('Milos','Milosevic','Tolstojeva 1','Novi Sad','Srbija','1123123641','isaproject0@gmail.com','milos','$2a$10$3N8f6MgFXc0PKfew.y4qQeEhLPh9d3g0FtDGGz4ep3xPz5AAsb9uW',false,'2017-10-01 21:58:58.508-07',false,0, 'BRONZE',19, false);
+insert into user_table(first_name,last_name,address,city,country,phone,email,username,password,enabled,last_password_reset_date,first_time_logged,penalty,loyalty_status,collected_points, member) values ('Vladimir','Ciric','Boska Buhe 19','Novi Sad','Srbija','123123','isaproject0@gmail.com','vladakac','$2a$10$3N8f6MgFXc0PKfew.y4qQeEhLPh9d3g0FtDGGz4ep3xPz5AAsb9uW',true,'2017-10-01 21:58:58.508-07',false,0, 'BRONZE',19, false);
 
 insert into USER_ROLE (user_id,role_id) values (1,2);
 insert into USER_ROLE (user_id,role_id) values (2,3);
 insert into USER_ROLE (user_id,role_id) values (3,1);
-insert into USER_ROLE (user_id,role_id) values (4,1);
+insert into USER_ROLE (user_id,role_id) values (5,4);
 
 insert into loyalty_table(name,points,discount) values ('BRONZE', 0, 1.0);
 insert into loyalty_table(name,points,discount) values ('SILVER', 20, 9.5);
@@ -53,3 +54,5 @@ insert into request_table(title,username,admin_id) values ('Zahtev za verifikaci
 
 insert into review_table(comment,grade,enabled,user_id,admin_id,instructor_id,adventure_id) values ('Dobro je bilo',4,true,3,1,2,2);
 insert into review_table(comment,grade,enabled,user_id,admin_id,instructor_id,adventure_id) values ('Lose je bilo',2,false,3,1,2,2);
+
+insert into cottage_table(name,address,description,image,number_of_rooms,number_of_beds,rules,price,info,reserved,user_id) values ('Pogled', 'Tamo daleko', 'Vikendica na jezeru', '/assets/img/cottageLink.jpg', 3, 4, 'Ponasajte se lepo', '120e', 'Kamin, ventilator, basta', false, 5);

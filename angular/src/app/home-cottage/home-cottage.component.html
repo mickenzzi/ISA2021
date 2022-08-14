@@ -1,1 +1,74 @@
-<p>home-cottage works!</p>
+<div class="cottage-owner-content">
+    <mat-toolbar >
+        <div style="width: 50%; float:left">
+            <label style="margin-left:5%;">Vikendica {{cottage.name}}</label>
+        </div>
+        
+        <div style="width: 50%; float:right; text-align: right;">
+            <button mat-raised-button color="primary" (click)="logOut()" style="margin-left: 5%; margin-right: 5%; cursor:pointer;">Odjavite se</button>
+        </div>
+    </mat-toolbar>
+    <div class="cottage-info">
+        <div class="header"><label style="font-size: medium; color: white">Izmeni vikendicu</label></div>
+    <br><br>
+    <label class="label-margin-left">Naziv:</label>
+    <input [(ngModel)]="cottage.name" [disabled]='isDisabled' [ngModelOptions]="{standalone: true}" autofocus class="input-margin-left" required type="text" />
+    <br><br>
+    <label class="label-margin-left">Adresa:</label>
+    <input [(ngModel)]="cottage.address" [disabled]='isDisabled' [ngModelOptions]="{standalone: true}" autofocus class="input-margin-left" required type="text" />
+    <br><br>
+    <label class="label-margin-left">Opis:</label>
+    <input [(ngModel)]="cottage.description" [disabled]='isDisabled' [ngModelOptions]="{standalone: true}" autofocus class="input-margin-left" required type="text" />
+    <br><br>
+    <label class="label-margin-left">Broj soba:</label>
+    <input [(ngModel)]="cottage.numberOfRooms" [disabled]='isDisabled' [ngModelOptions]="{standalone: true}" autofocus class="input-margin-left" required type="text" />
+    <br><br>
+    <label class="label-margin-left">Broj kreveta:</label>
+    <input [(ngModel)]="cottage.numberOfBeds" [disabled]='isDisabled' [ngModelOptions]="{standalone: true}" autofocus class="label-margin-left" required  type="text" />
+      <br><br>
+    <label class="label-margin-left">Pravila</label><br>
+    <textarea [(ngModel)]="cottage.rules" [ngModelOptions]="{standalone: true}" autofocus class="label-margin-left" required [disabled]='isDisabled'
+      style="width: 450px; height: 70px" type="text"></textarea>
+    <br><br>
+    <label class="label-margin-left">Cena:</label><br>
+    <input
+      [(ngModel)]="cottage.price" [ngModelOptions]="{standalone: true}" autofocus [disabled]='isDisabled'
+      class="label-margin-left" required style="width: 450px; height: 70px" type="text" />
+    <br><br>
+    <label class="label-margin-left">Informacije:</label><br>
+    <textarea
+      [(ngModel)]="cottage.info" [ngModelOptions]="{standalone: true}" autofocus class="label-margin-left" required [disabled]='isDisabled'
+      style="width: 450px; height:70px" type="text"></textarea>
+    <br><br>
+    <input (click)="editCottage()" class="mat-button" id="editButton" 
+      style="margin-left: 40%" type="submit" value="Izmeni" />
+  </div>
+    
+    <div class="cottage-images">
+            <img src={{cottage.image}} style="width:550px; height:200px;"><br>
+
+            <input [(ngModel)]="url1" [ngModelOptions]="{standalone: true}" accept="image/*" (change)="onSelectFile1($event)" autofocus required type="file"/>
+            <br>
+            <img class="small-images" src={{url1}}><br>
+
+            <button class="button-2" onclick="document.getElementById('getFile2').click()">Select image</button>
+            <input type='file' (change)="onSelectFile2($event)" [(ngModel)]="url2" id="getFile2" style="display:none">
+            <br>
+            <img class="small-images" src={{url2}}><br>
+
+            <button class="button-2" [(ngModel)]="url3" onclick="document.getElementById('getFile3').click()">Select image</button>
+            <input type='file' (change)="onSelectFile3($event)" [(ngModel)]="url3" id="getFile3" style="display:none">
+            <br>
+            <img class="small-images" src={{url3}}>
+
+            <button class="button-2" [(ngModel)]="url4" onclick="document.getElementById('getFile4').click()">Select image</button>
+            <input type='file' (change)="onSelectFile4($event)" [(ngModel)]="url4" id="getFile4" style="display:none">
+            <br>
+            <img class="small-images" src={{url4}}>
+
+            <button class="button-2" [(ngModel)]="url5" onclick="document.getElementById('getFile5').click()">Select image</button>
+            <input type='file' (change)="onSelectFile5($event)" [(ngModel)]="url5" id="getFile5" style="display:none">
+            <br>
+            <img class="small-images" src={{url5}}>
+    </div>
+</div>

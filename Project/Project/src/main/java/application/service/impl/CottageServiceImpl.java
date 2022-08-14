@@ -93,6 +93,7 @@ public class CottageServiceImpl implements CottageService {
 		return cottage1;
 	}
 
+
 	@Override
 	public List<CottageImage> findImagesByCottageId(Long id) {
 		List<CottageImage> allCottageImages = cottageImageRepository.findAll();
@@ -104,6 +105,7 @@ public class CottageServiceImpl implements CottageService {
 		}
 		return retImages;
 	}
+
 
 	@Override
 	public CottageImage findImageById(Long id) {

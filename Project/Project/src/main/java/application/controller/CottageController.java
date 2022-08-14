@@ -48,7 +48,7 @@ public class CottageController {
 
 	@PostMapping(value = "/createCottage/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('COTTAGE_OWNER')")
-	public ResponseEntity<Cottage> createAdventure(@RequestBody Cottage cottage1, @PathVariable("id") Long id) {
+	public ResponseEntity<Cottage> createCottage(@RequestBody Cottage cottage1, @PathVariable("id") Long id) {
 		if (cottage1.getName().isEmpty() || cottage1.getAddress().isEmpty() || cottage1.getDescription().isEmpty() || cottage1.getImage().isEmpty() || cottage1.getNumberOfBeds() == 0 || cottage1.getNumberOfRooms() == 0 || cottage1.getRules().isEmpty() || cottage1.getInfo().isEmpty()) {
 			System.out.println("Some fields are empty.");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -148,6 +148,6 @@ public class CottageController {
 		}
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
-
+	
 
 }

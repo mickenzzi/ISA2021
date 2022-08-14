@@ -12,7 +12,7 @@ public interface CottageService {
     void update(Cottage cottage);
     void delete(Long id);
     Cottage save(Cottage cottage, Long id);
-	List<CottageImage> findImagesByCottageId(Long id);
+    List<CottageImage> findImagesByCottageId(Long id);
     CottageImage findImageById(Long id);
     void updateImage(CottageImage cottageImage);
     void deleteImage(CottageImage cottageImage, Long id);
