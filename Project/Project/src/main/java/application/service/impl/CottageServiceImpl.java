@@ -120,10 +120,10 @@ public class CottageServiceImpl implements CottageService {
 	}
 
 	@Override
-	public void deleteImage(CottageImage cottageImage, Long id) {
+	public void deleteImage(Long id, String url) {
 		List<CottageImage> allImages = findImagesByCottageId(id);
 		for(CottageImage image : allImages) {
-			if(image.getImageUrl().equals(cottageImage.getImageUrl()) && image.getCottageId().getId() == id) {
+			if(image.getImageUrl().equals(url) && image.getCottageId().getId() == id) {
 				cottageImageRepository.delete(image);
 			}
 		}

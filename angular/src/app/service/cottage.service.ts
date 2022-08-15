@@ -51,6 +51,10 @@ export class CottageService {
     return this.http.put(`${this.cottageUrl}/updateImage`, image);
   }
 
+  public deleteCottageImage(url: String, id: number) {
+    return this.http.get<Image>(`${this.cottageUrl}/deleteImage/${id}/${url}`);
+  }
+
   public saveImage(id: number, url: String) {
     return this.http.post(`${this.cottageUrl}/saveImage/${id}`, url);
   }

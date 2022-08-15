@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -82,10 +83,10 @@ public class CottageController {
 	public ResponseEntity<Cottage> getCottageById(@PathVariable("id") Long id) {
 		List<Cottage> cottages = new ArrayList<Cottage>();
 		cottages = cottageService.findAll();
-		for (Cottage a : cottages) {
-			if (a.getId() == id) {
+		for (Cottage c : cottages) {
+			if (c.getId() == id) {
 				System.out.println("The task /getCottage was successfully completed.");
-				return new ResponseEntity<>(a, HttpStatus.OK);
+				return new ResponseEntity<>(c, HttpStatus.OK);
 			}
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -135,6 +136,24 @@ public class CottageController {
 		cottageService.updateImage(image);
 		System.out.println("The task /updateImage was successfully completed.");
 		return new ResponseEntity<>(image, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/deleteImage/{id}/{url}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('COTTAGE_OWNER') or hasRole('ADMIN')")
+	public ResponseEntity<CottageImage> deleteCottageImage(@PathVariable("url") String url, @PathVariable("id") Long id) {
+		if (id == null) {
+			System.out.println("Id is null.");
+			return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
+		}
+		/*
+		 * String[] image = img.split("-", 1); Long id = Long.parseLong(image[0]);
+		 * String url = image[1]; String safeUrl = "/assets/img/" + url;
+		 * System.out.println(safeUrl);
+		 */
+		
+		cottageService.deleteImage(id, url);
+		System.out.println("The task /deleteCottageImage was successfully completed.");
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/saveImage/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

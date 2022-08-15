@@ -5,70 +5,106 @@
         </div>
         
         <div style="width: 50%; float:right; text-align: right;">
-            <button mat-raised-button color="primary" (click)="logOut()" style="margin-left: 5%; margin-right: 5%; cursor:pointer;">Odjavite se</button>
+          <button mat-raised-button color="primary" (click)="back()" style="cursor:pointer;">Nazad</button>
+          <button mat-raised-button color="primary" (click)="logOut()" style="margin-left: 5%; margin-right: 5%; cursor:pointer;">Odjavite se</button>
         </div>
     </mat-toolbar>
+
+    
+    <div class="image-container" style="background-image: url({{cottage.image}});">
+
+
+  </div>
     <div class="cottage-info">
-        <div class="header"><label style="font-size: medium; color: white">Izmeni vikendicu</label></div>
-    <br><br>
-    <label class="label-margin-left">Naziv:</label>
-    <input [(ngModel)]="cottage.name" [disabled]='isDisabled' [ngModelOptions]="{standalone: true}" autofocus class="input-margin-left" required type="text" />
-    <br><br>
-    <label class="label-margin-left">Adresa:</label>
-    <input [(ngModel)]="cottage.address" [disabled]='isDisabled' [ngModelOptions]="{standalone: true}" autofocus class="input-margin-left" required type="text" />
-    <br><br>
-    <label class="label-margin-left">Opis:</label>
-    <input [(ngModel)]="cottage.description" [disabled]='isDisabled' [ngModelOptions]="{standalone: true}" autofocus class="input-margin-left" required type="text" />
-    <br><br>
-    <label class="label-margin-left">Broj soba:</label>
-    <input [(ngModel)]="cottage.numberOfRooms" [disabled]='isDisabled' [ngModelOptions]="{standalone: true}" autofocus class="input-margin-left" required type="text" />
-    <br><br>
-    <label class="label-margin-left">Broj kreveta:</label>
-    <input [(ngModel)]="cottage.numberOfBeds" [disabled]='isDisabled' [ngModelOptions]="{standalone: true}" autofocus class="label-margin-left" required  type="text" />
       <br><br>
-    <label class="label-margin-left">Pravila</label><br>
-    <textarea [(ngModel)]="cottage.rules" [ngModelOptions]="{standalone: true}" autofocus class="label-margin-left" required [disabled]='isDisabled'
-      style="width: 450px; height: 70px" type="text"></textarea>
+        <div style="text-align: center;"><label style="font-size:x-large; color: black">Izmeni vikendicu</label></div>
     <br><br>
-    <label class="label-margin-left">Cena:</label><br>
+    <label class="left-content">Naziv:</label>
+    <input [(ngModel)]="cottage.name" [disabled]='isDisabled' [ngModelOptions]="{standalone: true}" autofocus class="right-content" required type="text" />
+    <br><br>
+    <label class="left-content">Adresa:</label>
+    <input [(ngModel)]="cottage.address" [disabled]='isDisabled' [ngModelOptions]="{standalone: true}" autofocus class="right-content" required type="text" />
+    <br><br>
+    <label class="left-content">Opis:</label>
+    <input [(ngModel)]="cottage.description" [disabled]='isDisabled' [ngModelOptions]="{standalone: true}" autofocus class="right-content" required type="text" />
+    <br><br>
+    <label class="left-content">Broj soba:</label>
+    <input [(ngModel)]="cottage.numberOfRooms" [disabled]='isDisabled' [ngModelOptions]="{standalone: true}" autofocus class="right-content" required type="text" />
+    <br><br>
+    <label class="left-content">Broj kreveta:</label>
+    <input [(ngModel)]="cottage.numberOfBeds" [disabled]='isDisabled' [ngModelOptions]="{standalone: true}" autofocus class="right-content" required  type="text" />
+      <br><br>
+    <label class="left-content">Cena:</label>
     <input
       [(ngModel)]="cottage.price" [ngModelOptions]="{standalone: true}" autofocus [disabled]='isDisabled'
-      class="label-margin-left" required style="width: 450px; height: 70px" type="text" />
+      class="right-content" required type="text" />
     <br><br>
-    <label class="label-margin-left">Informacije:</label><br>
-    <textarea
-      [(ngModel)]="cottage.info" [ngModelOptions]="{standalone: true}" autofocus class="label-margin-left" required [disabled]='isDisabled'
-      style="width: 450px; height:70px" type="text"></textarea>
+    <label class="left-content">Pravila:</label><br>
+    <textarea [(ngModel)]="cottage.rules" [ngModelOptions]="{standalone: true}" autofocus class="textarea-content" required [disabled]='isDisabled'
+       type="text"></textarea>
     <br><br>
-    <input (click)="editCottage()" class="mat-button" id="editButton" 
+    <label class="left-content">Informacije:</label><br>
+    <textarea [(ngModel)]="cottage.info" [ngModelOptions]="{standalone: true}" autofocus class="textarea-content" required [disabled]='isDisabled'
+      type="text"></textarea>
+    <br><br>
+    <div *ngIf="!isDisabled">
+      <input (click)="editCottage()" class="mat-raised-button" id="editButton" 
       style="margin-left: 40%" type="submit" value="Izmeni" />
+    </div>
+    <br><br>
   </div>
-    
+  
     <div class="cottage-images">
-            <img src={{cottage.image}} style="width:550px; height:200px;"><br>
-
-            <input [(ngModel)]="url1" [ngModelOptions]="{standalone: true}" accept="image/*" (change)="onSelectFile1($event)" autofocus required type="file"/>
+            <br><br>
+            <div>
+              <input class="mat-raised-button" disabled="{{show1}}" [(ngModel)]="url1" [ngModelOptions]="{standalone: true}" accept="image/*" (change)="onSelectFile1($event)" autofocus required type="file"/>
+            </div>
             <br>
             <img class="small-images" src={{url1}}><br>
+            <div *ngIf="show1" >
+              <button mat-raised-button color="acent" (click)="deleteImg(url1)" >Obrisi sliku</button><br>
+            </div>
+            <br>
 
-            <button class="button-2" onclick="document.getElementById('getFile2').click()">Select image</button>
-            <input type='file' (change)="onSelectFile2($event)" [(ngModel)]="url2" id="getFile2" style="display:none">
+            <div >
+              <input class="mat-raised-button" disabled="{{show2}}" [(ngModel)]="url2" [ngModelOptions]="{standalone: true}" accept="image/*" (change)="onSelectFile2($event)" autofocus required type="file">
+            </div>
             <br>
             <img class="small-images" src={{url2}}><br>
-
-            <button class="button-2" [(ngModel)]="url3" onclick="document.getElementById('getFile3').click()">Select image</button>
-            <input type='file' (change)="onSelectFile3($event)" [(ngModel)]="url3" id="getFile3" style="display:none">
+            <div *ngIf="show2" >
+              <button mat-raised-button color="acent" (click)="deleteImg(url2)">Obrisi sliku</button><br>
+            </div>
             <br>
-            <img class="small-images" src={{url3}}>
 
-            <button class="button-2" [(ngModel)]="url4" onclick="document.getElementById('getFile4').click()">Select image</button>
-            <input type='file' (change)="onSelectFile4($event)" [(ngModel)]="url4" id="getFile4" style="display:none">
+            <div >
+              <input class="mat-raised-button" disabled="{{show3}}" [(ngModel)]="url3" [ngModelOptions]="{standalone: true}" accept="image/*" (change)="onSelectFile3($event)" autofocus required type="file"/>
+            </div>
             <br>
-            <img class="small-images" src={{url4}}>
+            <img class="small-images" src={{url3}}><br>
+            <div *ngIf="show3" >
+              <button mat-raised-button color="acent">Obrisi sliku</button><br>
+            </div>
+            <br>
 
-            <button class="button-2" [(ngModel)]="url5" onclick="document.getElementById('getFile5').click()">Select image</button>
-            <input type='file' (change)="onSelectFile5($event)" [(ngModel)]="url5" id="getFile5" style="display:none">
+            <div >
+              <input class="mat-raised-button" disabled="{{show4}}" [(ngModel)]="url4" [ngModelOptions]="{standalone: true}" accept="image/*" (change)="onSelectFile4($event)" autofocus required type="file"/>
+            </div>
             <br>
-            <img class="small-images" src={{url5}}>
+            <img class="small-images" src={{url4}}><br>
+            <div *ngIf="show4" >
+              <button mat-raised-button color="acent">Obrisi sliku</button><br>
+            </div>
+            <br>
+
+            <div >
+              <input class="mat-raised-button" disabled="{{show5}}" [(ngModel)]="url5" [ngModelOptions]="{standalone: true}" accept="image/*" (change)="onSelectFile5($event)" autofocus required type="file"/>
+            </div>
+            <br>
+            <img class="small-images" src={{url5}}><br>
+            <div *ngIf="show5" >
+              <button mat-raised-button color="acent">Obrisi sliku</button><br>
+            </div>
+            
+            <br>
     </div>
 </div>

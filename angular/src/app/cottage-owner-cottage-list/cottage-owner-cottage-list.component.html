@@ -12,13 +12,28 @@
         </div>
     </mat-toolbar>
 
-    <div style="margin-top: 3%">
-        <mat-grid-list cols="2" rowHeight="2:1">
-            <mat-grid-tile>vikendica</mat-grid-tile>
-            <mat-grid-tile>vikendica</mat-grid-tile>
-            <mat-grid-tile>vikendica</mat-grid-tile>
-            <mat-grid-tile>vikendica</mat-grid-tile>
-        </mat-grid-list>
+    <br><br>
+    <div style="margin-left: 25%; margin-right: 25%">
+        <table style="text-align: center" id="requests">
+          <caption><h2 style="text-align: center" >Vikendice</h2></caption>
+            <thead>
+              <tr>
+                <th style="text-align: center; width: 30%;">Naziv</th>
+                <th style="text-align: center; width: 30%;">Adresa</th>
+                <th style="text-align: center; width: 30%;"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let cottage of cottages">
+                <td>{{ cottage.name}}</td>
+                <td>{{ cottage.address }}</td>
+                <td>
+                    <button mat-flat-button (click)="editCottage(cottage.id)">Izmeni</button>
+                    <button  mat-flat-button style="margin-left: 10%" (click)="deleteCottage(cottage.id)" >Obrisi</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
     </div>
     
 </div>
