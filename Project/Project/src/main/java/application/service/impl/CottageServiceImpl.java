@@ -48,6 +48,8 @@ public class CottageServiceImpl implements CottageService {
 		cottage1.setUserCottage(cottage.getUserCottage());
 		cottage1.setImage(cottage.getImage());
 		cottage1.setReserved(cottage.isReserved());
+		cottage1.setLatitude(cottage.getLatitude());
+		cottage1.setLongitude(cottage.getLongitude());
 		
 		/*
 		 * List<CottageImage> oldImages = findImagesByCottageId(cottageDTO.getId());
@@ -82,6 +84,8 @@ public class CottageServiceImpl implements CottageService {
 		cottage1.setReserved(false);
 		User user = userService.findById(id);
 		cottage1.setUserCottage(user);
+		cottage1.setLatitude(cottage.getLatitude());
+		cottage1.setLongitude(cottage.getLongitude());
 		
 		/*
 		 * for(String url : cottageDTO.getImages()) { CottageImage image = new

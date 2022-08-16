@@ -17,41 +17,39 @@
   </div>
     <div class="cottage-info">
       <br><br>
-        <div style="text-align: center;"><label style="font-size:x-large; color: black">Izmeni vikendicu</label></div>
+        <div style="text-align: center;"><label style="font-size:x-large; color: black">{{cottageInfo}}</label></div>
     <br><br>
     <label class="left-content">Naziv:</label>
-    <input [(ngModel)]="cottage.name" [disabled]='isDisabled' [ngModelOptions]="{standalone: true}" autofocus class="right-content" required type="text" />
+    <input [(ngModel)]="cottage.name" [disabled]='!isOwner' [ngModelOptions]="{standalone: true}" autofocus class="right-content" required type="text" />
     <br><br>
     <label class="left-content">Adresa:</label>
-    <input [(ngModel)]="cottage.address" [disabled]='isDisabled' [ngModelOptions]="{standalone: true}" autofocus class="right-content" required type="text" />
+    <input [(ngModel)]="cottage.address" [disabled]='!isOwner' [ngModelOptions]="{standalone: true}" autofocus class="right-content" required type="text" />
     <br><br>
     <label class="left-content">Opis:</label>
-    <input [(ngModel)]="cottage.description" [disabled]='isDisabled' [ngModelOptions]="{standalone: true}" autofocus class="right-content" required type="text" />
+    <input [(ngModel)]="cottage.description" [disabled]='!isOwner' [ngModelOptions]="{standalone: true}" autofocus class="right-content" required type="text" />
     <br><br>
     <label class="left-content">Broj soba:</label>
-    <input [(ngModel)]="cottage.numberOfRooms" [disabled]='isDisabled' [ngModelOptions]="{standalone: true}" autofocus class="right-content" required type="text" />
+    <input [(ngModel)]="cottage.numberOfRooms" [disabled]='!isOwner' [ngModelOptions]="{standalone: true}" autofocus class="right-content" required type="text" />
     <br><br>
     <label class="left-content">Broj kreveta:</label>
-    <input [(ngModel)]="cottage.numberOfBeds" [disabled]='isDisabled' [ngModelOptions]="{standalone: true}" autofocus class="right-content" required  type="text" />
+    <input [(ngModel)]="cottage.numberOfBeds" [disabled]='!isOwner' [ngModelOptions]="{standalone: true}" autofocus class="right-content" required  type="text" />
       <br><br>
     <label class="left-content">Cena:</label>
     <input
-      [(ngModel)]="cottage.price" [ngModelOptions]="{standalone: true}" autofocus [disabled]='isDisabled'
-      class="right-content" required type="text" />
+      [(ngModel)]="cottage.price" [ngModelOptions]="{standalone: true}" autofocus [disabled]='!isOwner'  class="right-content" required type="text" />
     <br><br>
     <label class="left-content">Pravila:</label><br>
-    <textarea [(ngModel)]="cottage.rules" [ngModelOptions]="{standalone: true}" autofocus class="textarea-content" required [disabled]='isDisabled'
+    <textarea [(ngModel)]="cottage.rules" [ngModelOptions]="{standalone: true}" autofocus class="textarea-content" required [disabled]='!isOwner'
        type="text"></textarea>
     <br><br>
     <label class="left-content">Informacije:</label><br>
-    <textarea [(ngModel)]="cottage.info" [ngModelOptions]="{standalone: true}" autofocus class="textarea-content" required [disabled]='isDisabled'
+    <textarea [(ngModel)]="cottage.info" [ngModelOptions]="{standalone: true}" autofocus class="textarea-content" required [disabled]='!isOwner'
       type="text"></textarea>
     <br><br>
-    <div *ngIf="!isDisabled">
-      <input (click)="editCottage()" class="mat-raised-button" id="editButton" 
-      style="margin-left: 40%" type="submit" value="Izmeni" />
+    <div *ngIf="isOwner" style="text-align: center;">
+      <input (click)="editCottage()" class="mat-raised-button" id="editButton" type="submit" value="Izmeni" />
     </div>
-    <br><br>
+    <br>
   </div>
   
     <div class="cottage-images">
@@ -107,4 +105,12 @@
             
             <br>
     </div>
+    
+    <div class="cottage-info" style="margin-top: 0%">
+      <agm-map id="map" style="height: 400px; width: 100%"  [latitude]='latitude' [longitude]='longitude'>
+        <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+      </agm-map>
+    </div>
+      
+    
 </div>

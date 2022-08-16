@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { NumericLiteral } from 'typescript';
 import { Cottage } from '../model/cottage';
 import { Image } from '../model/image';
 import { User } from '../model/user';
@@ -46,6 +47,9 @@ export class HomeCottageComponent implements OnInit {
   url_test: String = "";
   isOwner: boolean = false;
   cottageInfo: String = "Informacije o vikendici";
+  latitude!: number;
+  longitude!: number;
+
 
   constructor(private router: Router, private userService: UserService, private cottageService: CottageService, private route: ActivatedRoute) {
   }
@@ -110,6 +114,9 @@ export class HomeCottageComponent implements OnInit {
         var editButton = <HTMLInputElement>document.getElementById('editButton');
         editButton.disabled = true;
       }
+      this.latitude = this.cottage.latitude ?? 45.246068230253336;
+      this.longitude = this.cottage.longitude ?? 19.851725213006898;
+
     }));
   }
 
@@ -117,11 +124,11 @@ export class HomeCottageComponent implements OnInit {
     if (imgUrl === undefined) {
       alert('Id nije validan.');
     } else {
-      //var safeUrl = this.cottageId + "-" + imgUrl.substring(12);
+      var safeUrl = "-assets-img-" + imgUrl.substring(12);
       
       
       //console.log(safeUrl);
-      this.subs.push(this.cottageService.deleteCottageImage(imgUrl, this.cottageId).subscribe(() => {
+      this.subs.push(this.cottageService.deleteCottageImage(safeUrl, this.cottageId).subscribe(() => {
         this.getCottageImages();
       }));
     }

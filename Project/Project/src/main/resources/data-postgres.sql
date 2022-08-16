@@ -55,4 +55,4 @@ insert into request_table(title,username,admin_id) values ('Zahtev za verifikaci
 insert into review_table(comment,grade,enabled,user_id,admin_id,instructor_id,adventure_id) values ('Dobro je bilo',4,true,3,1,2,2);
 insert into review_table(comment,grade,enabled,user_id,admin_id,instructor_id,adventure_id) values ('Lose je bilo',2,false,3,1,2,2);
 
-insert into cottage_table(name,address,description,image,number_of_rooms,number_of_beds,rules,price,info,reserved,user_id) values ('Pogled', 'Tamo daleko', 'Vikendica na jezeru', '/assets/img/cottageLink.jpg', 3, 4, 'Ponasajte se lepo', '120e', 'Kamin, ventilator, basta', false, 5);
+insert into cottage_table(name,address,description,image,number_of_rooms,number_of_beds,rules,price,info,reserved,user_id, latitude, longitude) values ('Pogled', 'Tamo daleko', 'Vikendica na jezeru', '/assets/img/cottageLink.jpg', 3, 4, 'Ponasajte se lepo', '120e', 'Kamin, ventilator, basta', false, 5, 12, 12);

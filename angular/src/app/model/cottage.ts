@@ -10,4 +10,6 @@ export class Cottage {
   price?: string;
   info?: string;
   reserved?: boolean;
+  latitude?: number;
+  longitude?: number;
 }

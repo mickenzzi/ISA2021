@@ -26,7 +26,7 @@ public class Cottage {
 	private String address;
 	@Column(name = "description", nullable = false)
 	private String description;
-	@Column(name = "image")
+	@Column(name = "image", nullable = false)
 	private String image;
 	@Column(name = "number_of_rooms", nullable = false)
 	private int numberOfRooms;
@@ -40,6 +40,10 @@ public class Cottage {
 	private String info;
 	@Column(name = "reserved", nullable = false)
 	private boolean reserved;
+	@Column(name = "latitude")
+	private double latitude;
+	@Column(name = "longitude")
+	private double longitude;
 	//fetch - Eager koristimo kada su nam neophodni podaci i povezanih tabela 
 	//preporuka je koristiti Lazy kad god mozemo
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -48,6 +52,22 @@ public class Cottage {
 
 	public Long getId() {
 		return id;
+	}
+
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(double lattitude) {
+		this.latitude = lattitude;
+	}
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
 	}
 
 	public String getImage() {

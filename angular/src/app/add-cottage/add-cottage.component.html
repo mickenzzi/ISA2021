@@ -31,6 +31,10 @@
                  placeholder="Cena" required type="text"/><br>
           <input [(ngModel)]="cottage.info" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
                  placeholder="Informacije o dodatnim uslugama" required type="text"/><br>
+          <input [(ngModel)]="cottage.latitude" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+                 placeholder="Geograska sirina:" required type="text"/><br>
+          <input [(ngModel)]="cottage.longitude" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+                 placeholder="Geografska duzina:" required type="text"/><br>
           <div class="submit-container">
             <button mat-raised-button (click)="addCottage()" style="margin-right: 40%">Dodaj</button>
           </div>
