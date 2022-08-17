@@ -1,16 +1,21 @@
 package application.service;
 
-import application.model.Cottage;
-import application.model.dto.CottageDTO;
 
 import java.util.List;
 
-public interface CottageService {
+import application.model.Cottage;
+import application.model.CottageImage;
 
-    List<Cottage> findAll();
+public interface CottageService {
+	List<Cottage> findAll();
     Cottage findById(Long id);
-    Cottage update(CottageDTO cottageDTO);
-    Cottage delete(Long id);
-    Cottage save(CottageDTO cottageDTO);
+    void update(Cottage cottage);
+    void delete(Long id);
+    Cottage save(Cottage cottage, Long id);
+    List<CottageImage> findImagesByCottageId(Long id);
+    CottageImage findImageById(Long id);
+    void updateImage(CottageImage cottageImage);
+    void deleteImage(Long id, String url);
+    boolean saveImage(String url, Long id);
 
 }

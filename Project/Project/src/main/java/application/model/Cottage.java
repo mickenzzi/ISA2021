@@ -1,6 +1,7 @@
 package application.model;
 
 import application.model.dto.CottageDTO;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,16 +27,20 @@ public class Cottage {
 	private String address;
 	@Column(name = "description", nullable = false)
 	private String description;
-	@Column(name = "room", nullable = false)
-	private String room;
-	@Column(name = "term", nullable = false)
-	private String term;
+	@Column(name = "image")
+	private String image;
+	@Column(name = "number_of_rooms", nullable = false)
+	private int numberOfRooms;
+	@Column(name = "number_of_beds", nullable = false)
+	private int numberOfBeds;
+	@Column(name = "rules", nullable = false)
+	private String rules;
 	@Column(name = "price", nullable = false)
 	private String price;
 	@Column(name = "info", nullable = false)
 	private String info;
-	@Column(name = "termin", nullable = false)
-	private String termin;
+	@Column(name = "reserved", nullable = false)
+	private boolean reserved;
 	//fetch - Eager koristimo kada su nam neophodni podaci i povezanih tabela 
 	//preporuka je koristiti Lazy kad god mozemo
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -44,6 +49,22 @@ public class Cottage {
 
 	public Long getId() {
 		return id;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public boolean isReserved() {
+		return reserved;
+	}
+
+	public void setReserved(boolean reserved) {
+		this.reserved = reserved;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	public void setId(Long id) {
@@ -74,20 +95,28 @@ public class Cottage {
 		this.description = description;
 	}
 
-	public String getRoom() {
-		return room;
+	public int getNumberOfRooms() {
+		return numberOfRooms;
 	}
 
-	public void setRoom(String room) {
-		this.room = room;
+	public void setNumberOfRooms(int numberOfRooms) {
+		this.numberOfRooms = numberOfRooms;
+	}
+	
+	public int getNumberOfBeds() {
+		return numberOfBeds;
 	}
 
-	public String getTerm() {
-		return term;
+	public void setNumberOfBeds(int numberOfBeds) {
+		this.numberOfBeds = numberOfBeds;
 	}
 
-	public void setTerm(String term) {
-		this.term = term;
+	public String getRules() {
+		return rules;
+	}
+
+	public void setRules(String rules) {
+		this.rules = rules;
 	}
 
 	public String getPrice() {
@@ -106,14 +135,6 @@ public class Cottage {
 		this.info = info;
 	}
 
-	public String getTermin() {
-		return termin;
-	}
-
-	public void setTermin(String termin) {
-		this.termin = termin;
-	}
-
 	public User getUserCottage() {
 		return userCottage;
 	}
@@ -126,29 +147,19 @@ public class Cottage {
 		super();
 	}
 
-	public Cottage(Long id, String name, String address, String description, String room, String term, String price,
-			String info, String termin) {
+	public Cottage(Long id, String name, String address, String description, String image, int numberOfRooms, int numberOfBeds, String rules, String price,
+			String info) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.address = address;
 		this.description = description;
-		this.room = room;
-		this.term = term;
+		this.image = image;
+		this.numberOfRooms = numberOfRooms;
+		this.numberOfBeds = numberOfBeds;
+		this.rules = rules;
 		this.price = price;
 		this.info = info;
-		this.termin = termin;
 	}
 
-	public Cottage(CottageDTO cottageDTO){
-
-		this.name = cottageDTO.getName();
-		this.address = cottageDTO.getAddress();
-		this.description = cottageDTO.getDescription();
-		this.room = cottageDTO.getRoom();
-		this.term = cottageDTO.getTerm();
-		this.price = cottageDTO.getPrice();
-		this.info = cottageDTO.getInfo();
-		this.termin = cottageDTO.getTermin();
-	}
 }

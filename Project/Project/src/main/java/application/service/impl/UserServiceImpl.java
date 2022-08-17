@@ -149,15 +149,21 @@ public class UserServiceImpl implements UserService {
 		User admin = userRepository.findByUsername("mickenzi");
 		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(userDTO.getEmail());
+		System.out.println("User mail: " + userDTO.getEmail());
 		mail.setFrom(admin.getEmail());
+		System.out.println("Admin mail: " + admin.getEmail());
 		mail.setSubject("Verifikacija naloga");
 		mail.setText("Korisnik " + userDTO.getUsername() + " je podneo zahtev za kreiranje naloga.");
+		System.out.println(userDTO.getFirstName() + " " + userDTO.getLastName() + "\n" + userDTO.getAddress() + " " + userDTO.getCity() + "\n" + userDTO.getPhone() +
+				 " " + userDTO.getCountry() + "\n" + userDTO.getUsername() + " " + userDTO.getEmail() + " " + userDTO.getPassword1() + " pass 2  " + userDTO.getPassword2() + " " + userDTO.getRole());
 		try {
 			javaMailSender.send(mail);
 			check = true;
 		} catch (Exception e) {
+			System.out.println("Greska: " + e.getCause());
 			check = false;
 		}
+		System.out.println(check);
 		if (check == true) {
 			User user = new User();
 			user.setFirstName(userDTO.getFirstName());
