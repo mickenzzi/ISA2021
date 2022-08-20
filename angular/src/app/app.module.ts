@@ -47,6 +47,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTabsModule} from '@angular/material/tabs';
 import { HomeCottageComponent } from './home-cottage/home-cottage.component';
+import { ProfileUserComponent } from './profile-user/profile-user.component';
 
 
 @NgModule({
@@ -71,7 +72,8 @@ import { HomeCottageComponent } from './home-cottage/home-cottage.component';
     ProfileOwnerComponent,
     CottageOwnerCottageListComponent,
     AddCottageComponent,
-    HomeCottageComponent
+    HomeCottageComponent,
+    ProfileUserComponent
   ],
   imports: [
     BrowserModule,

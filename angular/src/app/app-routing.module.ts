@@ -21,6 +21,7 @@ import { CottageOwnerCottageListComponent } from './cottage-owner-cottage-list/c
 import { ProfileOwnerComponent } from './profile-owner/profile-owner.component';
 import { AddCottageComponent } from './add-cottage/add-cottage.component';
 import { HomeCottageComponent } from './home-cottage/home-cottage.component';
+import { ProfileUserComponent } from './profile-user/profile-user.component';
 
 const routes: Routes = [
   {
@@ -103,7 +104,11 @@ const routes: Routes = [
   {
     path: 'cottage/:id',
     component: HomeCottageComponent,
-  }
+  },
+  {
+    path: 'profileUser',
+    component: ProfileUserComponent,
+  },
 ];
 
 @NgModule({

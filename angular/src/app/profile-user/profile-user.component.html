@@ -1,0 +1,41 @@
+<body class="profile-cottage-owner-content">
+    <mat-toolbar >
+           <div style="width: 50%; float:left">
+               <label style="margin-left:5%;">{{this.user.username}}</label>
+           </div>
+           
+           <div style="width: 50%; float:right; text-align: right;">
+               <button mat-raised-button color="accent" (click)="goBack()">Nazad</button>
+               <button mat-raised-button color="accent" (click)="logOut()" style="margin-left: 5%; margin-right: 5%; cursor:pointer;">Odjavite se</button>
+   
+           </div>
+       </mat-toolbar>
+ <div class="login-container" style="margin-left:40%">
+   <section class="login" id="login">
+     <form class="login-form">
+       <input [(ngModel)]="user.firstName" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+              placeholder="Ime" required type="text"/>
+       <input [(ngModel)]="user.lastName" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+              placeholder="Prezime" required type="text"/>
+       <input [(ngModel)]="user.address" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+              placeholder="Adresa" required type="text"/>
+       <input [(ngModel)]="user.city" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+              placeholder="Grad" required type="text"/>
+       <input [(ngModel)]="user.country" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+              placeholder="Drzava" required type="text"/>
+       <input [(ngModel)]="user.phone" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+              placeholder="Telefon" required type="text"/>
+       <input [(ngModel)]="user.email" [ngModelOptions]="{standalone: true}" disabled="true" autofocus class="login-input"
+              placeholder="E-mail" required type="text"/>
+       <input [(ngModel)]="user.password1" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+              placeholder="Lozinka" required type="password"/>
+       <input [(ngModel)]="user.password2" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+              placeholder="Potvrda lozinke" required type="password"/>
+       <div class="submit-container">
+         <button mat-raised-button color="primary" (click)="updateUser()" style="margin-right:20px" >Potvrdi</button>
+       </div>
+     </form>
+   </section>
+ </div>
+ </body>
+ 

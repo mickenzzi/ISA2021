@@ -141,4 +141,8 @@ export class HomeUserComponent implements OnInit {
     }
   }
 
+  goToProfile() {
+    this.router.navigate(['/profileUser']);
+  }
+
 }
