@@ -1,7 +1,8 @@
-<div class="cottage-owner-content">
-    <mat-toolbar >
+<div>
+    <mat-toolbar>
         <div style="width: 50%; float:left">
-            <label style="margin-left:5%;">Vikendica {{cottage.name}}</label>
+            <label style="margin-left:5%;">Vikendica "{{cottage.name}}"</label>
+            <button mat-raised-button color="primary" (click)="calendar()" style="cursor:pointer; margin-left:5%">Termini</button>
         </div>
         
         <div style="width: 50%; float:right; text-align: right;">

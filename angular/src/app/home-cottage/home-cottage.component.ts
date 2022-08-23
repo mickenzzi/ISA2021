@@ -204,17 +204,21 @@ export class HomeCottageComponent implements OnInit {
     this.router.navigate(['/cottageList']);
   }
 
+  calendar() {
+    this.router.navigate(['/cottageTermins/' + this.cottageId]);
+  }
+
   getUser() {
     const username = this.currentUser.username1;
     this.subs.push(this.userService.findUser(username).subscribe((response: User) => {
       this.user = response;
       if(this.user.role === "ROLE_COTTAGE_OWNER"){
         this.isOwner = true;
-        if(this.isOwner){
-          this.cottageInfo = "Izmeni vikendicu";
-        } else {
-          this.cottageInfo = "Informacije o vikendici";
-        }
+      }
+      if(this.isOwner){
+        this.cottageInfo = "Izmeni vikendicu";
+      } else {
+        this.cottageInfo = "Informacije o vikendici";
       }
     }));
   }

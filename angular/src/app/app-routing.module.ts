@@ -21,6 +21,7 @@ import { CottageOwnerCottageListComponent } from './cottage-owner-cottage-list/c
 import { ProfileOwnerComponent } from './profile-owner/profile-owner.component';
 import { AddCottageComponent } from './add-cottage/add-cottage.component';
 import { HomeCottageComponent } from './home-cottage/home-cottage.component';
+import { CottageCalendarComponent } from './cottage-calendar/cottage-calendar.component';
 
 const routes: Routes = [
   {
@@ -103,6 +104,10 @@ const routes: Routes = [
   {
     path: 'cottage/:id',
     component: HomeCottageComponent,
+  },
+  {
+    path: 'cottageTermins/:id',
+    component: CottageCalendarComponent,
   }
 ];
 

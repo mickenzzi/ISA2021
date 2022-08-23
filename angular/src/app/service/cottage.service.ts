@@ -4,6 +4,7 @@ import { Cottage } from '../model/cottage';
 import { Image } from '../model/image';
 import { AuthenticationService } from './authentication.service';
 import { CottageImage } from '../model/cottageImage';
+import { Termin } from '../model/termin';
 
 
 @Injectable({
@@ -12,6 +13,7 @@ import { CottageImage } from '../model/cottageImage';
 export class CottageService {
 
     private cottageUrl = 'http://localhost:8081/myApp/api/cottages';
+    private terminUrl = 'http://localhost:8081/myApp/api/cottageTermins';
 
   constructor(
     private http: HttpClient,
@@ -58,6 +60,10 @@ export class CottageService {
 
   public saveImage(id: number, url: String) {
     return this.http.post(`${this.cottageUrl}/saveImage/${id}`, url);
+  }
+
+  public createTermin(termin: Termin, cottageId: number){
+    return this.http.post(`${this.terminUrl}/createTermin/${cottageId}`, termin);
   }
 
 }

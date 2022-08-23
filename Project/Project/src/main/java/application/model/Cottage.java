@@ -35,7 +35,7 @@ public class Cottage {
 	@Column(name = "rules", nullable = false)
 	private String rules;
 	@Column(name = "price", nullable = false)
-	private String price;
+	private double price;
 	@Column(name = "info", nullable = false)
 	private String info;
 	@Column(name = "reserved", nullable = false)
@@ -138,11 +138,11 @@ public class Cottage {
 		this.rules = rules;
 	}
 
-	public String getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(String price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 
@@ -166,7 +166,7 @@ public class Cottage {
 		super();
 	}
 
-	public Cottage(Long id, String name, String address, String description, String image, int numberOfRooms, int numberOfBeds, String rules, String price,
+	public Cottage(Long id, String name, String address, String description, String image, int numberOfRooms, int numberOfBeds, String rules, double price,
 			String info) {
 		super();
 		this.id = id;

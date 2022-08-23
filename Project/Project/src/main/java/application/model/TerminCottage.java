@@ -1,0 +1,114 @@
+package application.model;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "termin_cottage_table")
+public class TerminCottage {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Column(name = "start_date")
+	private String start;
+	@Column(name = "end_date")
+	private String end;
+	@Column(name = "duration")
+	private double daysDuration;
+	@Column(name = "reserved")
+	private boolean reserved;
+	@Column(name = "is_action")
+	private boolean action;
+	@Column(name = "price")
+	private double price;
+	@Column(name = "capacity")
+	private int capacity;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "cottage_id")
+	private Cottage cottageTermin;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getStart() {
+		return start;
+	}
+
+	public void setStart(String start) {
+		this.start = start;
+	}
+
+	public String getEnd() {
+		return end;
+	}
+
+	public void setEnd(String end) {
+		this.end = end;
+	}
+
+	public double getDaysDuration() {
+		return daysDuration;
+	}
+
+	public void setDaysDuration(double daysDuration) {
+		this.daysDuration = daysDuration;
+	}
+
+	public boolean isReserved() {
+		return reserved;
+	}
+
+	public void setReserved(boolean reserved) {
+		this.reserved = reserved;
+	}
+
+	public Cottage getCottageTermin() {
+		return cottageTermin;
+	}
+
+	public void setCottageTermin(Cottage cottageTermin) {
+		this.cottageTermin = cottageTermin;
+	}
+
+	public boolean isAction() {
+		return action;
+	}
+
+	public void setAction(boolean action) {
+		this.action = action;
+	}	
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public int getCapacity() {
+		return capacity;
+	}
+
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
+	}
+
+	public TerminCottage() {
+		super();
+	}
+}

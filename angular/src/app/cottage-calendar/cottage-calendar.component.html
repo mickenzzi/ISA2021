@@ -1,0 +1,45 @@
+<div class="cottage-owner-content">
+    <mat-toolbar >
+        <div style="width: 50%; float:left">
+            <label style="margin-left:5%;">Vikendica "{{cottage.name}}" - {{title}}</label>
+        </div>
+        
+        <div style="width: 50%; float:right; text-align: right;">
+          <button mat-raised-button color="primary" (click)="back()" style="cursor:pointer;">Nazad</button>
+          <button mat-raised-button color="primary" (click)="logOut()" style="margin-left: 5%; margin-right: 5%; cursor:pointer;">Odjavite se</button>
+        </div>
+    </mat-toolbar>
+
+    <div>
+        <div class="login-container" style="text-align: center;">
+            <section class="login">
+              <header>
+                <h2>Kreiranje termina</h2>
+              </header>
+              <form class="login-form" style="text-align: left; float:left; width: 100%;">
+                <label>Datum pocetka:</label><br>
+                <input [(ngModel)]="termin.start" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+                  placeholder="dd-MMM-YYYY HH:mm:ss" required type="text" /><br>
+                <label>Datum zavrsetka:</label><br>
+                <input [(ngModel)]="termin.end" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+                  placeholder="dd-MMM-YYYY HH:mm:ss" required type="text" /><br>
+                <label>Akcija?</label><br>
+                <input style="margin-right: 100px;" [(ngModel)]="termin.action" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+                     type="checkbox" />
+                <label *ngIf="termin.action">Trajanje:</label><br>
+                <input *ngIf="termin.action" [(ngModel)]="termin.duration" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+                  placeholder="Trajanje" required="{{termin.action}}" type="text" />
+                <label>Broj ljudi:</label><br>
+                <input [(ngModel)]="termin.capacity" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+                  placeholder="eg. 5" required type="text" />
+                <div class="submit-container">
+                  <!--<button (click)="cancel()" class="login-button" style="margin-right:210px;">Odustani</button>-->
+                  <button (click)="createTermin()" class="login-button">Potvrdi</button>
+                </div>
+              </form>
+            </section>
+          </div>
+    </div>
+    
+
+</div>

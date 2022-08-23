@@ -31,6 +31,8 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { authInterceptorProviders } from './helpers/token-interceptor';
 import { CottageOwnerCottageListComponent } from './cottage-owner-cottage-list/cottage-owner-cottage-list.component';
 import { AddCottageComponent } from './add-cottage/add-cottage.component';
+import { HomeCottageComponent } from './home-cottage/home-cottage.component';
+import { CottageCalendarComponent } from './cottage-calendar/cottage-calendar.component';
 
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatFormFieldModule} from '@angular/material/form-field';
@@ -46,7 +48,6 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTabsModule} from '@angular/material/tabs';
-import { HomeCottageComponent } from './home-cottage/home-cottage.component';
 
 
 @NgModule({
@@ -71,7 +72,8 @@ import { HomeCottageComponent } from './home-cottage/home-cottage.component';
     ProfileOwnerComponent,
     CottageOwnerCottageListComponent,
     AddCottageComponent,
-    HomeCottageComponent
+    HomeCottageComponent,
+    CottageCalendarComponent
   ],
   imports: [
     BrowserModule,
