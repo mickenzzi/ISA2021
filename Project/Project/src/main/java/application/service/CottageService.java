@@ -15,6 +15,7 @@ public interface CottageService {
     List<CottageImage> findImagesByCottageId(Long id);
     CottageImage findImageById(Long id);
     void updateImage(CottageImage cottageImage);
-    void deleteImage(Long id, String url);
+    void deleteImage(Long id);
     boolean saveImage(String url, Long id);
+    List<CottageImage> getAllImages();
 }

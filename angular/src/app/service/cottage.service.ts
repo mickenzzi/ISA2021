@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core'
 import { Cottage } from '../model/cottage';
 import { Image } from '../model/image';
 import { AuthenticationService } from './authentication.service';
+import { CottageImage } from '../model/cottageImage';
 
 
 @Injectable({
@@ -43,7 +44,7 @@ export class CottageService {
   }
   
   public getAllCottageImages(id: number) {
-    return this.http.get<String[]>(`${this.cottageUrl}/getAllCottageImages/${id}`);
+    return this.http.get<CottageImage[]>(`${this.cottageUrl}/getAllCottageImages/${id}`);
   }
 
 
@@ -51,8 +52,8 @@ export class CottageService {
     return this.http.put(`${this.cottageUrl}/updateImage`, image);
   }
 
-  public deleteCottageImage(url: String, id: number) {
-    return this.http.get<Image>(`${this.cottageUrl}/deleteImage/${id}/${url}`);
+  public deleteCottageImage(id: number) {
+    return this.http.get<CottageImage>(`${this.cottageUrl}/deleteImage/${id}`);
   }
 
   public saveImage(id: number, url: String) {

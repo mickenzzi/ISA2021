@@ -111,15 +111,15 @@ public class CottageController {
 	
 	
 	@GetMapping(value = "/getAllCottageImages/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<String>> getAllCottageImages(@PathVariable("id") Long id) {
+	public ResponseEntity<List<CottageImage>> getAllCottageImages(@PathVariable("id") Long id) {
 		List<CottageImage> images = new ArrayList<CottageImage>();
 		images = cottageService.findImagesByCottageId(id);
-		List<String> strImages = new ArrayList<String>();
-		for(CottageImage image : images) {
-			strImages.add(image.getImageUrl());
-		}
+		/*
+		 * List<String> strImages = new ArrayList<String>(); for(CottageImage image :
+		 * images) { strImages.add(image.getImageUrl()); }
+		 */
 		System.out.println("The task /getAllCottageImages was successfully completed.");
-		return new ResponseEntity<>(strImages, HttpStatus.OK);
+		return new ResponseEntity<>(images, HttpStatus.OK);
 	}
 
 
@@ -137,20 +137,20 @@ public class CottageController {
 		return new ResponseEntity<>(image, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/deleteImage/{id}/{url}", produces = MediaType.APPLICATION_JSON_VALUE)
-	@PreAuthorize("hasRole('COTTAGE_OWNER') or hasRole('ADMIN')")
-	public ResponseEntity<CottageImage> deleteCottageImage(@PathVariable("url") String url, @PathVariable("id") Long id) {
+	@GetMapping(value = "/deleteImage/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('COTTAGE_OWNER') or hasRole('ADMIN')")
+	public ResponseEntity<CottageImage> deleteImage(@PathVariable("id") Long id) {
 		if (id == null) {
 			System.out.println("Id is null.");
 			return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
 		}
-		System.out.println(url);
-		String safeUrl = "/assets/img/" + url;
-		System.out.println(safeUrl);
-		 
-		
-		cottageService.deleteImage(id, safeUrl);
-		System.out.println("The task /deleteCottageImage was successfully completed.");
+		/*
+		 * String safeUrl = "/assets/img/" + url;
+		 * 
+		 * System.out.println(safeUrl); cottageService.deleteImage(safeUrl);
+		 */
+		cottageService.deleteImage(id);
+		System.out.println("The task /deleteImage was successfully completed.");
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	

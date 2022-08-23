@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NumericLiteral } from 'typescript';
 import { Cottage } from '../model/cottage';
+import { CottageImage } from '../model/cottageImage';
 import { Image } from '../model/image';
 import { User } from '../model/user';
 import { CottageService } from '../service/cottage.service';
@@ -27,7 +28,7 @@ export class HomeCottageComponent implements OnInit {
   cottage: Cottage = new Cottage();
   isDisabled = true;
   images: Image [] = [];
-  urls: String [] = [];
+  cottages: CottageImage [] = [];
   image!: Image;
   url1!: String;
   url2!: String;
@@ -39,6 +40,7 @@ export class HomeCottageComponent implements OnInit {
   show3: boolean = false;
   show4: boolean = false;
   show5: boolean = false;
+  imageIdToDelete: number = 0;
   URL_ss = "";
   URL: String = "";
   URL_R: String = "";
@@ -120,27 +122,30 @@ export class HomeCottageComponent implements OnInit {
     }));
   }
 
-  deleteImg(imgUrl?: String) {
-    if (imgUrl === undefined) {
-      alert('Id nije validan.');
+  deleteImg(url?: String) {
+    if (url === undefined) {
+      alert('Url nije validan.');
     } else {
-      var safeUrl = "-assets-img-" + imgUrl.substring(12);
-      
-      
-      //console.log(safeUrl);
-      this.subs.push(this.cottageService.deleteCottageImage(safeUrl, this.cottageId).subscribe(() => {
+      for(var i = 0; i <this.cottages.length; i++){
+        if(url === this.cottages[i].imageUrl){
+          this.imageIdToDelete = this.cottages[i].id;
+        } 
+      }
+
+      this.subs.push(this.cottageService.deleteCottageImage(this.imageIdToDelete).subscribe(() => {
         this.getCottageImages();
       }));
+      window.location.reload();
     }
   }
 
   getCottageImages() {
-    this.subs.push(this.cottageService.getAllCottageImages(this.cottageId).subscribe((response: String[]) => {
-      this.urls = response;
-      console.log(this.urls);
-      if(this.urls.length > 0){
-        if(this.urls[0]){
-          this.url1 = this.urls[0];
+    this.subs.push(this.cottageService.getAllCottageImages(this.cottageId).subscribe((response: CottageImage[]) => {
+      this.cottages = response;
+      console.log(this.cottages);
+      if(this.cottages.length > 0){
+        if(this.cottages[0].imageUrl){
+          this.url1 = this.cottages[0].imageUrl;
           if(this.isOwner){
             this.show1 = true;
           }
@@ -148,8 +153,8 @@ export class HomeCottageComponent implements OnInit {
           this.url1 = "";
           this.show1 = false;
         }
-        if(this.urls[1]){
-          this.url2 = this.urls[1];
+        if(this.cottages[1].imageUrl){
+          this.url2 = this.cottages[1].imageUrl;
           if(this.isOwner){
             this.show2 = true;
           }
@@ -157,8 +162,8 @@ export class HomeCottageComponent implements OnInit {
           this.url2 = "";
           this.show2 = false;
         }
-        if(this.urls[2]){
-          this.url3 = this.urls[2];
+        if(this.cottages[2].imageUrl){
+          this.url3 = this.cottages[2].imageUrl;
           if(this.isOwner){
             this.show3 = true;
           }
@@ -166,8 +171,8 @@ export class HomeCottageComponent implements OnInit {
           this.url3 = "";
           this.show3 = false;
         }
-        if(this.urls[3]){
-          this.url4 = this.urls[3];
+        if(this.cottages[3].imageUrl){
+          this.url4 = this.cottages[3].imageUrl;
           if(this.isOwner){
             this.show4 = true;
           }
@@ -175,8 +180,8 @@ export class HomeCottageComponent implements OnInit {
           this.url4 = "";
           this.show4 = false;
         }
-        if(this.urls[4]){
-          this.url5 = this.urls[4];
+        if(this.cottages[4].imageUrl){
+          this.url5 = this.cottages[4].imageUrl;
           if(this.isOwner){
             this.show5 = true;
           }

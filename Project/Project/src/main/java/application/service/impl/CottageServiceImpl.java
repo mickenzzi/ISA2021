@@ -124,13 +124,12 @@ public class CottageServiceImpl implements CottageService {
 	}
 
 	@Override
-	public void deleteImage(Long id, String url) {
-		List<CottageImage> allImages = findImagesByCottageId(id);
-		for(CottageImage image : allImages) {
-			if(image.getImageUrl().equals(url) && image.getCottageId().getId() == id) {
+	public void deleteImage(Long id) {
+		//List<CottageImage> allImages = findImagesByCottageId(img.getCottageId().getId());
+		List<CottageImage> allImages = getAllImages();
+		for(CottageImage image : allImages) 
+			if(image.getId() == id) 
 				cottageImageRepository.delete(image);
-			}
-		}
 	}
 
 	@Override
@@ -152,6 +151,11 @@ public class CottageServiceImpl implements CottageService {
 			cottageImageRepository.save(saveImage);
 		}
 		return !exists;
+	}
+
+	@Override
+	public List<CottageImage> getAllImages() {
+		return cottageImageRepository.findAll();
 	}
 	
 
