@@ -27,7 +27,7 @@
                 <input style="margin-right: 100px;" [(ngModel)]="termin.action" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
                      type="checkbox" />
                 <label *ngIf="termin.action">Trajanje:</label><br>
-                <input *ngIf="termin.action" [(ngModel)]="termin.duration" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+                <input *ngIf="termin.action" [(ngModel)]="termin.daysDuration" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
                   placeholder="Trajanje" required="{{termin.action}}" type="text" />
                 <label>Broj ljudi:</label><br>
                 <input [(ngModel)]="termin.capacity" [ngModelOptions]="{standalone: true}" autofocus class="login-input"

@@ -1,7 +1,7 @@
 export class TerminCottage {
     id?: number;
     reserved?: boolean;
-    duration?: number;
+    daysDuration?: number;
     start?: string;
     end?: string;
     action?: boolean;

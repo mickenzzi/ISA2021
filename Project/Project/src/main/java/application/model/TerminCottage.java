@@ -1,5 +1,7 @@
 package application.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,8 +23,10 @@ public class TerminCottage {
 	private String start;
 	@Column(name = "end_date")
 	private String end;
+	@Column(name = "action_expire")
+	private String actionExpireDate;
 	@Column(name = "duration")
-	private double daysDuration;
+	private int daysDuration;
 	@Column(name = "reserved")
 	private boolean reserved;
 	@Column(name = "is_action")
@@ -35,6 +39,17 @@ public class TerminCottage {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "cottage_id")
 	private Cottage cottageTermin;
+
+	
+	
+	
+	public String getActionExpireDate() {
+		return actionExpireDate;
+	}
+
+	public void setActionExpireDate(String actionExpireDate) {
+		this.actionExpireDate = actionExpireDate;
+	}
 
 	public Long getId() {
 		return id;
@@ -60,11 +75,11 @@ public class TerminCottage {
 		this.end = end;
 	}
 
-	public double getDaysDuration() {
+	public int getDaysDuration() {
 		return daysDuration;
 	}
 
-	public void setDaysDuration(double daysDuration) {
+	public void setDaysDuration(int daysDuration) {
 		this.daysDuration = daysDuration;
 	}
 

@@ -7,9 +7,12 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import org.apache.tomcat.jni.Time;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,25 +58,60 @@ public class TerminCottageServiceImpl implements TerminCottageService {
 		} else {
 			create = true;
 		}
-		//ubaciti parsiranje neko jer ne racuna dobro
-		LocalDate start = LocalDate.of(startDate.getYear(), startDate.getMonth(), startDate.getDay());
-	    LocalDate end = LocalDate.of(endDate.getYear(), endDate.getMonth(), endDate.getDay());
-
-	    Period period = Period.between(start, end);
-	    int diff = Math.abs(period.getDays());
-		System.out.println(diff);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+        Date firstDate = sdf.parse(termin.getStart());
+        Date secondDate = sdf.parse(termin.getEnd());
+        long diff = secondDate.getTime() - firstDate.getTime();
+        TimeUnit time = TimeUnit.DAYS;
+        long difference = time.convert(diff, TimeUnit.MILLISECONDS);
+        //System.out.println("The difference in days is : "+difference);
+        
+        long diffHours = secondDate.getTime() - firstDate.getTime();
+        TimeUnit timeHours = TimeUnit.HOURS;
+        long differenceHours = timeHours.convert(diffHours, TimeUnit.MILLISECONDS);
+        //System.out.println("The difference in hours is : "+differenceHours);
+        
+        if(differenceHours>24) {
+        	if(differenceHours%24 != 0) {
+        		difference+=1;
+        	}
+        } else if (differenceHours < 24 && difference==0) {
+        	difference = 1;
+        }
+        
 		if (create) {
 			term.setStart(termin.getStart());
 			term.setEnd(termin.getEnd());
 			term.setDaysDuration(termin.getDaysDuration());
 			term.setReserved(false);
 			term.setAction(termin.isAction());
-			term.setPrice(cottage.getPrice()*diff);
+			term.setPrice(cottage.getPrice()*difference);
 			term.setCapacity(termin.getCapacity());
 			term.setCottageTermin(cottage);
 			terminCottageRepository.save(term);
 		}
-		System.out.println("Days between: " + term.getPrice());
+		
+		if(term.isAction()) {
+			
+			String date = sdf.format(new Date());
+			Calendar cal = Calendar.getInstance();  
+			
+	        try{  
+	           cal.setTime(sdf.parse(date));  
+	        }catch(ParseException e){  
+	            e.printStackTrace();  
+	        }  
+	        
+	        cal.add(Calendar.DAY_OF_MONTH, term.getDaysDuration());  
+	        String dateAfter = sdf.format(cal.getTime());
+	        
+			term.setActionExpireDate(dateAfter);
+			
+			//send mail
+		}
+		
+		//System.out.println("Price: " + term.getPrice());
 		return create;
 	}
 
