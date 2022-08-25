@@ -10,8 +10,8 @@
         </div>
     </mat-toolbar>
 
-    <div>
-        <div class="login-container" style="text-align: center;">
+    <div *ngIf="flagCreateTermin" class="centerDiv">
+        <div class="login-container" style="text-align: center; top: 10%; margin-left: 40%;">
             <section class="login">
               <header>
                 <h2>Kreiranje termina</h2>
@@ -23,10 +23,10 @@
                 <label>Datum zavrsetka:</label><br>
                 <input [(ngModel)]="termin.end" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
                   placeholder="dd-MMM-YYYY HH:mm:ss" required type="text" /><br>
-                  
-                  <input [(ngModel)]="termin.action" [ngModelOptions]="{standalone: true}" autofocus
-                     type="checkbox" > Akcija? <br>
-                
+                <input style="vertical-align:middle; cursor: pointer;" [(ngModel)]="termin.action" [ngModelOptions]="{standalone: true}" autofocus
+                     type="checkbox" name="akcija">
+                <label for="akcija" style="vertical-align:middle">Akcija?</label>
+                <input style="height: 1px" class="login-input" disabled="true">
                 <label *ngIf="termin.action"><br>Trajanje:</label><br>
                 <input *ngIf="termin.action" [(ngModel)]="termin.daysDuration" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
                   placeholder="Broj dana" required="{{termin.action}}" type="text" />
@@ -34,13 +34,95 @@
                 <input [(ngModel)]="termin.capacity" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
                   placeholder="eg. 5" required type="text" />
                 <div class="submit-container">
-                  <!--<button (click)="cancel()" class="login-button" style="margin-right:210px;">Odustani</button>-->
-                  <button (click)="createTermin()" class="login-button">Potvrdi</button>
+                  <button (click)="showCreateTermin()" class="login-button" style="float:left; margin-left: 5%;">Odustani</button>
+                  <button (click)="createTermin()" class="login-button" style="margin-right: 5%">Potvrdi</button>
                 </div>
               </form>
             </section>
           </div>
     </div>
     
+    <div *ngIf="flagEditTermin" class="centerDiv">
+      <div class="login-container" style="text-align: center; top: 10%; margin-left: 40%;">
+          <section class="login">
+            <header>
+              <h2>Izmena termina</h2>
+            </header>
+            <form class="login-form" style="text-align: left; float:left; width: 100%;">
+              <label>Datum pocetka:</label><br>
+              <input [(ngModel)]="selectedTermin.start" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+                placeholder="dd-MMM-YYYY HH:mm:ss" required type="text" /><br>
+              <label>Datum zavrsetka:</label><br>
+              <input [(ngModel)]="selectedTermin.end" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+                placeholder="dd-MMM-YYYY HH:mm:ss" required type="text" /><br>
+              <input style="vertical-align: middle; cursor: pointer;" [(ngModel)]="selectedTermin.action" [ngModelOptions]="{standalone: true}" autofocus
+                   type="checkbox" name="akcija">
+              <label for="akcija" style="vertical-align:middle">Akcija?</label>
+              <input style="height: 1px" class="login-input" disabled="true">
+              <label *ngIf="selectedTermin.action"><br>Trajanje:</label><br>
+              <input *ngIf="selectedTermin.action" [(ngModel)]="selectedTermin.daysDuration" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+                placeholder="Broj dana" required="{{selectedTermin.action}}" type="text" />
+              <label>Broj ljudi:</label><br>
+              <input [(ngModel)]="selectedTermin.capacity" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+                placeholder="eg. 5" required type="text" />
+              <div class="submit-container">
+                <button (click)="hideEditTermin()" class="login-button" style="float:left; margin-left: 5%;">Odustani</button>
+                <button (click)="editTermin()" class="login-button" style="margin-right: 5%">Potvrdi</button>
+              </div>
+            </form>
+          </section>
+        </div>
+    </div>
+
+    <div *ngIf="!flagCreateTermin && !flagEditTermin" style="width:60%; height:80%; margin-top:2%; margin-left: 20%; margin-right: 20%; ">
+      <span class="dot-red"></span>
+        <label style="color: dimgrey; font-family: 'Courier New', Courier, monospace; font-size: medium;">-Rezervisano</label>
+      <span class="dot-blue" style="margin-left: 20px"></span>
+        <label style="color: dimgrey;font-family: 'Courier New', Courier, monospace; font-size: medium;">-Slobodno</label>
+      <span class="dot-green" style="margin-left: 20px"></span>
+        <label style="color: dimgrey;font-family: 'Courier New', Courier, monospace; font-size: medium;">-Akcija</label><br><br>
+        
+      <div>
+        <button mat-raised-button  mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+          (viewDateChange)="closeOpenMonthViewDay()" >
+          Prethodni
+        </button>
+        <button mat-raised-button mwlCalendarToday [(viewDate)]="viewDate" style="margin-left: 5px">
+          Danas
+        </button>
+        <button mat-raised-button mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" style="margin-left: 5px"
+          (viewDateChange)="closeOpenMonthViewDay()">
+          Naredni
+        </button>
+        <label style=" margin-left: 5%; font-size: medium;">
+          {{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}
+        </label>
+        <button mat-raised-button style="margin-left: 5%" (click)="setView(CalendarView.Month)"
+          [class.active]="view === CalendarView.Month">Mesec</button>
+        <button mat-raised-button (click)="setView(CalendarView.Week)" style="margin-left: 5px"
+          [class.active]="view === CalendarView.Week">Sedmica</button>
+        <button mat-raised-button (click)="setView(CalendarView.Day)" style="margin-left: 5px"
+          [class.active]="view === CalendarView.Day">Dan</button>
+  
+        <button mat-raised-button style="float:right" (click)="showCreateTermin()">Novi termin</button>
+  
+      </div>
+      <br />
+  
+      <div [ngSwitch]="view">
+        <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events"
+          (dayClicked)="changeDay($event.day.date)" (beforeViewRender)="beforeMonthViewRender($event)">
+        </mwl-calendar-month-view>
+        <mwl-calendar-week-view *ngSwitchCase="'week'" [viewDate]="viewDate" [events]="events"
+          (beforeViewRender)="beforeWeekViewRender($event)">
+        </mwl-calendar-week-view>
+        <mwl-calendar-day-view *ngSwitchCase="'day'" [viewDate]="viewDate" [events]="events"
+          (beforeViewRender)="beforeDayViewRender($event)">
+        </mwl-calendar-day-view>
+      </div>
+  
+    </div>
+
+
 
 </div>

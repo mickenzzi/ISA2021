@@ -71,4 +71,12 @@ export class CottageService {
     return this.http.get<TerminCottage[]>(`${this.terminUrl}/getAllTermins/${id}`);
   }
 
+  public getCottageTermin(id: number) {
+    return this.http.get<TerminCottage>(`${this.terminUrl}/getTermin/${id}`);
+  }
+
+  public updateCottageTermin(termin: TerminCottage) {
+    return this.http.put(`${this.terminUrl}/updateTermin`, termin);
+  }
+
 }

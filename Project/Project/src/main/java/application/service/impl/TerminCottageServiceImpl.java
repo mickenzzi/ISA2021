@@ -66,12 +66,10 @@ public class TerminCottageServiceImpl implements TerminCottageService {
         long diff = secondDate.getTime() - firstDate.getTime();
         TimeUnit time = TimeUnit.DAYS;
         long difference = time.convert(diff, TimeUnit.MILLISECONDS);
-        //System.out.println("The difference in days is : "+difference);
         
         long diffHours = secondDate.getTime() - firstDate.getTime();
         TimeUnit timeHours = TimeUnit.HOURS;
         long differenceHours = timeHours.convert(diffHours, TimeUnit.MILLISECONDS);
-        //System.out.println("The difference in hours is : "+differenceHours);
         
         if(differenceHours>24) {
         	if(differenceHours%24 != 0) {
@@ -141,7 +139,8 @@ public class TerminCottageServiceImpl implements TerminCottageService {
 
 	@Override
 	public List<TerminCottage> findAllTerminsByCottage(Long cottageId) {
-		List<TerminCottage> termins = findAll();
+		List<TerminCottage> termins = new ArrayList<>();
+		termins = findAll();
 		List<TerminCottage> ret = new ArrayList<>();
 		for(TerminCottage t : termins) 
 			if(t.getCottageTermin().getId() == cottageId)
