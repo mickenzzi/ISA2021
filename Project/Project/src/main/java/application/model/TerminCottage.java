@@ -35,14 +35,23 @@ public class TerminCottage {
 	private double price;
 	@Column(name = "capacity")
 	private int capacity;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "user_id")
+	private User userReserved;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "cottage_id")
 	private Cottage cottageTermin;
 
 	
-	
-	
+	public User getUserReserved() {
+		return userReserved;
+	}
+
+	public void setUserReserved(User userReserved) {
+		this.userReserved = userReserved;
+	}
+
 	public String getActionExpireDate() {
 		return actionExpireDate;
 	}

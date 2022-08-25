@@ -5,6 +5,7 @@ import { Image } from '../model/image';
 import { AuthenticationService } from './authentication.service';
 import { CottageImage } from '../model/cottageImage';
 import { Termin } from '../model/termin';
+import { TerminCottage } from '../model/terminCottage';
 
 
 @Injectable({
@@ -64,6 +65,10 @@ export class CottageService {
 
   public createTermin(termin: Termin, cottageId: number){
     return this.http.post(`${this.terminUrl}/createTermin/${cottageId}`, termin);
+  }
+
+  public getCottageTermins(id: number) {
+    return this.http.get<TerminCottage[]>(`${this.terminUrl}/getAllTermins/${id}`);
   }
 
 }

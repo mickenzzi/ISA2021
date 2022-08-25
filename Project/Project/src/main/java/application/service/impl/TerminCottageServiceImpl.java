@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import application.model.Cottage;
 import application.model.ReservationCottage;
 import application.model.TerminCottage;
+import application.model.User;
 import application.repository.CottageRepository;
 import application.repository.TerminCottageRepository;
 import application.service.TerminCottageService;
@@ -89,24 +90,14 @@ public class TerminCottageServiceImpl implements TerminCottageService {
 			term.setPrice(cottage.getPrice()*difference);
 			term.setCapacity(termin.getCapacity());
 			term.setCottageTermin(cottage);
+			term.setUserReserved(null);
 			terminCottageRepository.save(term);
 		}
 		
 		if(term.isAction()) {
 			
-			String date = sdf.format(new Date());
-			Calendar cal = Calendar.getInstance();  
-			
-	        try{  
-	           cal.setTime(sdf.parse(date));  
-	        }catch(ParseException e){  
-	            e.printStackTrace();  
-	        }  
-	        
-	        cal.add(Calendar.DAY_OF_MONTH, term.getDaysDuration());  
-	        String dateAfter = sdf.format(cal.getTime());
-	        
-			term.setActionExpireDate(dateAfter);
+			String actionEndDate = countActionEndDate(term);
+			term.setActionExpireDate(actionEndDate);
 			
 			//send mail
 		}
@@ -115,6 +106,24 @@ public class TerminCottageServiceImpl implements TerminCottageService {
 		return create;
 	}
 
+	public String countActionEndDate(TerminCottage term) {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+		String date = sdf.format(new Date());
+		Calendar cal = Calendar.getInstance();  
+		
+        try{  
+           cal.setTime(sdf.parse(date));  
+        }catch(ParseException e){  
+            e.printStackTrace();  
+        }  
+        
+        cal.add(Calendar.DAY_OF_MONTH, term.getDaysDuration());  
+        String dateAfter = sdf.format(cal.getTime());
+		
+		return dateAfter;
+	}
+	
 	@Override
 	public TerminCottage save(TerminCottage terminCottage) {
 		return terminCottageRepository.save(terminCottage);
@@ -142,14 +151,41 @@ public class TerminCottageServiceImpl implements TerminCottageService {
 	}
 
 	@Override
-	public void updateTermin(TerminCottage terminCottage) {
-		// TODO Auto-generated method stub
+	public boolean updateTermin(TerminCottage terminCottage) {
+		TerminCottage termin = terminCottageRepository.findById(terminCottage.getId()).orElseGet(null);
+		boolean found = false;
+		if(termin!=null) {
+			found = true;
+			
+			if(termin.isAction() && !terminCottage.isAction()) 
+				termin.setActionExpireDate("expired");
+			
+			if(!termin.isAction() && terminCottage.isAction()) 
+				termin.setActionExpireDate(countActionEndDate(terminCottage));
+			
+			if(termin.isAction() && terminCottage.isAction() && !(termin.getDaysDuration()==terminCottage.getDaysDuration())) 
+				termin.setActionExpireDate(countActionEndDate(terminCottage));
+			
+			termin.setAction(terminCottage.isAction());
+			termin.setCapacity(terminCottage.getCapacity());
+			termin.setCottageTermin(terminCottage.getCottageTermin());
+			termin.setDaysDuration(terminCottage.getDaysDuration());
+			termin.setEnd(terminCottage.getEnd());
+			termin.setPrice(terminCottage.getPrice());
+			termin.setReserved(terminCottage.isReserved());
+			termin.setStart(terminCottage.getStart());
+			termin.setUserReserved(terminCottage.getUserReserved());
+			save(termin);
+		}
+		
+		return found;
 		
 	}
 
 	@Override
 	public void deleteTermin(Long id) {
-		// TODO Auto-generated method stub
+		TerminCottage terminToDelete = terminCottageRepository.findById(id).orElseGet(null);
+		terminCottageRepository.delete(terminToDelete);
 		
 	}
 

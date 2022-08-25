@@ -12,7 +12,7 @@ public interface TerminCottageService {
 	TerminCottage findById(Long id);
 	List<TerminCottage> findAll();
 	List<TerminCottage> findAllTerminsByCottage(Long cottageId);
-	void updateTermin(TerminCottage terminCottage);
+	boolean updateTermin(TerminCottage terminCottage);
 	void deleteTermin(Long id);
 	
 	boolean createReservation(String startDate,String endDate,Long adventureId, Long userId)  throws ParseException;

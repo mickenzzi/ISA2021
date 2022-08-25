@@ -29,6 +29,7 @@ export class CottageCalendarComponent implements OnInit {
   isOwner: boolean = false;
   title: String = "Termini";
   termin: TerminCottage = new TerminCottage;
+  termins: TerminCottage[] = new Array<TerminCottage>();
   
   constructor(private router: Router, private userService: UserService, private cottageService: CottageService, private route: ActivatedRoute) {
   }
@@ -36,7 +37,8 @@ export class CottageCalendarComponent implements OnInit {
   ngOnInit(): void {
     this.cottageId = this.route.snapshot.params['id'];
     this.getCottage();
-    console.log(this.cottageId);
+    //console.log(this.cottageId);
+    this.getAllTermins();
     if (this.currentUser === null) {
       
     } else {
@@ -82,23 +84,36 @@ export class CottageCalendarComponent implements OnInit {
   }
 
   createTermin() {
-    if (this.user.id === undefined || this.termin.start === undefined || this.termin.end === undefined) {
+    if (this.user.id === undefined || this.termin.start === undefined || this.termin.end === undefined || this.termin.capacity === undefined) {
+      alert("Popunite sva polja!");
     } else {
       if (new Date(this.termin.start ?? "") >= new Date(this.termin.end ?? "")) {
-        alert("Datumi nisu validni");
+        alert("Datumi nisu validni.");
       }
       else if (this.termin.start.length !== 20 || this.termin.end.length !== 20) {
         alert("Nevalidan format datuma.");
       }
       else {
         this.subs.push(this.cottageService.createTermin(this.termin, this.cottageId).subscribe(() => {
-          //this.getAllTermins();
+          this.getAllTermins();
           this.termin = new TerminCottage();
           alert('Uspesno ste kreirali termin');
         }, (error: HttpErrorResponse) => {
           alert("Termin vec postoji.")
         }));
       }
+    }
+  }
+
+  getAllTermins() {
+    if (this.cottageId === undefined) { }
+    else {
+      this.subs.push(this.cottageService.getCottageTermins(this.cottageId).subscribe((response) => {
+        this.termins = response;
+        console.log(this.termins);
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }));
     }
   }
 
