@@ -51,6 +51,7 @@ export class HomeCottageComponent implements OnInit {
   cottageInfo: String = "Informacije o vikendici";
   latitude!: number;
   longitude!: number;
+  notLoggedOrUser?: boolean;
 
 
   constructor(private router: Router, private userService: UserService, private cottageService: CottageService, private route: ActivatedRoute) {
@@ -208,6 +209,14 @@ export class HomeCottageComponent implements OnInit {
     this.router.navigate(['/cottageTermins/' + this.cottageId]);
   }
 
+  subscribe() {
+    if(this.currentUser === null){
+      alert("Morate biti ulogovani da biste se pretplatili!");
+    } else {
+      //dodavanje usera listi koja je pretplacena, join table bi trebao na backu vrv
+    }
+  }
+
   getUser() {
     const username = this.currentUser.username1;
     this.subs.push(this.userService.findUser(username).subscribe((response: User) => {
@@ -219,6 +228,12 @@ export class HomeCottageComponent implements OnInit {
         this.cottageInfo = "Izmeni vikendicu";
       } else {
         this.cottageInfo = "Informacije o vikendici";
+      }
+
+      if(this.user.role === "ROLE_USER" || this.currentUser === null){
+        this.notLoggedOrUser = true;
+      } else {
+        this.notLoggedOrUser = false;
       }
     }));
   }
