@@ -51,15 +51,6 @@ public class CottageServiceImpl implements CottageService {
 		cottage1.setLatitude(cottage.getLatitude());
 		cottage1.setLongitude(cottage.getLongitude());
 		
-		/*
-		 * List<CottageImage> oldImages = findImagesByCottageId(cottageDTO.getId());
-		 * for(CottageImage image : oldImages) { cottageImageRepository.delete(image); }
-		 * 
-		 * for(String url : cottageDTO.getImages()) { CottageImage image = new
-		 * CottageImage(); image.setImageUrl(url); image.setCottageId(cottage1);
-		 * cottageImageRepository.save(image); }
-		 */
-		
 		cottageRepository.save(cottage1);
 	}
 
@@ -86,12 +77,6 @@ public class CottageServiceImpl implements CottageService {
 		cottage1.setUserCottage(user);
 		cottage1.setLatitude(cottage.getLatitude());
 		cottage1.setLongitude(cottage.getLongitude());
-		
-		/*
-		 * for(String url : cottageDTO.getImages()) { CottageImage image = new
-		 * CottageImage(); image.setImageUrl(url); image.setCottageId(cottage);
-		 * cottageImageRepository.save(image); }
-		 */
 		
 		cottageRepository.save(cottage1);
 		return cottage1;
@@ -125,7 +110,6 @@ public class CottageServiceImpl implements CottageService {
 
 	@Override
 	public void deleteImage(Long id) {
-		//List<CottageImage> allImages = findImagesByCottageId(img.getCottageId().getId());
 		List<CottageImage> allImages = getAllImages();
 		for(CottageImage image : allImages) 
 			if(image.getId() == id) 

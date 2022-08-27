@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import application.model.Cottage;
 import application.model.CottageImage;
 import application.service.CottageService;
-import application.service.UserService;
 
 @RestController
 @RequestMapping(value = "/api/cottages")
@@ -28,8 +27,6 @@ import application.service.UserService;
 public class CottageController {
 	@Autowired
 	private CottageService cottageService;
-	@Autowired
-	private UserService userService;
 
 	@GetMapping(value = "/getAllOwnerCottages/{ownerId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('COTTAGE_OWNER') or hasRole('ADMIN')")
@@ -114,10 +111,6 @@ public class CottageController {
 	public ResponseEntity<List<CottageImage>> getAllCottageImages(@PathVariable("id") Long id) {
 		List<CottageImage> images = new ArrayList<CottageImage>();
 		images = cottageService.findImagesByCottageId(id);
-		/*
-		 * List<String> strImages = new ArrayList<String>(); for(CottageImage image :
-		 * images) { strImages.add(image.getImageUrl()); }
-		 */
 		System.out.println("The task /getAllCottageImages was successfully completed.");
 		return new ResponseEntity<>(images, HttpStatus.OK);
 	}
@@ -138,17 +131,12 @@ public class CottageController {
 	}
 	
 	@GetMapping(value = "/deleteImage/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	//@PreAuthorize("hasRole('COTTAGE_OWNER') or hasRole('ADMIN')")
+	@PreAuthorize("hasRole('COTTAGE_OWNER')")
 	public ResponseEntity<CottageImage> deleteImage(@PathVariable("id") Long id) {
 		if (id == null) {
 			System.out.println("Id is null.");
 			return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
 		}
-		/*
-		 * String safeUrl = "/assets/img/" + url;
-		 * 
-		 * System.out.println(safeUrl); cottageService.deleteImage(safeUrl);
-		 */
 		cottageService.deleteImage(id);
 		System.out.println("The task /deleteImage was successfully completed.");
 		return new ResponseEntity<>(HttpStatus.OK);

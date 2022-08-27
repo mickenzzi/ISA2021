@@ -2,19 +2,20 @@ export class Boat{
     id?: string;
     name?: string;
     type?: string;
-    length?: string;
+    lenght?: string;
     engineNumber?: string;
     enginePower?: string;
     maxSpeed?: string;
     navigationExquipment?: string;
     address?: string;
     description?: string;
-    //images?:array<string>;
+    image?: string;
     capacity?: string;
-    //terms?:string;
     rules?:string;
     fishingEquipment?:string;
     price?:string;
     info?:string;
-    reservationCancelTerms?:string;
+    cancelTerms?:string;
+    longitude?:number;
+    latitude?:number;
 }
