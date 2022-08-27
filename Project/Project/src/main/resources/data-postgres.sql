@@ -34,6 +34,8 @@ insert into termin_table(start_date,end_date,duration,reserved,is_action,adventu
 insert into termin_table(start_date,end_date,duration,reserved,is_action,adventure_id, price, capacity, instructor_id) values('26-Jan-2022 10:20:20','28-Jan-2022 10:20:20',5,false,true,1, 170, 10, 2);
 insert into termin_table(start_date,end_date,duration,reserved,is_action,adventure_id, price, capacity, instructor_id) values('22-May-2022 10:20:20','25-May-2022 10:20:20',5,true,false,2, 170, 10, 2);
 insert into termin_table(start_date,end_date,duration,reserved,is_action,adventure_id, price, capacity, instructor_id) values('10-May-2022 10:20:20','12-May-2022 10:20:20',5,false,true,2, 170, 10, 2);
+insert into termin_table(start_date,end_date,duration,reserved,is_action,adventure_id, price, capacity, instructor_id) values('24-Aug-2022 10:20:20','25-Aug-2022 10:20:20',5,false,true,2, 170, 10, 2);
+insert into termin_table(start_date,end_date,duration,reserved,is_action,adventure_id, price, capacity, instructor_id) values('10-May-2022 10:20:20','12-May-2022 10:20:20',5,false,true,2, 170, 10, 2);
 
 insert into reservation_table(start_date,end_date,is_created,adventure_id,user_id,price) values('10-May-2022 10:20:20','12-May-2022 10:20:20',false,2,3,270);
 insert into reservation_table(start_date,end_date,is_created,adventure_id,user_id,price) values('22-May-2022 10:20:20','25-May-2022 10:20:20',true,2,3,270);
@@ -56,3 +58,8 @@ insert into review_table(comment,grade,enabled,user_id,admin_id,instructor_id,ad
 insert into review_table(comment,grade,enabled,user_id,admin_id,instructor_id,adventure_id) values ('Lose je bilo',2,false,3,1,2,2);
 
 insert into cottage_table(name,address,description,image,number_of_rooms,number_of_beds,rules,price,info,reserved,user_id, latitude, longitude) values ('Pogled', 'Tamo daleko', 'Vikendica na jezeru', '/assets/img/cottageLink.jpg', 3, 4, 'Ponasajte se lepo', '120', 'Kamin, ventilator, basta', false, 5, 12, 12);
+
+insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_expire, duration, cottage_id, user_id, price, capacity) values('24-Aug-2022 10:20:20','25-Aug-2022 10:20:20',false, false, null, 0, 1, null, 170, 10);
+
+
+
