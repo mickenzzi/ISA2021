@@ -2,24 +2,18 @@ package application.service.impl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.tomcat.jni.Time;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import application.model.Cottage;
 import application.model.ReservationCottage;
 import application.model.TerminCottage;
-import application.model.User;
 import application.repository.CottageRepository;
 import application.repository.TerminCottageRepository;
 import application.service.TerminCottageService;
@@ -39,7 +33,8 @@ public class TerminCottageServiceImpl implements TerminCottageService {
 		boolean create = false;
 		Cottage cottage = cottageRepository.findById(cottageId).orElseGet(null);
 		List<TerminCottage> termins = findAllTerminsByCottage(cottageId);
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+		//ukoliko moze preklop po danima ali ne po satima, koristiti: SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
 		Date startDate = dateFormat.parse(termin.getStart());
 		Date endDate = dateFormat.parse(termin.getEnd());
 		if(!termins.isEmpty()) {
@@ -150,34 +145,79 @@ public class TerminCottageServiceImpl implements TerminCottageService {
 	}
 
 	@Override
-	public boolean updateTermin(TerminCottage terminCottage) {
+	public boolean updateTermin(TerminCottage terminCottage) throws ParseException {
 		TerminCottage termin = terminCottageRepository.findById(terminCottage.getId()).orElseGet(null);
-		boolean found = false;
+		boolean edit = false;
+		
 		if(termin!=null) {
-			found = true;
+			Long cottageId = terminCottage.getCottageTermin().getId();
+			List<TerminCottage> termins = findAllTerminsByCottage(cottageId);
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+			//ukoliko moze preklop po danima ali ne po satima, koristiti: SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+			Date startDate = dateFormat.parse(termin.getStart());
+			Date endDate = dateFormat.parse(termin.getEnd());
+			if(!termins.isEmpty()) {
+				for (TerminCottage t1 : termins) {
+					Date dmin = dateFormat.parse(t1.getStart());
+					Date dmax = dateFormat.parse(t1.getEnd());
+					if (((startDate.compareTo(dmin) <= 0 && endDate.compareTo(dmax) >= 0)
+							|| (startDate.compareTo(dmin) >= 0 && endDate.compareTo(dmax) <= 0)
+							|| (startDate.compareTo(dmin) <= 0 && endDate.compareTo(dmax) <= 0 && endDate.compareTo(dmin) >= 0) 
+							|| (startDate.compareTo(dmin) >= 0 && startDate.compareTo(dmax) <= 0 && endDate.compareTo(dmax) >= 0)) && t1.getId() != terminCottage.getId()) {
+						edit = false;
+						break;
+					} else {
+						edit = true;
+					}
+				}
+			} else {
+				edit = true;
+			}
 			
-			if(termin.isAction() && !terminCottage.isAction()) 
-				termin.setActionExpireDate("expired");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+	        Date firstDate = sdf.parse(termin.getStart());
+	        Date secondDate = sdf.parse(termin.getEnd());
+	        long diff = secondDate.getTime() - firstDate.getTime();
+	        TimeUnit time = TimeUnit.DAYS;
+	        long difference = time.convert(diff, TimeUnit.MILLISECONDS);
+	        
+	        long diffHours = secondDate.getTime() - firstDate.getTime();
+	        TimeUnit timeHours = TimeUnit.HOURS;
+	        long differenceHours = timeHours.convert(diffHours, TimeUnit.MILLISECONDS);
+	        
+	        if(differenceHours>24) {
+	        	if(differenceHours%24 != 0) {
+	        		difference+=1;
+	        	}
+	        } else if (differenceHours < 24 && difference==0) {
+	        	difference = 1;
+	        }
 			
-			if(!termin.isAction() && terminCottage.isAction()) 
-				termin.setActionExpireDate(countActionEndDate(terminCottage));
+	        if(edit) {
+	        	if(termin.isAction() && !terminCottage.isAction()) 
+					termin.setActionExpireDate("expired");
+				
+				if(!termin.isAction() && terminCottage.isAction()) 
+					termin.setActionExpireDate(countActionEndDate(terminCottage));
+				
+				if(termin.isAction() && terminCottage.isAction() && !(termin.getDaysDuration()==terminCottage.getDaysDuration())) 
+					termin.setActionExpireDate(countActionEndDate(terminCottage));
+				
+				termin.setAction(terminCottage.isAction());
+				termin.setCapacity(terminCottage.getCapacity());
+				termin.setCottageTermin(terminCottage.getCottageTermin());
+				termin.setDaysDuration(terminCottage.getDaysDuration());
+				termin.setEnd(terminCottage.getEnd());
+				termin.setPrice(terminCottage.getPrice());
+				termin.setReserved(terminCottage.isReserved());
+				termin.setStart(terminCottage.getStart());
+				termin.setUserReserved(terminCottage.getUserReserved());
+				save(termin);
+	        }
 			
-			if(termin.isAction() && terminCottage.isAction() && !(termin.getDaysDuration()==terminCottage.getDaysDuration())) 
-				termin.setActionExpireDate(countActionEndDate(terminCottage));
-			
-			termin.setAction(terminCottage.isAction());
-			termin.setCapacity(terminCottage.getCapacity());
-			termin.setCottageTermin(terminCottage.getCottageTermin());
-			termin.setDaysDuration(terminCottage.getDaysDuration());
-			termin.setEnd(terminCottage.getEnd());
-			termin.setPrice(terminCottage.getPrice());
-			termin.setReserved(terminCottage.isReserved());
-			termin.setStart(terminCottage.getStart());
-			termin.setUserReserved(terminCottage.getUserReserved());
-			save(termin);
 		}
 		
-		return found;
+		return edit;
 		
 	}
 

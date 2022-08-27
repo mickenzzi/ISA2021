@@ -63,7 +63,7 @@ public class TerminCottageController {
 	}
 	
 	@PutMapping(value = "/updateTermin", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<TerminCottage> updateTermin(@RequestBody TerminCottage termin) {
+	public ResponseEntity<TerminCottage> updateTermin(@RequestBody TerminCottage termin) throws ParseException {
 		if(terminCottageService.updateTermin(termin)) {
 			System.out.println("The task /getAllTermins was successfully completed.");
 			return new ResponseEntity<>(termin, HttpStatus.OK);
