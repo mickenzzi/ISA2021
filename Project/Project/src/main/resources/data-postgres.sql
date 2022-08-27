@@ -51,8 +51,8 @@ insert into comment_table(content,is_enabled,is_negative,user_id,instructor_id) 
 insert into complaint_table(content,answered,user_id,instructor_id,admin_id) values('Zalba na instruktora',false,3,2,1);
 insert into complaint_table(content,answered,user_id,instructor_id,admin_id) values('Odgovor na zalbu na instruktora',true,3,2,1);
 
-insert into request_table(title,username,admin_id) values ('Zahtev za brisanje naloga','jovan',1);
-insert into request_table(title,username,admin_id) values ('Zahtev za verifikaciju naloga','milos',1);
+insert into request_table(title, body, username,admin_id) values ('Zahtev za brisanje naloga', 'Ne mogu vise', 'jovan',1);
+insert into request_table(title, body, username,admin_id) values ('Zahtev za verifikaciju naloga', '', 'milos',1);
 
 insert into review_table(comment,grade,enabled,user_id,admin_id,instructor_id,adventure_id) values ('Dobro je bilo',4,true,3,1,2,2);
 insert into review_table(comment,grade,enabled,user_id,admin_id,instructor_id,adventure_id) values ('Lose je bilo',2,false,3,1,2,2);

@@ -47,7 +47,7 @@ public class RequestController {
 	}
 	
 	@GetMapping(value = "/createRequest/{userId}/{text}", produces = MediaType.APPLICATION_JSON_VALUE )
-	@PreAuthorize("hasRole('ADMIN') or hasRole('INSTRUCTOR') or hasRole('USER')")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('INSTRUCTOR') or hasRole('USER') or hasRole('COTTAGE_OWNER') or hasRole('BOAT_OWNER')")
 	public ResponseEntity<Request> createRequest(@PathVariable("userId") Long userId,@PathVariable("text") String text) {
 		Request request1 = requestService.createRequest(userId,text);
 		System.out.println("The task /createRequest was successfully completed.");

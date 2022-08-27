@@ -4,6 +4,7 @@ import { Subscription } from "rxjs";
 import { User } from "../model/user";
 import { UserService } from "../service/user.service";
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { RequestService } from "../service/request.service";
 
 @Component({
     selector: 'app-profile-owner',
@@ -19,7 +20,10 @@ export class ProfileOwnerComponent implements OnInit {
     //@ts-ignore
     currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    constructor(private router: Router, private userService: UserService) {
+    toogleRequest: boolean = false;
+    requestText: string = "";
+
+    constructor(private router: Router, private userService: UserService, private requestService: RequestService) {
     }
 
     ngOnInit(): void {
@@ -45,8 +49,35 @@ export class ProfileOwnerComponent implements OnInit {
       goBack() {
         this.router.navigate(['/homeCottageOwner']);
       }
+      
+      openRequest() {
+        if(this.toogleRequest){
+          this.toogleRequest = false;
+        }
+        else if (!this.toogleRequest){
+          this.toogleRequest = true;
+        }
+      }
     
-    
+      sendRequest() {
+        if (this.user.id === undefined) {
+        } else {
+          if (this.requestText === undefined || this.requestText === null || this.requestText.length === 0) {
+            alert('Morate uneti razlog za brisanje naloga!');
+          } else {
+            this.subs.push(this.requestService.createRequest(this.user.id, this.requestText).subscribe(() => {
+              alert('Poslali ste zahtev za brisanje naloga.')
+              this.requestText = "";
+              this.toogleRequest = false;
+            }));
+          }
+        }
+      }
+      
+      cancelRequest() {
+        this.toogleRequest = false;
+      }
+
       getUser() {
         const username = this.currentUser.username1;
         this.subs.push(this.userService.findUser(username).subscribe((response: User) => {

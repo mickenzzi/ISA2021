@@ -18,6 +18,8 @@ public class Request {
 	private Long id;
 	@Column(name = "title", nullable = false)
 	private String title;
+	@Column(name = "body", nullable = false)
+	private String reqBody;
 	@Column(name = "username", nullable = false)
 	private String username;
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -32,6 +34,12 @@ public class Request {
 	}
 	public String getTitle() {
 		return title;
+	}
+	public String getReqBody() {
+		return reqBody;
+	}
+	public void setReqBody(String reqBody) {
+		this.reqBody = reqBody;
 	}
 	public void setTitle(String title) {
 		this.title = title;

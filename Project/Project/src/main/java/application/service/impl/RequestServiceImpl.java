@@ -50,16 +50,17 @@ public class RequestServiceImpl implements RequestService{
 	}
 
 	@Override
-	public Request createRequest(Long userId,String text) {
+	public Request createRequest(Long userId, String text) {
 		User admin = new User();
 		User user = new User();
 		user = userRepository.findById(userId).orElseGet(null);
 		admin = userRepository.findByUsername("mickenzi");
-		Request request = new Request();
-		request.setTitle("Zahtev za brisanje naloga-"+text);
-		request.setUsername(user.getUsername());
-		request.setUserRequest(admin);
-		requestRepository.save(request);
+		Request req = new Request();
+		req.setTitle("Zahtev za brisanje naloga");
+		req.setReqBody(text);
+		req.setUsername(user.getUsername());
+		req.setUserRequest(admin);
+		requestRepository.save(req);
 		return null;
 	}
 
