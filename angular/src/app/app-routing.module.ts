@@ -22,6 +22,7 @@ import { ProfileOwnerComponent } from './profile-owner/profile-owner.component';
 import { AddCottageComponent } from './add-cottage/add-cottage.component';
 import { HomeCottageComponent } from './home-cottage/home-cottage.component';
 import { CottageCalendarComponent } from './cottage-calendar/cottage-calendar.component';
+import { CottageBusinessComponent } from './cottage-business/cottage-business.component';
 
 const routes: Routes = [
   {
@@ -108,6 +109,10 @@ const routes: Routes = [
   {
     path: 'cottageTermins/:id',
     component: CottageCalendarComponent,
+  },
+  {
+    path: 'cottageBusiness/:id',
+    component: CottageBusinessComponent,
   }
 ];
 

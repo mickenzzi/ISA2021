@@ -1,0 +1,81 @@
+<div>
+    <mat-toolbar>
+        <div style="width: 50%; float:left">
+            <label style="margin-left:5%;">Vikendica "{{cottage.name}}" - Finansije</label>
+        </div>
+        
+        <div style="width: 50%; float:right; text-align: right;">
+          <button mat-raised-button color="primary" (click)="back()" style="cursor:pointer;">Nazad</button>
+          <button mat-raised-button color="primary" (click)="logOut()" style="margin-left: 5%; margin-right: 5%; cursor:pointer;">Odjavite se</button>
+        </div>
+    </mat-toolbar>
+    
+    
+    <div class="financies-panel" style="margin-top: 1%; margin-left: 5%; margin-right: 5%; margin-bottom: 1%;">
+        <br>
+        <label style="font-size: large; font-family:Verdana, Geneva, Tahoma, sans-serif; color: black;">Unesite zeljene datume:</label>
+        <br>
+        <br>
+        <label style="font-size: medium; font-family:Verdana, Geneva, Tahoma, sans-serif; color: black;">Pocetak:</label> 
+        <input [(ngModel)]="startDate"  type="text" style="margin-left:5px" placeholder="dd-MMM-yyyy"/>
+        <label style=" margin-left:25px; font-size: medium; font-family:Verdana, Geneva, Tahoma, sans-serif; color: black;">Kraj:</label>
+        <input [(ngModel)]="endDate"  type="text" style="margin-left:5px" placeholder="dd-MMM-yyyy"/>
+        <br>
+        <br>
+        <button class="button-2" (click)="showProfit()">Prikazi profit</button>
+        <input [(ngModel)]="profit" type="text" style="width: 55px; height:25px; margin-left: 5px" disabled/>
+        <br>
+        <br>
+        <br>
+        <button class="button-2" (click)="showMontlyBusiness()">Mesec</button>
+        <button class="button-2" (click)="showWeeklyBusiness()">Nedelja</button>
+        <button class="button-2" (click)="showDailyBusiness()">Dan</button>
+        <br><br><br>
+        <div *ngIf="flagMonth" style="width: 100%">
+            <div style="height: 20%; width: 30%; float:left; position:relative">
+                <canvas baseChart style="height: auto; width: auto; background-color: mintcream" [datasets]="monthlyChart1" 
+                [labels]="monthlyLabels" [type]= "chartType"></canvas>
+            </div>
+            <div style="height: 20%; width: 30%; float:left; position:relative; margin-left: 5%;">
+                <canvas baseChart style="height: auto; width: auto; background-color: mintcream"  [datasets]="monthlyChart2"
+            [labels]="monthlyLabels" [type]= "chartType"></canvas>
+            </div>
+            <div style="height: 20%; width: 30%; float:left; position:relative; margin-left: 5%;">
+                <canvas baseChart style="height: auto; width: auto; background-color: mintcream"  [datasets]="monthlyChart3"
+                [labels]="monthlyLabels" [type]= "chartType"></canvas>
+            </div><br><br><br>
+        </div>
+        <div *ngIf="flagWeek">
+            <div style="height: 20%; width: 30%; float:left; position:relative">
+                <canvas baseChart style="height: auto; width: auto; background-color: mintcream" [datasets]="weeklyChart1"
+                [labels]="weeklyLabels" [type]= "chartType"></canvas>
+            </div>
+            <div style="height: 20%; width: 30%; float:left; position:relative; margin-left: 5%;">
+                <canvas baseChart style="height: auto; width: auto; background-color: mintcream" [datasets]="weeklyChart2"
+                [labels]="weeklyLabels" [type]= "chartType"></canvas>
+            </div>
+            <div style="height: 20%; width: 30%; float:left; position:relative; margin-left: 5%;">
+                <canvas baseChart style="height: auto; width: auto; background-color: mintcream" [datasets]="weeklyChart3" 
+                [labels]="weeklyLabels" [type]= "chartType"></canvas>
+            </div>
+            <br><br><br>
+        </div>
+        <div *ngIf="flagDay">
+            <div style="height: 20%; width: 30%; float:left; position:relative">
+                <canvas baseChart style="height: auto; width: auto; background-color: mintcream" [datasets]="dailyChart1"
+                [labels]="dailyLabels" [type]= "chartType"></canvas>
+            </div>
+            <div style="height: 20%; width: 30%; float:left; position:relative; margin-left: 5%;">
+                <canvas baseChart style="height: auto; width: auto; background-color: mintcream" [datasets]="dailyChart2"
+                [labels]="dailyLabels" [type]= "chartType"></canvas>
+            </div>
+            <div style="height: 20%; width: 30%; float:left; position:relative; margin-left: 5%;">
+                <canvas baseChart style="height: auto; width: auto; background-color: mintcream" [datasets]="dailyChart3"
+                [labels]="dailyLabels" [type]= "chartType"></canvas>
+            </div>
+            <br><br><br>
+        </div>
+        
+      </div>
+    
+</div>

@@ -51,4 +51,43 @@ export class BusinessService {
     return this.http.get<number[]>(`${this.businessUrl}/dailyProfit/${id}`);
   }
   
+  public getCottageProfit(id: number, start: String, end: String) {
+    return this.http.get<number>(`${this.businessUrl}/cottageProfit/${id}/${start}/${end}`);
+  }
+
+  public getCottageReservationsPerMonth(id: number) {
+    return this.http.get<number[]>(`${this.businessUrl}/cottageReservationsPerMonth/${id}`);
+  }
+
+  public getCottageReservationsPerWeek(id: number) {
+    return this.http.get<number[]>(`${this.businessUrl}/cottageReservationsPerWeek/${id}`);
+  }
+
+  public getCottageReservationsPerDay(id: number) {
+    return this.http.get<number[]>(`${this.businessUrl}/cottageReservationsPerDay/${id}`);
+  }
+
+  public getCottageReservedDaysPerMonth(id: number) {
+    return this.http.get<number[]>(`${this.businessUrl}/cottageReservedDaysPerMonth/${id}`);
+  }
+
+  public getCottageReservedDaysPerWeek(id: number) {
+    return this.http.get<number[]>(`${this.businessUrl}/cottageReservedDaysPerWeek/${id}`);
+  }
+
+  public getCottageReservedDays(id: number) {
+    return this.http.get<number[]>(`${this.businessUrl}/cottageReservedDays/${id}`);
+  }
+
+  public getCottageMonthlyProfit(id: number) {
+    return this.http.get<number[]>(`${this.businessUrl}/cottageMonthlyProfit/${id}`);
+  }
+
+  public getCottageWeeklyProfit(id: number) {
+    return this.http.get<number[]>(`${this.businessUrl}/cottageWeeklyProfit/${id}`);
+  }
+
+  public getCottageDailyProfit(id: number) {
+    return this.http.get<number[]>(`${this.businessUrl}/cottageDailyProfit/${id}`);
+  }
 }

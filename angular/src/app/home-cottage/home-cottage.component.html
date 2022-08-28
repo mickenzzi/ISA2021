@@ -3,6 +3,7 @@
         <div style="width: 50%; float:left">
             <label style="margin-left:5%;">Vikendica "{{cottage.name}}"</label>
             <button mat-raised-button color="primary" (click)="calendar()" style="cursor:pointer; margin-left:5%">Termini</button>
+            <button mat-raised-button color="primary" (click)="business()" style="cursor:pointer; margin-left:5%">Finansije</button>
             <button *ngIf="notLoggedOrUser" mat-raised-button color="primary" (click)="subscribe()" style="cursor:pointer; margin-left:5%">Termini</button>
         </div>
         

@@ -205,6 +205,10 @@ export class HomeCottageComponent implements OnInit {
     this.router.navigate(['/cottageList']);
   }
 
+  business() {
+    this.router.navigate(['/cottageBusiness/' + this.cottageId]);
+  }
+
   calendar() {
     this.router.navigate(['/cottageTermins/' + this.cottageId]);
   }

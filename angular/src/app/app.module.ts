@@ -48,6 +48,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTabsModule} from '@angular/material/tabs';
+import { CottageBusinessComponent } from './cottage-business/cottage-business.component';
 
 
 @NgModule({
@@ -73,7 +74,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     CottageOwnerCottageListComponent,
     AddCottageComponent,
     HomeCottageComponent,
-    CottageCalendarComponent
+    CottageCalendarComponent,
+    CottageBusinessComponent
   ],
   imports: [
     BrowserModule,
