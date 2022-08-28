@@ -141,6 +141,18 @@ public class CottageServiceImpl implements CottageService {
 	public List<CottageImage> getAllImages() {
 		return cottageImageRepository.findAll();
 	}
+
+	@Override
+	public List<Cottage> findOwnerCottages(Long id) {
+		List<Cottage> cottages = findAll();
+		List<Cottage> ownerCottages = new ArrayList<>();
+		
+		for(Cottage c : cottages) 
+			if(c.getUserCottage().getId() == id) 
+				ownerCottages.add(c);
+			
+		return ownerCottages;
+	}
 	
 
 }

@@ -18,4 +18,5 @@ public interface CottageService {
     void deleteImage(Long id);
     boolean saveImage(String url, Long id);
     List<CottageImage> getAllImages();
+    List<Cottage> findOwnerCottages(Long id);
 }

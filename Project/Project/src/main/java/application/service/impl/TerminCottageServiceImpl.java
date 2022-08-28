@@ -208,7 +208,7 @@ public class TerminCottageServiceImpl implements TerminCottageService {
 				termin.setCottageTermin(terminCottage.getCottageTermin());
 				termin.setDaysDuration(terminCottage.getDaysDuration());
 				termin.setEnd(terminCottage.getEnd());
-				termin.setPrice(terminCottage.getPrice());
+				termin.setPrice(terminCottage.getPrice()*difference);
 				termin.setReserved(terminCottage.isReserved());
 				termin.setStart(terminCottage.getStart());
 				termin.setUserReserved(terminCottage.getUserReserved());

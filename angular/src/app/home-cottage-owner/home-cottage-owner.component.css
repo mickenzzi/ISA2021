@@ -1,10 +1,10 @@
 .cottage-owner-content {
     height: 100%;
     width: 100%;
-    background-size: cover;
+    /* background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    background-image: url('src/assets/img/cottage1.jpg');
+    background-image: url('src/assets/img/cottage1.jpg'); */
     margin: 0;
     position: absolute;
     bottom: 0;
