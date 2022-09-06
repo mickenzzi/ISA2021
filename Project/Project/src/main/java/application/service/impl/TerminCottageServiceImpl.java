@@ -9,23 +9,37 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import application.model.Cottage;
+import application.model.EntitySubscriber;
 import application.model.ReservationCottage;
 import application.model.TerminCottage;
+import application.model.User;
 import application.repository.CottageRepository;
+import application.repository.EntitySubscriberRepository;
 import application.repository.TerminCottageRepository;
 import application.service.TerminCottageService;
+import application.service.UserService;
 
 @Service
 public class TerminCottageServiceImpl implements TerminCottageService {
 
 	@Autowired
 	TerminCottageRepository terminCottageRepository;
-	
 	@Autowired
 	CottageRepository cottageRepository;
+	@Autowired
+	private Environment env;
+	@Autowired
+	private JavaMailSender javaMailSender;
+	@Autowired
+	private UserService userService;
+	@Autowired
+	EntitySubscriberRepository subscriberRepository;
 	
 	@Override
 	public boolean createTermin(TerminCottage termin, Long cottageId) throws ParseException {
@@ -92,7 +106,26 @@ public class TerminCottageServiceImpl implements TerminCottageService {
 			String actionEndDate = countActionEndDate(term);
 			term.setActionExpireDate(actionEndDate);
 			
-			//send mail
+			List<User> users = new ArrayList<>();
+			List<EntitySubscriber> subs = new ArrayList<>();
+			
+			users = userService.findAll();
+			subs = subscriberRepository.findAll();
+			
+			for(User user : users) {
+				for(EntitySubscriber e : subs) {
+					if(user.getId().equals(e.getSubscriber().getId()) && e.getCottage().getId().equals(cottage.getId())) {
+						SimpleMailMessage mail = new SimpleMailMessage();
+						mail.setTo(user.getEmail());
+						mail.setFrom(env.getProperty("spring.mail.username"));
+						mail.setSubject("AKCIJA");
+						mail.setText("Za vikendicu " + cottage.getName() + " imamo sjajnu ponudu za vas!");
+						javaMailSender.send(mail);
+					}
+				}
+			}
+			
+			
 		}
 		
 		//System.out.println("Price: " + term.getPrice());
