@@ -1,1 +1,120 @@
-<p>home-boat-owner works!</p>
+<div class="cottage-owner-content">
+    <mat-toolbar >
+        <div style="width: 50%; float:left">
+            <label style="margin-left:5%;">Dobro dosao, {{user.username}}!</label>
+        </div>
+        
+        <div style="width: 50%; float:right; text-align: right;">
+            <button mat-raised-button color="primary" (click)="logOut()" style="margin-left: 5%; margin-right: 5%; cursor:pointer;">Odjavite se</button>
+        </div>
+    </mat-toolbar>
+    <div class="links-containter">
+        <hr>
+        <div (click)="goToProfile()" class="link-container" style="background-image: url(/assets/img/desk.png); background-position: top;">
+            <div class="right"><h1><b>Profil</b></h1></div>
+        </div>
+        <p></p>
+        <div (click)="goToCottageList()" class="link-container" style="background-image: url(/assets/img/cottageLink.jpg);">
+            <div class="right"><h1><b>Vikendice</b></h1></div>
+        </div>
+        <p></p>
+        <div (click)="toggleBusiness()" class="link-container" style="background-image: url(/assets/img/calendar.jpeg);">
+            <div class="right"><h1><b>Poslovanje</b></h1></div>
+        </div>
+        <div *ngIf="showBusiness" class="financies-panel" style="height: 500px;">
+            <br>
+            <label style="font-size: large; font-family:Verdana, Geneva, Tahoma, sans-serif; color: black;">Unesite zeljene datume:</label>
+            <br>
+            <br>
+            <label style="font-size: medium; font-family:Verdana, Geneva, Tahoma, sans-serif; color: black;">Pocetak:</label> 
+            <input [(ngModel)]="startDate"  type="text" style="margin-left:5px" placeholder="dd-MMM-yyyy HH:mm:ss"/>
+            <label style=" margin-left:25px; font-size: medium; font-family:Verdana, Geneva, Tahoma, sans-serif; color: black;">Kraj:</label>
+            <input [(ngModel)]="endDate"  type="text" style="margin-left:5px" placeholder="dd-MMM-yyyy HH:mm:ss"/>
+            <br>
+            <br>
+            <button class="button-2" (click)="showProfit()">Prikazi profit</button>
+            <input [(ngModel)]="profit" type="text" style="width: 55px; height:25px; margin-left: 5px" disabled/>
+            <br>
+            <br>
+            <br>
+            <button class="button-2" (click)="showMontlyBusiness()">Mesec</button>
+            <button class="button-2" (click)="showWeeklyBusiness()">Nedelja</button>
+            <button class="button-2" (click)="showDailyBusiness()">Dan</button>
+            <br><br>
+            <div *ngIf="flagMonth">
+                <canvas baseChart style="height: auto; width: auto; background-color: mintcream"
+                [height]="120"
+                [datasets]="monthlyChart1"
+                [labels]="monthlyLabels"
+                [type]= "chartType">
+                </canvas>
+                <canvas baseChart style="height: auto; width: auto; background-color: mintcream"
+                [height]="120"
+                [datasets]="monthlyChart2"
+                [labels]="monthlyLabels"
+                [type]= "chartType">
+                </canvas>
+                <canvas baseChart style="height: auto; width: auto; background-color: mintcream"
+                [height]="120"
+                [datasets]="monthlyChart3"
+                [labels]="monthlyLabels"
+                [type]= "chartType">
+                </canvas>
+                <br><br><br>
+            </div>
+            <div *ngIf="flagWeek">
+                <canvas baseChart style="height: auto; width: auto; background-color: mintcream"
+                [height]="120"
+                [datasets]="weeklyChart1"
+                [labels]="weeklyLabels"
+                [type]= "chartType">
+                </canvas>
+                <canvas baseChart style="height: auto; width: auto; background-color: mintcream"
+                [height]="120"
+                [datasets]="weeklyChart2"
+                [labels]="weeklyLabels"
+                [type]= "chartType">
+                </canvas>
+                <canvas baseChart style="height: auto; width: auto; background-color: mintcream"
+                [height]="120"
+                [datasets]="weeklyChart3"
+                [labels]="weeklyLabels"
+                [type]= "chartType">
+                </canvas>
+                <br><br><br>
+            </div>
+            <div *ngIf="flagDay">
+                <canvas baseChart style="height: auto; width: auto; background-color: mintcream"
+                [height]="120"
+                [datasets]="dailyChart1"
+                [labels]="dailyLabels"
+                [type]= "chartType">
+                </canvas>
+                <canvas baseChart style="height: auto; width: auto; background-color: mintcream"
+                [height]="120"
+                [datasets]="dailyChart2"
+                [labels]="dailyLabels"
+                [type]= "chartType">
+                </canvas>
+                <canvas baseChart style="height: auto; width: auto; background-color: mintcream"
+                [height]="120"
+                [datasets]="dailyChart3"
+                [labels]="dailyLabels"
+                [type]= "chartType">
+                </canvas>
+                <br><br><br>
+            </div>
+            
+          </div>
+        <p></p>
+        
+        <hr>
+    </div>
+    
+    <div class="profile-card">
+        <hr>
+        <img src="/assets/img/profile.png" style="width: 100%;" >
+        <label style="text-align: center; color: white;"><h3>{{user.firstName}} {{user.lastName}}</h3></label>
+        <hr>
+    </div>
+</div>

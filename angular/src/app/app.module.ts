@@ -49,6 +49,11 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTabsModule} from '@angular/material/tabs';
 import { CottageBusinessComponent } from './cottage-business/cottage-business.component';
+import { AddBoatComponent } from './add-boat/add-boat.component';
+import { BoatBusinessComponent } from './boat-business/boat-business.component';
+import { BoatCalendarComponent } from './boat-calendar/boat-calendar.component';
+import { BoatOwnerBoatListComponent } from './boat-owner-boat-list/boat-owner-boat-list.component';
+import { HomeBoatComponent } from './home-boat/home-boat.component';
 
 
 @NgModule({
@@ -75,7 +80,12 @@ import { CottageBusinessComponent } from './cottage-business/cottage-business.co
     AddCottageComponent,
     HomeCottageComponent,
     CottageCalendarComponent,
-    CottageBusinessComponent
+    CottageBusinessComponent,
+    AddBoatComponent,
+    BoatBusinessComponent,
+    BoatCalendarComponent,
+    BoatOwnerBoatListComponent,
+    HomeBoatComponent
   ],
   imports: [
     BrowserModule,

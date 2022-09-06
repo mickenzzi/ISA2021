@@ -1,5 +1,5 @@
 export class Boat{
-    id?: string;
+    id?: number;
     name?: string;
     type?: string;
     lenght?: string;
@@ -18,4 +18,5 @@ export class Boat{
     cancelTerms?:string;
     longitude?:number;
     latitude?:number;
+    reserved?:boolean;
 }

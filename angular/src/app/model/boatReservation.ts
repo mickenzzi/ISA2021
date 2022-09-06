@@ -1,5 +1,5 @@
-import {Boat} from '../model/boat';
-import {User} from '../model/user';
+import {Boat} from './boat';
+import {User} from './user';
 
 
 export class BoatReservation {
