@@ -13,6 +13,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import application.model.Boat;
 import application.model.EntitySubscriber;
@@ -41,6 +44,7 @@ public class TerminBoatServiceImpl implements TerminBoatService {
 	@Autowired
 	EntitySubscriberRepository subscriberRepository;
 	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
 	@Override
 	public boolean createTermin(TerminBoat termin, Long cottageId, int i) throws ParseException {
 		TerminBoat term = new TerminBoat();

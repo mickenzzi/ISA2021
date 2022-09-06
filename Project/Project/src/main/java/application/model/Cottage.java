@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.data.annotation.Version;
+
 
 @Entity
 @Table(name = "cottage_table")
@@ -48,6 +50,9 @@ public class Cottage {
 	@JoinColumn(name = "user_id")
 	private User userCottage;
 
+	@Version
+	private int version;
+	
 	public Long getId() {
 		return id;
 	}

@@ -13,6 +13,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import application.model.Cottage;
 import application.model.EntitySubscriber;
@@ -41,7 +44,9 @@ public class TerminCottageServiceImpl implements TerminCottageService {
 	@Autowired
 	EntitySubscriberRepository subscriberRepository;
 	
+	
 	@Override
+	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
 	public boolean createTermin(TerminCottage termin, Long cottageId, int i) throws ParseException {
 		TerminCottage term = new TerminCottage();
 		boolean create = false;
@@ -319,7 +324,8 @@ public class TerminCottageServiceImpl implements TerminCottageService {
 		return edit;
 		
 	}
-
+	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
 	@Override
 	public void deleteTermin(Long id) {
 		TerminCottage terminToDelete = terminCottageRepository.findById(id).orElseGet(null);

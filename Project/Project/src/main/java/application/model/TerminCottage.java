@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.data.annotation.Version;
+
 @Entity
 @Table(name = "termin_cottage_table")
 public class TerminCottage {
@@ -38,7 +40,10 @@ public class TerminCottage {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private User userReserved;
-
+	
+	@Version
+	private int version;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "cottage_id")
 	private Cottage cottageTermin;

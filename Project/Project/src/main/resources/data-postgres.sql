@@ -59,30 +59,30 @@ insert into request_table(title, body, username,admin_id) values ('Zahtev za ver
 insert into review_table(comment,grade,enabled,user_id,admin_id,instructor_id,adventure_id) values ('Dobro je bilo',4,true,3,1,2,2);
 insert into review_table(comment,grade,enabled,user_id,admin_id,instructor_id,adventure_id) values ('Lose je bilo',2,false,3,1,2,2);
 
-insert into cottage_table(name,address,description,image,number_of_rooms,number_of_beds,rules,price,info,reserved,user_id, latitude, longitude) values ('Pogled', 'Tamo daleko', 'Vikendica na jezeru', '/assets/img/cottage.jpg', 3, 4, 'Ponasajte se lepo', '120', 'Kamin, ventilator, basta', false, 5, 12, 12);
-insert into cottage_table(name,address,description,image,number_of_rooms,number_of_beds,rules,price,info,reserved,user_id, latitude, longitude) values ('Mir', 'Negde tamo 3', 'Vikendica u sumi', '/assets/img/cottageLink.jpg', 4, 2, 'Ponasajte se lepo', '100', 'Kamin, ventilator, basta', false, 5, 12, 12);
+insert into cottage_table(name,address,description,image,number_of_rooms,number_of_beds,rules,price,info,reserved,user_id, latitude, longitude, version) values ('Pogled', 'Tamo daleko', 'Vikendica na jezeru', '/assets/img/cottage.jpg', 3, 4, 'Ponasajte se lepo', '120', 'Kamin, ventilator, basta', false, 5, 12, 12, 0);
+insert into cottage_table(name,address,description,image,number_of_rooms,number_of_beds,rules,price,info,reserved,user_id, latitude, longitude, version) values ('Mir', 'Negde tamo 3', 'Vikendica u sumi', '/assets/img/cottageLink.jpg', 4, 2, 'Ponasajte se lepo', '100', 'Kamin, ventilator, basta', false, 5, 12, 12, 0);
 
 insert into boat_table(name,boat_type,lenght,engine_number,engine_power,max_speed,navigation_equipment,address,description,image,capacity, rules, fishing_equipment, price, info, cancel_terms, latitude, longitude, user_id) values
 					('Sumaher', 'Brzi', '5m', '21b', '120kw', '120kmh', 'wifi,sporet,kamin', 'dunav 12', 'brz camac', '/assets/img/camac1.jpg', '3 ljudi', 'ponasajte se pristojno', 'pecaljka', 50, 'ponesite kupaci', 'nema otkazivanja ne vracamo pare', 45.228381, 19.833430, 6);
 
 
-insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_expire, duration, cottage_id, user_id, price, capacity) values('24-Aug-2022 10:20:20','25-Aug-2022 10:20:20',false, false, null, 0, 1, null, 120, 3);
-insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_expire, duration, cottage_id, user_id, price, capacity) values('20-Aug-2022 10:20:20','22-Aug-2022 10:20:20',false, true, '29-Aug-2022 10:20:20', 3, 1, null, 120, 4);
-insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_expire, duration, cottage_id, user_id, price, capacity) values('10-May-2022 10:20:20','15-May-2022 10:20:20',false, true, '29-Aug-2022 10:20:20', 3, 1, null, 210, 4);
-insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_expire, duration, cottage_id, user_id, price, capacity) values('03-Apr-2022 10:20:20','13-Apr-2022 10:20:20',false, true, '29-Aug-2022 10:20:20', 3, 1, null, 90, 4);
-insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_expire, duration, cottage_id, user_id, price, capacity) values('20-Apr-2022 10:20:20','24-Apr-2022 10:20:20',false, false, null, 0, 1, null, 130, 5);
-insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_expire, duration, cottage_id, user_id, price, capacity) values('09-Mar-2022 10:20:20','12-Mar-2022 10:20:20',false, false, null, 0, 1, null, 400, 2);
-insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_expire, duration, cottage_id, user_id, price, capacity) values('09-Sep-2022 10:20:20','11-Sep-2022 10:20:20',true, false, null, 0, 1, 2, 200, 2);
-insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_expire, duration, cottage_id, user_id, price, capacity) values('13-Sep-2022 10:20:20','15-Sep-2022 10:20:20',true, false, null, 0, 1, 2, 300, 2);
-insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_expire, duration, cottage_id, user_id, price, capacity) values('20-Sep-2022 10:20:20','21-Sep-2022 10:20:20',true, false, null, 0, 1, 2, 250, 2);
-insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_expire, duration, cottage_id, user_id, price, capacity) values('08-Aug-2022 10:20:20','11-Aug-2022 10:20:20',true, false, null, 0, 1, 2, 200, 2);
-insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_expire, duration, cottage_id, user_id, price, capacity) values('14-Aug-2022 10:20:20','16-Aug-2022 10:20:20',true, false, null, 0, 1, 2, 300, 2);
+insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_expire, duration, cottage_id, user_id, price, capacity, version) values('24-Aug-2022 10:20:20','25-Aug-2022 10:20:20',false, false, null, 0, 1, null, 120, 3, 0);
+insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_expire, duration, cottage_id, user_id, price, capacity, version) values('20-Aug-2022 10:20:20','22-Aug-2022 10:20:20',false, true, '29-Aug-2022 10:20:20', 3, 1, null, 120, 4, 0);
+insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_expire, duration, cottage_id, user_id, price, capacity, version) values('10-May-2022 10:20:20','15-May-2022 10:20:20',false, true, '29-Aug-2022 10:20:20', 3, 1, null, 210, 4, 0);
+insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_expire, duration, cottage_id, user_id, price, capacity, version) values('03-Apr-2022 10:20:20','13-Apr-2022 10:20:20',false, true, '29-Aug-2022 10:20:20', 3, 1, null, 90, 4, 0);
+insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_expire, duration, cottage_id, user_id, price, capacity, version) values('20-Apr-2022 10:20:20','24-Apr-2022 10:20:20',false, false, null, 0, 1, null, 130, 5, 0);
+insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_expire, duration, cottage_id, user_id, price, capacity, version) values('09-Mar-2022 10:20:20','12-Mar-2022 10:20:20',false, false, null, 0, 1, null, 400, 2, 0);
+insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_expire, duration, cottage_id, user_id, price, capacity, version) values('09-Sep-2022 10:20:20','11-Sep-2022 10:20:20',true, false, null, 0, 1, 2, 200, 2, 0);
+insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_expire, duration, cottage_id, user_id, price, capacity, version) values('13-Sep-2022 10:20:20','15-Sep-2022 10:20:20',true, false, null, 0, 1, 2, 300, 2, 0);
+insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_expire, duration, cottage_id, user_id, price, capacity, version) values('20-Sep-2022 10:20:20','21-Sep-2022 10:20:20',true, false, null, 0, 1, 2, 250, 2, 0);
+insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_expire, duration, cottage_id, user_id, price, capacity, version) values('08-Aug-2022 10:20:20','11-Aug-2022 10:20:20',true, false, null, 0, 1, 2, 200, 2, 0);
+insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_expire, duration, cottage_id, user_id, price, capacity, version) values('14-Aug-2022 10:20:20','16-Aug-2022 10:20:20',true, false, null, 0, 1, 2, 300, 2, 0);
 
-insert into termin_boat_table(start_date,end_date,reserved,is_action,action_expire, duration, boat_id, user_id, price, capacity) values('09-Sep-2022 10:20:20','11-Sep-2022 10:20:20',true, false, null, 0, 1, 2, 200, 2);
-insert into termin_boat_table(start_date,end_date,reserved,is_action,action_expire, duration, boat_id, user_id, price, capacity) values('13-Sep-2022 10:20:20','15-Sep-2022 10:20:20',true, false, null, 0, 1, 2, 300, 2);
-insert into termin_boat_table(start_date,end_date,reserved,is_action,action_expire, duration, boat_id, user_id, price, capacity) values('20-Sep-2022 10:20:20','21-Sep-2022 10:20:20',true, false, null, 0, 1, 2, 250, 2);
-insert into termin_boat_table(start_date,end_date,reserved,is_action,action_expire, duration, boat_id, user_id, price, capacity) values('08-Aug-2022 10:20:20','11-Aug-2022 10:20:20',true, false, null, 0, 1, 2, 200, 2);
-insert into termin_boat_table(start_date,end_date,reserved,is_action,action_expire, duration, boat_id, user_id, price, capacity) values('14-Aug-2022 10:20:20','16-Aug-2022 10:20:20',true, false, null, 0, 1, 2, 300, 2);
+insert into termin_boat_table(start_date,end_date,reserved,is_action,action_expire, duration, boat_id, user_id, price, capacity, version) values('09-Sep-2022 10:20:20','11-Sep-2022 10:20:20',true, false, null, 0, 1, 2, 200, 2, 0);
+insert into termin_boat_table(start_date,end_date,reserved,is_action,action_expire, duration, boat_id, user_id, price, capacity, version) values('13-Sep-2022 10:20:20','15-Sep-2022 10:20:20',true, false, null, 0, 1, 2, 300, 2, 0);
+insert into termin_boat_table(start_date,end_date,reserved,is_action,action_expire, duration, boat_id, user_id, price, capacity, version) values('20-Sep-2022 10:20:20','21-Sep-2022 10:20:20',true, false, null, 0, 1, 2, 250, 2, 0);
+insert into termin_boat_table(start_date,end_date,reserved,is_action,action_expire, duration, boat_id, user_id, price, capacity, version) values('08-Aug-2022 10:20:20','11-Aug-2022 10:20:20',true, false, null, 0, 1, 2, 200, 2, 0);
+insert into termin_boat_table(start_date,end_date,reserved,is_action,action_expire, duration, boat_id, user_id, price, capacity, version) values('14-Aug-2022 10:20:20','16-Aug-2022 10:20:20',true, false, null, 0, 1, 2, 300, 2, 0);
 
 
 
