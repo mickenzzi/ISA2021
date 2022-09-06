@@ -84,8 +84,8 @@ export class CottageService {
     return this.http.post(`${this.cottageUrl}/saveImage/${id}`, url);
   }
 
-  public createTermin(termin: Termin, cottageId: number){
-    return this.http.post(`${this.terminUrl}/createTermin/${cottageId}`, termin);
+  public createTermin(termin: Termin, cottageId: number, i: number){
+    return this.http.post(`${this.terminUrl}/createTermin/${cottageId}/${i}`, termin);
   }
 
   public getCottageTermins(id: number) {

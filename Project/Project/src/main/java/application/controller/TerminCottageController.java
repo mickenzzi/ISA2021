@@ -30,12 +30,12 @@ public class TerminCottageController {
 	@Autowired
 	private TerminCottageService terminCottageService;
 	
-	@PostMapping(value = "/createTermin/{cottageId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/createTermin/{cottageId}/{i}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_COTTAGE_OWNER')")
-	public ResponseEntity<?> createTermin(@PathVariable("cottageId") Long cottageId, @RequestBody TerminCottage termin)
+	public ResponseEntity<?> createTermin(@PathVariable("cottageId") Long cottageId, @PathVariable("i") int i, @RequestBody TerminCottage termin)
 			throws ParseException {
 
-		boolean create = terminCottageService.createTermin(termin, cottageId);
+		boolean create = terminCottageService.createTermin(termin, cottageId, i);
 		if (create) {
 			System.out.println("The task /createTermin was successfully completed.");
 			return new ResponseEntity<>(HttpStatus.CREATED);
@@ -56,10 +56,8 @@ public class TerminCottageController {
 	
 	@GetMapping(value = "/getFinishedTermins/{cottageId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<TerminCottage>> getAllFinishedCottageTermins(@PathVariable("cottageId") Long cottageId) throws ParseException {
-		List<TerminCottage> termins = new ArrayList<>();
 		List<TerminCottage> retTerms = new ArrayList<>();
-		termins = terminCottageService.findAllTerminsByCottage(cottageId);
-		retTerms = terminCottageService.finishedReservations(termins);
+		retTerms = terminCottageService.finishedReservations(cottageId);
 		System.out.println("The task /getFinishedTermins was successfully completed.");
 		return new ResponseEntity<>(retTerms, HttpStatus.OK);
 	}

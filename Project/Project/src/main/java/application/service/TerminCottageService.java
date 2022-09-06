@@ -7,7 +7,7 @@ import application.model.TerminCottage;
 import application.model.ReservationCottage;
 
 public interface TerminCottageService {
-	boolean createTermin(TerminCottage termin, Long cottageId) throws ParseException;
+	boolean createTermin(TerminCottage termin, Long cottageId, int i) throws ParseException;
 	TerminCottage save(TerminCottage terminCottage);
 	TerminCottage findById(Long id);
 	List<TerminCottage> findAll();
@@ -24,6 +24,6 @@ public interface TerminCottageService {
 	
 	boolean reserveTermin(TerminCottage termin);
 	boolean cancelReservation(TerminCottage termin);
-	List<TerminCottage> finishedReservations(List<TerminCottage> terms) throws ParseException;
+	List<TerminCottage> finishedReservations(Long cottageId) throws ParseException;
 
 }

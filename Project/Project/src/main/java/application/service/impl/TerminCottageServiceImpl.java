@@ -42,15 +42,16 @@ public class TerminCottageServiceImpl implements TerminCottageService {
 	EntitySubscriberRepository subscriberRepository;
 	
 	@Override
-	public boolean createTermin(TerminCottage termin, Long cottageId) throws ParseException {
+	public boolean createTermin(TerminCottage termin, Long cottageId, int i) throws ParseException {
 		TerminCottage term = new TerminCottage();
 		boolean create = false;
 		Cottage cottage = cottageRepository.findById(cottageId).orElseGet(null);
-		List<TerminCottage> termins = findAllTerminsByCottage(cottageId);
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
 		//ukoliko moze preklop po danima ali ne po satima, koristiti: SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
 		Date startDate = dateFormat.parse(termin.getStart());
 		Date endDate = dateFormat.parse(termin.getEnd());
+		List<TerminCottage> termins = new ArrayList<>();
+		termins = finishedReservations(cottageId);
 		if(!termins.isEmpty()) {
 			for (TerminCottage t1 : termins) {
 				Date dmin = dateFormat.parse(t1.getStart());
@@ -88,17 +89,33 @@ public class TerminCottageServiceImpl implements TerminCottageService {
         	difference = 1;
         }
         
-		if (create) {
-			term.setStart(termin.getStart());
-			term.setEnd(termin.getEnd());
-			term.setDaysDuration(termin.getDaysDuration());
-			term.setReserved(false);
-			term.setAction(termin.isAction());
-			term.setPrice(cottage.getPrice()*difference);
-			term.setCapacity(termin.getCapacity());
-			term.setCottageTermin(cottage);
-			term.setUserReserved(null);
-			terminCottageRepository.save(term);
+        
+		if(i == 1) {
+			if (create) {
+				term.setStart(termin.getStart());
+				term.setEnd(termin.getEnd());
+				term.setDaysDuration(termin.getDaysDuration());
+				term.setReserved(false);
+				term.setAction(termin.isAction());
+				term.setPrice(cottage.getPrice()*difference);
+				term.setCapacity(termin.getCapacity());
+				term.setCottageTermin(cottage);
+				term.setUserReserved(null);
+				terminCottageRepository.save(term);
+			}
+		} else {
+			if (create) {
+				term.setStart(termin.getStart());
+				term.setEnd(termin.getEnd());
+				term.setDaysDuration(termin.getDaysDuration());
+				term.setReserved(termin.isReserved());
+				term.setAction(termin.isAction());
+				term.setPrice(cottage.getPrice()*difference);
+				term.setCapacity(termin.getCapacity());
+				term.setCottageTermin(cottage);
+				term.setUserReserved(termin.getUserReserved());
+				terminCottageRepository.save(term);
+			}
 		}
 		
 		if(term.isAction()) {
@@ -189,7 +206,7 @@ public class TerminCottageServiceImpl implements TerminCottageService {
 	public TerminCottage findById(Long id) {
 		return terminCottageRepository.findById(id).orElseGet(null);
 	}
-
+	
 	@Override
 	public List<TerminCottage> findAll() {
 		return terminCottageRepository.findAll();
@@ -207,13 +224,15 @@ public class TerminCottageServiceImpl implements TerminCottageService {
 		return ret;
 	}
 	
-	public List<TerminCottage> finishedReservations(List<TerminCottage> terms) throws ParseException{
+	public List<TerminCottage> finishedReservations(Long cottageId) throws ParseException{
+		List<TerminCottage> all = new ArrayList<>();
+		all = findAllTerminsByCottage(cottageId);
 		List<TerminCottage> finished = new ArrayList<>();
 		
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
 		
-		for(TerminCottage term : terms) {
+		for(TerminCottage term : all) {
 
 	        Date parsedDate = sdf.parse(term.getEnd());
 	        if(date.compareTo(parsedDate)>0 && term.getUserReserved()!=null) {

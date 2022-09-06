@@ -36,7 +36,7 @@ public class CottageBusinessServiceImpl implements CottageBusinessService{
 		
 		for(Cottage c : cottages) {
 			List<TerminCottage> terminsTemp = new ArrayList<>();
-			terminsTemp = terminService.findAllTerminsByCottage(c.getId());
+			terminsTemp = terminService.finishedReservations(c.getId());
 			for(TerminCottage t : terminsTemp) {
 				cottageTermins.add(t);
 			}
@@ -63,13 +63,13 @@ public class CottageBusinessServiceImpl implements CottageBusinessService{
 	}
 	
 	@Override
-	public List<Integer> numberOfReservationsOnMonth(Long id){
+	public List<Integer> numberOfReservationsOnMonth(Long id) throws ParseException{
 		
 		List<TerminCottage> cottageTermins = new ArrayList<>();
 		List<Cottage> cottages = cottageService.findOwnerCottages(id);
 		for(Cottage c : cottages) {
 			List<TerminCottage> terminsTemp = new ArrayList<>();
-			terminsTemp = terminService.findAllTerminsByCottage(c.getId());
+			terminsTemp = terminService.finishedReservations(c.getId());
 			for(TerminCottage t : terminsTemp) {
 				cottageTermins.add(t);
 			}
@@ -157,13 +157,13 @@ public class CottageBusinessServiceImpl implements CottageBusinessService{
 	}
 	
 	@Override
-	public List<Integer> numberOfReservedDaysPerMonth(Long id){
+	public List<Integer> numberOfReservedDaysPerMonth(Long id) throws ParseException{
 		
 		List<TerminCottage> cottageTermins = new ArrayList<>();
 		List<Cottage> cottages = cottageService.findOwnerCottages(id);
 		for(Cottage c : cottages) {
 			List<TerminCottage> terminsTemp = new ArrayList<>();
-			terminsTemp = terminService.findAllTerminsByCottage(c.getId());
+			terminsTemp = terminService.finishedReservations(c.getId());
 			for(TerminCottage t : terminsTemp) {
 				cottageTermins.add(t);
 			}
@@ -251,13 +251,13 @@ public class CottageBusinessServiceImpl implements CottageBusinessService{
 	}
 	
 	@Override
-	public List<Integer> numberOfReservationsOnWeek(Long id) {
+	public List<Integer> numberOfReservationsOnWeek(Long id) throws ParseException {
 		
 		List<TerminCottage> cottageTermins = new ArrayList<>();
 		List<Cottage> cottages = cottageService.findOwnerCottages(id);
 		for(Cottage c : cottages) {
 			List<TerminCottage> terminsTemp = new ArrayList<>();
-			terminsTemp = terminService.findAllTerminsByCottage(c.getId());
+			terminsTemp = terminService.finishedReservations(c.getId());
 			for(TerminCottage t : terminsTemp) {
 				cottageTermins.add(t);
 			}
@@ -337,7 +337,7 @@ public class CottageBusinessServiceImpl implements CottageBusinessService{
 		List<Cottage> cottages = cottageService.findOwnerCottages(id);
 		for(Cottage c : cottages) {
 			List<TerminCottage> terminsTemp = new ArrayList<>();
-			terminsTemp = terminService.findAllTerminsByCottage(c.getId());
+			terminsTemp = terminService.finishedReservations(c.getId());
 			for(TerminCottage t : terminsTemp) {
 				cottageTermins.add(t);
 			}
@@ -418,7 +418,7 @@ public class CottageBusinessServiceImpl implements CottageBusinessService{
 		
 		for(Cottage c : cottages) {
 			List<TerminCottage> terminsTemp = new ArrayList<>();
-			terminsTemp = terminService.findAllTerminsByCottage(c.getId());
+			terminsTemp = terminService.finishedReservations(c.getId());
 			for(TerminCottage t : terminsTemp) {
 				cottageTermins.add(t);
 			}
@@ -477,7 +477,7 @@ public class CottageBusinessServiceImpl implements CottageBusinessService{
 		
 		for(Cottage c : cottages) {
 			List<TerminCottage> terminsTemp = new ArrayList<>();
-			terminsTemp = terminService.findAllTerminsByCottage(c.getId());
+			terminsTemp = terminService.finishedReservations(c.getId());
 			for(TerminCottage t : terminsTemp) {
 				cottageTermins.add(t);
 			}
@@ -572,7 +572,7 @@ public class CottageBusinessServiceImpl implements CottageBusinessService{
 		List<Cottage> cottages = cottageService.findOwnerCottages(id);
 		for(Cottage c : cottages) {
 			List<TerminCottage> terminsTemp = new ArrayList<>();
-			terminsTemp = terminService.findAllTerminsByCottage(c.getId());
+			terminsTemp = terminService.finishedReservations(c.getId());
 			for(TerminCottage t : terminsTemp) {
 				cottageTermins.add(t);
 			}
@@ -668,7 +668,7 @@ public class CottageBusinessServiceImpl implements CottageBusinessService{
 		List<Cottage> cottages = cottageService.findOwnerCottages(id);
 		for(Cottage c : cottages) {
 			List<TerminCottage> terminsTemp = new ArrayList<>();
-			terminsTemp = terminService.findAllTerminsByCottage(c.getId());
+			terminsTemp = terminService.finishedReservations(c.getId());
 			for(TerminCottage t : terminsTemp) {
 				cottageTermins.add(t);
 			}
@@ -754,7 +754,7 @@ public class CottageBusinessServiceImpl implements CottageBusinessService{
 		
 		for(Cottage c : cottages) {
 			List<TerminCottage> terminsTemp = new ArrayList<>();
-			terminsTemp = terminService.findAllTerminsByCottage(c.getId());
+			terminsTemp = terminService.finishedReservations(c.getId());
 			for(TerminCottage t : terminsTemp) {
 				cottageTermins.add(t);
 			}
@@ -828,7 +828,7 @@ public class CottageBusinessServiceImpl implements CottageBusinessService{
 	public Double getCottageProfit(String startDate, String endDate, Long id) throws ParseException {
 		
 		List<TerminCottage> cottageTermins = new ArrayList<>();
-		cottageTermins = terminService.findAllTerminsByCottage(id);
+		cottageTermins = terminService.finishedReservations(id);
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
         Date start = sdf.parse(startDate);
@@ -848,10 +848,10 @@ public class CottageBusinessServiceImpl implements CottageBusinessService{
 
 	
 	@Override
-	public List<Integer> cottageReservationsOnMonth(Long id) {
+	public List<Integer> cottageReservationsOnMonth(Long id) throws ParseException {
 		
 		List<TerminCottage> cottageTermins = new ArrayList<>();
-		cottageTermins = terminService.findAllTerminsByCottage(id);
+		cottageTermins = terminService.finishedReservations(id);
 		int jan = 0;
 		int feb = 0;
 		int mar = 0;
@@ -936,10 +936,10 @@ public class CottageBusinessServiceImpl implements CottageBusinessService{
 
 	
 	@Override
-	public List<Integer> cottageReservedDaysPerMonth(Long id) {
+	public List<Integer> cottageReservedDaysPerMonth(Long id) throws ParseException {
 		
 		List<TerminCottage> cottageTermins = new ArrayList<>();
-		cottageTermins = terminService.findAllTerminsByCottage(id);
+		cottageTermins = terminService.finishedReservations(id);
 		
 		int jan = 0;
 		int feb = 0;
@@ -1023,9 +1023,9 @@ public class CottageBusinessServiceImpl implements CottageBusinessService{
 
 	
 	@Override
-	public List<Integer> cottageReservationsOnWeek(Long id) {
+	public List<Integer> cottageReservationsOnWeek(Long id) throws ParseException {
 		List<TerminCottage> cottageTermins = new ArrayList<>();
-		cottageTermins = terminService.findAllTerminsByCottage(id);
+		cottageTermins = terminService.finishedReservations(id);
 		
 		int week1 = 0;
 		int week2 = 0;
@@ -1099,7 +1099,7 @@ public class CottageBusinessServiceImpl implements CottageBusinessService{
 	@Override
 	public List<Integer> cottageReservedDaysPerWeek(Long id) throws ParseException {
 		List<TerminCottage> cottageTermins = new ArrayList<>();
-		cottageTermins = terminService.findAllTerminsByCottage(id);
+		cottageTermins = terminService.finishedReservations(id);
 		
 		int week1 = 0;
 		int week2 = 0;
@@ -1173,7 +1173,7 @@ public class CottageBusinessServiceImpl implements CottageBusinessService{
 	public List<Integer> cottageReservationsOnDay(Long id) throws ParseException {
 		
 		List<TerminCottage> cottageTermins = new ArrayList<>();
-		cottageTermins = terminService.findAllTerminsByCottage(id);
+		cottageTermins = terminService.finishedReservations(id);
 		
 		int mon = 0;
 		int tue = 0;
@@ -1225,7 +1225,7 @@ public class CottageBusinessServiceImpl implements CottageBusinessService{
 	@Override
 	public List<Integer> cottageReservedDays(Long id) throws ParseException {
 		List<TerminCottage> cottageTermins = new ArrayList<>();
-		cottageTermins = terminService.findAllTerminsByCottage(id);
+		cottageTermins = terminService.finishedReservations(id);
 		
 		int mon = 0;
 		int tue = 0;
@@ -1290,7 +1290,7 @@ public class CottageBusinessServiceImpl implements CottageBusinessService{
 	@Override
 	public List<Double> cottageProfitPerMonth(Long id) throws ParseException {
 		List<TerminCottage> cottageTermins = new ArrayList<>();
-		cottageTermins = terminService.findAllTerminsByCottage(id);
+		cottageTermins = terminService.finishedReservations(id);
 		
 		double jan = 0;
 		double feb = 0;
@@ -1380,7 +1380,7 @@ public class CottageBusinessServiceImpl implements CottageBusinessService{
 	@Override
 	public List<Double> cottageProfitPerWeek(Long id) throws ParseException {
 		List<TerminCottage> cottageTermins = new ArrayList<>();
-		cottageTermins = terminService.findAllTerminsByCottage(id);
+		cottageTermins = terminService.finishedReservations(id);
 		
 		double week1 = 0;
 		double week2 = 0;
@@ -1459,7 +1459,7 @@ public class CottageBusinessServiceImpl implements CottageBusinessService{
 	@Override
 	public List<Double> cottageProfitPerDay(Long id) throws ParseException {
 		List<TerminCottage> cottageTermins = new ArrayList<>();
-		cottageTermins = terminService.findAllTerminsByCottage(id);
+		cottageTermins = terminService.finishedReservations(id);
 		
 		double mon = 0;
 		double tue = 0;

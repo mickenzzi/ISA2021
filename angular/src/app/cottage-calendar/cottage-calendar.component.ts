@@ -40,6 +40,7 @@ export class CottageCalendarComponent implements OnInit {
   termins: TerminCottage[] = new Array<TerminCottage>();
   report: Report = new Report();
   finishedReservations: TerminCottage[] = [];
+  existingUser: User = new User();
 
   flagCreateTermin: boolean = false;
   flagEditTermin: boolean = false;
@@ -48,6 +49,8 @@ export class CottageCalendarComponent implements OnInit {
   fullName: String = "";
   flagReserveTermin: boolean = false;
   flagReport: boolean = false;
+  flagUserProfile: boolean = false;
+  flagCreateUserTermin: boolean = false;
 
 
   //calendar
@@ -86,6 +89,16 @@ export class CottageCalendarComponent implements OnInit {
     }));
   }
 
+  openCreateNewTermin(){
+    this.flagCreateUserTermin = true;
+    this.flagUserProfile = false;
+    this.flagCreateTermin = false;
+    this.flagEditTermin = false;
+    this.flagShowCalendar = false;
+    this.flagReserveTermin = false;
+    this.flagReport = false;
+  }
+
   logOut() {
     localStorage.removeItem('currentUser');
     localStorage.clear();
@@ -94,6 +107,24 @@ export class CottageCalendarComponent implements OnInit {
 
   back() {
     this.router.navigate(['/cottage/' + this.cottageId]);
+  }
+
+  showProfile(user?: User){
+    if(user != undefined){
+      this.existingUser = user;
+    }
+    this.flagUserProfile = !this.flagUserProfile;
+    this.flagCreateUserTermin = false;
+    this.flagCreateTermin = false;
+    this.flagEditTermin = false;
+    this.flagShowCalendar = false;
+    this.flagReserveTermin = false;
+    this.flagReport = false;
+  }
+
+  closeProfile(){
+    this.flagUserProfile = false;
+    this.flagShowCalendar = true;
   }
 
   getUser() {
@@ -112,6 +143,8 @@ export class CottageCalendarComponent implements OnInit {
       }
     }));
   }
+
+
 
   showCreateTermin() {
     this.flagCreateTermin = true;
@@ -206,6 +239,39 @@ export class CottageCalendarComponent implements OnInit {
     }
   }
 
+  close(){
+    window.location.reload();
+  }
+
+  createReservation() {
+    if (this.termin.start === undefined || this.termin.end === undefined) {
+      alert("Popunite sva polja!");
+    } else {
+      if (new Date(this.termin.start ?? "") >= new Date(this.termin.end ?? "")) {
+        alert("Datumi nisu validni.");
+      }
+      else if (this.termin.start.length !== 20 || this.termin.end.length !== 20) {
+        alert("Nevalidan format datuma.");
+      }
+      else {
+        this.termin.reserved = true;
+        this.termin.capacity = 1;
+        this.termin.userReserved = this.existingUser;
+        this.subs.push(this.cottageService.createTermin(this.termin, this.cottageId, 2).subscribe(() => {
+          this.getAllTermins();
+          
+          window.location.reload();
+          this.termin = new TerminCottage();
+          alert("Uspesno te dodali termin");
+        }, (error: HttpErrorResponse) => {
+          alert("Termin vec postoji.");
+        }));
+
+        this.showCalendar();
+      }
+    }
+  }
+
   createTermin() {
     if (this.termin.start === undefined || this.termin.end === undefined || this.termin.capacity === undefined) {
       alert("Popunite sva polja!");
@@ -217,7 +283,7 @@ export class CottageCalendarComponent implements OnInit {
         alert("Nevalidan format datuma.");
       }
       else {
-        this.subs.push(this.cottageService.createTermin(this.termin, this.cottageId).subscribe(() => {
+        this.subs.push(this.cottageService.createTermin(this.termin, this.cottageId, 1).subscribe(() => {
           this.getAllTermins();
           this.termin = new TerminCottage();
           alert("Uspesno te dodali termin");
