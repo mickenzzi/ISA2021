@@ -54,8 +54,6 @@ public class Boat {
 	private double latitude;
 	@Column(name = "longitude")
 	private double longitude;
-	@Column(name = "reserved")
-	private boolean reserved;
 	//fetch - Eager koristimo kada su nam neophodni podaci i povezanih tabela 
 	//preporuka je koristiti Lazy kad god mozemo
 	@ManyToOne(fetch = FetchType.EAGER)

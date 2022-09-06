@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 
 import application.model.Boat;
 import application.model.BoatImage;
+import application.model.EntitySubscriber;
 import application.model.User;
 import application.repository.BoatImageRepository;
 import application.repository.BoatRepository;
+import application.repository.EntitySubscriberRepository;
 import application.service.BoatService;
 import application.service.UserService;
 
@@ -18,85 +20,91 @@ import application.service.UserService;
 public class BoatServiceImpl implements BoatService {
 	
 	@Autowired
-	private BoatRepository boatRepository;
+	private BoatRepository cottageRepository;
 	@Autowired
-	private BoatImageRepository boatImageRepository;
+	private BoatImageRepository cottageImageRepository;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private EntitySubscriberRepository subscriberRespository;
 	
 	@Override
 	public List<Boat> findAll() {
-		return boatRepository.findAll();
+		return cottageRepository.findAll();
 	}
 
 	@Override
 	public Boat findById(Long id) {
-		return boatRepository.findById(id).orElseGet(null);
+		return cottageRepository.findById(id).orElseGet(null);
 	}
 
 	@Override
-	public void update(Boat boat) {
-		Boat boat1 = boatRepository.findById(boat.getId()).orElseGet(null);
-		boat.setName(boat1.getName());
-		boat.setType(boat1.getType());
-		boat.setLenght(boat1.getLenght());
-		boat.setEngineNumber(boat1.getEngineNumber());
-		boat.setEnginePower(boat1.getEnginePower());
-		boat.setMaxSpeed(boat1.getMaxSpeed());
-		boat.setNavigationEquipment(boat1.getNavigationEquipment());
-		boat.setAddress(boat1.getAddress());
-		boat.setDescription(boat1.getDescription());
-		boat.setImage(boat1.getImage());
-		boat.setCapacity(boat1.getCapacity());
-		boat.setRules(boat1.getRules());
-		boat.setFishingEquipment(boat1.getFishingEquipment());
-		boat.setPrice(boat1.getPrice());
-		boat.setInfo(boat1.getInfo());
-		boat.setCancelTerms(boat1.getCancelTerms());
+	public void update(Boat cottage) {
+		Boat cottage1 = cottageRepository.findById(cottage.getId()).orElseGet(null);
+		cottage1.setName(cottage.getName());
+		cottage1.setAddress(cottage.getAddress());
+		cottage1.setType(cottage.getType());
+		cottage1.setLenght(cottage.getLenght());
+		cottage1.setEngineNumber(cottage.getEngineNumber());
+		cottage1.setEnginePower(cottage.getEnginePower());
+		cottage1.setMaxSpeed(cottage.getMaxSpeed());
+		cottage1.setNavigationEquipment(cottage.getNavigationEquipment());
+		cottage1.setCapacity(cottage.getCapacity());
+		cottage1.setDescription(cottage.getDescription());
+		cottage1.setRules(cottage.getRules());
+		cottage1.setPrice(cottage.getPrice());
+		cottage1.setInfo(cottage.getInfo());
+		cottage1.setImage(cottage.getImage());
+		cottage1.setFishingEquipment(cottage.getFishingEquipment());
+		cottage1.setCancelTerms(cottage.getCancelTerms());
+		cottage1.setLatitude(cottage.getLatitude());
+		cottage1.setLongitude(cottage.getLongitude());
 		
-		boatRepository.save(boat);
+		cottageRepository.save(cottage1);
 	}
 
 	@Override
 	public void delete(Long id) {
-		Boat boat = boatRepository.findById(id).orElseGet(null);
-		boatRepository.delete(boat);
+		Boat cottage = cottageRepository.findById(id).orElseGet(null);
+		cottageRepository.delete(cottage);
 	}
 
 	@Override
-	public Boat save(Boat boat1, Long id) {
-		Boat boat = new Boat();
-		boat.setName(boat1.getName());
-		boat.setType(boat1.getType());
-		boat.setLenght(boat1.getLenght());
-		boat.setEngineNumber(boat1.getEngineNumber());
-		boat.setEnginePower(boat1.getEnginePower());
-		boat.setMaxSpeed(boat1.getMaxSpeed());
-		boat.setNavigationEquipment(boat1.getNavigationEquipment());
-		boat.setAddress(boat1.getAddress());
-		boat.setDescription(boat1.getDescription());
-		boat.setImage(boat1.getImage());
-		boat.setCapacity(boat1.getCapacity());
-		boat.setRules(boat1.getRules());
-		boat.setFishingEquipment(boat1.getFishingEquipment());
-		boat.setPrice(boat1.getPrice());
-		boat.setInfo(boat1.getInfo());
-		boat.setCancelTerms(boat1.getCancelTerms());
+	public Boat save(Boat cottage, Long id) {
+		Boat cottage1 = new Boat();
+		cottage1.setName(cottage.getName());
+		cottage1.setAddress(cottage.getAddress());
+		cottage1.setType(cottage.getType());
+		cottage1.setLenght(cottage.getLenght());
+		cottage1.setEngineNumber(cottage.getEngineNumber());
+		cottage1.setEnginePower(cottage.getEnginePower());
+		cottage1.setMaxSpeed(cottage.getMaxSpeed());
+		cottage1.setNavigationEquipment(cottage.getNavigationEquipment());
+		cottage1.setCapacity(cottage.getCapacity());
+		cottage1.setDescription(cottage.getDescription());
+		cottage1.setRules(cottage.getRules());
+		cottage1.setPrice(cottage.getPrice());
+		cottage1.setInfo(cottage.getInfo());
+		cottage1.setImage(cottage.getImage());
+		cottage1.setFishingEquipment(cottage.getFishingEquipment());
+		cottage1.setCancelTerms(cottage.getCancelTerms());
 		User user = userService.findById(id);
-		boat.setUserBoat(user);
+		cottage1.setUserBoat(user);
+		cottage1.setLatitude(cottage.getLatitude());
+		cottage1.setLongitude(cottage.getLongitude());
 		
-		boatRepository.save(boat1);
-		return boat1;
+		cottageRepository.save(cottage1);
+		return cottage1;
 	}
 
 
 	@Override
-	public List<BoatImage> findImagesByBoatId(Long id) {
-		List<BoatImage> allBoatImages = boatImageRepository.findAll();
+	public List<BoatImage> findImagesByCottageId(Long id) {
+		List<BoatImage> allCottageImages = cottageImageRepository.findAll();
 		List<BoatImage> retImages = new ArrayList<BoatImage>();
-		for(BoatImage boatImage : allBoatImages) {
-			if(boatImage.getBoatId().getId() == id) {
-				retImages.add(boatImage);
+		for(BoatImage cottageImage : allCottageImages) {
+			if(cottageImage.getCottageId().getId() == id) {
+				retImages.add(cottageImage);
 			}
 		}
 		return retImages;
@@ -105,14 +113,14 @@ public class BoatServiceImpl implements BoatService {
 
 	@Override
 	public BoatImage findImageById(Long id) {
-		return boatImageRepository.findById(id).orElseGet(null);
+		return cottageImageRepository.findById(id).orElseGet(null);
 	}
 
 	@Override
-	public void updateImage(BoatImage boatImage) {
-		BoatImage image1 = boatImageRepository.findById(boatImage.getId()).orElseGet(null);
-		image1.setImageUrl(boatImage.getImageUrl());
-		boatImageRepository.save(image1);
+	public void updateImage(BoatImage cottageImage) {
+		BoatImage image1 = cottageImageRepository.findById(cottageImage.getId()).orElseGet(null);
+		image1.setImageUrl(cottageImage.getImageUrl());
+		cottageImageRepository.save(image1);
 	}
 
 	@Override
@@ -120,31 +128,101 @@ public class BoatServiceImpl implements BoatService {
 		List<BoatImage> allImages = getAllImages();
 		for(BoatImage image : allImages) 
 			if(image.getId() == id) 
-				boatImageRepository.delete(image);
+				cottageImageRepository.delete(image);
 	}
 
 	@Override
 	public boolean saveImage(String url, Long id) {
-		List<BoatImage> allImages = findImagesByBoatId(id);
+		List<BoatImage> allImages = findImagesByCottageId(id);
 		boolean exists = false;
+		System.out.println(url);
 		BoatImage saveImage = new BoatImage();
 		for(BoatImage image : allImages) {
-			if(image.getImageUrl().equals(url) && image.getBoatId().getId() == id) {
+			if(image.getImageUrl().equals(url) && image.getCottageId().getId() == id) {
 				exists = true;
 			}
 		}
 		if(!exists) {
-			Boat boat = findById(id);
+			Boat cottage = findById(id);
 			saveImage.setImageUrl(url);
-			saveImage.setBoatId(boat);
-			boatImageRepository.save(saveImage);
+			saveImage.setCottageId(cottage);
+			System.out.println(saveImage.getImageUrl());
+			cottageImageRepository.save(saveImage);
 		}
 		return !exists;
 	}
 
 	@Override
 	public List<BoatImage> getAllImages() {
-		return boatImageRepository.findAll();
+		return cottageImageRepository.findAll();
+	}
+
+	@Override
+	public List<Boat> findOwnerCottages(Long id) {
+		List<Boat> cottages = findAll();
+		List<Boat> ownerCottages = new ArrayList<>();
+		
+		for(Boat c : cottages) 
+			if(c.getUserBoat().getId() == id) 
+				ownerCottages.add(c);
+			
+		return ownerCottages;
+	}
+
+	
+	
+	@Override
+	public void subscribe(Long cottageId, Long userId) {
+		Boat cottage = new Boat();
+		cottage = findById(cottageId);
+		User subsciber = new User();
+		subsciber = userService.findById(userId);
+		EntitySubscriber es = new EntitySubscriber();
+		es.setBoat(cottage);
+		es.setSubscriber(subsciber);
+		
+		boolean save = true;
+		List<EntitySubscriber> allSubs = new ArrayList<>();
+		
+		
+		for(EntitySubscriber e : allSubs) {
+			if(e.getBoat().getId().equals(cottageId) && e.getSubscriber().getId().equals(userId)) {
+				save = false;
+				break;
+			}
+		}
+		
+		if(save) {
+			subscriberRespository.save(es);
+		}
+		
+	}
+	
+	public void unsubscribe(Long cottageId, Long userId) {
+		List<EntitySubscriber> esList = new ArrayList<>();
+		esList = subscriberRespository.findAll();
+		for(EntitySubscriber es : esList) {
+			if(es.getBoat().getId().equals(cottageId) && es.getSubscriber().getId().equals(userId)) {
+				subscriberRespository.delete(es);
+				break;
+			}
+		}
+	
+		
+	}
+
+	@Override
+	public List<EntitySubscriber> findAllSubsByCottage(Long cottageId) {
+		List<EntitySubscriber> subs = new ArrayList<>();
+		List<EntitySubscriber> retList = new ArrayList<>();
+		subs = subscriberRespository.findAll();
+		for(EntitySubscriber e : subs) {
+			if(e.getBoat().getId().equals(cottageId)) {
+				retList.add(e);
+			}
+		}
+		
+		return retList;
 	}
 	
 

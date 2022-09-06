@@ -22,7 +22,7 @@ public class BoatImage {
 	private String url;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "boat_id")
-	private Boat boatId;
+	private Boat cottageId;
 	
 	public Long getId() {
 		return id;
@@ -40,23 +40,23 @@ public class BoatImage {
 		this.url = url;
 	}
 	
-	public Boat getBoatId() {
-		return boatId;
+	public Boat getCottageId() {
+		return cottageId;
 	}
 	
-	public void setBoatId(Boat boatId) {
-		this.boatId = boatId;
+	public void setCottageId(Boat boatId) {
+		this.cottageId = boatId;
 	}
 
 	public BoatImage() {
 		super();
 	}
 
-	public BoatImage(Long id, String url, Boat boatId) {
+	public BoatImage(Long id, String url, Boat cottageId) {
 		super();
 		this.id = id;
 		this.url = url;
-		this.boatId = boatId;
+		this.cottageId = cottageId;
 	}
 	
 	
