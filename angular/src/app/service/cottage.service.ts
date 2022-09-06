@@ -23,6 +23,14 @@ export class CottageService {
   ) {
   }
 
+  public reserveTermin(termin: TerminCottage) {
+    return this.http.put(`${this.terminUrl}/reserveTermin`, termin);
+  }
+
+  public cancelReservation(termin: TerminCottage) {
+    return this.http.put(`${this.terminUrl}/cancelReservation`, termin);
+  }
+
   public subscribe (entity: EntitySubscriber){
     return this.http.post(`${this.cottageUrl}/subscribe`, entity);
   }

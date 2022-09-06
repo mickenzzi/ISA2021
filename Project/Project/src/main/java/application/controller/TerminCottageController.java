@@ -62,6 +62,31 @@ public class TerminCottageController {
 		return new ResponseEntity<>(termin, HttpStatus.OK);
 	}
 	
+	@PutMapping(value = "/reserveTermin", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<TerminCottage> reserveTermin(@RequestBody TerminCottage termin) {
+		if(terminCottageService.reserveTermin(termin)) {
+			System.out.println("User reserved: " + termin.getUserReserved().getId());
+			System.out.println("The task /reserveTermin was successfully completed.");
+			return new ResponseEntity<>(termin, HttpStatus.OK);
+		}
+		else {
+			System.out.println("Termin reservation failed.");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@PutMapping(value = "/cancelReservation", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<TerminCottage> cancelReservation(@RequestBody TerminCottage termin) {
+		if(terminCottageService.cancelReservation(termin)) {
+			System.out.println("The task /cancelReservation was successfully completed.");
+			return new ResponseEntity<>(termin, HttpStatus.OK);
+		}
+		else {
+			System.out.println("Reservation cancel failed.");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 	@PutMapping(value = "/updateTermin", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TerminCottage> updateTermin(@RequestBody TerminCottage termin) throws ParseException {
 		if(terminCottageService.updateTermin(termin)) {

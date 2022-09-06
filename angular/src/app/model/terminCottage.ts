@@ -1,3 +1,5 @@
+import { User } from "./user";
+
 export class TerminCottage {
     id?: number;
     reserved?: boolean;
@@ -7,5 +9,6 @@ export class TerminCottage {
     action?: boolean;
     price?: number;
     capacity?: number;
+    userReserved?: User;
   }
   

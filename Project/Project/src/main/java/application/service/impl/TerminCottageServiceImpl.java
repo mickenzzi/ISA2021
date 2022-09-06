@@ -132,6 +132,36 @@ public class TerminCottageServiceImpl implements TerminCottageService {
 		return create;
 	}
 
+	public boolean reserveTermin(TerminCottage term) {
+		
+		TerminCottage termin = terminCottageRepository.findById(term.getId()).orElseGet(null);
+		boolean reserved = false;
+		
+		if(termin != null) {
+			termin.setReserved(true);
+			termin.setUserReserved(term.getUserReserved());
+			terminCottageRepository.save(termin);
+			reserved = true;
+		}
+
+		return reserved;
+	}
+	
+	public boolean cancelReservation(TerminCottage term) {
+		
+		TerminCottage termin = terminCottageRepository.findById(term.getId()).orElseGet(null);
+		boolean canceled = false;
+		
+		if(termin != null) {
+			termin.setReserved(false);
+			termin.setUserReserved(null);
+			terminCottageRepository.save(termin);
+			canceled = true;
+		}
+
+		return canceled;
+	}
+	
 	public String countActionEndDate(TerminCottage term) {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");

@@ -21,5 +21,8 @@ public interface TerminCottageService {
 	void deleteReservation(Long reservationId);
 	void deleteReservationTermin(Long reservationId,String start,String end);
 	List<ReservationCottage> findAllReservationsByCottage(Long cottageId);
+	
+	boolean reserveTermin(TerminCottage termin);
+	boolean cancelReservation(TerminCottage termin);
 
 }

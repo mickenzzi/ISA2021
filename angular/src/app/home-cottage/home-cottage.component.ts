@@ -69,7 +69,6 @@ export class HomeCottageComponent implements OnInit {
       
     } else {
       this.getUser();
-      //dodati if proveru za isDisabled, ako je zauzeta vikendica ili nije trenutni korisnik VLASNIK vikendice, isDisabled = true
     }
   }
 

@@ -74,6 +74,35 @@
         </div>
     </div>
 
+    <div *ngIf="flagReserveTermin" class="centerDiv">
+      <div class="login-container" style="text-align: center; top: 10%; margin-left: 40%;">
+          <section class="login">
+            <header>
+              <h2>Rezervacija termina</h2>
+            </header>
+            <form class="login-form" style="text-align: left; float:left; width: 100%;">
+              <label>Datum pocetka:</label><br>
+              <input [(ngModel)]="selectedTermin.start" disabled="true" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+                placeholder="dd-MMM-YYYY HH:mm:ss" required type="text" /><br>
+              <label>Datum zavrsetka:</label><br>
+              <input [(ngModel)]="selectedTermin.end" disabled="true" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+                placeholder="dd-MMM-YYYY HH:mm:ss" required type="text" /><br>
+              <label>Broj ljudi:</label><br>
+              <input [(ngModel)]="selectedTermin.capacity" disabled="true" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+                placeholder="eg. 5" required type="text" />
+                <label>Cena:</label><br>
+              <input [(ngModel)]="selectedTermin.price" disabled="true" [ngModelOptions]="{standalone: true}" autofocus class="login-input"
+                placeholder="eg. 520e" required type="text" />
+              <div class="submit-container">
+                <button (click)="showCalendar()" class="login-button" style="float:left; margin-left: 5%;">Odustani</button>
+                <button (click)="reserveTermin()" class="login-button" style="margin-left: 5%; margin-right: 5%">Potvrdi</button>
+                <button (click)="cancelReservation()" *ngIf="selectedTermin.reserved" class="login-button" style="float: right; margin-right: 20%;">Otkazi</button>
+              </div>
+            </form>
+          </section>
+        </div>
+    </div>
+
     <div *ngIf="flagShowCalendar" style="width:60%; height:80%; margin-top:2%; margin-left: 20%; margin-right: 20%; ">
       <span class="dot-red"></span>
         <label style="color: dimgrey; font-family: 'Courier New', Courier, monospace; font-size: medium;">-Rezervisano</label>

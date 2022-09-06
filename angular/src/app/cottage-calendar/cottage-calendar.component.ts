@@ -31,6 +31,7 @@ export class CottageCalendarComponent implements OnInit {
   cottage: Cottage = new Cottage();
   cottageId!: number;
   isOwner: boolean = false;
+  isUser: boolean = false;
   title: String = "Termini";
   termin: TerminCottage = new TerminCottage;
   selectedTermin: TerminCottage = new TerminCottage;
@@ -40,7 +41,7 @@ export class CottageCalendarComponent implements OnInit {
   flagShowCalendar: boolean = true;
   disableEditTermin: boolean = false;
   fullName: String = "";
-  
+  flagReserveTermin: boolean = false;
 
   //calendar
   view: CalendarView = CalendarView.Month;
@@ -93,6 +94,8 @@ export class CottageCalendarComponent implements OnInit {
       this.user = response;
       if(this.user.role === "ROLE_COTTAGE_OWNER"){
         this.isOwner = true;
+      } else if (this.user.role === "ROLE_USER"){
+        this.isUser = true;
       }
       if(this.isOwner){
         this.title = "Termini";
@@ -106,18 +109,21 @@ export class CottageCalendarComponent implements OnInit {
     this.flagCreateTermin = true;
     this.flagEditTermin = false;
     this.flagShowCalendar = false;
+    this.flagReserveTermin = false;
   }
 
   showEditTermin() {
     this.flagEditTermin = true;
     this.flagCreateTermin = false;
     this.flagShowCalendar = false;
+    this.flagReserveTermin = false;
   }
 
   showCalendar(){ 
     this.flagEditTermin = false;
     this.flagCreateTermin = false;
     this.flagShowCalendar = true;
+    this.flagReserveTermin = false;
     setTimeout(() => { this.refresh(); }, 500);
   }
 
@@ -363,7 +369,6 @@ export class CottageCalendarComponent implements OnInit {
 
   changeDay(date: Date) {
     this.getAllTermins();
-    //this.getAllReservations()
     if(this.isOwner){
       for (let term of this.termins) {
         const start = new Date(term.start ?? "")
@@ -381,8 +386,68 @@ export class CottageCalendarComponent implements OnInit {
       } else {
         this.disableEditTermin = false;
       }
-    }
 
+    } else if (this.isUser){
+      if(this.selectedTermin.reserved && this.selectedTermin.userReserved?.id != this.user.id){
+        alert("Termin je zauzet");
+      } else {
+        for (let term of this.termins) {
+          const start = new Date(term.start ?? "")
+          start.setHours(0, 0, 0);
+          const end = new Date(term.end ?? "")
+          if (date >= start && date <= end) {
+            this.selectedTermin = term;
+            this.openReserveTermin(this.selectedTermin.id);
+            break;
+          }
+        }
+      }
+      
+    } else {
+      alert("Morate biti ulogovani da biste pristupili terminu!");
+    }
+  }
+  
+  openReserveTermin(idTermin1?: number) {
+    if (idTermin1 === undefined) { } else {
+      this.subs.push(this.cottageService.getCottageTermin(idTermin1).subscribe((response: TerminCottage) => {
+        this.selectedTermin = response;
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }));
+      this.showReserveTermin();
+    }
+  }
+
+  cancelReservation(){
+    this.subs.push(this.cottageService.cancelReservation(this.selectedTermin).subscribe(() => {
+      this.getAllTermins();
+      alert('Uspesno ste otkazali rezervaciju.')
+    }, (error: HttpErrorResponse) => {
+      alert("Neuspesna rezervacija.");
+    }));
+
+    this.showCalendar();
+  }
+
+  showReserveTermin(){
+    this.flagReserveTermin = !this.flagReserveTermin;
+    this.flagEditTermin = false;
+    this.flagCreateTermin = false;
+    this.flagShowCalendar = false;
+  }
+
+  reserveTermin() {
+    this.selectedTermin.userReserved = this.user;
+    this.subs.push(this.cottageService.reserveTermin(this.selectedTermin).subscribe(() => {
+      this.getAllTermins();
+      console.log("User reserved: " + this.selectedTermin.userReserved?.id);
+      alert('Uspesno ste rezervisali termin.')
+    }, (error: HttpErrorResponse) => {
+      alert("Neuspesna rezervacija.");
+    }));
+
+    this.showCalendar();
   }
 
   refresh(){
