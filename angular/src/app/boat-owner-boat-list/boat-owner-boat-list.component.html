@@ -1,1 +1,41 @@
-<p>boat-owner-boat-list works!</p>
+<div class="cottage-owner-content">
+    <mat-toolbar >
+        <div style="width: 50%; float:left">
+            <label style="margin-left:5%;">Lista brodova</label>
+        </div>
+        
+        <div style="width: 50%; float:right; text-align: right;">
+            <button mat-raised-button color="primary" (click)="goToAddCottage()">Dodaj brod</button>
+            <button mat-raised-button color="primary" (click)="goToHomePage()" style="margin-left: 5%; cursor:pointer;">Nazad</button>
+            <button mat-raised-button color="primary" (click)="logOut()" style="margin-left: 5%; margin-right: 5%; cursor:pointer;">Odjavite se</button>
+
+        </div>
+    </mat-toolbar>
+
+    <br><br>
+    <div style="margin-left: 25%; margin-right: 25%">
+        <table style="text-align: center" id="requests">
+          <caption><h2 style="text-align: center" >Brodovi</h2></caption>
+            <thead>
+              <tr>
+                <th style="text-align: center; width: 20%;">Naziv</th>
+                <th style="text-align: center; width: 20%;">Adresa</th>
+                <th style="text-align: center; width: 20%;">Tip</th>
+                <th style="text-align: center; width: 40%;"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let cottage of cottages">
+                <td>{{ cottage.name}}</td>
+                <td>{{ cottage.address }}</td>
+                <td>{{ cottage.type }}</td>
+                <td>
+                    <button mat-flat-button (click)="editCottage(cottage.id)">Izmeni</button>
+                    <button  mat-flat-button style="margin-left: 10%" (click)="deleteCottage(cottage.id)" >Obrisi</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+    
+</div>

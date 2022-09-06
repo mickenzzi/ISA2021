@@ -101,13 +101,13 @@ export class BoatBusinessComponent implements OnInit {
   }
 
   getCottage() {
-    this.subs.push(this.cottageService.getBoat(this.cottageId).subscribe((response: Boat) => {
+    this.subs.push(this.cottageService.getCottage(this.cottageId).subscribe((response: Boat) => {
       this.cottage = response;
     }));
   }
 
   back() {
-    this.router.navigate(['/cottage/' + this.cottageId]);
+    this.router.navigate(['/boat/' + this.cottageId]);
   }
 
   getReservationsPerMonth() {

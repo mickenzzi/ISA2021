@@ -38,11 +38,14 @@
     <label class="left-content">Broj motora:</label>
     <input [(ngModel)]="cottage.engineNumber" [disabled]='!isOwner' [ngModelOptions]="{standalone: true}" autofocus class="right-content" required  type="text" />
       <br><br>
+    <label class="left-content">Jacina motora:</label>
+    <input [(ngModel)]="cottage.enginePower" [disabled]='!isOwner' [ngModelOptions]="{standalone: true}" autofocus class="right-content" required  type="text" />
+      <br><br>
     <label class="left-content">Max brzina:</label>
     <input [(ngModel)]="cottage.maxSpeed" [ngModelOptions]="{standalone: true}" autofocus [disabled]='!isOwner'  class="right-content" required type="text" />
     <br><br>
     <label class="left-content">Navigaciona oprema:</label>
-    <input [(ngModel)]="cottage.navigationExquipment" [ngModelOptions]="{standalone: true}" autofocus [disabled]='!isOwner'  class="right-content" required type="text" />
+    <input [(ngModel)]="cottage.navigationEquipment" [ngModelOptions]="{standalone: true}" autofocus [disabled]='!isOwner'  class="right-content" required type="text" />
     <br><br>
     <label class="left-content">Kapacitet:</label>
     <input [(ngModel)]="cottage.capacity" [ngModelOptions]="{standalone: true}" autofocus [disabled]='!isOwner'  class="right-content" required type="text" />

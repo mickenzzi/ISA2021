@@ -96,8 +96,10 @@ export class AddBoatComponent implements OnInit {
         if (this.user.id === undefined) {
         } 
         else {
+          
             this.URL_ss = this.URL.substring(12);
             this.URL_R = this.URL_path + this.URL_ss;
+            this.cottage.image = this.URL_R;
             const data = {
             name: this.cottage.address,
             address: this.cottage.address,
@@ -107,11 +109,11 @@ export class AddBoatComponent implements OnInit {
             price: this.cottage.price,
             info: this.cottage.info
             }
-            this.cottageService.createBoat(this.cottage, this.user.id)
+            this.cottageService.createCottage(this.cottage, this.user.id)
             .subscribe(
             (response )=> {
                 alert('Uspesno ste dodali brod!');
-                this.router.navigate(['/cottageList']);
+                this.router.navigate(['/boatList']);
             },
                (error: HttpErrorResponse) => {
                alert("Neophodno je uneti ispravne podatke.");

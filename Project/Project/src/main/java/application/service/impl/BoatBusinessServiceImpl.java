@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import application.model.Boat;
 import application.model.TerminBoat;
@@ -16,6 +17,7 @@ import application.service.BoatBusinessService;
 import application.service.BoatService;
 import application.service.TerminBoatService;
 
+@Service
 public class BoatBusinessServiceImpl implements BoatBusinessService{
 	@Autowired
 	private BoatService cottageService;

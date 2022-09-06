@@ -6,7 +6,7 @@ export class Boat{
     engineNumber?: string;
     enginePower?: string;
     maxSpeed?: string;
-    navigationExquipment?: string;
+    navigationEquipment?: string;
     address?: string;
     description?: string;
     image?: string;

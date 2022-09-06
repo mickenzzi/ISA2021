@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Service;
 
 import application.model.Boat;
 import application.model.EntitySubscriber;
@@ -24,6 +25,7 @@ import application.repository.EntitySubscriberRepository;
 import application.service.TerminBoatService;
 import application.service.UserService;
 
+@Service
 public class TerminBoatServiceImpl implements TerminBoatService {
 
 	@Autowired

@@ -23,6 +23,11 @@ import { AddCottageComponent } from './add-cottage/add-cottage.component';
 import { HomeCottageComponent } from './home-cottage/home-cottage.component';
 import { CottageCalendarComponent } from './cottage-calendar/cottage-calendar.component';
 import { CottageBusinessComponent } from './cottage-business/cottage-business.component';
+import { AddBoatComponent } from './add-boat/add-boat.component';
+import { HomeBoatComponent } from './home-boat/home-boat.component';
+import { BoatCalendarComponent } from './boat-calendar/boat-calendar.component';
+import { BoatBusinessComponent } from './boat-business/boat-business.component';
+import { BoatOwnerBoatListComponent } from './boat-owner-boat-list/boat-owner-boat-list.component';
 
 const routes: Routes = [
   {
@@ -75,6 +80,10 @@ const routes: Routes = [
     component: HomeBoatOwnerComponent,
   },
   {
+    path: 'boatList',
+    component: BoatOwnerBoatListComponent,
+  },
+  {
     path: 'registrationAdmin',
     component: RegistrationAdminComponent,
   },
@@ -113,6 +122,22 @@ const routes: Routes = [
   {
     path: 'cottageBusiness/:id',
     component: CottageBusinessComponent,
+  },
+  {
+    path: 'boat',
+    component: AddBoatComponent,
+  },
+  {
+    path: 'boat/:id',
+    component: HomeBoatComponent,
+  },
+  {
+    path: 'boatTermins/:id',
+    component: BoatCalendarComponent,
+  },
+  {
+    path: 'boatBusiness/:id',
+    component: BoatBusinessComponent,
   }
 ];
 

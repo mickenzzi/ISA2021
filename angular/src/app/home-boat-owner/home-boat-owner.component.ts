@@ -93,7 +93,7 @@ export class HomeBoatOwnerComponent implements OnInit {
  }
 
  goToCottageList() {
-   this.router.navigate(['/cottageList']);
+   this.router.navigate(['/boatList']);
  }
 
  goToProfile() {

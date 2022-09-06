@@ -22,39 +22,60 @@ constructor(
 ) {
 }
 
-public createBoat(boat: Boat, id: number) {
-  return this.http.post(`${this.boatUrl}/createBoat/${id}`, boat);
+public reserveTermin(termin: TerminBoat) {
+  return this.http.put(`${this.terminUrl}/reserveTermin`, termin);
 }
 
-public updateBoat(boat: Boat) {
-  return this.http.put(`${this.boatUrl}/updateBoat`, boat);
+public cancelReservation(termin: TerminBoat) {
+  return this.http.put(`${this.terminUrl}/cancelReservation`, termin);
 }
 
-public getBoat(id: number) {
-  return this.http.get<Boat>(`${this.boatUrl}/getBoat/${id}`);
+public subscribe (entity: EntitySubscriber){
+  return this.http.post(`${this.boatUrl}/subscribe`, entity);
 }
 
-public deleteBoat(id: number) {
-  return this.http.get<Boat>(`${this.boatUrl}/deleteBoat/${id}`);
+public unsubscribe(cottageId?: number, userId?: number) {
+  return this.http.get<EntitySubscriber>(`${this.boatUrl}/unsubscribe/${cottageId}/${userId}`);
 }
 
-public getAllOwnerBoats(id: number) {
-  return this.http.get<Boat[]>(`${this.boatUrl}/getAllOwnerBoats/${id}`);
+public getAllCottageSubs(id?: number) {
+  return this.http.get<EntitySubscriber[]>(`${this.boatUrl}/getAllSubscribers/${id}`);
 }
 
-public getAllBoats() {
-  return this.http.get<Boat[]>(`${this.boatUrl}/getAllBoats`);
+public createCottage(cottage: Boat, id: number) {
+  return this.http.post(`${this.boatUrl}/createCottage/${id}`, cottage);
 }
 
-public getAllBoatImages(id: number) {
-  return this.http.get<CottageImage[]>(`${this.boatUrl}/getAllBoatImages/${id}`);
+public updateCottage(cottage: Boat) {
+  return this.http.put(`${this.boatUrl}/updateCottage`, cottage);
 }
+
+public getCottage(id: number) {
+  return this.http.get<Boat>(`${this.boatUrl}/getCottageById/${id}`);
+}
+
+public deleteCottage(id: number) {
+  return this.http.get<Boat>(`${this.boatUrl}/deleteCottage/${id}`);
+}
+
+public getAllOwnerCottages(id: number) {
+  return this.http.get<Boat[]>(`${this.boatUrl}/getAllOwnerCottages/${id}`);
+}
+
+public getAllCottages() {
+  return this.http.get<Boat[]>(`${this.boatUrl}/getAllCottages`);
+}
+
+public getAllCottageImages(id: number) {
+  return this.http.get<CottageImage[]>(`${this.boatUrl}/getAllCottageImages/${id}`);
+}
+
 
 public updateImage(image: Image) {
   return this.http.put(`${this.boatUrl}/updateImage`, image);
 }
 
-public deleteBoatImage(id: number) {
+public deleteCottageImage(id: number) {
   return this.http.get<CottageImage>(`${this.boatUrl}/deleteImage/${id}`);
 }
 
@@ -80,26 +101,6 @@ public getCottageTermin(id: number) {
 
 public updateCottageTermin(termin: TerminBoat) {
   return this.http.put(`${this.terminUrl}/updateTermin`, termin);
-}
-
-public reserveTermin(termin: TerminBoat) {
-  return this.http.put(`${this.terminUrl}/reserveTermin`, termin);
-}
-
-public cancelReservation(termin: TerminBoat) {
-  return this.http.put(`${this.terminUrl}/cancelReservation`, termin);
-}
-
-public subscribe (entity: EntitySubscriber){
-  return this.http.post(`${this.boatUrl}/subscribe`, entity);
-}
-
-public unsubscribe(boatId?: number, userId?: number) {
-  return this.http.get<EntitySubscriber>(`${this.boatUrl}/unsubscribe/${boatId}/${userId}`);
-}
-
-public getAllCottageSubs(id?: number) {
-  return this.http.get<EntitySubscriber[]>(`${this.boatUrl}/getAllSubscribers/${id}`);
 }
 
 }

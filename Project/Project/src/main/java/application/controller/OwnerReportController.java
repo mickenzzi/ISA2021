@@ -27,7 +27,7 @@ public class OwnerReportController {
 	OwnerReportService reportService;
 	
 	@PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-	@PreAuthorize("hasRole('COTTAGE_OWNER')")
+	@PreAuthorize("hasRole('COTTAGE_OWNER') or hasRole('BOAT_OWNER')")
 	public ResponseEntity<OwnerReport> create(@RequestBody OwnerReport report) {
 		if (report.getComment().equals("") || report.getComment() == null || report.getTerm() == null) {
 			System.out.println("Some fields are empty.");
@@ -40,7 +40,7 @@ public class OwnerReportController {
 	}
 
 	@GetMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	@PreAuthorize("hasRole('COTTAGE_OWNER') or hasRole('ADMIN')")
+	@PreAuthorize("hasRole('COTTAGE_OWNER') or hasRole('ADMIN') or hasRole('BOAT_OWNER')")
 	public ResponseEntity<OwnerReport> delete(@PathVariable("id") Long id) {
 		if (id == null) {
 			System.out.println("Id is null.");
@@ -80,7 +80,7 @@ public class OwnerReportController {
 	}
 
 	@PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
-	@PreAuthorize("hasRole('COTTAGE_OWNER')")
+	@PreAuthorize("hasRole('COTTAGE_OWNER') or hasRole('BOAT_OWNER')")
 	public ResponseEntity<OwnerReport> update(@RequestBody OwnerReport report1) throws Exception {
 		OwnerReport report = reportService.GetById(report1.getId());
 		if (report.getComment().equals("") || report.getComment() == null || report.getTerm() == null) {

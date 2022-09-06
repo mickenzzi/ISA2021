@@ -111,7 +111,7 @@ export class HomeBoatComponent implements OnInit {
  }
 
  getCottage() {
-   this.subs.push(this.cottageService.getBoat(this.cottageId).subscribe((response: Boat) => {
+   this.subs.push(this.cottageService.getCottage(this.cottageId).subscribe((response: Boat) => {
      this.cottage = response;
      this.getCottageImages();
      this.isDisabled = (this.cottage.reserved || !this.isOwner) ?? false;
@@ -148,7 +148,7 @@ export class HomeBoatComponent implements OnInit {
        } 
      }
 
-     this.subs.push(this.cottageService.deleteBoatImage(this.imageIdToDelete).subscribe(() => {
+     this.subs.push(this.cottageService.deleteCottageImage(this.imageIdToDelete).subscribe(() => {
        this.getCottageImages();
      }));
      window.location.reload();
@@ -156,7 +156,7 @@ export class HomeBoatComponent implements OnInit {
  }
 
  getCottageImages() {
-   this.subs.push(this.cottageService.getAllBoatImages(this.cottageId).subscribe((response: BoatImage[]) => {
+   this.subs.push(this.cottageService.getAllCottageImages(this.cottageId).subscribe((response: BoatImage[]) => {
      this.cottages = response;
      console.log(this.cottages);
      if(this.cottages.length > 0){
@@ -283,7 +283,7 @@ export class HomeBoatComponent implements OnInit {
  }
 
  editCottage(): void {
-   this.subs.push(this.cottageService.updateBoat(this.cottage).subscribe(() => {
+   this.subs.push(this.cottageService.updateCottage(this.cottage).subscribe(() => {
      alert('Izmenili ste brod!');
      this.URL_ss = this.URL.substring(12);
      this.URL_R = this.URL_path + this.URL_ss;

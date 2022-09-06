@@ -61,14 +61,14 @@ export class BoatOwnerBoatListComponent implements OnInit {
  getAllOwnerCottages() {
    if (this.user.id === undefined) {
    } else {
-     this.subs.push(this.cottageService.getAllOwnerBoats(this.user.id).subscribe((response: Boat[]) => {
+     this.subs.push(this.cottageService.getAllOwnerCottages(this.user.id).subscribe((response: Boat[]) => {
        this.cottages = response;
      }));
    }
  }
 
  goToHomePage() {
-   this.router.navigate(['/gomeBoatOwner']);
+   this.router.navigate(['/homeBoatOwner']);
  }
 
  public goToAddCottage() {
@@ -79,7 +79,7 @@ export class BoatOwnerBoatListComponent implements OnInit {
    if (id === undefined) {
      alert('Id nije validan.');
    } else {
-     this.subs.push(this.cottageService.deleteBoat(id).subscribe(() => {
+     this.subs.push(this.cottageService.deleteCottage(id).subscribe(() => {
        alert("Obrisali ste brod");
        this.getAllOwnerCottages();
      }));

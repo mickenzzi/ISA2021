@@ -20,7 +20,7 @@ public class Boat {
 
 	@Column(name = "name", nullable = false)
 	private String name;
-	@Column(name = "type", nullable = false)
+	@Column(name = "boat_type", nullable = false)
 	private String type;
 	@Column(name = "lenght", nullable = false)
 	private String lenght;

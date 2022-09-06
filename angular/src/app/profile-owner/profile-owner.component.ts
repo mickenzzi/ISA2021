@@ -47,7 +47,11 @@ export class ProfileOwnerComponent implements OnInit {
       }
     
       goBack() {
-        this.router.navigate(['/homeCottageOwner']);
+        if(this.user.role === "ROLE_COTTAGE_OWNER"){
+          this.router.navigate(['/homeCottageOwner']);
+        } else if (this.user.role ==="ROLE_BOAT_OWNER"){
+          this.router.navigate(['/homeBoatOwner']);
+        }
       }
       
       openRequest() {
