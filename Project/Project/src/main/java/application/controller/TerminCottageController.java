@@ -54,6 +54,16 @@ public class TerminCottageController {
 		return new ResponseEntity<>(termins, HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/getFinishedTermins/{cottageId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<TerminCottage>> getAllFinishedCottageTermins(@PathVariable("cottageId") Long cottageId) throws ParseException {
+		List<TerminCottage> termins = new ArrayList<>();
+		List<TerminCottage> retTerms = new ArrayList<>();
+		termins = terminCottageService.findAllTerminsByCottage(cottageId);
+		retTerms = terminCottageService.finishedReservations(termins);
+		System.out.println("The task /getFinishedTermins was successfully completed.");
+		return new ResponseEntity<>(retTerms, HttpStatus.OK);
+	}
+	
 	@GetMapping(value = "/getTermin/{cottageId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TerminCottage> getTermin(@PathVariable("cottageId") Long cottageId) {
 		TerminCottage termin = new TerminCottage();

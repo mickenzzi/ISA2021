@@ -17,6 +17,7 @@ import org.springframework.mail.SimpleMailMessage;
 
 import application.model.Adventure;
 import application.model.Loyalty;
+import application.model.OwnerReport;
 import application.model.Request;
 import application.model.Role;
 import application.model.Termin;
@@ -28,6 +29,7 @@ import application.repository.TerminRepository;
 import application.repository.UserRepository;
 import application.repository.AdventureRepository;
 import application.repository.LoyaltyRepository;
+import application.repository.OwnerReportRepository;
 import application.service.UserService;
 
 @Service
@@ -45,6 +47,8 @@ public class UserServiceImpl implements UserService {
 	private RoleRepository roleRepository;
 	@Autowired
 	private LoyaltyRepository loyaltyRepository;
+	@Autowired
+	private OwnerReportRepository reportRepository;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	@Autowired
@@ -375,5 +379,35 @@ public class UserServiceImpl implements UserService {
 		Loyalty loyalty = loyaltyRepository.findByName("BRONZE");
 		return loyalty;
 	}
+
+	public void approveReport(OwnerReport report) {
+		report.setApproved(true);
+		
+		reportRepository.save(report);
+		
+		User user = findById(report.getTerm().getUserReserved().getId());
+		user.setPenalty(user.getPenalty()+1);
+		userRepository.save(user);
+		
+		User owner = findById(report.getOwner().getId());
+		
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(user.getEmail());
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Dobili ste kaznu"); 
+		mail.setText("Dobili ste 1 kazneni poen za lose ponasanje tokom rezervacije."); 
+		javaMailSender.send(mail);
+		
+		mail.setTo(owner.getEmail());
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Kazna je dodeljena"); 
+		mail.setText("Korisnik " + user.getFirstName() + " " + user.getLastName() + " kaznjen je po vasem zahtevu."); 
+		javaMailSender.send(mail);
+	}
+	
+	public void denyReport(OwnerReport report) {
+		reportRepository.delete(report);
+	}
+	
 
 }

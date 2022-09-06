@@ -52,3 +52,39 @@
   .cal-month-view .bg-green, .cal-week-view .cal-day-columns .bg-green, .cal-day-view .bg-green {
     background-color: seagreen !important;
   }
+
+  .left-div{
+    float:left;
+    width: 50%;
+    margin-left: 7%;
+    margin-top: 3%;
+  }
+
+  .right-div{
+    float:right;
+    width: 30%;
+    margin-right: 7%;
+    margin-top: 3%;
+  }
+
+  #terms {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #terms td, #terms th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  #terms tr:nth-child(even){background-color: #f2f2f2;}
+  
+  #terms tr:hover {background-color: #ddd;}
+  
+  #terms th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: #a14343;
+    color: white;
+  }

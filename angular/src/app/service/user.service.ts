@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from '../model/user';
 import { AuthenticationService } from './authentication.service';
 import { Loyalty } from "../model/loyalty";
+import { Report } from '../model/report';
 
 @Injectable({
   providedIn: 'root'
@@ -99,6 +100,15 @@ export class UserService {
   public updateLoyalty(name: string, points: number) {
     return this.http.get<Loyalty>(`${this.userUrl}/updateLoyalty/${name}/${points}`)
   }
+
+  public denyReport(report: Report) {
+    return this.http.put<Report>(`${this.userUrl}/denyReport`, report)
+  }
+
+  public approveReport(report: Report) {
+    return this.http.put<Report>(`${this.userUrl}/approveReport`, report)
+  }
+
 }
 
 

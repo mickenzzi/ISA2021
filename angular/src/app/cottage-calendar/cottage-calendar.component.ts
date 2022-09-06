@@ -5,10 +5,12 @@ import { eventClick } from '@syncfusion/ej2-angular-schedule';
 import { CalendarDayViewBeforeRenderEvent, CalendarEvent, CalendarMonthViewBeforeRenderEvent, CalendarView, CalendarWeekViewBeforeRenderEvent } from 'angular-calendar';
 import { Subscription } from 'rxjs';
 import { Cottage } from '../model/cottage';
+import { Report } from '../model/report';
 import { Termin } from '../model/termin';
 import { TerminCottage } from '../model/terminCottage';
 import { User } from '../model/user';
 import { CottageService } from '../service/cottage.service';
+import { ReportService } from '../service/report.service';
 import { UserService } from '../service/user.service';
 
 @Component({
@@ -36,12 +38,17 @@ export class CottageCalendarComponent implements OnInit {
   termin: TerminCottage = new TerminCottage;
   selectedTermin: TerminCottage = new TerminCottage;
   termins: TerminCottage[] = new Array<TerminCottage>();
+  report: Report = new Report();
+  finishedReservations: TerminCottage[] = [];
+
   flagCreateTermin: boolean = false;
   flagEditTermin: boolean = false;
   flagShowCalendar: boolean = true;
   disableEditTermin: boolean = false;
   fullName: String = "";
   flagReserveTermin: boolean = false;
+  flagReport: boolean = false;
+
 
   //calendar
   view: CalendarView = CalendarView.Month;
@@ -51,7 +58,7 @@ export class CottageCalendarComponent implements OnInit {
   CalendarView = CalendarView;
 
   
-  constructor(private router: Router, private userService: UserService, private cottageService: CottageService, private route: ActivatedRoute) {
+  constructor(private router: Router, private userService: UserService, private cottageService: CottageService, private route: ActivatedRoute, private reportService: ReportService) {
   }
 
   ngOnInit(): void {
@@ -75,6 +82,7 @@ export class CottageCalendarComponent implements OnInit {
     this.subs.push(this.cottageService.getCottage(this.cottageId).subscribe((response: Cottage) => {
       this.cottage = response;
       this.getAllTermins();
+      this.getFinishedTermins();
     }));
   }
 
@@ -110,6 +118,7 @@ export class CottageCalendarComponent implements OnInit {
     this.flagEditTermin = false;
     this.flagShowCalendar = false;
     this.flagReserveTermin = false;
+    this.flagReport = false;
   }
 
   showEditTermin() {
@@ -117,6 +126,7 @@ export class CottageCalendarComponent implements OnInit {
     this.flagCreateTermin = false;
     this.flagShowCalendar = false;
     this.flagReserveTermin = false;
+    this.flagReport = false;
   }
 
   showCalendar(){ 
@@ -124,9 +134,40 @@ export class CottageCalendarComponent implements OnInit {
     this.flagCreateTermin = false;
     this.flagShowCalendar = true;
     this.flagReserveTermin = false;
+    this.flagReport = false;
     setTimeout(() => { this.refresh(); }, 500);
   }
 
+  showReport(term: TerminCottage){
+    this.report.term = term;
+    this.report.missedTerm = false;
+    this.flagReport = true;
+    this.flagEditTermin = false;
+    this.flagCreateTermin = false;
+    this.flagShowCalendar = false;
+    this.flagReserveTermin = false;
+
+  }
+
+  sendReport(){
+    if(this.report.missedTerm){
+      this.report.comment = "Korisnik je propustio termin, dobija 1 instant penal";
+      this.report.sanctioned = true;
+      this.report.approved = true;
+    } else {
+      this.report.approved = false;
+    }
+    this.report.owner = this.user;
+    console.log("Sankcije: " + this.report.sanctioned + " approved: " + this.report.approved + " missed term: " + this.report.missedTerm)
+    this.subs.push(this.reportService.create(this.report).subscribe(() => {
+      //this.report = new Report();
+      window.location.reload();
+      alert("Uspesno te poslali izvestaj");
+    }, (error: HttpErrorResponse) => {
+      alert("Greska pri popunjavanju izvestaja");
+    }));
+  }
+  
   editTermin() {
     if(!this.disableEditTermin){
       if (this.user.id === undefined || this.selectedTermin.start === undefined || this.selectedTermin.end === undefined || this.selectedTermin.capacity === undefined) {
@@ -187,6 +228,16 @@ export class CottageCalendarComponent implements OnInit {
         this.showCalendar();
       }
     }
+  }
+
+  getFinishedTermins() {
+      this.subs.push(this.cottageService.getFinishedTermins(this.cottageId).subscribe((response) => {
+        this.finishedReservations = response;
+        console.log("Called all termins")
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }));
+    
   }
 
   getAllTermins() {
@@ -363,8 +414,6 @@ export class CottageCalendarComponent implements OnInit {
 
   closeOpenMonthViewDay() {
     this.activeDayIsOpen = false;
-    //let element: HTMLButtonElement = document.getElementById('Prethodni') as HTMLButtonElement;
-    //element.click();
   }
 
   changeDay(date: Date) {
@@ -452,8 +501,8 @@ export class CottageCalendarComponent implements OnInit {
 
   refresh(){
     let naredni: HTMLButtonElement = document.getElementById('Naredni') as HTMLButtonElement;
-    setTimeout(() => { naredni.click() }, 10)
+    setTimeout(() => { naredni.click() }, 100)
     let prethodni: HTMLButtonElement = document.getElementById('Prethodni') as HTMLButtonElement;
-    setTimeout(() => { prethodni.click() }, 10)
+    setTimeout(() => { prethodni.click() }, 100)
   }
 }

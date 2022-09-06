@@ -92,6 +92,10 @@ export class CottageService {
     return this.http.get<TerminCottage[]>(`${this.terminUrl}/getAllTermins/${id}`);
   }
 
+  public getFinishedTermins(id: number) {
+    return this.http.get<TerminCottage[]>(`${this.terminUrl}/getFinishedTermins/${id}`);
+  }
+
   public getCottageTermin(id: number) {
     return this.http.get<TerminCottage>(`${this.terminUrl}/getTermin/${id}`);
   }

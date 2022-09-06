@@ -5,6 +5,7 @@ import java.util.List;
 
 import application.model.User;
 import application.model.Loyalty;
+import application.model.OwnerReport;
 import application.model.Termin;
 import application.model.dto.UserDTO;
 
@@ -26,4 +27,6 @@ public interface UserService {
 	Loyalty findBronze();
 	String convertRole(String role);
 	boolean createAction(Long instructorId,Long adventureId,Termin term, Double price, Long capacity) throws ParseException;
+	public void denyReport(OwnerReport report);
+	public void approveReport(OwnerReport report);
 }

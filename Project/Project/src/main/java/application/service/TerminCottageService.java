@@ -24,5 +24,6 @@ public interface TerminCottageService {
 	
 	boolean reserveTermin(TerminCottage termin);
 	boolean cancelReservation(TerminCottage termin);
+	List<TerminCottage> finishedReservations(List<TerminCottage> terms) throws ParseException;
 
 }

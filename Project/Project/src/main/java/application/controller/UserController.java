@@ -20,8 +20,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import application.model.Adventure;
 import application.model.Loyalty;
+import application.model.OwnerReport;
 import application.model.User;
 import application.model.dto.UserDTO;
+import application.service.OwnerReportService;
 import application.service.UserService;
 import application.util.TokenUtils;
 
@@ -32,6 +34,8 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private OwnerReportService reportService;
 
 	@Autowired
 	TokenUtils tokenUtils;
@@ -248,5 +252,32 @@ public class UserController {
 
 		return new ResponseEntity<User>(user, HttpStatus.OK);
 	}
+	
+	@PutMapping(value = "/approveReport", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<OwnerReport> approveReport(@RequestBody OwnerReport report) {
+		if (report == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} else {
+			userService.approveReport(report);
+			System.out.println("The task /approveReport was successfully completed.");
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
+	}
+	
+	@PutMapping(value = "/denyReport", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<OwnerReport> denyReport(@RequestBody OwnerReport report) {
+		if (report == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} else {
+			userService.denyReport(report);
+			System.out.println("The task /approveReport was successfully completed.");
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
+	}
+	
+	
+	
 
 }

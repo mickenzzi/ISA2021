@@ -206,6 +206,23 @@ public class TerminCottageServiceImpl implements TerminCottageService {
 		
 		return ret;
 	}
+	
+	public List<TerminCottage> finishedReservations(List<TerminCottage> terms) throws ParseException{
+		List<TerminCottage> finished = new ArrayList<>();
+		
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+		
+		for(TerminCottage term : terms) {
+
+	        Date parsedDate = sdf.parse(term.getEnd());
+	        if(date.compareTo(parsedDate)>0 && term.getUserReserved()!=null) {
+	        	finished.add(term);
+	        }
+		}
+		
+		return finished;
+	}
 
 	@Override
 	public boolean updateTermin(TerminCottage terminCottage) throws ParseException {

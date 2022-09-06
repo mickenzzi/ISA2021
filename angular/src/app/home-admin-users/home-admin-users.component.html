@@ -1,7 +1,8 @@
 <body class="home-admin-users-content">
 <div class="toolbar">
   <button (click)="goToAdminHome()" class="button-2" style="margin-left:30px"> Nazad</button>
-  <button (click)="getAllUsers()" class="button-2" style="margin-left:30px">Prikaz korisnika</button>
+  <button class="button-2" style="margin-left:30px">Prikaz korisnika</button>
+  <button (click)="showReports()" class="button-2" style="margin-left:30px">Zalbe vlasnika</button>
 </div>
 <div *ngIf="flag1" class="notification-panel" style="margin-top:100px; margin-left: 5px;">
   <table class="table">
@@ -28,6 +29,31 @@
       </td>
       <td class="table-data">
         <button (click)="deleteUser(user.id)" class="disable-button">Obrisi</button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div *ngIf="flagShowReports">
+  <table id="terms">
+    <tr>
+      <th colspan="4">
+        Prikaz svih termina
+      </th>
+    </tr>
+    <tr>
+      <th style="width: 20%;">Vlasnik</th>
+      <th style="width: 30%;">Izvestaj</th>
+      <th style="width: 20%;">Korisnik</th>
+      <th style="width: 30%;"></th>
+    </tr>
+    <tr style="text-align:center" *ngFor="let report of reports">
+      <td>{{report.owner?.firstName}} {{report.owner?.lastName}}</td>
+      <td>{{report.comment}}</td>
+      <td>{{report.term?.userReserved?.firstName}} {{report.term?.userReserved?.lastName}}</td>
+      <td>
+        <button mat-button (click)="denyReport(report)">Odbi</button>
+        <button mat-button (click)="approveReport(report)">Sankcionisi</button>
       </td>
     </tr>
   </table>

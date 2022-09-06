@@ -6,6 +6,8 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {Adventure} from "../model/adventure";
 import {AdventureService} from "../service/adventure.service";
 import {Subscription} from "rxjs";
+import { ReportService } from '../service/report.service';
+import { Report } from '../model/report';
 
 @Component({
   selector: 'app-home-admin-users',
@@ -17,6 +19,7 @@ export class HomeAdminUsersComponent implements OnInit {
   users: User[];
   adventures: Adventure[];
   user: User = new User();
+  reports: Report[] = [];
   //unsubscribe
   subs: Subscription[] = [];
   //local
@@ -29,15 +32,18 @@ export class HomeAdminUsersComponent implements OnInit {
   flag1?: boolean;
   //show adventures table
   flag2?: boolean;
+  flagShowReports: boolean = false;
   //@ts-ignore
   currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-  constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private adventureService: AdventureService) {
+  constructor(private reportService: ReportService, private route: ActivatedRoute, private router: Router, private userService: UserService, private adventureService: AdventureService) {
     this.users = [];
     this.adventures = [];
   }
 
   ngOnInit(): void {
+    this.getUserReports();
+    console.log(this.reports);
     if (this.currentUser === null) {
       alert('Niste se ulogovali');
       this.logOut();
@@ -62,6 +68,18 @@ export class HomeAdminUsersComponent implements OnInit {
     this.router.navigate(['/homeAdmin']);
   }
 
+  getUserReports(){
+    this.subs.push(this.reportService.getUnapproved().subscribe((response: Report[]) => {
+      this.reports = response;
+    }, (error: HttpErrorResponse) => {
+      alert(error.message);
+    }));
+  }
+
+  showReports(){
+    this.flagShowReports = !this.flagShowReports;
+  }
+
   getAllUsers() {
     if (this.user.id === undefined) {
     } else {
@@ -80,6 +98,23 @@ export class HomeAdminUsersComponent implements OnInit {
     }
   }
 
+  denyReport(report: Report){
+    this.subs.push(this.userService.denyReport(report).subscribe(() => {
+      alert("Korisnik nece snositi sankcije.")
+      window.location.reload();
+    }, (error: HttpErrorResponse) => {
+      alert(error.message);
+    }));
+  }
+  
+  approveReport(report: Report){
+    this.subs.push(this.userService.approveReport(report).subscribe(() => {
+      alert("Korisnik ce snositi sankcije.")
+      window.location.reload();
+    }, (error: HttpErrorResponse) => {
+      alert(error.message);
+    }));
+  }
 
   getUser() {
     const username = this.currentUser.username1;
