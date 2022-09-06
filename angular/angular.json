@@ -119,6 +119,7 @@
   },
   "defaultProject": "angular-app",
   "cli": {
+    "analytics": "a43e9e45-bf86-4d03-b636-7d9397737ecb",
     "defaultCollection": "@angular-eslint/schematics"
   }
 }

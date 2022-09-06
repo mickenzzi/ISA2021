@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import application.model.Cottage;
 import application.model.CottageImage;
+import application.model.EntitySubscriber;
 import application.service.CottageService;
 
 @RestController
@@ -43,6 +44,39 @@ public class CottageController {
 	}
 	
 
+	@PostMapping(value = "/subscribe", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('USER')")
+	public ResponseEntity<EntitySubscriber> subscribe(@RequestBody EntitySubscriber es) {
+		if (es.getCottage().getId() == null || es.getSubscriber().getId() == null) {
+			System.out.println("Some fields are empty.");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} else {
+			cottageService.subscribe(es.getCottage().getId(), es.getSubscriber().getId());
+			System.out.println("The task /subscribe was successfully completed.");
+			return new ResponseEntity<>(HttpStatus.CREATED);
+		}
+	}
+	
+	@GetMapping(value = "/unsubscribe/{cottageId}/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('USER')")
+	public ResponseEntity<EntitySubscriber> unsubscribe(@PathVariable("cottageId") Long cottageId, @PathVariable("userId") Long userId) {
+		if (cottageId == null || userId == null) {
+			System.out.println("Some id is null.");
+			return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
+		}
+		cottageService.unsubscribe(cottageId, userId);
+		System.out.println("The task /unsubscribe was successfully completed.");
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getAllSubscribers/{cottageId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<EntitySubscriber>> getAllSubscribers(@PathVariable("cottageId") Long cottageId) {
+		List<EntitySubscriber> subs = new ArrayList<>();
+		subs = cottageService.findAllSubsByCottage(cottageId);
+		System.out.println("The task /getAllSubs was successfully completed.");
+		return new ResponseEntity<>(subs, HttpStatus.OK);
+	}
+	
 	@PostMapping(value = "/createCottage/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('COTTAGE_OWNER')")
 	public ResponseEntity<Cottage> createCottage(@RequestBody Cottage cottage1, @PathVariable("id") Long id) {

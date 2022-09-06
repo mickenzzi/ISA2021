@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import application.model.Cottage;
+import application.model.EntitySubscriber;
 import application.model.CottageImage;
 import application.model.User;
 import application.repository.CottageImageRepository;
 import application.repository.CottageRepository;
+import application.repository.EntitySubscriberRepository;
 import application.service.CottageService;
 import application.service.UserService;
 
@@ -23,6 +25,8 @@ public class CottageServiceImpl implements CottageService {
 	private CottageImageRepository cottageImageRepository;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private EntitySubscriberRepository subscriberRespository;
 	
 	@Override
 	public List<Cottage> findAll() {
@@ -153,6 +157,60 @@ public class CottageServiceImpl implements CottageService {
 			
 		return ownerCottages;
 	}
-	
 
+	
+	
+	@Override
+	public void subscribe(Long cottageId, Long userId) {
+		Cottage cottage = new Cottage();
+		cottage = findById(cottageId);
+		User subsciber = new User();
+		subsciber = userService.findById(userId);
+		EntitySubscriber es = new EntitySubscriber();
+		es.setCottage(cottage);
+		es.setSubscriber(subsciber);
+		
+		boolean save = true;
+		List<EntitySubscriber> allSubs = new ArrayList<>();
+		
+		
+		for(EntitySubscriber e : allSubs) {
+			if(e.getCottage().getId().equals(cottageId) && e.getSubscriber().getId().equals(userId)) {
+				save = false;
+				break;
+			}
+		}
+		
+		if(save) {
+			subscriberRespository.save(es);
+		}
+		
+	}
+	
+	public void unsubscribe(Long cottageId, Long userId) {
+		List<EntitySubscriber> esList = new ArrayList<>();
+		esList = subscriberRespository.findAll();
+		for(EntitySubscriber es : esList) {
+			if(es.getCottage().getId().equals(cottageId) && es.getSubscriber().getId().equals(userId)) {
+				subscriberRespository.delete(es);
+				break;
+			}
+		}
+	
+		
+	}
+
+	@Override
+	public List<EntitySubscriber> findAllSubsByCottage(Long cottageId) {
+		List<EntitySubscriber> subs = new ArrayList<>();
+		List<EntitySubscriber> retList = new ArrayList<>();
+		subs = subscriberRespository.findAll();
+		for(EntitySubscriber e : subs) {
+			if(e.getCottage().getId().equals(cottageId)) {
+				retList.add(e);
+			}
+		}
+		
+		return retList;
+	}
 }

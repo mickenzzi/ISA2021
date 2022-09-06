@@ -6,6 +6,7 @@ import { AuthenticationService } from './authentication.service';
 import { CottageImage } from '../model/cottageImage';
 import { Termin } from '../model/termin';
 import { TerminCottage } from '../model/terminCottage';
+import { EntitySubscriber } from '../model/entity-subscriber';
 
 
 @Injectable({
@@ -20,6 +21,18 @@ export class CottageService {
     private http: HttpClient,
     private auth: AuthenticationService,
   ) {
+  }
+
+  public subscribe (entity: EntitySubscriber){
+    return this.http.post(`${this.cottageUrl}/subscribe`, entity);
+  }
+
+  public unsubscribe(cottageId?: number, userId?: number) {
+    return this.http.get<EntitySubscriber>(`${this.cottageUrl}/unsubscribe/${cottageId}/${userId}`);
+  }
+
+  public getAllCottageSubs(id?: number) {
+    return this.http.get<EntitySubscriber[]>(`${this.cottageUrl}/getAllSubscribers/${id}`);
   }
 
   public createCottage(cottage: Cottage, id: number) {

@@ -4,7 +4,8 @@
             <label style="margin-left:5%;">Vikendica "{{cottage.name}}"</label>
             <button mat-raised-button color="primary" (click)="calendar()" style="cursor:pointer; margin-left:5%">Termini</button>
             <button mat-raised-button color="primary" (click)="business()" style="cursor:pointer; margin-left:5%">Finansije</button>
-            <button *ngIf="notLoggedOrUser" mat-raised-button color="primary" (click)="subscribe()" style="cursor:pointer; margin-left:5%">Termini</button>
+            <button *ngIf="notLoggedOrUser && !flagSubscribed" mat-raised-button color="primary" (click)="subscribe()" style="cursor:pointer; margin-left:5%">Pretplatite se</button>
+            <button *ngIf="notLoggedOrUser && flagSubscribed" mat-raised-button color="primary" (click)="unsubscribe()" style="cursor:pointer; margin-left:5%">Ukini pretplatu</button>
         </div>
         
         <div style="width: 50%; float:right; text-align: right;">
@@ -58,7 +59,7 @@
     <div class="cottage-images">
             <br><br>
             <div>
-              <input class="mat-raised-button" disabled="{{show1}}" [(ngModel)]="url1" [ngModelOptions]="{standalone: true}" accept="image/*" (change)="onSelectFile1($event)" autofocus required type="file"/>
+              <input class="mat-raised-button" *ngIf="isOwner" disabled="{{show1}}" [(ngModel)]="url1" [ngModelOptions]="{standalone: true}" accept="image/*" (change)="onSelectFile1($event)" autofocus required type="file"/>
             </div>
             <br>
             <img class="small-images" src={{url1}}><br>
@@ -68,7 +69,7 @@
             <br>
 
             <div >
-              <input class="mat-raised-button" disabled="{{show2}}" [(ngModel)]="url2" [ngModelOptions]="{standalone: true}" accept="image/*" (change)="onSelectFile2($event)" autofocus required type="file">
+              <input class="mat-raised-button" *ngIf="isOwner" disabled="{{show2}}" [(ngModel)]="url2" [ngModelOptions]="{standalone: true}" accept="image/*" (change)="onSelectFile2($event)" autofocus required type="file">
             </div>
             <br>
             <img class="small-images" src={{url2}}><br>
@@ -78,7 +79,7 @@
             <br>
 
             <div >
-              <input class="mat-raised-button" disabled="{{show3}}" [(ngModel)]="url3" [ngModelOptions]="{standalone: true}" accept="image/*" (change)="onSelectFile3($event)" autofocus required type="file"/>
+              <input class="mat-raised-button" *ngIf="isOwner" disabled="{{show3}}" [(ngModel)]="url3" [ngModelOptions]="{standalone: true}" accept="image/*" (change)="onSelectFile3($event)" autofocus required type="file"/>
             </div>
             <br>
             <img class="small-images" src={{url3}}><br>
@@ -88,7 +89,7 @@
             <br>
 
             <div >
-              <input class="mat-raised-button" disabled="{{show4}}" [(ngModel)]="url4" [ngModelOptions]="{standalone: true}" accept="image/*" (change)="onSelectFile4($event)" autofocus required type="file"/>
+              <input class="mat-raised-button" *ngIf="isOwner" disabled="{{show4}}" [(ngModel)]="url4" [ngModelOptions]="{standalone: true}" accept="image/*" (change)="onSelectFile4($event)" autofocus required type="file"/>
             </div>
             <br>
             <img class="small-images" src={{url4}}><br>
@@ -98,7 +99,7 @@
             <br>
 
             <div >
-              <input class="mat-raised-button" disabled="{{show5}}" [(ngModel)]="url5" [ngModelOptions]="{standalone: true}" accept="image/*" (change)="onSelectFile5($event)" autofocus required type="file"/>
+              <input class="mat-raised-button" *ngIf="isOwner" disabled="{{show5}}" [(ngModel)]="url5" [ngModelOptions]="{standalone: true}" accept="image/*" (change)="onSelectFile5($event)" autofocus required type="file"/>
             </div>
             <br>
             <img class="small-images" src={{url5}}><br>

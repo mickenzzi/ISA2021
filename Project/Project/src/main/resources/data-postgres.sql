@@ -68,5 +68,6 @@ insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_e
 insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_expire, duration, cottage_id, user_id, price, capacity) values('20-Apr-2022 10:20:20','24-Apr-2022 10:20:20',false, false, null, 0, 1, null, 130, 5);
 insert into termin_cottage_table(start_date,end_date,reserved,is_action,action_expire, duration, cottage_id, user_id, price, capacity) values('09-Mar-2022 10:20:20','12-Mar-2022 10:20:20',false, false, null, 0, 1, null, 400, 2);
 
-
+insert into entity_subscriber_table(id, boat_id, cottage_id, user_id) values (1, null, 1, 3);
+insert into entity_subscriber_table(id, boat_id, cottage_id, user_id) values (2, null, 2, 3);
 

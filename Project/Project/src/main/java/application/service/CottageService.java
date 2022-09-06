@@ -4,6 +4,7 @@ import java.util.List;
 
 import application.model.Cottage;
 import application.model.CottageImage;
+import application.model.EntitySubscriber;
 import application.model.dto.CottageDTO;
 
 public interface CottageService {
@@ -19,4 +20,7 @@ public interface CottageService {
     boolean saveImage(String url, Long id);
     List<CottageImage> getAllImages();
     List<Cottage> findOwnerCottages(Long id);
+    void subscribe (Long cottageId, Long userId);
+    void unsubscribe (Long cottageId, Long userId);
+    List<EntitySubscriber> findAllSubsByCottage(Long cottageId);
 }

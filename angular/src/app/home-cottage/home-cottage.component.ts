@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { NumericLiteral } from 'typescript';
 import { Cottage } from '../model/cottage';
 import { CottageImage } from '../model/cottageImage';
+import { EntitySubscriber } from '../model/entity-subscriber';
 import { Image } from '../model/image';
 import { User } from '../model/user';
 import { CottageService } from '../service/cottage.service';
@@ -26,6 +27,9 @@ export class HomeCottageComponent implements OnInit {
    //@ts-ignore
   currentUser = JSON.parse(localStorage.getItem('currentUser'));
   cottage: Cottage = new Cottage();
+  entitySub: EntitySubscriber = new EntitySubscriber;
+  flagSubscribed: boolean = false;
+  entitySubs: EntitySubscriber[] = [];
   isDisabled = true;
   images: Image [] = [];
   cottages: CottageImage [] = [];
@@ -119,7 +123,20 @@ export class HomeCottageComponent implements OnInit {
       }
       this.latitude = this.cottage.latitude ?? 45.246068230253336;
       this.longitude = this.cottage.longitude ?? 19.851725213006898;
+      
+      this.getAllSubscribers();
+    }));
+  }
 
+  getAllSubscribers(){
+    this.subs.push(this.cottageService.getAllCottageSubs(this.cottage.id).subscribe((response: EntitySubscriber[]) => {
+      this.entitySubs = response;
+      for(let e of this.entitySubs){
+        if(e.subscriber?.id == this.user.id){
+          this.flagSubscribed = true;
+          console.log("Subscribed: " + this.flagSubscribed);
+        }
+      }
     }));
   }
 
@@ -217,7 +234,31 @@ export class HomeCottageComponent implements OnInit {
     if(this.currentUser === null){
       alert("Morate biti ulogovani da biste se pretplatili!");
     } else {
-      //dodavanje usera listi koja je pretplacena, join table bi trebao na backu vrv
+      this.entitySub.cottage = this.cottage;
+      this.entitySub.subscriber = this.user;
+      console.log(this.entitySub.cottage.id);
+      console.log(this.entitySub.subscriber.id);
+      this.cottageService.subscribe(this.entitySub).subscribe(()=> {
+      alert('Uspesno ste se pretplatili');
+      }, (error: HttpErrorResponse) => {
+        alert("Greska.");
+      });
+    }
+  }
+
+  unsubscribe() {
+    if(this.currentUser === null){
+      alert("Morate biti ulogovani da biste se pretplatili!");
+    } else {
+      this.entitySub.cottage = this.cottage;
+      this.entitySub.subscriber = this.user;
+      console.log(this.entitySub.cottage.id);
+      console.log(this.entitySub.subscriber.id);
+      this.cottageService.unsubscribe(this.entitySub.cottage.id, this.entitySub.subscriber.id).subscribe(()=> {
+      alert('Uspesno ste ukinuli pretplatu.');
+      }, (error: HttpErrorResponse) => {
+        alert("Greska.");
+      });
     }
   }
 
@@ -239,6 +280,7 @@ export class HomeCottageComponent implements OnInit {
       } else {
         this.notLoggedOrUser = false;
       }
+
     }));
   }
 
